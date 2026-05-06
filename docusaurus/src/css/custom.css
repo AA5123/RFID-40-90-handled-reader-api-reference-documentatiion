@@ -553,6 +553,22 @@ pre.openapi__method-endpoint,
  border: 1px solid var(--code-border);
  overflow: hidden;
 }
+.payload-card__code--collapsed .theme-code-block,
+.payload-card__code--collapsed pre {
+ max-height: 5.25rem;
+ overflow: hidden;
+ position: relative;
+}
+.payload-card__code--collapsed pre::after {
+ content: "";
+ position: absolute;
+ left: 0;
+ right: 0;
+ bottom: 0;
+ height: 2rem;
+ background: linear-gradient(180deg, rgba(15, 23, 42, 0) 0%, rgba(15, 23, 42, 0.92) 100%);
+ pointer-events: none;
+}
 .payload-card__code .theme-code-block,
 .payload-card__code pre {
  margin: 0;
@@ -599,6 +615,7 @@ pre.openapi__method-endpoint,
 .payload-schema-table {
  width: 100%;
  border-collapse: collapse;
+ table-layout: fixed;
 }
 .payload-schema-table th,
 .payload-schema-table td {
@@ -607,6 +624,18 @@ pre.openapi__method-endpoint,
  padding: 0.5rem 0.6rem;
  font-size: 0.88rem;
  color: var(--color-text);
+}
+.payload-schema-table th:nth-child(1),
+.payload-schema-table td:nth-child(1) {
+ width: 32%;
+}
+.payload-schema-table th:nth-child(2),
+.payload-schema-table td:nth-child(2) {
+ width: 18%;
+}
+.payload-schema-table th:nth-child(3),
+.payload-schema-table td:nth-child(3) {
+ width: 50%;
 }
 .payload-schema-table th {
  background: var(--ifm-color-primary);
@@ -640,6 +669,34 @@ pre.openapi__method-endpoint,
  margin-left: var(--space-xs);
  color: var(--color-danger);
  font-weight: 700;
+}
+/* Stripe/Redoc-style schema nesting: consistent indentation + subtle guides. */
+.payload-schema-table td {
+ vertical-align: top;
+}
+.payload-schema-indent-1 {
+ padding-left: 20px !important;
+ border-left: 2px solid var(--color-border-light);
+}
+.payload-schema-indent-2 {
+ padding-left: 36px !important;
+ border-left: 2px solid var(--color-border-light);
+ box-shadow: inset 16px 0 0 -14px var(--color-border-light);
+}
+.payload-schema-indent-3 {
+ padding-left: 52px !important;
+ border-left: 2px solid var(--color-border-light);
+ box-shadow: inset 32px 0 0 -30px var(--color-border-light);
+}
+.payload-schema-indent-4 {
+ padding-left: 68px !important;
+ border-left: 2px solid var(--color-border-light);
+ box-shadow: inset 48px 0 0 -46px var(--color-border-light);
+}
+.payload-schema-indent-5 {
+ padding-left: 84px !important;
+ border-left: 2px solid var(--color-border-light);
+ box-shadow: inset 64px 0 0 -62px var(--color-border-light);
 }
 /* ============================================================================
   RESPONSIVE LAYOUT

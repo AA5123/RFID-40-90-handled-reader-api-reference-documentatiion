@@ -153,7 +153,8 @@ function SchemaTable({ schema }) {
   const collapseAll = () => {
     const nextState = {};
     rows.forEach((row) => {
-      if (row.hasChildren) nextState[row.id] = true;
+      // Keep first-level nodes expanded so the table structure stays readable.
+      if (row.hasChildren && row.depth > 0) nextState[row.id] = true;
     });
     setCollapsed(nextState);
   };
@@ -183,7 +184,13 @@ function SchemaTable({ schema }) {
         <tbody>
           {visibleRows.map((row) => (
             <tr key={row.id}>
-              <td style={{ paddingLeft: 12 + row.depth * 20 }}>
+              <td
+                className={
+                  row.depth > 0
+                    ? "payload-schema-indent-" + String(Math.min(row.depth, 5))
+                    : undefined
+                }
+              >
                 {row.hasChildren ? (
                   <button
                     type="button"
@@ -225,7 +232,7 @@ export default function StatusCodes({ responses }) {
 
   const [activeTab, setActiveTab] = useState(examples.length ? "example" : "schema");
   const [activeExample, setActiveExample] = useState(examples[0]?.name || "");
-  const [exampleExpanded, setExampleExpanded] = useState(true);
+  const [exampleCollapsed, setExampleCollapsed] = useState(false);
 
   const currentExampleValue = useMemo(() => {
     if (!examples.length) {
@@ -262,10 +269,20 @@ export default function StatusCodes({ responses }) {
       {activeTab === "example" && examples.length > 0 && (
         <div className="payload-card__panel">
           <div className="payload-card__toolbar">
-            <button type="button" className="payload-card__tool-btn" onClick={() => setExampleExpanded(true)}>
+            <button
+              type="button"
+              className="payload-card__tool-btn"
+              onClick={() => setExampleCollapsed(false)}
+              aria-pressed={!exampleCollapsed}
+            >
               Expand
             </button>
-            <button type="button" className="payload-card__tool-btn" onClick={() => setExampleExpanded(false)}>
+            <button
+              type="button"
+              className="payload-card__tool-btn"
+              onClick={() => setExampleCollapsed(true)}
+              aria-pressed={exampleCollapsed}
+            >
               Collapse
             </button>
           </div>
@@ -282,11 +299,9 @@ export default function StatusCodes({ responses }) {
               ))}
             </select>
           )}
-          {exampleExpanded ? (
-            <div className="payload-card__code">
-              <CodeBlock language="json">{exampleJson}</CodeBlock>
-            </div>
-          ) : null}
+          <div className={"payload-card__code" + (exampleCollapsed ? " payload-card__code--collapsed" : "") }>
+            <CodeBlock language="json">{exampleJson}</CodeBlock>
+          </div>
         </div>
       )}
 
