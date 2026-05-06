@@ -7,9 +7,14 @@ const config: Config = {
   tagline: "MQTT-based API for Zebra RFD40 / RFD90 RFID readers",
 
   // Set the production URL of your site here
-  url: "https://your-org.github.io",
+  url: "https://AA5123.github.io",
   // For GitHub Pages: /<repo-name>/
-  baseUrl: "/",
+  baseUrl: "/rfd40-rfd90-mqtt-api-reference/",
+
+  organizationName: "AA5123",
+  projectName: "rfd40-rfd90-mqtt-api-reference",
+  deploymentBranch: "gh-pages",
+  trailingSlash: false,
 
   onBrokenLinks: "warn",
   onBrokenMarkdownLinks: "warn",
