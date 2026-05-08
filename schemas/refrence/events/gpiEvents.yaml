@@ -2,6 +2,7 @@ title: gpiEvent
 x-stoplight:
   id: gwp7v6rmh04cf
 type: object
+description: Object schema for gpiEvent.
 properties:
   pin:
     type: number

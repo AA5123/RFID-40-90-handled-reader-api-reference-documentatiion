@@ -2,6 +2,7 @@ title: inventoryStatus
 x-stoplight:
   id: 11cnw8c73npra
 type: object
+description: Object schema for inventoryStatus.
 properties:
   rfidStatus:
     type: string

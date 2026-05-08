@@ -4,7 +4,7 @@
     "id": "d2649azhemdh6"
   },
   "type": "object",
-  "description": "Using config_endpoint user can add/delete/modify the end point configuration",
+  "description": "Configures endpoint settings on the device. Use this command to add, update, or delete endpoint definitions used for device communication.",
   "examples": [
     {
       "command": "config_endpoint",
@@ -151,7 +151,7 @@
     "command": {
       "type": "string",
       "example": "config_endpoint",
-      "description": "Command issued to configure active endpoint ",
+      "description": "Command name for endpoint configuration operations.",
       "x-stoplight": {
         "id": "mzr6mezam1jna"
       }
@@ -159,13 +159,14 @@
     "requestId": {
       "type": "string",
       "example": "abc123",
-      "description": "A unique identifier for the request, allowing tracking and debugging of the operation.",
+      "description": "Unique request identifier used to correlate this command with its response.",
       "x-stoplight": {
         "id": "2jdxi6msukeny"
       }
     },
     "epConfig": {
       "$ref": "../../refrence/payload/cfgEndpointPayload.yaml",
+      "description": "Endpoint configuration payload containing the requested operation and endpoint settings.",
       "x-stoplight": {
         "id": "83jczha1cflzh"
       }

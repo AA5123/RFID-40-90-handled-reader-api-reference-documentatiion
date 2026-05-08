@@ -1,5 +1,6 @@
 title: gpi
 type: object
+description: Object schema for gpi.
 properties:
   port:
     type: integer

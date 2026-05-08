@@ -15,7 +15,8 @@
       "description": "A unique identifier for the request. This ensures traceability and prevents duplicate processing of the same request."
     },
     "postFilterPayload": {
-      "$ref": "../../refrence/payload/postFilterPayload.yaml"
+      "$ref": "../../refrence/payload/postFilterPayload.yaml",
+      "description": "Object containing the details of the post filter to be set, including the operation type (e.g., ADD, UPDATE, DELETE), data endpoint type, match pattern, match pattern method (e.g., PREFIX, REGEX), and report operation (e.g., INCLUDE, EXCLUDE) to define how the filter should be applied to the scanned tag data."
     }
   },
   "required": [

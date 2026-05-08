@@ -25,6 +25,7 @@ EXAMPLE_DESC_PATH = os.path.join(SCHEMAS_DIR, "example_description.json")
 TAG_DESCRIPTIONS_DIR = os.path.join(PROJECT_ROOT, "tag_descriptions")
 INFO_DESCRIPTION_PATH = os.path.join(PROJECT_ROOT, "info_description.md")
 SKIP_FILES = set()
+RESPONSE_CODE_MARKER = "Response codes:"
 
 def load_json(filepath):
    with open(filepath, "r", encoding="utf-8-sig") as f:
@@ -226,6 +227,74 @@ def extract_schema(raw_schema, source_path):
    schema = remove_examples(schema)
    return schema
 
+def strip_inline_response_code_tables(obj):
+   """Remove huge baked-in 'Response codes:' markdown tables from schema code fields."""
+   if isinstance(obj, dict):
+       code_node = obj.get("code")
+       if isinstance(code_node, dict):
+           desc = code_node.get("description")
+           if isinstance(desc, str) and RESPONSE_CODE_MARKER in desc:
+               code_node["description"] = (
+                   "Command response status code. See x-error-codes for code meanings."
+               )
+
+       for key, value in obj.items():
+           obj[key] = strip_inline_response_code_tables(value)
+       return obj
+
+   if isinstance(obj, list):
+       return [strip_inline_response_code_tables(i) for i in obj]
+
+   return obj
+
+def enrich_response_code_description(schema_obj, error_codes_for_cmd):
+   """Inject concise command-specific response code help into response.code."""
+   if not error_codes_for_cmd or not isinstance(schema_obj, dict):
+       return schema_obj
+
+   code_entries = []
+   for entry in error_codes_for_cmd:
+       code_val = entry.get("code")
+       desc_val = entry.get("description")
+       if isinstance(code_val, int) and isinstance(desc_val, str) and desc_val.strip():
+           code_entries.append((code_val, desc_val.strip()))
+
+   if not code_entries:
+       return schema_obj
+
+   seen_codes = set()
+   ordered_codes = []
+   for code_val, desc_val in sorted(code_entries, key=lambda item: item[0]):
+       if code_val in seen_codes:
+           continue
+       seen_codes.add(code_val)
+       ordered_codes.append((code_val, desc_val))
+
+   def walk(node):
+       if isinstance(node, dict):
+           properties = node.get("properties")
+           if isinstance(properties, dict):
+               code_node = properties.get("code")
+               if isinstance(code_node, dict) and code_node.get("type") in {"integer", "number"}:
+                   bullets = "\n".join([f"- {code_val} — {desc_val}" for code_val, desc_val in ordered_codes])
+                   code_node["description"] = (
+                       "Response code indicating success or failure.\n\n" + bullets
+                   )
+                   code_values = [code_val for code_val, _ in ordered_codes]
+                   code_node["minimum"] = min(code_values)
+                   code_node["maximum"] = max(code_values)
+
+           for key, value in list(node.items()):
+               node[key] = walk(value)
+           return node
+
+       if isinstance(node, list):
+           return [walk(item) for item in node]
+
+       return node
+
+   return walk(schema_obj)
+
 def sort_operations(operations, tag_config):
    tag_groups = tag_config.get("tag_groups", {})
    op_order = tag_config.get("operation_order", {})
@@ -306,6 +375,7 @@ def build_openapi():
    paths = OrderedDict()
    skipped = []
    for op_name, tag_name, source, req_path in operations:
+       error_codes_for_cmd = error_codes_map.get(op_name, [])
        try:
            req_schema = load_json(req_path)
        except Exception as exc:
@@ -351,6 +421,8 @@ def build_openapi():
                    resp_title = resp_schema.get("title", op_name)
                    resp_examples = extract_examples(resp_schema, resp_title, example_data)
                    resp_schema_clean = extract_schema(resp_schema, resp_path)
+                   resp_schema_clean = strip_inline_response_code_tables(resp_schema_clean)
+                   resp_schema_clean = enrich_response_code_description(resp_schema_clean, error_codes_for_cmd)
                    resp_content = OrderedDict()
                    resp_content["application/json"] = OrderedDict()
                    resp_content["application/json"]["schema"] = resp_schema_clean
@@ -370,7 +442,6 @@ def build_openapi():
                op["responses"] = OrderedDict([
                    ("200", OrderedDict([("description", "Success")]))
                ])
-       error_codes_for_cmd = error_codes_map.get(op_name, [])
        if error_codes_for_cmd:
            op["x-error-codes"] = [
                OrderedDict([

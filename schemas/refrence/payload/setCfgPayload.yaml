@@ -1,12 +1,15 @@
 title: configData
+"description": Aggregate configuration payload for set_config, allowing multiple configuration sections in one request.
 x-stoplight:
   id: uq4x24ym4hs58
 type: object
 properties:
   applyAfterReboot:
     type: boolean
-    description: 'if set to true, configuration changes will be applied after reboot'
+    description: If true, configuration changes are staged and applied after reboot.
   wifiConfig:
     $ref: ./cfgWifiPayload.yaml
+    description: Wi-Fi configuration update payload.
   epConfig:
     $ref: ./cfgEndpointPayload.yaml
+    description: Endpoint configuration update payload.

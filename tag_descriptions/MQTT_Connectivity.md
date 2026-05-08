@@ -1,7 +1,16 @@
-﻿Track when the scanner connects to or loses connection with the MQTT broker.
+﻿## Overview
 
-| Event | What It Reports |
+Track when the device connects to or loses connection with the MQTT broker. Connection events enable fleet-wide connectivity monitoring.
+
+## Events
+
+| Event | Description |
 |---|---|
-| `mqttConnEVT` | Broker connection and disconnection events with status details |
+| `mqttConnEVT` | Broker connection/disconnection events with device and version details |
 
-Use these events to monitor broker connectivity across your fleet and trigger reconnection alerts.
+## Use Cases
+
+- Monitor broker connectivity across device fleet
+- Trigger reconnection alerts
+- Track connection history and uptime
+- Verify device availability

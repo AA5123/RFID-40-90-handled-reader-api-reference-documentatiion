@@ -21,7 +21,8 @@
       "description": "A unique identifier for the request. This ensures traceability and prevents duplicate processing of the same request."
     },
     "operatingMode": {
-      "$ref": "../../refrence/payload/operatingModePayload.yaml"
+      "$ref": "../../refrence/payload/operatingModePayload.yaml",
+      "description": "Object containing the operating mode configurations to be set on the device, including profiles, advanced configurations, access operations, radio start and stop conditions, query parameters, select configurations, and tag metadata to enable."
     }
   },
   "required": [

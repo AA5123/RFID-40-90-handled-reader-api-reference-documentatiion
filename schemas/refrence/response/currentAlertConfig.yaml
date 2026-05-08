@@ -2,14 +2,15 @@ title: alertConfig
 x-stoplight:
   id: 8muxxmcyfjcoh
 type: object
+description: Current alert configuration with thresholds and enable or disable states.
 properties:
   ntp:
     type: boolean
-    description: set True to enable NTP alerts
+    description: Set to true to enable NTP alerts.
     default: false
   userApp:
     type: boolean
-    description: set True to enable userApp alerts
+    description: Set to true to enable user app alerts.
     default: false
   cpuUsage:
     type: object
@@ -19,7 +20,7 @@ properties:
     properties:
       treshold:
         type: number
-        description: 'maximum CPU usage %, if cpu usage is more than the threshold value then cpu alert will be sent out'
+        description: Maximum CPU usage percentage before a CPU alert is triggered.
         minimum: 20
         maximum: 100
       status:
@@ -36,7 +37,7 @@ properties:
     properties:
       treshold:
         type: number
-        description: 'maximum RAM usage , if RAM usage is more than the hreshold value then ramUsage alert will be sent out'
+        description: Maximum RAM usage percentage before a RAM alert is triggered.
         minimum: 50
         maximum: 100
       status:
@@ -53,7 +54,7 @@ properties:
     properties:
       treshold:
         type: number
-        description: 'maximum Flash usage limit, if flash usage is more than the threshold value then flashUsage alert will be sent out'
+        description: Maximum flash usage percentage before a flash alert is triggered.
         minimum: 40
         maximum: 100
       status:
@@ -70,7 +71,7 @@ properties:
     properties:
       treshold:
         type: number
-        description: 'maximum temperature  limit, if temperature is more than the threshold value then temperature alert will be sent out'
+        description: Maximum temperature before a temperature alert is triggered.
         minimum: 50
         maximum: 100
       status:

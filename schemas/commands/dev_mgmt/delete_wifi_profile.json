@@ -25,7 +25,8 @@
       "description": "A unique identifier for the request, allowing tracking and debugging of the operation."
     },
     "wifiProfileInfo": {
-      "$ref": "../../refrence/payload/delWifiProfile.yaml"
+      "$ref": "../../refrence/payload/delWifiProfile.yaml",
+      "description": "Object containing the details of the wifi profile to be deleted, including its ESSID and security type."
     }
   },
   "required": [

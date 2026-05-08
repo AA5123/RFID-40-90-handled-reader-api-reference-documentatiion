@@ -43,6 +43,8 @@
       "description": "A unique identifier for the request, allowing tracking and debugging of the operation."
     },
     "certificateInfo": {
+      "type": "object",
+      "description": "Object containing the details of the certificate to be deleted, including its name and type.",
       "$ref": "../../refrence/payload/delCertPayload.yaml"
     }
   }

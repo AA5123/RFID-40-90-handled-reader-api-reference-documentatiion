@@ -2,6 +2,7 @@ title: exception
 x-stoplight:
   id: wqxur4zxw2a0m
 type: object
+description: Object schema for exception.
 properties:
   type:
     type: string

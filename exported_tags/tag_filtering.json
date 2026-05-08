@@ -1,0 +1,397 @@
+{
+  "tag": "Tag Filtering",
+  "description": "## Overview\n\nControl which tags are reported after an inventory scan by applying post-read filtering rules based on tag characteristics.\n\n## Commands\n\n| Command | Description |\n|---|---|\n| `set_post_filter` | Define filter rules to match/exclude tags by EPC pattern, mask, or criteria |\n| `get_post_filter` | Retrieve current tag filter configuration |\n\n## Benefits\n\n- Reduce noise by filtering irrelevant tags\n- Include only tags matching specific patterns\n- Exclude unwanted tags\n- Improve data quality and bandwidth efficiency",
+  "operationCount": 2,
+  "pathCount": 2,
+  "paths": {
+    "/get_post_filter": {
+      "post": {
+        "tags": [
+          "Tag Filtering"
+        ],
+        "summary": "Get Post Filter",
+        "description": "The get_post_filter command retrieves the post-filter rules currently configured on the reader.\n\nThis command returns:\n- Active post-filter criteria currently applied on the device\n- Data endpoint filter assignment information\n- Match method and pattern behavior configuration\n- Report operation filtering settings\n\nUse this command to:\n- Verify the active tag post-filter configuration\n- Confirm data endpoint filter assignments\n- Validate match pattern and report operation behavior\n\nNo additional command-specific payload fields are required beyond the standard request envelope fields.\n\n### Command Details\n\n| Property | Value |\n|---|---|\n| Pattern Name | Post-Filter Configuration Query |\n| Communication Type | Bidirectional (Cloud to Device, Device to Cloud) |\n| Applies To | RFD40 Series, RFD90 Series |\n| Related Commands | [set_post_filter](#op-set-post-filter), [get_operating_mode](#op-get-operating-mode), [control_operation](#op-control-operation) |\n| Required Request Fields | command, requestId |\n| Supported Operations | Retrieve active post-filter configuration |\n| Supported Response Sections | postFilterPayload, response |\n| Supported API Versions | V1.0, V1.1 |",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "command": {
+                    "type": "string",
+                    "example": "get_post_filter",
+                    "description": "Specifies the name of the command executed. In this case, it is get_post_filter to fetch the current post filter information of the device."
+                  },
+                  "requestId": {
+                    "type": "string",
+                    "example": "abc123",
+                    "description": "A unique identifier assigned to the request, used to track and correlate responses with their corresponding requests."
+                  }
+                }
+              },
+              "examples": {
+                "Get post filter": {
+                  "description": "Payload to get post filter configurations",
+                  "value": {
+                    "command": "get_post_filter",
+                    "requestId": "abc123"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "get_post_filter response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "command": {
+                      "type": "string",
+                      "example": "get_post_filter",
+                      "description": "Echoes the command name so clients can map this response to the get_post_filter request."
+                    },
+                    "requestId": {
+                      "type": "string",
+                      "example": "abc123",
+                      "description": "Request identifier copied from the command, used for request and response correlation."
+                    },
+                    "apiVersion": {
+                      "type": "string",
+                      "enum": [
+                        "V1.1",
+                        "V1.0"
+                      ],
+                      "example": "V1.1",
+                      "description": "API version used to interpret this response payload."
+                    },
+                    "postFilterPayload": {
+                      "title": "postFilterPayload",
+                      "x-stoplight": {
+                        "id": "y5oysu0o0kuvb"
+                      },
+                      "type": "object",
+                      "description": "Current post-filter configuration configured on the reader.",
+                      "properties": {
+                        "postFilter": {
+                          "type": "array",
+                          "description": "List of active post-filter rules currently applied by the reader.",
+                          "items": {
+                            "type": "object",
+                            "description": "One active post-filter rule.",
+                            "properties": {
+                              "dataEpType": {
+                                "type": "string",
+                                "description": "Data endpoint to which this filter rule applies."
+                              },
+                              "matchPattern": {
+                                "type": "string",
+                                "description": "Pattern used to evaluate tag data for this rule."
+                              },
+                              "matchPatternMethod": {
+                                "type": "string",
+                                "description": "Matching method used with the pattern, for example prefix or regex matching."
+                              },
+                              "reportOperation": {
+                                "type": "string",
+                                "description": "Defines whether matching tags are included or excluded from reported data."
+                              },
+                              "reportDuration": {
+                                "type": "integer",
+                                "description": "Optional duration in seconds for which this reporting behavior remains active."
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "response": {
+                      "title": "response",
+                      "x-stoplight": {
+                        "id": "1uzw0wye4si2y"
+                      },
+                      "type": "object",
+                      "description": "Execution result object containing status code and result description.",
+                      "properties": {
+                        "code": {
+                          "type": "integer",
+                          "example": 0,
+                          "description": "Response code indicating success or failure.\n\n- 0 — Success\n- 3 — Not able to retrieve information",
+                          "minimum": 0,
+                          "maximum": 3
+                        },
+                        "description": {
+                          "type": "string",
+                          "description": "Human-readable result message that explains the response code.",
+                          "example": "Success"
+                        }
+                      },
+                      "required": [
+                        "code",
+                        "description"
+                      ]
+                    }
+                  }
+                },
+                "examples": {
+                  "example1": {
+                    "value": {
+                      "command": "get_post_filter",
+                      "requestId": "abc123",
+                      "apiVersion": "V1.1",
+                      "postFilterPayload": {
+                        "postFilter": [
+                          {
+                            "dataEpType": "DATA_EP1",
+                            "matchPattern": "FFFF",
+                            "matchPatternMethod": "REGEX",
+                            "reportOperation": "INCLUDE"
+                          }
+                        ]
+                      },
+                      "response": {
+                        "code": 0,
+                        "description": "Success"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-error-codes": [
+          {
+            "code": 0,
+            "description": "Success",
+            "iot_status_code": "IOT_STATUS_SUCCESS",
+            "cause": "Command executed successfully",
+            "recommended_action": "No action required"
+          },
+          {
+            "code": 3,
+            "description": "Not able to retrieve information",
+            "iot_status_code": "IOT_ERROR_INFO_NOT_AVAILABLE",
+            "cause": "The device could not gather the requested information at this time",
+            "recommended_action": "Retry the command after a short delay; if persistent, reboot the device"
+          }
+        ]
+      }
+    },
+    "/set_post_filter": {
+      "post": {
+        "tags": [
+          "Tag Filtering"
+        ],
+        "summary": "Set Post Filter",
+        "description": "The set_post_filter command configures which tag reads should be reported by the reader after matching rules are applied.\n\nThis command allows you to configure:\n- Operation type (ADD, MODIFY, DELETE)\n- Data endpoint target (DATA_EP1 or DATA_EP2)\n- Match pattern value\n- Match method (PREFIX, SUFFIX, REGEX)\n\nUse this command to:\n- Reduce unwanted tag reports\n- Focus reporting on specific tag patterns\n- Update filter logic without changing the inventory command flow\n\n### Command Details\n\n| Property | Value |\n|---|---|\n| Pattern Name | Post-Filter Configuration |\n| Communication Type | Bidirectional (Cloud to Device, Device to Cloud) |\n| Applies To | RFD40 Series, RFD90 Series |\n| Related Commands | [get_post_filter](#op-get-post-filter), [get_operating_mode](#op-get-operating-mode), [control_operation](#op-control-operation) |\n| Required Request Fields | command, requestId, postFilterPayload |\n| Supported Operations | ADD, MODIFY, DELETE |\n| Supported Types | Data endpoint types: DATA_EP1, DATA_EP2; match methods: PREFIX, SUFFIX, REGEX |\n| Supported Profiles | Report behavior profiles: INCLUDE, EXCLUDE |\n| Supported Protocols | Not applicable |\n| Supported API Versions | V1.0, V1.1 |",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "command": {
+                    "type": "string",
+                    "description": "Specifies the name of the command to be executed. In this case, it is set_post_filter."
+                  },
+                  "requestId": {
+                    "type": "string",
+                    "description": "A unique identifier for the request. This ensures traceability and prevents duplicate processing of the same request."
+                  },
+                  "postFilterPayload": {
+                    "title": "postFilterPayload",
+                    "x-stoplight": {
+                      "id": "y5oysu0o0kuvb"
+                    },
+                    "type": "object",
+                    "description": "Object containing the details of the post filter to be set, including the operation type (e.g., ADD, UPDATE, DELETE), data endpoint type, match pattern, match pattern method (e.g., PREFIX, REGEX), and report operation (e.g., INCLUDE, EXCLUDE) to define how the filter should be applied to the scanned tag data.",
+                    "properties": {
+                      "operation": {
+                        "type": "string",
+                        "enum": [
+                          "ADD",
+                          "DELETE",
+                          "MODIFY"
+                        ],
+                        "description": "Specifies the operation to perform on the filter such as add a new filter, remove and update an existing filter.\n"
+                      },
+                      "dataEpType": {
+                        "type": "string",
+                        "description": "Specifies the data endpoint to which the filter should be applied.  Two data endpoints are supported for reporting filtered tag data.\n",
+                        "enum": [
+                          "DATA_EP1",
+                          "DATA_EP2"
+                        ]
+                      },
+                      "matchPattern": {
+                        "type": "string",
+                        "description": "Defines the value to match for the filter.  For prefix and suffix filters, only hexadecimal digits are allowed, and the number of digits must be even. When a prefix filter is used, select filters cannot be applied.\n"
+                      },
+                      "matchPatternMethod": {
+                        "type": "string",
+                        "enum": [
+                          "PREFIX",
+                          "SUFFIX",
+                          "REGEX"
+                        ],
+                        "example": "REGEX",
+                        "description": "Specifies the method used to match the tag ID.  `PREFIX`: Matches the beginning of the tag ID. `SUFFIX`: Matches the end of the tag ID. `REGEX`: Matches the tag ID using a regular expression.\n"
+                      },
+                      "reportOperation": {
+                        "type": "string",
+                        "enum": [
+                          "INCLUDE",
+                          "EXCLUDE"
+                        ],
+                        "description": "Specifies the filter operation to apply.  `INCLUDE`: Only tags matching the filter criteria will be reported. `EXCLUDE`: Tags matching the filter criteria will be excluded from reporting.\n"
+                      },
+                      "reportDuration": {
+                        "type": "integer",
+                        "description": "Specifies the duration (in seconds) to wait before reporting a tag again after it has already been reported.  This feature is currently not supported. The filter ensures that as long as the tag is being read by the reader, it will not be reported again until the specified duration has elapsed.\n",
+                        "minimum": 0
+                      }
+                    }
+                  }
+                },
+                "required": [
+                  "command",
+                  "requestId"
+                ]
+              },
+              "examples": {
+                "Set post filter 1": {
+                  "description": "Payload to filter tags using prefix",
+                  "value": {
+                    "command": "set_post_filter",
+                    "requestId": "abc123",
+                    "postFilterPayload": {
+                      "operation": "ADD",
+                      "dataEpType": "DATA_EP1",
+                      "matchPattern": "FFFFBBBBA500",
+                      "matchPatternMethod": "PREFIX",
+                      "reportOperation": "INCLUDE"
+                    }
+                  }
+                },
+                "Set post filter 2": {
+                  "description": "Payload to filter tags based on regex",
+                  "value": {
+                    "command": "set_post_filter",
+                    "requestId": "abc123",
+                    "postFilterPayload": {
+                      "operation": "ADD",
+                      "dataEpType": "DATA_EP1",
+                      "matchPattern": "E280",
+                      "matchPatternMethod": "REGEX",
+                      "reportOperation": "EXCLUDE"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "set_post_filter response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "command": {
+                      "type": "string",
+                      "example": "set_post_filter",
+                      "description": "Echoes the command name so clients can correlate this response to the set_post_filter request."
+                    },
+                    "requestId": {
+                      "type": "string",
+                      "example": "abc123",
+                      "description": "Request identifier copied from the command, used for request and response correlation."
+                    },
+                    "apiVersion": {
+                      "type": "string",
+                      "enum": [
+                        "V1.0",
+                        "V1.1"
+                      ],
+                      "example": "V1.1",
+                      "description": "API version used to interpret this response payload."
+                    },
+                    "response": {
+                      "title": "response",
+                      "x-stoplight": {
+                        "id": "1uzw0wye4si2y"
+                      },
+                      "type": "object",
+                      "description": "Execution result object containing status code and result description.",
+                      "properties": {
+                        "code": {
+                          "type": "integer",
+                          "example": 0,
+                          "description": "Response code indicating success or failure.\n\n- 0 — Success\n- 23 — Invalid enum value",
+                          "minimum": 0,
+                          "maximum": 23
+                        },
+                        "description": {
+                          "type": "string",
+                          "description": "Human-readable result message that explains the response code.",
+                          "example": "Success"
+                        }
+                      },
+                      "required": [
+                        "code",
+                        "description"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "command",
+                    "requestId",
+                    "apiVersion",
+                    "response"
+                  ]
+                },
+                "examples": {
+                  "example1": {
+                    "value": {
+                      "command": "set_post_filter",
+                      "requestId": "abc123",
+                      "apiVersion": "V1.1",
+                      "response": {
+                        "code": 0,
+                        "description": "Success"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-error-codes": [
+          {
+            "code": 0,
+            "description": "Success",
+            "iot_status_code": "IOT_STATUS_SUCCESS",
+            "cause": "Command executed successfully",
+            "recommended_action": "No action required"
+          },
+          {
+            "code": 23,
+            "description": "Invalid enum value",
+            "iot_status_code": "IOT_ERROR_INVALID_ENUM",
+            "cause": "A field value does not match any of the allowed enum options",
+            "recommended_action": "Check the schema for allowed values and correct the field"
+          }
+        ]
+      }
+    }
+  }
+}

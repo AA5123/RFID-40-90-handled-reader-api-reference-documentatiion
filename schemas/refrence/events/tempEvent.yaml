@@ -2,6 +2,7 @@ title: tempEvent
 x-stoplight:
   id: f47vu5sqfdlx9
 type: object
+description: Object schema for tempEvent.
 properties:
   nge:
     type: number

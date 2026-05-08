@@ -122,6 +122,7 @@
       "description": "A unique identifier for the request, allowing tracking and debugging of the operation."
     },
     "wifiConfig": {
+      "description": "Object containing the Wi-Fi configuration details to be set on the device, including interface settings, access point information, and security configurations.",
       "$ref": "../../refrence/payload/cfgWifiPayload.yaml"
     }
   },

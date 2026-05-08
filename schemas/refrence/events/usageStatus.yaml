@@ -2,6 +2,7 @@ title: usageEvent
 x-stoplight:
   id: 670q4pj0exx46
 type: object
+description: Object schema for usageEvent.
 properties:
   type:
     type: string

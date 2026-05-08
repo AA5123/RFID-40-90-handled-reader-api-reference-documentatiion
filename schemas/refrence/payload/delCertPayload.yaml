@@ -2,6 +2,7 @@ title: certificateInfo
 x-stoplight:
   id: d98c7f20315ac
 type: object
+description: Object schema for certificateInfo.
 properties:
   name:
     type: string

@@ -1,5 +1,6 @@
 title: lock
 type: object
+description: Object schema for lock.
 examples:
   - type: LOCK
     config:

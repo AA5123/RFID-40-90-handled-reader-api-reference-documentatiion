@@ -4,31 +4,36 @@
     "id": "4s4d96pdmy790"
   },
   "type": "object",
+  "description": "Response schema variant for get_config, containing consolidated configuration payload and operation result.",
   "examples": [],
   "properties": {
     "command": {
       "type": "string",
-      "example": "get_config"
+      "example": "get_config",
+      "description": "Echoes the command name so clients can map this response to the get_config request."
     },
     "requestId": {
       "type": "string",
-      "example": "abc123"
+      "example": "abc123",
+      "description": "Request identifier copied from the command, used for request and response correlation."
     },
     "apiVersion": {
       "type": "string",
-      "example": "V1.1"
+      "example": "V1.1",
+      "description": "API version used to interpret this response payload."
     },
     "currentConfig": {
-      "$ref": "../../refrence/response/getConfigResponse.yaml"
+      "$ref": "../../refrence/response/getConfigResponse.yaml",
+      "description": "Combined current device configuration across major management domains."
     },
     "response": {
-      "$ref": "../../refrence/response/response.yaml"
+      "$ref": "../../refrence/response/response.yaml",
+      "description": "Execution result object containing status code and result description."
     }
   },
   "required": [
     "command",
     "requestId",
     "apiVersion"
-  ],
-  "description": ""
+  ]
 }

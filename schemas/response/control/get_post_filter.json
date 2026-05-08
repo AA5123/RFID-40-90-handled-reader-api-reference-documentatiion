@@ -4,16 +4,17 @@
     "id": "msvo8jjn199v7"
   },
   "type": "object",
+  "description": "Response returned for get_post_filter. It provides the active post-filter configuration along with the command execution status.",
   "properties": {
     "command": {
       "type": "string",
       "example": "get_post_filter",
-      "description": "The type of command being executed or responded to. For MQTT, this specifies the operation type."
+      "description": "Echoes the command name so clients can map this response to the get_post_filter request."
     },
     "requestId": {
       "type": "string",
       "example": "abc123",
-      "description": "A unique identifier for the request, used for tracking the request and its corresponding response in the MQTT protocol."
+      "description": "Request identifier copied from the command, used for request and response correlation."
     },
     "apiVersion": {
       "type": "string",
@@ -21,13 +22,16 @@
         "V1.1",
         "V1.0"
       ],
-      "example": "V1.1"
+      "example": "V1.1",
+      "description": "API version used to interpret this response payload."
     },
     "postFilterPayload": {
-      "$ref": "../../refrence/response/postFilterResponse.yaml"
+      "$ref": "../../refrence/response/postFilterResponse.yaml",
+      "description": "Current post-filter configuration configured on the reader."
     },
     "response": {
-      "$ref": "../../refrence/response/response.yaml"
+      "$ref": "../../refrence/response/response.yaml",
+      "description": "Execution result object containing status code and result description."
     }
   },
   "examples": [

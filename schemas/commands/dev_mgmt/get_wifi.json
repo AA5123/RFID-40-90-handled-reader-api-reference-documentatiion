@@ -3,18 +3,18 @@
   "x-stoplight": {
     "id": "67cwfou98hctb"
   },
-  "description": "This command is used to retrieve wifi configuration details ",
+  "description": "Retrieves saved Wi-Fi profiles and current Wi-Fi interface details from the reader.",
   "type": "object",
   "properties": {
     "command": {
       "type": "string",
       "example": "get_wifi",
-      "description": "Command issued to get all the wifi profiles saved in device  "
+      "description": "Command name for requesting Wi-Fi configuration details."
     },
     "requestId": {
       "type": "string",
       "example": "abc123",
-      "description": "A unique identifier for the request, allowing tracking and debugging of the operation."
+      "description": "Unique request identifier used to correlate this command with its response."
     }
   },
   "required": [

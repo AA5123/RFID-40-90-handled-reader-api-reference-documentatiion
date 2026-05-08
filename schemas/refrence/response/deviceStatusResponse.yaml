@@ -2,6 +2,7 @@ title: deviceStatus
 x-stoplight:
   id: remoc4mkht8l3
 type: object
+description: Current runtime status of the device, including power, radio, network time, and battery state.
 properties:
   powerSource:
     type: string
@@ -26,13 +27,9 @@ properties:
     enum:
       - CONNECTED
       - DISCONNECTED
-  hostname:
+  systemTime:
     type: string
-    description: The hostname of the device on the network.
-    example: RFD40-212735201D0053.local
-  'systemTime ':
-    type: string
-    description: The system time of the device in ISO 8601 format.
+    description: Current device time in ISO 8601 UTC format.
     example: '2022-07-01T03:01:31.464Z'
     format: time
   temperature:
@@ -125,6 +122,5 @@ required:
   - powerSource
   - radioActivity
   - radioConnection
-  - hostname
   - systemTime
   - temperature

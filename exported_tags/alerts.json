@@ -1,0 +1,727 @@
+{
+  "tag": "Alerts",
+  "description": "## Overview\n\nReceive automatic alert events when the device crosses a threshold or changes state. Alerts are push-based notifications triggered by device conditions.\n\n## Events\n\n| Event | Description |\n|---|---|\n| `alerts` | Full alert details including battery, temperature, power, network, firmware conditions |\n| `alert_short` | Compact alert summary with human-readable message descriptions |\n\n## Configuration\n\nEnable or disable specific alert types via `config_events` command. Use `config_endpoint` to specify delivery endpoints.",
+  "operationCount": 2,
+  "pathCount": 2,
+  "paths": {
+    "/alert_short": {
+      "post": {
+        "tags": [
+          "Alerts"
+        ],
+        "summary": "Alert Short",
+        "description": "The alert_short event provides a compact, human-readable alert notification for lightweight event logging and real-time monitoring.\n\nThis event includes:\n- A short alert identifier and type classification\n- Priority level for triage and routing\n- A human-readable description of the alert condition\n\nUse this event to:\n- Monitor important device notifications in a concise format\n- Track firmware, certificate, and network-related outcomes\n- Surface battery and power alerts quickly in dashboards and logs\n\n### Event Details\n\n| Property | Value |\n|---|---|\n| Event Type | Alert Notification |\n| Communication Type | Device to Cloud |\n| Applies To | RFD40 Series, RFD90 Series |\n| Trigger Condition | Generated when a device condition matches a monitored alert threshold or state change |\n| Related Events | [alerts](#op-alerts), [heartBeatEVT](#op-heartbeat-evt), [exceptionEVT](#op-exception-evt) |\n| Supported API Versions | V1.0, V1.1 |",
+        "responses": {
+          "default": {
+            "description": "alert_short event payload",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "enum": [
+                        "FIRMWARE_DOWNLOAD_FAIL",
+                        "FIRMWARE_DOWNLOAD_SUCCESS",
+                        "BATTERY_LOW_SET",
+                        "BATTERY_LOW_CLEAR",
+                        "BATTERY_CRITICAL_SET",
+                        "BATTERY_FULL",
+                        "TEMPERATURE_HIGH_SET",
+                        "TEMPERATURE_HIGH_CLEAR",
+                        "TEMPERATURE_CRITICAL_SET",
+                        "TEMPERATURE_CRITICAL_CLEAR",
+                        "NETWORK_INTERFACE_CHANGE",
+                        "FIRMWARE_UPDATE_FAIL",
+                        "FIRMWARE_UPDATE_SUCCESS",
+                        "WIFI_CONFIG_SUCCESS",
+                        "WIFI_CONFIG_FAIL",
+                        "ETH_CONFIG_SUCCESS",
+                        "ETH_CONFIG_FAIL",
+                        "POWER_SOURCE_UPDATE",
+                        "MQTT_INSTALL_CERTIFICATE_SUCCESS",
+                        "MQTT_INSTALL_CERTIFICATE_FAIL",
+                        "MQTT_CLIENT_CERT_DOWNLOAD_FAIL",
+                        "MQTT_CLIENT_CERT_DOWNLOAD_SUCCESS",
+                        "MQTT_CLIENT_KEY_DOWNLOAD_FAIL",
+                        "MQTT_CLIENT_KEY_DOWNLOAD_SUCCESS",
+                        "MQTT_ROOT_CERT_DOWNLOAD_FAIL",
+                        "MQTT_ROOT_CERT_DOWNLOAD_SUCCESS",
+                        "WIFI_INSTALL_CERTIFICATE_SUCCESS",
+                        "WIFI_INSTALL_CERTIFICATE_FAIL",
+                        "WIFI_CLIENT_CERT_DOWNLOAD_FAIL",
+                        "WIFI_CLIENT_CERT_DOWNLOAD_SUCCESS",
+                        "WIFI_CLIENT_KEY_DOWNLOAD_FAIL",
+                        "WIFI_CLIENT_KEY_DOWNLOAD_SUCCESS",
+                        "WIFI_ROOT_CERT_DOWNLOAD_FAIL",
+                        "WIFI_ROOT_CERT_DOWNLOAD_SUCCESS",
+                        "FILESTORE_INSTALL_CERTIFICATE_SUCCESS",
+                        "FILESTORE_INSTALL_CERTIFICATE_FAIL",
+                        "FILESTORE_CLIENT_CERT_DOWNLOAD_FAIL",
+                        "FILESTORE_CLIENT_CERT_DOWNLOAD_SUCCESS",
+                        "FILESTORE_CLIENT_KEY_DOWNLOAD_FAIL",
+                        "FILESTORE_CLIENT_KEY_DOWNLOAD_SUCCESS",
+                        "FILESTORE_ROOT_CERT_DOWNLOAD_FAIL",
+                        "FILESTORE_ROOT_CERT_DOWNLOAD_SUCCESS",
+                        "MQTT_ROOT_CERT_INSTALL_SUCCESS",
+                        "MQTT_ROOT_CERT_INSTALL_FAIL",
+                        "MQTT_CLIENT_CERT_INSTALL_SUCCESS",
+                        "MQTT_CLIENT_CERT_INSTALL_FAIL",
+                        "MQTT_CLIENT_KEY_INSTALL_SUCCESS",
+                        "MQTT_CLIENT_KEY_INSTALL_FAIL",
+                        "WIFI_ROOT_CERT_INSTALL_SUCCESS",
+                        "WIFI_ROOT_CERT_INSTALL_FAIL",
+                        "WIFI_CLIENT_CERT_INSTALL_SUCCESS",
+                        "WIFI_CLIENT_CERT_INSTALL_FAIL",
+                        "WIFI_CLIENT_KEY_INSTALL_SUCCESS",
+                        "WIFI_CLIENT_KEY_INSTALL_FAIL",
+                        "FILESTORE_ROOT_CERT_INSTALL_SUCCESS",
+                        "FILESTORE_ROOT_CERT_INSTALL_FAIL",
+                        "FILESTORE_CLIENT_CERT_INSTALL_SUCCESS",
+                        "FILESTORE_CLIENT_CERT_INSTALL_FAIL",
+                        "FILESTORE_CLIENT_KEY_INSTALL_SUCCESS",
+                        "FILESTORE_CLIENT_KEY_INSTALL_FAIL"
+                      ],
+                      "example": "FIRMWARE_DOWNLOAD_SUCCESS",
+                      "description": "The unique identifier for the alert, representing the specific type of event or notification."
+                    },
+                    "timestamp": {
+                      "type": "string",
+                      "format": "time",
+                      "description": "The time when the alert was generated, formatted as a string."
+                    },
+                    "type": {
+                      "type": "string",
+                      "enum": [
+                        "NOTIFICATION",
+                        "ALERT"
+                      ],
+                      "description": "The category of the message, indicating whether it is a notification or an alert."
+                    },
+                    "priority": {
+                      "type": "string",
+                      "enum": [
+                        "HIGH",
+                        "LOW",
+                        "CRITICAL"
+                      ],
+                      "description": "The urgency level of the alert, specifying its priority as HIGH, LOW, or CRITICAL."
+                    },
+                    "messageID": {
+                      "type": "string",
+                      "example": "ZEBRA_RFID_HH_ALERTS",
+                      "enum": [
+                        "ZEBRA_RFID_HH_ALERTS"
+                      ],
+                      "description": "The identifier for the message type, used to categorize the source or purpose of the alert."
+                    },
+                    "description": {
+                      "type": "string",
+                      "example": "firmware download started",
+                      "description": "A brief human-readable text describing the alert or notification."
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "timestamp",
+                    "type",
+                    "priority",
+                    "messageID",
+                    "description"
+                  ]
+                },
+                "examples": {
+                  "Firmware download success": {
+                    "description": "Alert indicating successful firmware download",
+                    "value": {
+                      "id": "FIRMWARE_DOWNLOAD_SUCCESS",
+                      "timestamp": "22:54:25",
+                      "type": "ALERT",
+                      "priority": "LOW",
+                      "messageID": "ZEBRA_RFID_HH_ALERTS",
+                      "description": "firmware download completed successfully"
+                    }
+                  },
+                  "Battery critical set": {
+                    "description": "Alert indicating battery level is critically low",
+                    "value": {
+                      "id": "BATTERY_CRITICAL_SET",
+                      "timestamp": "14:30:15",
+                      "type": "ALERT",
+                      "priority": "CRITICAL",
+                      "messageID": "ZEBRA_RFID_HH_ALERTS",
+                      "description": "battery level is critically low"
+                    }
+                  },
+                  "WiFi config fail": {
+                    "description": "Notification indicating WiFi configuration failure",
+                    "value": {
+                      "id": "WIFI_CONFIG_FAIL",
+                      "timestamp": "09:15:42",
+                      "type": "NOTIFICATION",
+                      "priority": "HIGH",
+                      "messageID": "ZEBRA_RFID_HH_ALERTS",
+                      "description": "WiFi configuration failed"
+                    }
+                  },
+                  "MQTT CA certificate download success": {
+                    "description": "Notification indicating successful MQTT CA certificate download",
+                    "value": {
+                      "id": "MQTT_ROOT_CERT_DOWNLOAD_SUCCESS",
+                      "timestamp": "2026-04-17T05:09:13.805Z",
+                      "type": "NOTIFICATION",
+                      "priority": "HIGH",
+                      "messageID": "ZEBRA_RFID_HH_ALERTS",
+                      "description": "MQTT root certificate download success"
+                    }
+                  },
+                  "MQTT CA certificate install success": {
+                    "description": "Notification indicating successful MQTT CA certificate installation",
+                    "value": {
+                      "id": "MQTT_ROOT_CERT_INSTALL_SUCCESS",
+                      "timestamp": "2026-04-17T05:09:13.808Z",
+                      "type": "NOTIFICATION",
+                      "priority": "HIGH",
+                      "messageID": "ZEBRA_RFID_HH_ALERTS",
+                      "description": "MQTT root certificate install success"
+                    }
+                  },
+                  "WiFi client certificate download success": {
+                    "description": "Notification indicating successful WiFi client certificate download",
+                    "value": {
+                      "id": "WIFI_CLIENT_CERT_DOWNLOAD_SUCCESS",
+                      "timestamp": "2026-04-17T05:09:57.351Z",
+                      "type": "NOTIFICATION",
+                      "priority": "HIGH",
+                      "messageID": "ZEBRA_RFID_HH_ALERTS",
+                      "description": "Wi-Fi client certificate download success"
+                    }
+                  },
+                  "WiFi client certificate install success": {
+                    "description": "Notification indicating successful WiFi client certificate installation",
+                    "value": {
+                      "id": "WIFI_CLIENT_CERT_INSTALL_SUCCESS",
+                      "timestamp": "2026-04-17T05:09:57.354Z",
+                      "type": "NOTIFICATION",
+                      "priority": "HIGH",
+                      "messageID": "ZEBRA_RFID_HH_ALERTS",
+                      "description": "Wi-Fi client certificate install success"
+                    }
+                  },
+                  "Filestore client key download fail": {
+                    "description": "Notification indicating failure in filestore client key download",
+                    "value": {
+                      "id": "FILESTORE_CLIENT_KEY_DOWNLOAD_FAIL",
+                      "timestamp": "2026-04-17T05:10:15.538Z",
+                      "type": "NOTIFICATION",
+                      "priority": "HIGH",
+                      "messageID": "ZEBRA_RFID_HH_ALERTS",
+                      "description": "Filestore client key download fail"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/alerts": {
+      "post": {
+        "tags": [
+          "Alerts"
+        ],
+        "summary": "Alerts",
+        "description": "The alerts event provides detailed, structured alert information from the device for operational monitoring and troubleshooting.\n\nThis event includes:\n- Alert type, state, and priority classification\n- A structured alertDetails payload with domain-specific fields\n- Alert identifiers covering battery, power, firmware, and network conditions\n\nUse this event to:\n- Monitor important status transitions and critical conditions\n- Track device health and infrastructure-related changes\n- Feed alert pipelines that require structured alert context\n\n### Event Details\n\n| Property | Value |\n|---|---|\n| Event Type | Alert |\n| Communication Type | Device to Cloud |\n| Applies To | RFD40 Series, RFD90 Series |\n| Trigger Condition | Generated when a device condition transitions state or crosses a monitored threshold |\n| Related Events | [alert_short](#op-alert-short), [heartBeatEVT](#op-heartbeat-evt), [exceptionEVT](#op-exception-evt) |\n| Supported API Versions | V1.0, V1.1 |",
+        "responses": {
+          "default": {
+            "description": "alerts event payload",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "enum": [
+                        "EVENT",
+                        "NOTIFICATION",
+                        "EXCEPTION",
+                        "ALERT"
+                      ],
+                      "description": "Specifies the type of alert or message being generated, such as an event, notification, exception, or alert."
+                    },
+                    "timestamp": {
+                      "type": "string",
+                      "format": "time",
+                      "example": "22:54:25",
+                      "description": "Indicates the time at which the alert was generated, formatted as a time string."
+                    },
+                    "state": {
+                      "type": "string",
+                      "enum": [
+                        "SET",
+                        "CLEAR",
+                        "ONESHOT"
+                      ],
+                      "description": "Represents the state of the alert. 'SET' indicates an active alert, 'CLEAR' indicates the alert has been resolved, and 'ONESHOT' is a one-time alert."
+                    },
+                    "id": {
+                      "type": "string",
+                      "enum": [
+                        "BATTERY",
+                        "FIRMWARE_UPDATE",
+                        "GPI_EVENT",
+                        "NETWORK_EVENT",
+                        "ANTENNA_EVENT",
+                        "TEMPERATURE",
+                        "POWER"
+                      ],
+                      "example": "BATTERY",
+                      "description": "A unique identifier for the alert type, such as a low battery warning or a temperature event."
+                    },
+                    "priority": {
+                      "type": "string",
+                      "example": "CRITICAL",
+                      "enum": [
+                        "CRITICAL",
+                        "HIGH",
+                        "MEDIUM",
+                        "LOW"
+                      ],
+                      "description": "Defines the priority level of the alert, ranging from critical to low."
+                    },
+                    "alertDetails": {
+                      "anyOf": [
+                        {
+                          "type": "object",
+                          "description": "Object schema for alertDetails.",
+                          "x-stoplight": {
+                            "id": "a15e9b2d754c2"
+                          },
+                          "title": "alertDetails",
+                          "properties": {
+                            "fwUpdateStatus": {
+                              "title": "fwUpdateStatus",
+                              "x-stoplight": {
+                                "id": "21xypho3gasa6"
+                              },
+                              "type": "object",
+                              "description": "Details about the status of firmware updates, including progress and results.",
+                              "properties": {
+                                "updateStatus": {
+                                  "type": "string",
+                                  "enum": [
+                                    "started",
+                                    "updating",
+                                    "successfull",
+                                    "failed",
+                                    "skipped"
+                                  ],
+                                  "example": "in progress",
+                                  "description": "Current status of the firmware update process."
+                                },
+                                "overallProgress": {
+                                  "type": "number",
+                                  "example": 20,
+                                  "description": "Percent of update completed."
+                                },
+                                "stage": {
+                                  "type": "string",
+                                  "description": "Individual image update steps or description.",
+                                  "example": "updating scanner fw"
+                                }
+                              },
+                              "required": [
+                                "updateStatus",
+                                "overallProgress",
+                                "stage"
+                              ]
+                            },
+                            "downloadInfo": {
+                              "title": "downloadInfo",
+                              "x-stoplight": {
+                                "id": "qwygdhcgpch4h"
+                              },
+                              "type": "object",
+                              "description": "Information regarding file download events, such as source, destination, and status.",
+                              "properties": {
+                                "fileType": {
+                                  "type": "string",
+                                  "enum": [
+                                    "FILE_TYPE_FW",
+                                    "FILE_TYPE_CERT"
+                                  ],
+                                  "example": "FILE_TYPE_FW",
+                                  "description": "Specifies the type of file being downloaded. Options include firmware files (FILE_TYPE_FW) and certificate files (FILE_TYPE_CERT)."
+                                },
+                                "fileName": {
+                                  "type": "string",
+                                  "description": "The name of the file being downloaded."
+                                },
+                                "status": {
+                                  "type": "string",
+                                  "enum": [
+                                    "DOWNLOAD SUCCESS",
+                                    "DOWNLOAD FAIL",
+                                    "SAVE FAIL",
+                                    "SAVE SUCCESS"
+                                  ],
+                                  "description": "Indicates the status of the file download or save operation."
+                                }
+                              },
+                              "required": [
+                                "fileType",
+                                "fileName",
+                                "status"
+                              ]
+                            },
+                            "temperatueInfo": {
+                              "title": "tempEvent",
+                              "x-stoplight": {
+                                "id": "f47vu5sqfdlx9"
+                              },
+                              "type": "object",
+                              "description": "Details about temperature-related events, including thresholds and alerts.",
+                              "properties": {
+                                "nge": {
+                                  "type": "number",
+                                  "description": "Represents the numeric value for the Next Generation Event (specific context needed)."
+                                },
+                                "pa": {
+                                  "type": "number",
+                                  "description": "Indicates the pressure altitude value in numeric format."
+                                },
+                                "ambient": {
+                                  "type": "number",
+                                  "description": "Refers to the ambient temperature in numeric format."
+                                }
+                              },
+                              "required": [
+                                "nge",
+                                "pa",
+                                "ambient"
+                              ]
+                            },
+                            "networkInfo": {
+                              "title": "networkEvent",
+                              "x-stoplight": {
+                                "id": "tdp0o2i33nrul"
+                              },
+                              "type": "object",
+                              "description": "Data related to network events, including connectivity and performance metrics.",
+                              "properties": {
+                                "networkInterface": {
+                                  "type": "object",
+                                  "description": "Details of the network interfaces on the device.",
+                                  "properties": {
+                                    "ethStatus": {
+                                      "type": "array",
+                                      "description": "List of Ethernet interface statuses.",
+                                      "items": {
+                                        "type": "object",
+                                        "description": "Ethernet interface status information including connection state and IP addresses.",
+                                        "properties": {
+                                          "interface": {
+                                            "type": "string",
+                                            "description": "Name of the Ethernet interface.",
+                                            "example": "eth0"
+                                          },
+                                          "status": {
+                                            "type": "string",
+                                            "description": "Connection status of the Ethernet interface.",
+                                            "enum": [
+                                              "CONNECTED",
+                                              "DISCONNECTED"
+                                            ],
+                                            "example": "CONNECTED"
+                                          },
+                                          "linkStatus": {
+                                            "type": "string",
+                                            "description": "Link status of the Ethernet interface.",
+                                            "enum": [
+                                              "UP",
+                                              "DOWN"
+                                            ],
+                                            "example": "UP"
+                                          },
+                                          "linkSpeed": {
+                                            "type": "string",
+                                            "description": "Speed of the Ethernet link."
+                                          },
+                                          "ipV4Address": {
+                                            "type": "string",
+                                            "description": "IPv4 address assigned to the Ethernet interface.",
+                                            "example": "192.168.0.165"
+                                          },
+                                          "ipV6Address": {
+                                            "type": "string",
+                                            "description": "IPv6 address assigned to the Ethernet interface.",
+                                            "example": "fe80::f299:9d51:864c:cff"
+                                          }
+                                        },
+                                        "required": [
+                                          "interface",
+                                          "status",
+                                          "linkStatus",
+                                          "linkSpeed",
+                                          "ipV4Address",
+                                          "ipV6Address"
+                                        ]
+                                      }
+                                    },
+                                    "wifiStatus": {
+                                      "type": "array",
+                                      "description": "List of WiFi interface statuses.",
+                                      "items": {
+                                        "type": "object",
+                                        "description": "WiFi interface status information including connection state, SSID, and IP addresses.",
+                                        "properties": {
+                                          "interface": {
+                                            "type": "string",
+                                            "description": "Name of the WiFi interface.",
+                                            "example": "wlan0"
+                                          },
+                                          "status": {
+                                            "type": "string",
+                                            "description": "Connection status of the WiFi interface.",
+                                            "enum": [
+                                              "CONNECTED",
+                                              "DISCONNECTED"
+                                            ],
+                                            "example": "CONNECTED"
+                                          },
+                                          "ssid": {
+                                            "type": "string",
+                                            "description": "SSID of the connected WiFi network."
+                                          },
+                                          "ipV4Address": {
+                                            "type": "string",
+                                            "description": "IPv4 address assigned to the WiFi interface.",
+                                            "example": "192.168.0.145"
+                                          },
+                                          "ipV6Address": {
+                                            "type": "string",
+                                            "description": "IPv6 address assigned to the WiFi interface.",
+                                            "example": "fe80::f299:9d51:86c:cff14"
+                                          }
+                                        },
+                                        "required": [
+                                          "interface",
+                                          "status",
+                                          "ssid",
+                                          "ipV4Address",
+                                          "ipV6Address"
+                                        ]
+                                      }
+                                    }
+                                  }
+                                },
+                                "btRemoteDevice": {
+                                  "type": "object",
+                                  "description": "Details of connected Bluetooth remote devices.",
+                                  "required": [
+                                    "deviceName",
+                                    "deviceMac"
+                                  ],
+                                  "properties": {
+                                    "deviceName": {
+                                      "type": "string",
+                                      "description": "Name of the Bluetooth remote device.",
+                                      "default": "TestLaptop"
+                                    },
+                                    "deviceMac": {
+                                      "type": "string",
+                                      "description": "MAC address of the Bluetooth remote device.",
+                                      "example": "00:11:22:A3:B1:D2"
+                                    }
+                                  }
+                                }
+                              },
+                              "required": [
+                                "networkInterface"
+                              ]
+                            },
+                            "exception": {
+                              "title": "exception",
+                              "x-stoplight": {
+                                "id": "wqxur4zxw2a0m"
+                              },
+                              "type": "object",
+                              "description": "Information about exceptions or error alerts, including error codes and messages.",
+                              "properties": {
+                                "type": {
+                                  "type": "string",
+                                  "enum": [
+                                    "RADIO",
+                                    "SCANNER",
+                                    "SYSTEM"
+                                  ],
+                                  "description": "Specifies the category of the error."
+                                },
+                                "code": {
+                                  "type": "integer",
+                                  "description": "A numeric code representing the specific error."
+                                },
+                                "message": {
+                                  "type": "string",
+                                  "description": "A detailed message describing the error."
+                                }
+                              }
+                            },
+                            "batteryAlert": {
+                              "title": "batteryAlert",
+                              "x-stoplight": {
+                                "id": "gcmvpvvellk4h"
+                              },
+                              "type": "object",
+                              "description": "Details about battery-related alerts, such as low charge or health status.",
+                              "properties": {
+                                "status": {
+                                  "type": "string",
+                                  "enum": [
+                                    "LOW",
+                                    "CRITICAL",
+                                    "CHARGING",
+                                    "FULL",
+                                    "HIGH"
+                                  ],
+                                  "example": "LOW",
+                                  "description": "The current status of the battery, which indicates its operational state."
+                                },
+                                "stateOfHealth": {
+                                  "type": "string",
+                                  "enum": [
+                                    "LOW",
+                                    "FULL",
+                                    "CRITICAL",
+                                    "HIGH",
+                                    "CHARGING"
+                                  ],
+                                  "description": "The overall health of the battery, which reflects its long-term capacity and performance."
+                                },
+                                "chargePercentage": {
+                                  "type": "integer",
+                                  "maximum": 100,
+                                  "description": "The current charge level of the battery, represented as a percentage."
+                                }
+                              }
+                            }
+                          }
+                        }
+                      ],
+                      "description": "Contains additional details about the alert, which may vary depending on the specific alert type."
+                    }
+                  },
+                  "required": [
+                    "type",
+                    "timestamp",
+                    "state",
+                    "id",
+                    "priority"
+                  ]
+                },
+                "examples": {
+                  "example1": {
+                    "value": {
+                      "type": "ALERT",
+                      "timestamp": "2026-04-29T12:33:34.279Z",
+                      "state": "ONESHOT",
+                      "id": "BATTERY",
+                      "priority": "LOW",
+                      "alertDetails": {
+                        "batteryAlert": {
+                          "status": "CHARGING",
+                          "stateOfHealth": "GOOD",
+                          "chargePercentage": 100
+                        }
+                      }
+                    }
+                  },
+                  "example2": {
+                    "value": {
+                      "type": "ALERT",
+                      "timestamp": "2026-04-29T12:33:34.290Z",
+                      "state": "ONESHOT",
+                      "id": "POWER",
+                      "priority": "HIGH",
+                      "alertDetails": {
+                        "powerEvent": {
+                          "powerSource": "BATTERY",
+                          "powerMode": "ACTIVE"
+                        }
+                      }
+                    }
+                  },
+                  "example3": {
+                    "value": {
+                      "type": "ALERT",
+                      "timestamp": "2026-04-29T12:33:34.300Z",
+                      "state": "ONESHOT",
+                      "id": "NETWORK_EVENT",
+                      "priority": "HIGH",
+                      "alertDetails": {
+                        "networkInfo": {
+                          "networkInterface": {
+                            "wifiStatus": [
+                              {
+                                "interface": "wlan0",
+                                "status": "CONNECTED",
+                                "ssid": "IOT_TESTAP",
+                                "ipV4Address": "192.168.0.107"
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "example4": {
+                    "value": {
+                      "type": "ALERT",
+                      "timestamp": "2026-04-29T12:33:57.757Z",
+                      "state": "ONESHOT",
+                      "id": "NETWORK_EVENT",
+                      "priority": "HIGH",
+                      "alertDetails": {
+                        "networkInfo": {
+                          "networkInterface": {
+                            "ethStatus": [
+                              {
+                                "interface": "eth0",
+                                "status": "CONNECTED",
+                                "linkStatus": "UP",
+                                "ipV4Address": "192.168.0.111"
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "example5": {
+                    "value": {
+                      "type": "ALERT",
+                      "timestamp": "2026-04-29T12:33:57.757Z",
+                      "state": "SET",
+                      "id": "FIRMWARE_UPDATE",
+                      "priority": "CRITICAL",
+                      "alertDetails": {
+                        "fwUpdateStatus": {
+                          "updateStatus": "updating",
+                          "overallProgress": 20,
+                          "stage": "updating scanner fw"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

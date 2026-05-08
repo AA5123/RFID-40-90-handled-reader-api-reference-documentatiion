@@ -4,6 +4,7 @@
     "id": "b2gtuk9hv3kc1"
   },
   "type": "object",
+  "description": "Response returned after set_config is processed. It can include an echoed configuration payload and the overall execution status.",
   "examples": [
     {
       "command": "set_config",
@@ -247,11 +248,13 @@
   "properties": {
     "command": {
       "type": "string",
-      "example": "set_config"
+      "example": "set_config",
+      "description": "Echoes the command name so clients can map this response to the set_config request."
     },
     "requestId": {
       "type": "string",
-      "example": "abc123"
+      "example": "abc123",
+      "description": "Request identifier copied from the command, used for request and response correlation."
     },
     "apiVersion": {
       "type": "string",
@@ -259,13 +262,16 @@
         "V1.0",
         "V1.1"
       ],
-      "example": "V1.1"
+      "example": "V1.1",
+      "description": "API version used to interpret this response payload."
     },
     "cfgResponse": {
-      "$ref": "../../refrence/response/setConfigResponse.yaml"
+      "$ref": "../../refrence/response/setConfigResponse.yaml",
+      "description": "Optional payload showing configuration data accepted or returned by the device."
     },
     "response": {
-      "$ref": "../../refrence/response/response.yaml"
+      "$ref": "../../refrence/response/response.yaml",
+      "description": "Execution result object containing status code and result description."
     }
   },
   "required": [

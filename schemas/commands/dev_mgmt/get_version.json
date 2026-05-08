@@ -3,19 +3,19 @@
   "x-stoplight": {
     "id": "6t1zk44tshzm1"
   },
-  "description": "This command is used to retrieve the reader information like device serial no, model no, sku, and firmware version information. ",
+  "description": "Retrieves reader identity and software version details, including model, serial number, SKU, and firmware information.",
   "type": "object",
   "examples": [],
   "properties": {
     "command": {
       "type": "string",
       "example": "get_version",
-      "description": "Used to get the reader information "
+      "description": "Command name for requesting reader identity and version details."
     },
     "requestId": {
       "type": "string",
       "example": "abc123",
-      "description": "A unique identifier for the request, allowing tracking and debugging of the operation."
+      "description": "Unique request identifier used to correlate this command with its response."
     }
   },
   "required": [

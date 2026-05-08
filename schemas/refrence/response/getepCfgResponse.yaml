@@ -2,6 +2,7 @@ title: epList
 x-stoplight:
   id: q0de0bvreeite
 type: object
+description: Collection of active endpoint configuration entries.
 properties:
   epConfig:
     type: array

@@ -1,0 +1,145 @@
+{
+  "tag": "Exceptions",
+  "description": "## Overview\n\nReceive error events when the device encounters an unexpected condition. Exception events help diagnose system issues.\n\n## Events\n\n| Event | Description |\n|---|---|\n| `exceptionEVT` | Error details including radio failures, configuration errors, system issues |\n\n## Indication\n\nExceptions indicate:\n- Something went wrong in system operations\n- May require operator attention or intervention\n- Potential need for automated recovery or reboot\n\nNote: Currently not fully supported on all device types.",
+  "operationCount": 1,
+  "pathCount": 1,
+  "paths": {
+    "/exceptionEVT": {
+      "post": {
+        "tags": [
+          "Exceptions"
+        ],
+        "summary": "Exceptionevt",
+        "description": "## Overview\n\nThe `exception` event captures details about exception events in the RFID system, including component-specific errors and system anomalies. These events indicate system failures or error conditions that may require intervention.\n\nUse this event to:\n- Monitor system exceptions and errors\n- Track radio module issues\n- Monitor scanner connectivity\n- Track system resource issues (memory, storage)\n- Diagnose device failures\n\n---\n\n## Event Details\n\n| Property | Value |\n|---|---|\n| Event Type | Exception Event |\n| Communication Type | Device to Cloud |\n| Applies To | RFD40 Series, RFD90 Series |\n\n---\n\n## Event Fields\n\n| Field | Description |\n|---|---|\n| `eventName` | Event identifier (exception). |\n| `timestamp` | ISO 8601 formatted timestamp of when the exception occurred. |\n| `eventNumber` | Unique sequence number for the event. |\n| `upTime` | Device uptime when exception occurred (format: X days Xhr Ymin). |\n| `details.exceptions.radio` | Radio module exception code and message. |\n| `details.exceptions.scanner` | Scanner module exception code and message. |\n| `details.exceptions.system` | System exception code and message. |\n\n---\n\n## Exception Types\n\n- **Radio Module** - Issues with RFID radio module (not responsive, configuration errors)\n- **Scanner Module** - Barcode scanner issues (connection status, scan progress)\n- **System Module** - System-level issues (memory, storage, CPU)\n\n---\n\n## Important Notes\n\n- Exception events are currently not supported in all device configurations.\n- Exception information helps diagnose and troubleshoot device failures.\n- Critical exceptions may trigger automatic device reboot.\n\n---\n\n## Related Events\n\n| Event | Description |\n|---|---|\n| `alerts` | Alert events for less critical conditions. |\n| `heartbeat` | Periodic health signal including system status. |\n| `data_event` | Tag reading events. |",
+        "responses": {
+          "default": {
+            "description": "exceptionEVT event payload",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "eventName": {
+                      "type": "string",
+                      "example": "exception",
+                      "description": "The name of the event indicating an exception occurred."
+                    },
+                    "timestamp": {
+                      "type": "string",
+                      "example": "2019-08-24T14:15:22Z",
+                      "description": "The ISO 8601 formatted timestamp of when the event occurred."
+                    },
+                    "eventNumber": {
+                      "type": "number",
+                      "example": 120,
+                      "description": "A unique numerical identifier for the event."
+                    },
+                    "upTime": {
+                      "type": "string",
+                      "example": "5 days 4hr 3min",
+                      "description": "The duration for which the system has been running since the last restart."
+                    },
+                    "details": {
+                      "type": "object",
+                      "x-stoplight": {
+                        "id": "df25a86e1061a"
+                      },
+                      "title": "exceptions",
+                      "properties": {
+                        "exceptions": {
+                          "anyOf": [
+                            {
+                              "description": "A collection of diagnostic, error, or warning events.",
+                              "properties": {
+                                "radio": {
+                                  "type": "object",
+                                  "description": "Represents diagnostic, error, or warning events related to the radio module.",
+                                  "properties": {
+                                    "code": {
+                                      "type": "number",
+                                      "example": 51,
+                                      "description": "A numeric code representing a specific radio-related issue or state."
+                                    },
+                                    "message": {
+                                      "type": "string",
+                                      "example": "radio is not responsive",
+                                      "description": "A human-readable message describing the radio issue or state."
+                                    }
+                                  }
+                                },
+                                "scanner": {
+                                  "type": "object",
+                                  "description": "Represents diagnostic, error, or warning events related to the scanner module.",
+                                  "properties": {
+                                    "code": {
+                                      "type": "number",
+                                      "example": 0,
+                                      "description": "A numeric code representing a specific scanner-related issue or state."
+                                    },
+                                    "message": {
+                                      "type": "string",
+                                      "example": "scanner is connected and scanning in progress",
+                                      "description": "A human-readable message describing the scanner issue or state."
+                                    }
+                                  }
+                                },
+                                "system": {
+                                  "type": "object",
+                                  "description": "Represents diagnostic, error, or warning events related to the system.",
+                                  "properties": {
+                                    "code": {
+                                      "type": "number",
+                                      "example": 12,
+                                      "description": "A numeric code representing a specific system-related issue or state."
+                                    },
+                                    "message": {
+                                      "type": "string",
+                                      "example": "running out of memory",
+                                      "description": "A human-readable message describing the system issue or state."
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          ],
+                          "type": "object"
+                        }
+                      },
+                      "description": "A reference to detailed information about the exceptions that occurred, categorized by components such as 'radio', 'scanner', and 'system'."
+                    }
+                  }
+                },
+                "examples": {
+                  "example1": {
+                    "value": {
+                      "eventName": "exception",
+                      "timestamp": "2019-08-24T14:15:22Z",
+                      "eventNumber": 120,
+                      "upTime": "5 days 4hr 3min",
+                      "details": {
+                        "exceptions": {
+                          "radio": {
+                            "code": 51,
+                            "message": "radio is not responsive"
+                          },
+                          "scanner": {
+                            "code": 0,
+                            "message": "scanner is connected and scanning in progress "
+                          },
+                          "system": {
+                            "code": 12,
+                            "message": "running out of memory "
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

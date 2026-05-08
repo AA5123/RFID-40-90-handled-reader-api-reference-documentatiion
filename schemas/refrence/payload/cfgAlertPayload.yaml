@@ -2,9 +2,11 @@ title: alertConfiguration
 x-stoplight:
   id: 10vb0ludr8vsa
 type: object
+description: Object schema for alertConfiguration.
 properties:
   cpuUsage:
     type: object
+    description: CPU alert threshold configuration.
     properties:
       treshold:
         type: number
@@ -22,6 +24,7 @@ properties:
       - status
   ramUsage:
     type: object
+    description: RAM alert threshold configuration.
     properties:
       treshold:
         type: number
@@ -39,6 +42,7 @@ properties:
       - status
   flashUsage:
     type: object
+    description: Flash usage alert threshold configuration.
     properties:
       treshold:
         type: number
@@ -56,6 +60,7 @@ properties:
       - status
   temperature:
     type: object
+    description: Temperature alert threshold configuration.
     properties:
       treshold:
         type: number

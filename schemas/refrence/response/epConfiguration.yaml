@@ -2,10 +2,12 @@ title: epConfiguration
 x-stoplight:
   id: l9v7iab36nd84
 type: object
+description: Object schema for epConfiguration.
 examples: []
 properties:
   configuration:
     type: object
+    description: Endpoint configuration details including protocol, connection, and security settings.
     properties:
       epType:
         type: string
@@ -56,6 +58,7 @@ properties:
         example: ZEBRA
       mqttParams:
         type: object
+        description: MQTT-specific connection parameters for the endpoint.
         properties:
           keepAlive:
             type: integer
@@ -79,6 +82,7 @@ properties:
             type: array
             items:
               type: object
+              description: One publish topic configuration entry.
               properties:
                 topic:
                   type: string
@@ -96,6 +100,7 @@ properties:
             type: array
             items:
               type: object
+              description: One subscribe topic configuration entry.
               properties:
                 topic:
                   type: string
@@ -109,6 +114,7 @@ properties:
                 - retain
       securityParams:
         type: object
+        description: Security certificate and encryption settings for endpoint communication.
         properties:
           format:
             type: string

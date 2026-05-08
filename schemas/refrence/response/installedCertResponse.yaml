@@ -2,6 +2,7 @@ title: installedCerts
 x-stoplight:
   id: svr3iljexdwdi
 type: object
+description: Installed certificate inventory with metadata for each certificate.
 properties:
   certInfo:
     type: array
@@ -15,13 +16,13 @@ properties:
           example: Reader Main Certificate
         type:
           type: string
-          description: The type of the certificate, such as client, server, or other specified types.
+          description: Usage category for the certificate.
           example: server
           enum:
             - client
             - server
-            - ' mqtt'
-            - ' wifi'
+            - mqtt
+            - wifi
             - filestore
         installTime:
           type: string

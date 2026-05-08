@@ -1,0 +1,1373 @@
+{
+  "tag": "MQTT Endpoint Configuration",
+  "description": "## Overview\n\nDefine where the device sends data by configuring the broker connection parameters including URL, security, and topics.\n\n## Commands\n\n| Command | Description |\n|---|---|\n| `config_endpoint` | Configure broker URL, port, protocol, credentials, topics, and TLS settings |\n| `get_endpoint_config` | Retrieve current endpoint configuration |\n\n## Configuration\n\nIncludes:\n- Broker URL and port\n- Publish/subscribe topics\n- QoS levels\n- Keep-alive interval\n- Authentication credentials\n- Reconnect behavior and timeouts\n- TLS/certificate settings",
+  "operationCount": 2,
+  "pathCount": 2,
+  "paths": {
+    "/config_endpoint": {
+      "post": {
+        "tags": [
+          "MQTT Endpoint Configuration"
+        ],
+        "summary": "Config Endpoint",
+        "description": "The config_endpoint command configures or updates endpoint definitions used by the reader.\n\nThis command allows you to configure:\n- Endpoint identity and type\n- Protocol and connection parameters (URL, port, QoS, tenant)\n- Activation status\n- Protocol-specific settings such as keep-alive, reconnect behavior, and topic mapping\n\nUse this command to:\n- Add new endpoint configurations\n- Update existing endpoint settings\n- Delete endpoints that are no longer required\n- Control which endpoint is active for communication\n\n### Command Details\n\n| Property | Value |\n|---|---|\n| Pattern Name | Endpoint Configuration Management |\n| Communication Type | Bidirectional (Cloud to Device, Device to Cloud) |\n| Applies To | RFD40 Series, RFD90 Series |\n| Related Commands | [get_endpoint_config](#op-get-endpoint-config), [config_events](#op-config-events), [set_config](#op-set-config), [reboot](#op-reboot) |\n| Required Request Fields | command, requestId, epConfig |\n| Supported Operations | add, update, delete |\n| Supported Types | Endpoint types: MGMT, MGMT_EVT, CTRL, DATA1, DATA2, SOTI, MDM; verification types: NONE, VERIFY_PEER, VERIFY_HOST, VERIFY_HOST_PEER |\n| Supported Profiles | Endpoint configuration profiles with protocol-specific connection and topic settings |\n| Supported Protocols | MQTT, MQTT_WS, MQTT_WSS, MQTT_TLS, TCP, HTTP, HTTPS, WS, WSS, AWS, AZURE, HID |\n| Supported API Versions | V1.0, V1.1 |",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "command": {
+                    "type": "string",
+                    "example": "config_endpoint",
+                    "description": "Command name for endpoint configuration operations.",
+                    "x-stoplight": {
+                      "id": "mzr6mezam1jna"
+                    }
+                  },
+                  "requestId": {
+                    "type": "string",
+                    "example": "abc123",
+                    "description": "Unique request identifier used to correlate this command with its response.",
+                    "x-stoplight": {
+                      "id": "2jdxi6msukeny"
+                    }
+                  },
+                  "epConfig": {
+                    "title": "epConfig",
+                    "description": "Endpoint configuration payload containing the requested operation and endpoint settings.",
+                    "x-stoplight": {
+                      "id": "83jczha1cflzh"
+                    },
+                    "type": "object",
+                    "properties": {
+                      "operation": {
+                        "type": "string",
+                        "enum": [
+                          "add",
+                          "delete",
+                          "update"
+                        ],
+                        "example": "add",
+                        "description": "Operation to perform on the endpoint definition."
+                      },
+                      "configuration": {
+                        "type": "object",
+                        "description": "Endpoint settings used for the requested operation.",
+                        "required": [
+                          "endpointName",
+                          "epType",
+                          "protocol",
+                          "activate",
+                          "url",
+                          "verificationType",
+                          "port",
+                          "qosCommon",
+                          "tenantId"
+                        ],
+                        "properties": {
+                          "endpointName": {
+                            "type": "string",
+                            "example": "mgmt",
+                            "description": "Identifies the name of the endpoint, which determines its purpose or function."
+                          },
+                          "epType": {
+                            "type": "string",
+                            "example": "MGMT",
+                            "enum": [
+                              "MGMT",
+                              "MGMT_EVT",
+                              "CTRL",
+                              "DATA1",
+                              "DATA2",
+                              "SOTI",
+                              "MDM"
+                            ],
+                            "description": "Specifies the type of the endpoint."
+                          },
+                          "protocol": {
+                            "type": "string",
+                            "enum": [
+                              "MQTT",
+                              "MQTT_WS",
+                              "MQTT_WSS",
+                              "MQTT_TLS",
+                              "TCP",
+                              "HTTP",
+                              "HTTPS",
+                              "WS",
+                              "WSS",
+                              "AWS",
+                              "AZURE",
+                              "HID"
+                            ],
+                            "example": "MQTT",
+                            "description": "Defines the communication protocol used by the endpoint."
+                          },
+                          "activate": {
+                            "type": "boolean",
+                            "default": false,
+                            "description": "Set to true to mark this endpoint active."
+                          },
+                          "url": {
+                            "type": "string",
+                            "example": "soti.example.com",
+                            "description": "Specifies the URL associated with the endpoint."
+                          },
+                          "verificationType": {
+                            "type": "string",
+                            "enum": [
+                              "NONE",
+                              "VERIFY_PEER",
+                              "VERIFY_HOST",
+                              "VERIFY_HOST_PEER"
+                            ],
+                            "example": "VERIFY_PEER",
+                            "description": "Specifies the type of verification used for establishing secure connections."
+                          },
+                          "port": {
+                            "type": "integer",
+                            "example": 1883,
+                            "description": "Specifies the port number used for communication."
+                          },
+                          "qosCommon": {
+                            "type": "integer",
+                            "example": 1,
+                            "description": "Defines the Quality of Service (QoS) level for the endpoint."
+                          },
+                          "tenantId": {
+                            "type": "string",
+                            "example": "ZEBRA",
+                            "description": "Tenant identifier associated with this endpoint configuration."
+                          },
+                          "mqttParams": {
+                            "description": "MQTT-specific parameters for configuring the MQTT connection.",
+                            "type": "object",
+                            "properties": {
+                              "keepAlive": {
+                                "type": "integer",
+                                "maximum": 65535,
+                                "example": 300,
+                                "description": "Specifies the keep-alive interval in seconds when client is idle."
+                              },
+                              "cleanSession": {
+                                "type": "boolean",
+                                "default": true,
+                                "description": "Indicates whether to start a clean session for the MQTT client."
+                              },
+                              "reconnectDelayMin": {
+                                "type": "integer",
+                                "description": "Specifies the minimum delay in seconds before reconnecting when a connection is lost."
+                              },
+                              "reconnectDelayMax": {
+                                "type": "integer",
+                                "description": "Specifies the maximum delay in seconds before reconnecting when a connection is lost."
+                              },
+                              "clientId": {
+                                "type": "string",
+                                "example": "zebra-rfd40-01",
+                                "description": "Specifies the client ID used for MQTT connections."
+                              },
+                              "username": {
+                                "type": "string",
+                                "description": "The username for authentication in MQTT connections."
+                              },
+                              "password": {
+                                "type": "string",
+                                "description": "The password for authentication in MQTT connections."
+                              },
+                              "publishTopics": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "description": "One topic configuration entry for published messages.",
+                                  "properties": {
+                                    "topic": {
+                                      "type": "string",
+                                      "example": "SOTICONNECT/clients/resp/RFD400124FA",
+                                      "description": "Specifies the topic to publish messages to. Supports up to 3 publish topics."
+                                    },
+                                    "qos": {
+                                      "type": "integer",
+                                      "example": 1,
+                                      "description": "Defines the QoS level for publishing messages."
+                                    },
+                                    "retain": {
+                                      "type": "boolean",
+                                      "description": "Indicates whether the message should be retained by the broker."
+                                    }
+                                  },
+                                  "required": [
+                                    "topic",
+                                    "qos",
+                                    "retain"
+                                  ]
+                                }
+                              },
+                              "subscribeTopics": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "description": "One topic configuration entry for subscribed messages.",
+                                  "properties": {
+                                    "topic": {
+                                      "type": "string",
+                                      "description": "Specifies the topic to subscribe to. Supports up to 1 subscribe topic."
+                                    },
+                                    "qos": {
+                                      "type": "integer",
+                                      "description": "Defines the QoS level for subscribing to messages."
+                                    },
+                                    "retain": {
+                                      "type": "boolean",
+                                      "description": "Indicates whether the subscription retains messages."
+                                    }
+                                  },
+                                  "required": [
+                                    "topic",
+                                    "qos",
+                                    "retain"
+                                  ]
+                                }
+                              }
+                            }
+                          },
+                          "securityParams": {
+                            "type": "object",
+                            "description": "Security material and certificate settings used by the endpoint connection.",
+                            "properties": {
+                              "format": {
+                                "type": "string",
+                                "enum": [
+                                  "PEM",
+                                  "PFX"
+                                ],
+                                "example": "PEM",
+                                "description": "Specifies the format of the security certificates. Currently, only PEM is supported."
+                              },
+                              "algorithm": {
+                                "type": "string",
+                                "enum": [
+                                  "RSA256",
+                                  "RSA512"
+                                ],
+                                "example": "RSA256",
+                                "description": "Specifies the algorithm used for encryption."
+                              },
+                              "caCertificateFile": {
+                                "type": "string",
+                                "example": "cloud-trusted-ca-certs.crt",
+                                "description": "Specifies the file containing the CA certificates."
+                              },
+                              "clientCert": {
+                                "type": "string",
+                                "example": "client_cert.pem",
+                                "description": "Specifies the file containing the client certificate."
+                              },
+                              "clientKey": {
+                                "type": "string",
+                                "example": "client_key.pem",
+                                "description": "Specifies the file containing the client private key."
+                              }
+                            },
+                            "required": [
+                              "format",
+                              "algorithm",
+                              "caCertificateFile",
+                              "clientCert",
+                              "clientKey"
+                            ]
+                          },
+                          "eventConfiguration": {
+                            "title": "eventConfiguration",
+                            "x-stoplight": {
+                              "id": "jcezrdndi0i9w"
+                            },
+                            "type": "object",
+                            "description": "Event configuration associated with this endpoint.",
+                            "properties": {
+                              "antenna": {
+                                "type": "boolean",
+                                "description": "Set to true to enable antenna-related events."
+                              },
+                              "terminalConnection": {
+                                "type": "boolean",
+                                "description": "Set to true to enable terminal connection and disconnection events."
+                              },
+                              "firmwareUpdate": {
+                                "type": "boolean",
+                                "description": "Set to true to enable firmware update events."
+                              },
+                              "gpi": {
+                                "type": "boolean",
+                                "description": "Set to true to enable GPI events."
+                              },
+                              "network": {
+                                "type": "boolean",
+                                "description": "Set to true to enable network events."
+                              },
+                              "exceptions": {
+                                "type": "boolean",
+                                "description": "Set to true to enable exception events."
+                              },
+                              "ntp": {
+                                "type": "boolean",
+                                "description": "Set to true to enable NTP-related events."
+                              },
+                              "userApp": {
+                                "type": "boolean",
+                                "description": "Set to true to enable user application events."
+                              },
+                              "heartbeat": {
+                                "type": "boolean",
+                                "description": "Set to true to enable heartbeat events."
+                              },
+                              "power": {
+                                "type": "boolean",
+                                "description": "Set to true to enable power source events."
+                              },
+                              "battery": {
+                                "type": "boolean",
+                                "description": "Set to true to enable battery events."
+                              },
+                              "temperature": {
+                                "type": "boolean",
+                                "description": "Set to true to enable temperature events."
+                              },
+                              "fileDownload": {
+                                "type": "boolean",
+                                "description": "Set to true to enable file download events."
+                              },
+                              "cpuUsage": {
+                                "type": "boolean",
+                                "description": "Set to true to enable CPU usage alerts."
+                              },
+                              "flashUsage": {
+                                "type": "boolean",
+                                "description": "Set to true to enable flash usage alerts."
+                              },
+                              "ramUsage": {
+                                "type": "boolean",
+                                "description": "Set to true to enable RAM usage alerts."
+                              },
+                              "heartbeatConfiguration": {
+                                "type": "object",
+                                "description": "Heartbeat payload options and interval settings.",
+                                "properties": {
+                                  "interval": {
+                                    "type": "integer",
+                                    "example": 100,
+                                    "description": "Heartbeat interval in seconds."
+                                  },
+                                  "inventoryStatus": {
+                                    "type": "boolean",
+                                    "description": "Set to true to include inventory status in heartbeat messages."
+                                  },
+                                  "batteryStatus": {
+                                    "type": "boolean",
+                                    "description": "Set to true to include battery status in heartbeat messages."
+                                  },
+                                  "userApps": {
+                                    "type": "boolean",
+                                    "description": "Set to true to include user app status in heartbeat messages."
+                                  }
+                                }
+                              },
+                              "cpuThreshold": {
+                                "type": "integer",
+                                "description": "CPU usage percentage above which a CPU alert is triggered."
+                              },
+                              "ramThreshold": {
+                                "type": "integer",
+                                "description": "RAM usage percentage above which a RAM alert is triggered."
+                              },
+                              "flashThreshold": {
+                                "type": "integer",
+                                "description": "Flash usage percentage above which a flash alert is triggered."
+                              },
+                              "temperatureThreshold": {
+                                "type": "integer",
+                                "description": "Temperature value above which a temperature alert is triggered."
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "required": [
+                      "operation",
+                      "configuration"
+                    ]
+                  }
+                },
+                "required": [
+                  "command",
+                  "requestId"
+                ]
+              },
+              "examples": {
+                "Add MDM endpoint": {
+                  "description": "Payload to add a new MDM endpoint configuration",
+                  "value": {
+                    "command": "config_endpoint",
+                    "requestId": "1233",
+                    "epConfig": {
+                      "operation": "add",
+                      "configuration": {
+                        "endpointName": "mgmt_tst",
+                        "epType": "MGMT",
+                        "protocol": "MQTT",
+                        "activate": true,
+                        "url": "test.example.com",
+                        "verificationType": "NONE",
+                        "port": 1883,
+                        "qosCommon": 1,
+                        "tenantId": "ZEBRA",
+                        "mqttParams": {
+                          "keepAlive": 300,
+                          "cleanSession": true,
+                          "reconnectDelayMin": 50,
+                          "reconnectDelayMax": 500,
+                          "clientId": "zebra-rfd40-01",
+                          "username": "username",
+                          "password": "pass@1234",
+                          "publishTopics": [
+                            {
+                              "topic": "MDM/clients/resp",
+                              "qos": 1,
+                              "retain": false
+                            },
+                            {
+                              "topic": "MDM/clients/event",
+                              "qos": 1,
+                              "retain": false
+                            },
+                            {
+                              "topic": "MDM/clients/rfid",
+                              "qos": 0,
+                              "retain": true
+                            }
+                          ],
+                          "subscribeTopics": [
+                            {
+                              "topic": "MDM/clients/cmnd",
+                              "qos": 0,
+                              "retain": false
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                },
+                "Delete endpoint": {
+                  "description": "Payload to delete an existing endpoint configuration",
+                  "value": {
+                    "command": "config_endpoint",
+                    "requestId": "1233",
+                    "epConfig": {
+                      "operation": "delete",
+                      "configuration": {
+                        "endpointName": "mgmt_tst",
+                        "epType": "MGMT"
+                      }
+                    }
+                  }
+                },
+                "Add data endpoint": {
+                  "description": "Payload to add a new data endpoint configuration",
+                  "value": {
+                    "command": "config_endpoint",
+                    "requestId": "1233",
+                    "epConfig": {
+                      "operation": "add",
+                      "configuration": {
+                        "endpointName": "dataEP",
+                        "epType": "DATA1",
+                        "protocol": "MQTT",
+                        "activate": true,
+                        "url": "17L11-GG6663-1",
+                        "verificationType": "NONE",
+                        "port": 1883,
+                        "qosCommon": 1,
+                        "tenantId": "ZEBRA",
+                        "mqttParams": {
+                          "keepAlive": 300,
+                          "cleanSession": true,
+                          "reconnectDelayMin": 50,
+                          "reconnectDelayMax": 500,
+                          "clientId": "zebra-rfd40-01",
+                          "username": "username",
+                          "password": "password"
+                        }
+                      }
+                    }
+                  }
+                },
+                "Add control endpoint": {
+                  "description": "Payload to add a new control endpoint with publish/subscribe topics",
+                  "value": {
+                    "command": "config_endpoint",
+                    "requestId": "1233",
+                    "epConfig": {
+                      "operation": "add",
+                      "configuration": {
+                        "endpointName": "ctrlEP",
+                        "epType": "CTRL",
+                        "protocol": "MQTT",
+                        "activate": false,
+                        "url": "17L11-GG6663-1",
+                        "verificationType": "NONE",
+                        "port": 1883,
+                        "qosCommon": 1,
+                        "tenantId": "zebra",
+                        "mqttParams": {
+                          "keepAlive": 300,
+                          "cleanSession": true,
+                          "reconnectDelayMin": 50,
+                          "reconnectDelayMax": 500,
+                          "clientId": "zebra-rfd40-01",
+                          "username": "mqttuser",
+                          "password": "password",
+                          "publishTopics": [
+                            {
+                              "topic": "MDM/clients/resp",
+                              "qos": 1,
+                              "retain": false
+                            },
+                            {
+                              "topic": "MDM/clients/event",
+                              "qos": 1,
+                              "retain": false
+                            },
+                            {
+                              "topic": "MDM/clients/rfid",
+                              "qos": 0,
+                              "retain": true
+                            }
+                          ],
+                          "subscribeTopics": [
+                            {
+                              "topic": "MDM/clients/cmnd",
+                              "qos": 0,
+                              "retain": false
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "config_endpoint response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "command": {
+                      "type": "string",
+                      "example": "config_endpoint",
+                      "description": "Echoes the command name so clients can map this response to the config_endpoint request."
+                    },
+                    "requestId": {
+                      "type": "string",
+                      "example": "abc123",
+                      "description": "Request identifier copied from the command, used for request and response correlation."
+                    },
+                    "apiVersion": {
+                      "type": "string",
+                      "example": "V1.1",
+                      "enum": [
+                        "V1.0",
+                        "V1.1"
+                      ],
+                      "description": "API version used to interpret this response payload."
+                    },
+                    "response": {
+                      "title": "response",
+                      "x-stoplight": {
+                        "id": "1uzw0wye4si2y"
+                      },
+                      "type": "object",
+                      "description": "Execution result object containing status code and result description.",
+                      "properties": {
+                        "code": {
+                          "type": "integer",
+                          "example": 0,
+                          "description": "Response code indicating success or failure.\n\n- 0 — Success\n- 10 — Configuration already exist\n- 23 — Invalid enum value\n- 25 — Max 3 publish topics exceeded\n- 26 — Max 1 subscribe topic exceeded\n- 27 — Invalid tenant ID length",
+                          "minimum": 0,
+                          "maximum": 27
+                        },
+                        "description": {
+                          "type": "string",
+                          "description": "Human-readable result message that explains the response code.",
+                          "example": "Success"
+                        }
+                      },
+                      "required": [
+                        "code",
+                        "description"
+                      ]
+                    }
+                  }
+                },
+                "examples": {
+                  "example1": {
+                    "value": {
+                      "command": "config_endpoint",
+                      "requestId": "abc123",
+                      "apiVersion": "V1.1",
+                      "response": {
+                        "code": 0,
+                        "description": "Success"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-error-codes": [
+          {
+            "code": 0,
+            "description": "Success",
+            "iot_status_code": "IOT_STATUS_SUCCESS",
+            "cause": "Command executed successfully",
+            "recommended_action": "No action required"
+          },
+          {
+            "code": 10,
+            "description": "Configuration already exist",
+            "iot_status_code": "IOT_ERROR_CONFIG_ALREADY_EXIST",
+            "cause": "An endpoint or configuration with the same name already exists",
+            "recommended_action": "Delete the existing configuration first or use a different name"
+          },
+          {
+            "code": 23,
+            "description": "Invalid enum value",
+            "iot_status_code": "IOT_ERROR_INVALID_ENUM",
+            "cause": "A field value does not match any of the allowed enum options",
+            "recommended_action": "Check the schema for allowed values and correct the field"
+          },
+          {
+            "code": 25,
+            "description": "Max 3 publish topics exceeded",
+            "iot_status_code": "IOT_ERROR_PUBLISH_TOPICS_EXCEEDED",
+            "cause": "More than 3 publish topics were specified in the endpoint configuration",
+            "recommended_action": "Reduce the number of publish topics to 3 or fewer"
+          },
+          {
+            "code": 26,
+            "description": "Max 1 subscribe topic exceeded",
+            "iot_status_code": "IOT_ERROR_SUBSCRIBE_TOPIC_EXCEEDED",
+            "cause": "More than 1 subscribe topic was specified in the endpoint configuration",
+            "recommended_action": "Use only 1 subscribe topic per endpoint"
+          },
+          {
+            "code": 27,
+            "description": "Invalid tenant ID length",
+            "iot_status_code": "IOT_ERROR_INVALID_TENANTID_LENGTH",
+            "cause": "The tenant ID exceeds the maximum allowed character length",
+            "recommended_action": "Shorten the tenant ID to within the allowed limit"
+          }
+        ]
+      }
+    },
+    "/get_endpoint_config": {
+      "post": {
+        "tags": [
+          "MQTT Endpoint Configuration"
+        ],
+        "summary": "Get Endpoint Config",
+        "description": "The get_endpoint_config command retrieves endpoint configuration details stored on the reader.\n\nThis command returns:\n- Configured endpoint definitions on the reader\n- Active endpoint routing and transport settings\n- Saved endpoint names and endpoint metadata\n- Response metadata for query execution\n\nUse this command to:\n- Inspect active endpoint connectivity configuration\n- Retrieve settings for a specific endpoint by name\n- Audit saved endpoint inventory on the device\n\nNo additional command-specific payload fields are required beyond the standard request envelope fields.\n\n### Command Details\n\n| Property | Value |\n|---|---|\n| Pattern Name | Endpoint Configuration Query |\n| Communication Type | Bidirectional (Cloud to Device, Device to Cloud) |\n| Applies To | RFD40 Series, RFD90 Series |\n| Related Commands | [config_endpoint](#op-config-endpoint), [config_events](#op-config-events), [get_config](#op-get-config) |\n| Required Request Fields | command, requestId |\n| Supported Operations | Retrieve all endpoint configuration or query a specific endpoint by name |\n| Supported Response Sections | epDetails, response |\n| Supported API Versions | V1.0, V1.1 |",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "x-internal": false,
+                "properties": {
+                  "command": {
+                    "type": "string",
+                    "default": "get_endpoint_config",
+                    "description": "Command name for requesting endpoint configuration details."
+                  },
+                  "requestId": {
+                    "type": "string",
+                    "example": "123",
+                    "description": "Unique request identifier used to correlate this command with its response."
+                  },
+                  "endpointDetails": {
+                    "title": "endpointDetails",
+                    "x-stoplight": {
+                      "id": "o28vdd695rdr6"
+                    },
+                    "type": "object",
+                    "description": "Optional object used to request a specific endpoint configuration by endpoint name.",
+                    "properties": {
+                      "endpointName": {
+                        "type": "string",
+                        "description": "Name of the endpoint to query. If omitted, all active and saved endpoints are returned."
+                      }
+                    }
+                  }
+                },
+                "required": [
+                  "command",
+                  "requestId"
+                ]
+              },
+              "examples": {
+                "Active endpoint config": {
+                  "description": "Payload to get active endpoint configuration details with all saved endpoint names",
+                  "value": {
+                    "command": "get_endpoint_config",
+                    "requestId": "abc123"
+                  }
+                },
+                "Specific endpoint config": {
+                  "description": "Payload to get the specified endpoint configurations",
+                  "value": {
+                    "command": "get_endpoint_config",
+                    "requestId": "def456",
+                    "endpointDetails": {
+                      "endpointName": "ctrl"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "get_endpoint_config response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "command": {
+                      "type": "string",
+                      "default": "get_endpoint_config",
+                      "description": "Echoes the command name so clients can map this response to the get_endpoint_config request."
+                    },
+                    "requestId": {
+                      "type": "string",
+                      "example": "123",
+                      "description": "Request identifier copied from the command, used for request and response correlation."
+                    },
+                    "apiVersion": {
+                      "type": "string",
+                      "example": "V1.1",
+                      "description": "API version used to interpret this response payload."
+                    },
+                    "epDetails": {
+                      "title": "endpointResponse",
+                      "x-stoplight": {
+                        "id": "u0em8h8xb0dul"
+                      },
+                      "type": "object",
+                      "description": "Endpoint configuration details, including active endpoint settings and saved endpoint names.",
+                      "properties": {
+                        "activeEndpoints": {
+                          "title": "epList",
+                          "x-stoplight": {
+                            "id": "q0de0bvreeite"
+                          },
+                          "type": "object",
+                          "description": "A reference to the configuration details of currently active endpoints.",
+                          "properties": {
+                            "epConfig": {
+                              "type": "array",
+                              "description": "An array containing endpoint configurations.",
+                              "items": {
+                                "title": "epConfig",
+                                "description": "The configuration details for the endpoint, including MQTT parameters and security settings.",
+                                "x-stoplight": {
+                                  "id": "7g3esr6v8nm8y"
+                                },
+                                "type": "object",
+                                "properties": {
+                                  "configuration": {
+                                    "type": "object",
+                                    "description": "Endpoint configuration details including connection, protocol, and optional security settings.",
+                                    "properties": {
+                                      "endpointName": {
+                                        "type": "string",
+                                        "example": "MDM",
+                                        "description": "The name of the endpoint, e.g., \"MDM\" for Mobile Device Management."
+                                      },
+                                      "epType": {
+                                        "type": "string",
+                                        "example": "MGMT",
+                                        "enum": [
+                                          "MGMT",
+                                          "MGMT_EVT",
+                                          "CTRL",
+                                          "DATA1",
+                                          "DATA2",
+                                          "SOTI",
+                                          "MDM"
+                                        ],
+                                        "description": "The type of endpoint, specifying its functionality (e.g., Management, Control, etc.)."
+                                      },
+                                      "protocol": {
+                                        "type": "string",
+                                        "enum": [
+                                          "MQTT",
+                                          "MQTTWS",
+                                          "MQT-TLS",
+                                          "MQTT-WSS",
+                                          "TCPIP",
+                                          "WS",
+                                          "WSS",
+                                          "HID",
+                                          "HTTPS",
+                                          "HTTP",
+                                          "AWS",
+                                          "AZURE"
+                                        ],
+                                        "example": "MQTT",
+                                        "description": "The communication protocol used by the endpoint, such as MQTT or HTTP."
+                                      },
+                                      "activate": {
+                                        "type": "boolean",
+                                        "default": false,
+                                        "description": "Indicates whether the endpoint is activated (true or false)."
+                                      },
+                                      "url": {
+                                        "type": "string",
+                                        "example": "soti.example.com",
+                                        "description": "The URL of the endpoint, specifying its address."
+                                      },
+                                      "verificationType": {
+                                        "type": "string",
+                                        "example": "VERIFY_HOST_PEER",
+                                        "enum": [
+                                          "NONE",
+                                          "VERIFY_PEER",
+                                          "VERIFY_HOST",
+                                          "VERIFY_HOST_PEER"
+                                        ],
+                                        "description": "The type of verification to be used for the endpoint connection."
+                                      },
+                                      "port": {
+                                        "type": "integer",
+                                        "example": 1883,
+                                        "description": "The port number used for the connection."
+                                      },
+                                      "qosCommon": {
+                                        "type": "integer",
+                                        "example": 1,
+                                        "description": "The Quality of Service (QoS) level for message delivery."
+                                      },
+                                      "tenantId": {
+                                        "type": "string",
+                                        "example": "ZEBRA",
+                                        "description": "The tenant's unique identifier."
+                                      },
+                                      "mqttParams": {
+                                        "description": "MQTT-specific parameters for configuring the MQTT connection.",
+                                        "type": "object",
+                                        "properties": {
+                                          "keepAlive": {
+                                            "type": "integer",
+                                            "maximum": 65535,
+                                            "example": 300,
+                                            "description": "The keep-alive interval for the MQTT connection."
+                                          },
+                                          "cleanSession": {
+                                            "type": "boolean",
+                                            "default": true,
+                                            "description": "Indicates whether the MQTT session should be clean (true or false)."
+                                          },
+                                          "reconnectDelayMin": {
+                                            "type": "integer",
+                                            "description": "Minimum delay before reconnecting in case of disconnection."
+                                          },
+                                          "reconnectDelayMax": {
+                                            "type": "integer",
+                                            "description": "Maximum delay before reconnecting in case of disconnection."
+                                          },
+                                          "clientId": {
+                                            "type": "string",
+                                            "example": "zebra-rfd40-01",
+                                            "description": "The client ID used for the MQTT connection."
+                                          },
+                                          "username": {
+                                            "type": "string",
+                                            "description": "The username for authenticating the MQTT connection."
+                                          },
+                                          "password": {
+                                            "type": "string",
+                                            "description": "The password for authenticating the MQTT connection."
+                                          },
+                                          "publishTopics": {
+                                            "type": "array",
+                                            "items": {
+                                              "type": "object",
+                                              "properties": {
+                                                "topic": {
+                                                  "type": "string",
+                                                  "example": "SOTICONNECT/clients/resp/RFD400124FA",
+                                                  "description": "The topic to publish messages to."
+                                                },
+                                                "qos": {
+                                                  "type": "integer",
+                                                  "example": 1,
+                                                  "description": "The QoS level for the published topic."
+                                                },
+                                                "retain": {
+                                                  "type": "boolean",
+                                                  "description": "Indicates whether the message should be retained on the broker."
+                                                }
+                                              },
+                                              "required": [
+                                                "topic",
+                                                "qos",
+                                                "retain"
+                                              ]
+                                            },
+                                            "description": "A list of topics to which messages will be published."
+                                          },
+                                          "subscribeTopics": {
+                                            "type": "array",
+                                            "items": {
+                                              "type": "object",
+                                              "properties": {
+                                                "topic": {
+                                                  "type": "string",
+                                                  "description": "The topic to which the client will subscribe."
+                                                },
+                                                "qos": {
+                                                  "type": "integer",
+                                                  "description": "The QoS level for the subscription."
+                                                },
+                                                "retain": {
+                                                  "type": "boolean",
+                                                  "description": "Indicates whether the message should be retained."
+                                                }
+                                              },
+                                              "required": [
+                                                "topic",
+                                                "qos",
+                                                "retain"
+                                              ]
+                                            },
+                                            "description": "A list of topics to which the client will subscribe."
+                                          }
+                                        }
+                                      },
+                                      "securityParams": {
+                                        "type": "object",
+                                        "properties": {
+                                          "format": {
+                                            "type": "string",
+                                            "enum": [
+                                              "PEM",
+                                              "PFX"
+                                            ],
+                                            "example": "PEM",
+                                            "description": "The format of the security certificate (e.g., PEM or PFX)."
+                                          },
+                                          "algorithm": {
+                                            "type": "string",
+                                            "enum": [
+                                              "RSA256",
+                                              "RSA512"
+                                            ],
+                                            "example": "RSA256",
+                                            "description": "The encryption algorithm used (e.g., RSA256)."
+                                          },
+                                          "caCertificateFile": {
+                                            "type": "string",
+                                            "example": "cloud-trusted-ca-certs.crt",
+                                            "description": "The CA certificate file for establishing trust."
+                                          },
+                                          "clientCert": {
+                                            "type": "string",
+                                            "example": "client_cert.pem",
+                                            "description": "The client certificate file for authentication."
+                                          },
+                                          "clientKey": {
+                                            "type": "string",
+                                            "example": "client_key.pem",
+                                            "description": "The client key file for authentication."
+                                          }
+                                        },
+                                        "required": [
+                                          "format",
+                                          "algorithm",
+                                          "caCertificateFile",
+                                          "clientCert",
+                                          "clientKey"
+                                        ],
+                                        "description": "Security parameters for the endpoint connection."
+                                      },
+                                      "eventConfiguration": {
+                                        "title": "eventConfiguration",
+                                        "x-stoplight": {
+                                          "id": "jcezrdndi0i9w"
+                                        },
+                                        "type": "object",
+                                        "description": "Reference to the event configuration payload.",
+                                        "properties": {
+                                          "antenna": {
+                                            "type": "boolean",
+                                            "description": "Set to true to enable antenna-related events."
+                                          },
+                                          "terminalConnection": {
+                                            "type": "boolean",
+                                            "description": "Set to true to enable terminal connection and disconnection events."
+                                          },
+                                          "firmwareUpdate": {
+                                            "type": "boolean",
+                                            "description": "Set to true to enable firmware update events."
+                                          },
+                                          "gpi": {
+                                            "type": "boolean",
+                                            "description": "Set to true to enable GPI events."
+                                          },
+                                          "network": {
+                                            "type": "boolean",
+                                            "description": "Set to true to enable network events."
+                                          },
+                                          "exceptions": {
+                                            "type": "boolean",
+                                            "description": "Set to true to enable exception events."
+                                          },
+                                          "ntp": {
+                                            "type": "boolean",
+                                            "description": "Set to true to enable NTP-related events."
+                                          },
+                                          "userApp": {
+                                            "type": "boolean",
+                                            "description": "Set to true to enable user application events."
+                                          },
+                                          "heartbeat": {
+                                            "type": "boolean",
+                                            "description": "Set to true to enable heartbeat events."
+                                          },
+                                          "power": {
+                                            "type": "boolean",
+                                            "description": "Set to true to enable power source events."
+                                          },
+                                          "battery": {
+                                            "type": "boolean",
+                                            "description": "Set to true to enable battery events."
+                                          },
+                                          "temperature": {
+                                            "type": "boolean",
+                                            "description": "Set to true to enable temperature events."
+                                          },
+                                          "fileDownload": {
+                                            "type": "boolean",
+                                            "description": "Set to true to enable file download events."
+                                          },
+                                          "cpuUsage": {
+                                            "type": "boolean",
+                                            "description": "Set to true to enable CPU usage alerts."
+                                          },
+                                          "flashUsage": {
+                                            "type": "boolean",
+                                            "description": "Set to true to enable flash usage alerts."
+                                          },
+                                          "ramUsage": {
+                                            "type": "boolean",
+                                            "description": "Set to true to enable RAM usage alerts."
+                                          },
+                                          "heartbeatConfiguration": {
+                                            "type": "object",
+                                            "description": "Heartbeat payload options and interval settings.",
+                                            "properties": {
+                                              "interval": {
+                                                "type": "integer",
+                                                "example": 100,
+                                                "description": "Heartbeat interval in seconds."
+                                              },
+                                              "inventoryStatus": {
+                                                "type": "boolean",
+                                                "description": "Set to true to include inventory status in heartbeat messages."
+                                              },
+                                              "batteryStatus": {
+                                                "type": "boolean",
+                                                "description": "Set to true to include battery status in heartbeat messages."
+                                              },
+                                              "userApps": {
+                                                "type": "boolean",
+                                                "description": "Set to true to include user app status in heartbeat messages."
+                                              }
+                                            }
+                                          },
+                                          "cpuThreshold": {
+                                            "type": "integer",
+                                            "description": "CPU usage percentage above which a CPU alert is triggered."
+                                          },
+                                          "ramThreshold": {
+                                            "type": "integer",
+                                            "description": "RAM usage percentage above which a RAM alert is triggered."
+                                          },
+                                          "flashThreshold": {
+                                            "type": "integer",
+                                            "description": "Flash usage percentage above which a flash alert is triggered."
+                                          },
+                                          "temperatureThreshold": {
+                                            "type": "integer",
+                                            "description": "Temperature value above which a temperature alert is triggered."
+                                          }
+                                        }
+                                      }
+                                    },
+                                    "required": [
+                                      "epType",
+                                      "protocol",
+                                      "activate",
+                                      "url",
+                                      "verificationType",
+                                      "port"
+                                    ]
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "savedEndpoints": {
+                          "title": "savedEpconfigs",
+                          "x-stoplight": {
+                            "id": "2ady007bo7b6l"
+                          },
+                          "type": "object",
+                          "description": "A reference to the configuration details of saved endpoint configurations.",
+                          "properties": {
+                            "epNames": {
+                              "type": "array",
+                              "description": "Array of saved endpoint names available on the device.",
+                              "items": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "response": {
+                      "title": "response",
+                      "x-stoplight": {
+                        "id": "1uzw0wye4si2y"
+                      },
+                      "type": "object",
+                      "description": "Execution result object containing status code and result description.",
+                      "properties": {
+                        "code": {
+                          "type": "integer",
+                          "example": 0,
+                          "description": "Response code indicating success or failure.\n\n- 0 — Success\n- 3 — Not able to retrieve information",
+                          "minimum": 0,
+                          "maximum": 3
+                        },
+                        "description": {
+                          "type": "string",
+                          "description": "Human-readable result message that explains the response code.",
+                          "example": "Success"
+                        }
+                      },
+                      "required": [
+                        "code",
+                        "description"
+                      ]
+                    }
+                  }
+                },
+                "examples": {
+                  "Active endpoint config": {
+                    "description": "Payload to get active endpoint configuration details with all saved endpoint names",
+                    "value": {
+                      "command": "get_endpoint_config",
+                      "requestId": "abc123",
+                      "apiVersion": "V1.1",
+                      "endpointResponse": {
+                        "activeEndpoints": {
+                          "epConfig": [
+                            {
+                              "configuration": {
+                                "endpointName": "mgmt3",
+                                "epType": "MGMT",
+                                "protocol": "MQTT",
+                                "activate": true,
+                                "url": "10.231.145.104",
+                                "verificationType": "VERIFY_NONE",
+                                "port": 1883,
+                                "qosCommon": 0,
+                                "tenantId": "zebra",
+                                "mqttParams": {
+                                  "keepAlive": 96,
+                                  "cleanSession": false,
+                                  "reconnectDelayMin": 5,
+                                  "reconnectDelayMax": 512,
+                                  "username": "mqttuser",
+                                  "password": "xxxxxx",
+                                  "publishTopics": [
+                                    {
+                                      "topic": "MGMT/clients/resp",
+                                      "qos": 0,
+                                      "retain": false
+                                    },
+                                    {
+                                      "topic": "MGMT/clients/rfid",
+                                      "qos": 0,
+                                      "retain": true
+                                    }
+                                  ],
+                                  "subscribeTopics": [
+                                    {
+                                      "topic": "MGMT/clients/cmnd",
+                                      "qos": 0,
+                                      "retain": false
+                                    }
+                                  ]
+                                },
+                                "securityParams": {
+                                  "format": "PEM"
+                                },
+                                "eventConfiguration": {
+                                  "terminalConnection": false,
+                                  "firmwareUpdate": true,
+                                  "network": true,
+                                  "ntp": true,
+                                  "heartbeat": false,
+                                  "power": true,
+                                  "battery": true,
+                                  "fileDownload": true
+                                }
+                              }
+                            }
+                          ]
+                        },
+                        "savedEndpoints": {
+                          "epNames": [
+                            "ctrlEP",
+                            "ctrl",
+                            "gmdm",
+                            "dataEP",
+                            "mgmt3"
+                          ]
+                        }
+                      },
+                      "response": {
+                        "code": 0,
+                        "description": "Success"
+                      }
+                    }
+                  },
+                  "Specific endpoint config": {
+                    "description": "Payload to get the specified endpoint configurations",
+                    "value": {
+                      "command": "get_endpoint_config",
+                      "requestId": "abc123",
+                      "apiVersion": "V1.1",
+                      "endpointResponse": {
+                        "activeEndpoints": {
+                          "epConfig": [
+                            {
+                              "configuration": {
+                                "endpointName": "ctrl",
+                                "epType": "CTRL",
+                                "protocol": "MQTT",
+                                "activate": true,
+                                "url": "10.209.240.104",
+                                "verificationType": "VERIFY_NONE",
+                                "port": 1883,
+                                "qosCommon": 0,
+                                "tenantId": "zebra",
+                                "mqttParams": {
+                                  "keepAlive": 96,
+                                  "cleanSession": false,
+                                  "reconnectDelayMin": 5,
+                                  "reconnectDelayMax": 512,
+                                  "username": "mqttuser",
+                                  "password": "xxxxxx",
+                                  "publishTopics": [
+                                    {
+                                      "topic": "CTRL/clients/resp",
+                                      "qos": 0,
+                                      "retain": false
+                                    },
+                                    {
+                                      "topic": "CTRL/clients/event",
+                                      "qos": 0,
+                                      "retain": false
+                                    },
+                                    {
+                                      "topic": "CTRL/clients/rfid",
+                                      "qos": 0,
+                                      "retain": true
+                                    }
+                                  ],
+                                  "subscribeTopics": [
+                                    {
+                                      "topic": "CTRL/clients/cmnd",
+                                      "qos": 0,
+                                      "retain": false
+                                    }
+                                  ]
+                                },
+                                "securityParams": {
+                                  "format": "PEM"
+                                },
+                                "eventConfiguration": {
+                                  "terminalConnection": false,
+                                  "firmwareUpdate": true,
+                                  "network": true,
+                                  "ntp": true,
+                                  "heartbeat": false,
+                                  "power": true,
+                                  "battery": true,
+                                  "fileDownload": true
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      },
+                      "response": {
+                        "code": 0,
+                        "description": "Success"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-error-codes": [
+          {
+            "code": 0,
+            "description": "Success",
+            "iot_status_code": "IOT_STATUS_SUCCESS",
+            "cause": "Command executed successfully",
+            "recommended_action": "No action required"
+          },
+          {
+            "code": 3,
+            "description": "Not able to retrieve information",
+            "iot_status_code": "IOT_ERROR_INFO_NOT_AVAILABLE",
+            "cause": "The device could not gather the requested information at this time",
+            "recommended_action": "Retry the command after a short delay; if persistent, reboot the device"
+          }
+        ]
+      }
+    }
+  }
+}

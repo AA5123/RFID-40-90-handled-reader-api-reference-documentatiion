@@ -4,6 +4,7 @@
     "id": "i3l9dq2e1oh1w"
   },
   "type": "object",
+  "description": "Response returned after a set_post_filter request is processed. It confirms the command context and reports the execution result.",
   "examples": [
     {
       "command": "set_post_filter",
@@ -18,11 +19,13 @@
   "properties": {
     "command": {
       "type": "string",
-      "example": "set_post_filter"
+      "example": "set_post_filter",
+      "description": "Echoes the command name so clients can correlate this response to the set_post_filter request."
     },
     "requestId": {
       "type": "string",
-      "example": "abc123"
+      "example": "abc123",
+      "description": "Request identifier copied from the command, used for request and response correlation."
     },
     "apiVersion": {
       "type": "string",
@@ -30,10 +33,12 @@
         "V1.0",
         "V1.1"
       ],
-      "example": "V1.1"
+      "example": "V1.1",
+      "description": "API version used to interpret this response payload."
     },
     "response": {
-      "$ref": "../../refrence/response/response.yaml"
+      "$ref": "../../refrence/response/response.yaml",
+      "description": "Execution result object containing status code and result description."
     }
   },
   "required": [

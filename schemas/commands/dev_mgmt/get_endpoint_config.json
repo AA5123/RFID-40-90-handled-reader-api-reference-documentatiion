@@ -4,21 +4,22 @@
     "id": "n4h9ertlb1qn8"
   },
   "type": "object",
-  "description": "Command to get configured endpoints.If API does not included endpointName argument, then  response includes all active endpoints detailed configuration & list of all saved endpoint names otherwise response includes interested endpoints configuration only",
+  "description": "Retrieves endpoint configuration. If endpointDetails.endpointName is not provided, the response returns all active endpoint configurations and saved endpoint names. If endpointName is provided, only that endpoint configuration is returned.",
   "x-internal": false,
   "properties": {
     "command": {
       "type": "string",
       "default": "get_endpoint_config",
-      "description": "Specifies the operation being performed, in this case, retrieving the endpoint configuration."
+      "description": "Command name for requesting endpoint configuration details."
     },
     "requestId": {
       "type": "string",
       "example": "123",
-      "description": "A unique identifier for the request, allowing tracking and debugging of the operation."
+      "description": "Unique request identifier used to correlate this command with its response."
     },
     "endpointDetails": {
-      "$ref": "../../refrence/payload/epName.yaml"
+      "$ref": "../../refrence/payload/epName.yaml",
+      "description": "Optional object used to request a specific endpoint configuration by endpoint name."
     }
   },
   "required": [

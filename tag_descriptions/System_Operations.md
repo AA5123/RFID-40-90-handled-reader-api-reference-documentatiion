@@ -1,8 +1,17 @@
-Restart the scanner or trigger a firmware update. Both commands interrupt normal operation.
+## Overview
 
-| Command | What It Does |
+Restart the device or trigger a firmware update. Both operations interrupt normal device operation and require careful timing.
+
+## Commands
+
+| Command | Description |
 |---|---|
-| `reboot` | Restart the scanner "” applies any pending configuration changes |
+| `reboot` | Restart the device and apply pending configuration changes |
 | `set_os` | Trigger a firmware update on the device |
 
-`reboot` requires no active inventory. `set_os` requires sufficient battery level.
+## Requirements
+
+- Reboot: No active inventory operation
+- Firmware update: Sufficient battery level required
+- Both operations apply configuration changes
+- Device will reconnect to broker after reboot

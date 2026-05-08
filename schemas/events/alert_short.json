@@ -4,6 +4,7 @@
     "id": "ps4oql8nfry5a"
   },
   "type": "object",
+  "description": "Compact representation of an alert or notification event containing essential information such as alert ID, type, priority, timestamp, and a brief description for quick status updates and notifications.",
   "examples": [
     {
       "id": "FIRMWARE_DOWNLOAD_SUCCESS",

@@ -2,6 +2,7 @@ title: daAppEvent
 x-stoplight:
   id: mlaz6c9i4in63
 type: object
+description: Object schema for daAppEvent.
 properties:
   appName:
     type: string

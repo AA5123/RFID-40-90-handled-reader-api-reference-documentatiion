@@ -4,6 +4,7 @@
     "id": "seamkz959jnmb"
   },
   "type": "object",
+  "description": "Response returned for get_current_region. It provides the reader's current regulatory region settings and command execution status.",
   "examples": [
     {
   "command": "get_current_region",
@@ -35,12 +36,12 @@
     "command": {
       "type": "string",
       "example": "get_current_region",
-      "description": "The command issued by the client, indicating the operation to retrieve the current region."
+      "description": "Echoes the command name so clients can map this response to the get_current_region request."
     },
     "requestId": {
       "type": "string",
       "example": "abc123",
-      "description": "A unique identifier for tracking the request."
+      "description": "Request identifier copied from the command, used for request and response correlation."
     },
     "apiVersion": {
       "type": "string",
@@ -49,15 +50,15 @@
         "V1.1"
       ],
       "example": "V1.1",
-      "description": "The version of the API being called, allowing for version-specific processing."
+      "description": "API version used to interpret this response payload."
     },
     "currentRegion": {
       "$ref": "../../refrence/response/currentRegionResponse.yaml",
-      "description": "A reference to the detailed payload structure containing region-specific information."
+      "description": "Current regulatory region information, including country, channels, and power limits."
     },
     "response": {
       "$ref": "../../refrence/response/response.yaml",
-      "description": "A reference to the standard response schema used for this API."
+      "description": "Execution result object containing status code and result description."
     }
   },
   "required": [

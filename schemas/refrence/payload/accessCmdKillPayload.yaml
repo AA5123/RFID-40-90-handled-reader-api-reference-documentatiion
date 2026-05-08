@@ -1,5 +1,6 @@
 title: kill
 type: object
+description: Object schema for kill.
 examples:
   - type: KILL
     config:

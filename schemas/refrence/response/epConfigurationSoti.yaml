@@ -1,4 +1,5 @@
 title: epConfig
+description: The configuration details for the endpoint, including MQTT parameters and security settings.
 x-stoplight:
   id: 7g3esr6v8nm8y
 type: object
@@ -6,6 +7,7 @@ examples: []
 properties:
   configuration:
     type: object
+    description: Endpoint configuration details including connection, protocol, and optional security settings.
     properties:
       endpointName:
         type: string
@@ -17,10 +19,11 @@ properties:
         enum:
           - MGMT
           - MGMT_EVT
-          - CONTROL
-          - DATA
-          - COMMON
+          - CTRL
+          - DATA1
+          - DATA2
           - SOTI
+          - MDM
         description: The type of endpoint, specifying its functionality (e.g., Management, Control, etc.).
       protocol:
         type: string
@@ -69,6 +72,7 @@ properties:
         example: ZEBRA
         description: The tenant's unique identifier.
       mqttParams:
+        description: MQTT-specific parameters for configuring the MQTT connection.
         type: object
         properties:
           keepAlive:

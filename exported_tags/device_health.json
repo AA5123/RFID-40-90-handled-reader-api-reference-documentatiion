@@ -1,0 +1,141 @@
+{
+  "tag": "Device Health",
+  "description": "## Overview\n\nReceive periodic heartbeat events from the device to confirm active status and connection. Monitor continuous device health.\n\n## Events\n\n| Event | Description |\n|---|---|\n| `heartBeatEVT` | Periodic health pulse including battery status, inventory state, connectivity confirmation |\n\n## Monitoring\n\nHeartbeat events confirm:\n- Device is alive and operational\n- Connection to broker is active\n- Battery and power status\n- Inventory operation progress\n\nConfigure heartbeat interval via `config_events`. Absence of heartbeats indicates device offline.",
+  "operationCount": 1,
+  "pathCount": 1,
+  "paths": {
+    "/heartBeatEVT": {
+      "post": {
+        "tags": [
+          "Device Health"
+        ],
+        "summary": "Heartbeatevt",
+        "description": "The heartBeatEVT event provides a periodic liveness and health update from the device.\n\nThis event includes:\n- Device uptime and event sequence number\n- Inventory status details such as RFID state and tag count\n- Battery health data including charge percentage and state of health\n\nUse this event to:\n- Confirm that devices remain online and active\n- Monitor inventory progression over time\n- Track battery condition in routine health telemetry\n\n### Event Details\n\n| Property | Value |\n|---|---|\n| Event Type | Heartbeat Event |\n| Communication Type | Device to Cloud |\n| Applies To | RFD40 Series, RFD90 Series |\n| Trigger Condition | Generated at the configured heartbeat interval while the device is active |\n| Related Events | [dataEVT](#op-data-evt), [alerts](#op-alerts), [exceptionEVT](#op-exception-evt) |\n| Supported API Versions | V1.0, V1.1 |",
+        "responses": {
+          "default": {
+            "description": "heartBeatEVT event payload",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "eventName": {
+                      "type": "string",
+                      "example": "heartbeat",
+                      "description": "Name of the event, indicating it is a heartbeat signal."
+                    },
+                    "timestamp": {
+                      "type": "string",
+                      "example": "2019-08-24T14:15:22Z",
+                      "description": "The timestamp when the event was generated, in ISO 8601 format."
+                    },
+                    "eventNumber": {
+                      "type": "integer",
+                      "example": 120,
+                      "description": "A unique identifier or sequence number for the event."
+                    },
+                    "upTime": {
+                      "type": "string",
+                      "example": "5 days 4hr 3min",
+                      "description": "The uptime duration of the system when the event was generated."
+                    },
+                    "data": {
+                      "anyOf": [
+                        {
+                          "title": "inventoryStatus",
+                          "x-stoplight": {
+                            "id": "11cnw8c73npra"
+                          },
+                          "type": "object",
+                          "description": "Object schema for inventoryStatus.",
+                          "properties": {
+                            "rfidStatus": {
+                              "type": "string",
+                              "enum": [
+                                "INPROGRESS",
+                                "STOPPED"
+                              ],
+                              "description": "The current status of the RFID scanning process."
+                            },
+                            "tagCount": {
+                              "type": "integer",
+                              "description": "The total number of RFID tags scanned in the current operation."
+                            },
+                            "scanCount": {
+                              "type": "integer",
+                              "description": "The total number of scan attempts made during the operation."
+                            }
+                          }
+                        },
+                        {
+                          "title": "batteryAlert",
+                          "x-stoplight": {
+                            "id": "gcmvpvvellk4h"
+                          },
+                          "type": "object",
+                          "description": "Object schema for batteryAlert.",
+                          "properties": {
+                            "status": {
+                              "type": "string",
+                              "enum": [
+                                "LOW",
+                                "CRITICAL",
+                                "CHARGING",
+                                "FULL",
+                                "HIGH"
+                              ],
+                              "example": "LOW",
+                              "description": "The current status of the battery, which indicates its operational state."
+                            },
+                            "stateOfHealth": {
+                              "type": "string",
+                              "enum": [
+                                "LOW",
+                                "FULL",
+                                "CRITICAL",
+                                "HIGH",
+                                "CHARGING"
+                              ],
+                              "description": "The overall health of the battery, which reflects its long-term capacity and performance."
+                            },
+                            "chargePercentage": {
+                              "type": "integer",
+                              "maximum": 100,
+                              "description": "The current charge level of the battery, represented as a percentage."
+                            }
+                          }
+                        }
+                      ],
+                      "description": "Additional data associated with the heartbeat event, referencing different event types."
+                    }
+                  }
+                },
+                "examples": {
+                  "example1": {
+                    "value": {
+                      "eventName": "heartbeat",
+                      "timestamp": "2019-08-24T14:15:22Z",
+                      "eventNumber": 120,
+                      "data": {
+                        "inventoryStatus": {
+                          "rfidStatus": "INPROGRESS",
+                          "tagCount": 45,
+                          "scanCount": 128
+                        },
+                        "batteryAlert": {
+                          "status": "HIGH",
+                          "stateOfHealth": "FULL",
+                          "chargePercentage": 85
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

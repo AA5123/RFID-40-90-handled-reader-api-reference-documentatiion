@@ -1,0 +1,441 @@
+{
+  "tag": "System Operations",
+  "description": "## Overview\n\nRestart the device or trigger a firmware update. Both operations interrupt normal device operation and require careful timing.\n\n## Commands\n\n| Command | Description |\n|---|---|\n| `reboot` | Restart the device and apply pending configuration changes |\n| `set_os` | Trigger a firmware update on the device |\n\n## Requirements\n\n- Reboot: No active inventory operation\n- Firmware update: Sufficient battery level required\n- Both operations apply configuration changes\n- Device will reconnect to broker after reboot",
+  "operationCount": 2,
+  "pathCount": 2,
+  "paths": {
+    "/reboot": {
+      "post": {
+        "tags": [
+          "System Operations"
+        ],
+        "summary": "Reboot",
+        "description": "## Overview\n\nThe `reboot` command performs a warm reset of the device. After a successful reboot, the device automatically reinitializes its connection to the previously connected server. If the reboot fails, a failure notification is sent.\n\nUse this command to:\n- Restart the device for applying configuration changes\n- Recover from error states\n- Reinitialize device connections\n- Apply pending device updates\n\n---\n\n## Command Details\n\n| Property | Value |\n|---|---|\n| Pattern Name | Device Reboot |\n| Communication Type | Bidirectional (Cloud to Device, Device to Cloud) |\n| Applies To | RFD40 Series, RFD90 Series |\n\n---\n\n## Request Parameters\n\n| Parameter | Description |\n|---|---|\n| `command` | Specifies the operation to be executed. Must be set to `reboot`. |\n| `requestId` | A unique identifier for the request, allowing tracking and debugging of the operation. |\n\n---\n\n## Important Notes\n\n- Upon successful reboot, the device will reconnect to the previously connected server.\n- Configuration changes made via `config_events` and `set_operating_mode` require a reboot to take effect.\n- The device may be temporarily unavailable during the reboot process.\n\n---\n\n### Related Commands\n\n| Command | Description |\n|---|---|\n| `config_events` | Configures device events (changes require reboot). |\n| `config_endpoint` | Configures data transmission endpoints. |\n| `set_operating_mode` | Configures operating mode (changes may require reboot). |",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "command": {
+                    "type": "string",
+                    "example": "reboot",
+                    "description": "Command issued to reboot the reader "
+                  },
+                  "requestId": {
+                    "type": "string",
+                    "example": "123abcd",
+                    "description": "A unique identifier for the request, allowing tracking and debugging of the operation."
+                  }
+                },
+                "required": [
+                  "command",
+                  "requestId"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "reboot response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "command": {
+                      "type": "string",
+                      "example": "reboot",
+                      "description": "Echoes the command name so clients can map this response to the reboot request."
+                    },
+                    "requestId": {
+                      "type": "string",
+                      "example": "123abcd",
+                      "description": "Request identifier copied from the command, used for request and response correlation."
+                    },
+                    "apiVersion": {
+                      "type": "string",
+                      "enum": [
+                        "V1.0",
+                        "V1.1"
+                      ],
+                      "example": "V1.1",
+                      "description": "API version used to interpret this response payload."
+                    },
+                    "response": {
+                      "title": "response",
+                      "x-stoplight": {
+                        "id": "1uzw0wye4si2y"
+                      },
+                      "type": "object",
+                      "description": "Execution result object containing status code and result description.",
+                      "properties": {
+                        "code": {
+                          "type": "integer",
+                          "example": 0,
+                          "description": "Response code indicating success or failure.\n\n- 0 — Success\n- 5 — Can't reboot device, inventory in progress",
+                          "minimum": 0,
+                          "maximum": 5
+                        },
+                        "description": {
+                          "type": "string",
+                          "description": "Human-readable result message that explains the response code.",
+                          "example": "Success"
+                        }
+                      },
+                      "required": [
+                        "code",
+                        "description"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "command",
+                    "requestId",
+                    "apiVersion",
+                    "response"
+                  ]
+                },
+                "examples": {
+                  "example1": {
+                    "value": {
+                      "command": "reboot",
+                      "requestId": "18996",
+                      "apiVersion": "V1.1",
+                      "response": {
+                        "code": 1,
+                        "description": "Command payload is accepted"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-error-codes": [
+          {
+            "code": 0,
+            "description": "Success",
+            "iot_status_code": "IOT_STATUS_SUCCESS",
+            "cause": "Command executed successfully",
+            "recommended_action": "No action required"
+          },
+          {
+            "code": 5,
+            "description": "Can't reboot device, inventory in progress",
+            "iot_status_code": "IOT_ERROR_IN_REBOOT_INVENTORY_IN_PROGRESS",
+            "cause": "An RFID inventory operation is currently active",
+            "recommended_action": "Stop the inventory with control_operation before rebooting"
+          }
+        ]
+      }
+    },
+    "/set_os": {
+      "post": {
+        "tags": [
+          "System Operations"
+        ],
+        "summary": "Set Os",
+        "description": "The set_os command starts a firmware update workflow on the reader using a provided firmware source URL and connection/authentication settings.\n\nThis command allows you to configure:\n- Firmware download source URL\n- Authentication mode for firmware access\n- TLS verification mode\n- Optional authentication credentials, headers, query parameters, and certificate material\n\nUse this command to:\n- Roll out firmware upgrades to devices\n- Apply maintenance and security firmware releases\n- Control how firmware is downloaded and verified\n\n### Command Details\n\n| Property | Value |\n|---|---|\n| Pattern Name | Firmware Update |\n| Communication Type | Bidirectional (Cloud to Device, Device to Cloud) |\n| Applies To | RFD40 Series, RFD90 Series |\n| Related Commands | [get_version](#op-get-version), [reboot](#op-reboot), [install_certificate](#op-install-certificate) |\n| Required Request Fields | command, requestId, OSUpdateDetails |\n| Supported Operations | Start firmware update using URL, authentication, and verification settings |\n| Supported Types | Authentication types: NONE, BASIC, TOKEN, CERTIFICATE; verification types: NONE, VERIFY_PEER, VERIFY_HOST, VERIFY_HOST_PEER |\n| Supported Profiles | Not applicable |\n| Supported Protocols | URI-based firmware source URLs |\n| Supported API Versions | V1.0, V1.1 |",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "command": {
+                    "type": "string",
+                    "example": "set_os",
+                    "description": "Specifies the operation being performed, in this case, setting the reader operating system."
+                  },
+                  "requestId": {
+                    "type": "string",
+                    "example": "abc123",
+                    "description": "A unique identifier for the request, allowing tracking and debugging of the operation."
+                  },
+                  "OSUpdateDetails": {
+                    "title": "OSUpdateDetails",
+                    "x-stoplight": {
+                      "id": "f9b02122e80a4"
+                    },
+                    "type": "object",
+                    "description": "Object containing the details required for the OS update, including the URL of the firmware, authentication type, verification type, and CA certificate file content if applicable.",
+                    "properties": {
+                      "url": {
+                        "type": "string",
+                        "format": "uri",
+                        "example": "https://192.168.29.39:8000/Build-3.10.27/Firmware",
+                        "description": "The URL where the OS update can be downloaded. Must be a valid URI."
+                      },
+                      "authenticationType": {
+                        "type": "string",
+                        "enum": [
+                          "NONE",
+                          "BASIC",
+                          "TOKEN",
+                          "CERTIFICATE"
+                        ],
+                        "example": "BASIC",
+                        "description": "Specifies the type of authentication required for accessing the URL. NONE - No authentication is needed. BASIC - Username and password are required. CERTIFICATE - A valid inline certificate or preinstalled certificate is required. TOKEN - Token-based authentication is required."
+                      },
+                      "authOptions": {
+                        "type": "object",
+                        "properties": {
+                          "username": {
+                            "type": "string",
+                            "example": "admin",
+                            "description": "The username for BASIC authentication."
+                          },
+                          "password": {
+                            "type": "string",
+                            "example": "password",
+                            "description": "The password for BASIC authentication."
+                          }
+                        },
+                        "description": "Contains authentication options such as username and password for BASIC authentication."
+                      },
+                      "headerParam": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "key": {
+                              "type": "string",
+                              "description": "The name of the HTTP header parameter."
+                            },
+                            "value": {
+                              "type": "string",
+                              "description": "The value of the HTTP header parameter."
+                            }
+                          }
+                        },
+                        "description": "A list of custom header parameters to include in the HTTP request."
+                      },
+                      "queryParam": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "key": {
+                              "type": "string",
+                              "description": "The name of the query parameter."
+                            },
+                            "value": {
+                              "type": "string",
+                              "description": "The value of the query parameter."
+                            }
+                          }
+                        },
+                        "description": "A list of query parameters to include in the URL."
+                      },
+                      "verificationType": {
+                        "type": "string",
+                        "enum": [
+                          "NONE",
+                          "VERIFY_PEER",
+                          "VERIFY_HOST",
+                          "VERIFY_HOST_PEER"
+                        ],
+                        "example": "NONE",
+                        "description": "Specifies the type of verification to perform during the connection. NONE - No verification. VERIFY_PEER - Verify the peer's certificate. VERIFY_HOST - Verify the host's certificate. VERIFY_HOST_PEER - Verify both the host and peer certificates."
+                      },
+                      "caCertificateFileContent": {
+                        "type": "string",
+                        "example": "-----BEGIN CERTIFICATE-----\\\\r\\\\nPUdg=\\\\r\\\\n-----END CERTIFICATE-----",
+                        "description": "The content of the CA certificate in PEM format, required for certificate-based authentication."
+                      },
+                      "caCertificateFile": {
+                        "type": "string",
+                        "example": "/apps/ca.crt",
+                        "description": "The file path to the CA certificate, required for certificate-based authentication."
+                      }
+                    },
+                    "required": [
+                      "url",
+                      "authenticationType"
+                    ]
+                  }
+                },
+                "required": [
+                  "command",
+                  "requestId"
+                ]
+              },
+              "examples": {
+                "Firmware update 1": {
+                  "description": "Payload to initiate firmware update with CA certificate content",
+                  "value": {
+                    "command": "set_os",
+                    "requestId": "abc123",
+                    "OSUpdateDetails": {
+                      "url": "https://192.168.29.39:8000/Build-3.10.27/Firmware",
+                      "authenticationType": "CERTIFICATE",
+                      "verificationType": "VERIFY_HOST",
+                      "caCertificateFileContent": "-----BEGIN CERTIFICATE-----\\\\r\\\\nPUdg=\\\\r\\\\n-----END CERTIFICATE-----"
+                    }
+                  }
+                },
+                "Firmware update 2": {
+                  "description": "Payload to initiate firmware update without CA certificate content",
+                  "value": {
+                    "command": "set_os",
+                    "requestId": "abc123",
+                    "OSUpdateDetails": {
+                      "url": "https://192.168.29.39:8000/Build-3.10.27/Firmware",
+                      "authenticationType": "CERTIFICATE",
+                      "verificationType": "VERIFY_HOST"
+                    }
+                  }
+                },
+                "Firmware update 3": {
+                  "description": "Payload to initiate firmware update with no authentication",
+                  "value": {
+                    "command": "set_os",
+                    "requestId": "abc123",
+                    "OSUpdateDetails": {
+                      "url": "https://192.168.29.39:8000/Build-3.10.27/Firmware",
+                      "authenticationType": "NONE",
+                      "verificationType": "NONE"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "set_os response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "command": {
+                      "type": "string",
+                      "example": "set_os",
+                      "description": "Echoes the command name so clients can map this response to the set_os request."
+                    },
+                    "requestId": {
+                      "type": "string",
+                      "example": "abc123",
+                      "description": "Request identifier copied from the command, used for request and response correlation."
+                    },
+                    "apiVersion": {
+                      "type": "string",
+                      "enum": [
+                        "V1.0",
+                        "V1.1"
+                      ],
+                      "example": "V1.1",
+                      "description": "API version used to interpret this response payload."
+                    },
+                    "response": {
+                      "title": "response",
+                      "x-stoplight": {
+                        "id": "1uzw0wye4si2y"
+                      },
+                      "type": "object",
+                      "description": "Execution result object containing status code and result description.",
+                      "properties": {
+                        "code": {
+                          "type": "integer",
+                          "example": 0,
+                          "description": "Response code indicating success or failure.\n\n- 0 — Success\n- 1 — Command payload is accepted\n- 4 — Firmware update in progress\n- 8 — Insufficient flash size\n- 9 — File not found\n- 13 — Firmware update Failed\n- 14 — Battery is low, Cannot update firmware",
+                          "minimum": 0,
+                          "maximum": 14
+                        },
+                        "description": {
+                          "type": "string",
+                          "description": "Human-readable result message that explains the response code.",
+                          "example": "Success"
+                        }
+                      },
+                      "required": [
+                        "code",
+                        "description"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "command",
+                    "requestId",
+                    "apiVersion"
+                  ]
+                },
+                "examples": {
+                  "example1": {
+                    "value": {
+                      "command": "set_os",
+                      "requestId": "18996",
+                      "apiVersion": "V1.1",
+                      "response": {
+                        "code": 1,
+                        "description": "Command payload is accepted"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-error-codes": [
+          {
+            "code": 0,
+            "description": "Success",
+            "iot_status_code": "IOT_STATUS_SUCCESS",
+            "cause": "Command executed successfully",
+            "recommended_action": "No action required"
+          },
+          {
+            "code": 1,
+            "description": "Command payload is accepted",
+            "iot_status_code": "IOT_STATUS_CMD_PAYLOAD_ACCEPTED",
+            "cause": "The device accepted the payload and is processing it asynchronously",
+            "recommended_action": "Wait for a follow-up event or poll status to confirm completion"
+          },
+          {
+            "code": 4,
+            "description": "Firmware update in progress",
+            "iot_status_code": "IOT_STATUS_FW_UPDATE_IN_PROGRESS",
+            "cause": "A firmware update is already running on the device",
+            "recommended_action": "Wait for the current update to complete before sending another set_os command"
+          },
+          {
+            "code": 8,
+            "description": "Insufficient flash size",
+            "iot_status_code": "IOT_ERROR_LOW_FLASH_SIZE",
+            "cause": "Not enough free flash storage to download the firmware file",
+            "recommended_action": "Free up flash space or use a smaller firmware package"
+          },
+          {
+            "code": 9,
+            "description": "File not found",
+            "iot_status_code": "IOT_STATUS_FILE_NOT_FOUND",
+            "cause": "The specified file or certificate could not be found on the device or server",
+            "recommended_action": "Verify the file path or URL is correct and the file exists"
+          },
+          {
+            "code": 13,
+            "description": "Firmware update Failed",
+            "iot_status_code": "IOT_ERROR_FW_UPDATE_FAIL",
+            "cause": "The firmware download or installation failed",
+            "recommended_action": "Check the firmware URL, network connectivity, and retry the update"
+          },
+          {
+            "code": 14,
+            "description": "Battery is low, Cannot update firmware",
+            "iot_status_code": "IOT_ERROR_FW_UPDATE_FAIL_LOW_BATTERY",
+            "cause": "Battery charge is too low to safely perform a firmware update",
+            "recommended_action": "Charge the device or connect to external power before retrying"
+          }
+        ]
+      }
+    }
+  }
+}

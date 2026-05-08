@@ -2,6 +2,7 @@ title: response
 x-stoplight:
   id: 1uzw0wye4si2y
 type: object
+description: Standard command result object containing response code and message.
 properties:
   code:
     type: integer
@@ -46,7 +47,7 @@ properties:
     maximum: 30
   description:
     type: string
-    description: response description in detail
+    description: Human-readable result message that explains the response code.
     example: Success
 required:
   - code

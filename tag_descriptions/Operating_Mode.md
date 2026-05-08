@@ -1,8 +1,18 @@
-Control how the scanner reads tags "” transmit power, session, and RF parameters.
+## Overview
 
-| Command | What It Does |
+Control how the device reads tags through transmit power, session parameters, and RF settings. Operating mode affects read range, scan speed, and tag population handling.
+
+## Commands
+
+| Command | Description |
 |---|---|
-| `set_operating_mode` | Set the RFID operating mode "” transmit power, session, tag population, and more |
-| `get_operating_mode` | Retrieve the current operating mode settings |
+| `set_operating_mode` | Configure RFID operating mode — transmit power, session, tag access operations |
+| `get_operating_mode` | Retrieve current operating mode settings and parameters |
+| `set_post_filter` | Configure tag filtering rules and patterns |
+| `get_post_filter` | Retrieve current post-filter configuration |
 
-These parameters affect read range, scan speed, and how the scanner handles large tag populations.
+## Impact
+
+- Affects read range and scan speed
+- Influences tag population handling
+- Determines access operation support

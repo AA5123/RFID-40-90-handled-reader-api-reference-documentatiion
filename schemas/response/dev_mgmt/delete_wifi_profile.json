@@ -4,17 +4,21 @@
     "id": "ixk2xwnhv8xlg"
   },
   "type": "object",
+  "description": "Response returned after delete_wifi_profile is processed. It confirms command context and operation result.",
   "properties": {
     "command": {
       "type": "string",
-      "default": "delete_wifi_profile"
+      "default": "delete_wifi_profile",
+      "description": "Echoes the command name so clients can map this response to the delete_wifi_profile request."
     },
     "requestId": {
       "type": "string",
-      "default": 1235
+      "default": 1235,
+      "description": "Request identifier copied from the command, used for request and response correlation."
     },
     "response": {
-      "$ref": "../../refrence/response/response.yaml"
+      "$ref": "../../refrence/response/response.yaml",
+      "description": "Execution result object containing status code and result description."
     }
   },
   "examples": [

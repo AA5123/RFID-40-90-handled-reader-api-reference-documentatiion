@@ -4,6 +4,7 @@
     "id": "t528jqvetxxjk"
   },
   "type": "object",
+  "description": "Response returned after delete_certificate is processed. It confirms command context and operation result.",
   "examples": [
     {
       "command": "delete_certificate",
@@ -18,11 +19,13 @@
   "properties": {
     "command": {
       "type": "string",
-      "example": "delete_certificate"
+      "example": "delete_certificate",
+      "description": "Echoes the command name so clients can map this response to the delete_certificate request."
     },
     "requestId": {
       "type": "string",
-      "example": "abc123"
+      "example": "abc123",
+      "description": "Request identifier copied from the command, used for request and response correlation."
     },
     "apiVersion": {
       "type": "string",
@@ -30,9 +33,11 @@
       "enum": [
         "V1.0",
         "V1.1"
-      ]
+      ],
+      "description": "API version used to interpret this response payload."
     },
     "response": {
+      "description": "Execution result object containing status code and result description.",
       "$ref": "../../refrence/response/response.yaml"
     }
   },

@@ -1,0 +1,296 @@
+{
+  "tag": "Event Configuration",
+  "description": "## Overview\n\nChoose which events the device publishes to configured endpoints. Configure event types, thresholds, and delivery parameters.\n\n## Commands\n\n| Command | Description |\n|---|---|\n| `config_events` | Enable/disable specific events and set thresholds (heartbeat, battery, temperature, network, firmware, etc.) |\n\n## Configuration Options\n\n- Event enable/disable flags\n- Heartbeat interval and content\n- Threshold values (CPU, RAM, temperature)\n- Which events trigger alerts\n\nNote: Configuration changes require device reboot to apply.",
+  "operationCount": 1,
+  "pathCount": 1,
+  "paths": {
+    "/config_events": {
+      "post": {
+        "tags": [
+          "Event Configuration"
+        ],
+        "summary": "Config Events",
+        "description": "The config_events command configures or updates event and alert behavior on the reader.\n\nThis command allows you to configure:\n- Enable or disable individual event streams\n- Heartbeat interval and heartbeat payload options\n- Threshold values for CPU, RAM, flash, and temperature alerts\n- Monitoring and notification behavior for supported device events\n\nUse this command to:\n- Control which operational events are emitted by the device\n- Tune heartbeat reporting to match monitoring requirements\n- Configure threshold-based alerts for proactive device health monitoring\n\n### Command Details\n\n| Property | Value |\n|---|---|\n| Pattern Name | Event Configuration |\n| Communication Type | Bidirectional (Cloud to Device, Device to Cloud) |\n| Applies To | RFD40 Series, RFD90 Series |\n| Related Commands | [config_endpoint](#op-config-endpoint), [reboot](#op-reboot), [get_status](#op-get-status), [set_config](#op-set-config) |\n| Required Request Fields | command, requestId, eventConfiguration |\n| Supported Operations | Enable and disable events; configure heartbeat and threshold parameters |\n| Supported Types | Boolean enable flags for events and integer threshold fields for cpuThreshold, ramThreshold, flashThreshold, temperatureThreshold |\n| Supported Profiles | Event profile includes terminalConnection, firmwareUpdate, network, exceptions, ntp, heartbeat, power, battery, and fileDownload |\n| Supported Protocols | Not applicable |\n| Supported API Versions | V1.0, V1.1 |",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "command": {
+                    "type": "string",
+                    "example": "config_events",
+                    "description": "Command name for event configuration and threshold settings."
+                  },
+                  "requestId": {
+                    "type": "string",
+                    "example": "abc123",
+                    "description": "Unique request identifier used to correlate this command with its response."
+                  },
+                  "eventConfiguration": {
+                    "title": "eventConfiguration",
+                    "x-stoplight": {
+                      "id": "jcezrdndi0i9w"
+                    },
+                    "type": "object",
+                    "description": "Event configuration payload that enables or disables events and sets alert thresholds.",
+                    "properties": {
+                      "antenna": {
+                        "type": "boolean",
+                        "description": "Set to true to enable antenna-related events."
+                      },
+                      "terminalConnection": {
+                        "type": "boolean",
+                        "description": "Set to true to enable terminal connection and disconnection events."
+                      },
+                      "firmwareUpdate": {
+                        "type": "boolean",
+                        "description": "Set to true to enable firmware update events."
+                      },
+                      "gpi": {
+                        "type": "boolean",
+                        "description": "Set to true to enable GPI events."
+                      },
+                      "network": {
+                        "type": "boolean",
+                        "description": "Set to true to enable network events."
+                      },
+                      "exceptions": {
+                        "type": "boolean",
+                        "description": "Set to true to enable exception events."
+                      },
+                      "ntp": {
+                        "type": "boolean",
+                        "description": "Set to true to enable NTP-related events."
+                      },
+                      "userApp": {
+                        "type": "boolean",
+                        "description": "Set to true to enable user application events."
+                      },
+                      "heartbeat": {
+                        "type": "boolean",
+                        "description": "Set to true to enable heartbeat events."
+                      },
+                      "power": {
+                        "type": "boolean",
+                        "description": "Set to true to enable power source events."
+                      },
+                      "battery": {
+                        "type": "boolean",
+                        "description": "Set to true to enable battery events."
+                      },
+                      "temperature": {
+                        "type": "boolean",
+                        "description": "Set to true to enable temperature events."
+                      },
+                      "fileDownload": {
+                        "type": "boolean",
+                        "description": "Set to true to enable file download events."
+                      },
+                      "cpuUsage": {
+                        "type": "boolean",
+                        "description": "Set to true to enable CPU usage alerts."
+                      },
+                      "flashUsage": {
+                        "type": "boolean",
+                        "description": "Set to true to enable flash usage alerts."
+                      },
+                      "ramUsage": {
+                        "type": "boolean",
+                        "description": "Set to true to enable RAM usage alerts."
+                      },
+                      "heartbeatConfiguration": {
+                        "type": "object",
+                        "description": "Heartbeat payload options and interval settings.",
+                        "properties": {
+                          "interval": {
+                            "type": "integer",
+                            "example": 100,
+                            "description": "Heartbeat interval in seconds."
+                          },
+                          "inventoryStatus": {
+                            "type": "boolean",
+                            "description": "Set to true to include inventory status in heartbeat messages."
+                          },
+                          "batteryStatus": {
+                            "type": "boolean",
+                            "description": "Set to true to include battery status in heartbeat messages."
+                          },
+                          "userApps": {
+                            "type": "boolean",
+                            "description": "Set to true to include user app status in heartbeat messages."
+                          }
+                        }
+                      },
+                      "cpuThreshold": {
+                        "type": "integer",
+                        "description": "CPU usage percentage above which a CPU alert is triggered."
+                      },
+                      "ramThreshold": {
+                        "type": "integer",
+                        "description": "RAM usage percentage above which a RAM alert is triggered."
+                      },
+                      "flashThreshold": {
+                        "type": "integer",
+                        "description": "Flash usage percentage above which a flash alert is triggered."
+                      },
+                      "temperatureThreshold": {
+                        "type": "integer",
+                        "description": "Temperature value above which a temperature alert is triggered."
+                      }
+                    }
+                  }
+                },
+                "required": [
+                  "command",
+                  "requestId"
+                ]
+              },
+              "examples": {
+                "Enable all events": {
+                  "description": "Payload to enable all event types with threshold configuration",
+                  "value": {
+                    "command": "config_events",
+                    "requestId": "abc123",
+                    "eventConfiguration": {
+                      "antenna": true,
+                      "terminalConnection": true,
+                      "firmwareUpdate": true,
+                      "gpi": true,
+                      "network": true,
+                      "exceptions": true,
+                      "ntp": true,
+                      "userApp": true,
+                      "heartbeat": true,
+                      "power": true,
+                      "battery": true,
+                      "temperature": true,
+                      "fileDownload": true,
+                      "cpuUsage": true,
+                      "flashUsage": true,
+                      "ramUsage": true,
+                      "heartbeatConfiguration": {
+                        "interval": 100,
+                        "inventoryStatus": true,
+                        "batteryStatus": true,
+                        "userApps": true
+                      },
+                      "cpuThreshold": 80,
+                      "ramThreshold": 80,
+                      "flashThreshold": 80,
+                      "temperatureThreshold": 55
+                    }
+                  }
+                },
+                "Selective events": {
+                  "description": "Payload to selectively enable/disable specific event types",
+                  "value": {
+                    "command": "config_events",
+                    "requestId": "abc123",
+                    "eventConfiguration": {
+                      "antenna": false,
+                      "terminalConnection": true,
+                      "firmwareUpdate": true,
+                      "gpi": false,
+                      "network": true,
+                      "exceptions": false,
+                      "ntp": false,
+                      "userApp": false,
+                      "heartbeat": false,
+                      "power": true,
+                      "battery": true,
+                      "temperature": true,
+                      "fileDownload": true,
+                      "cpuUsage": false,
+                      "flashUsage": false,
+                      "ramUsage": false
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "config_events response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "command": {
+                      "type": "string",
+                      "example": "config_events",
+                      "description": "Echoes the command name so clients can map this response to the config_events request."
+                    },
+                    "requestId": {
+                      "type": "string",
+                      "example": "abc123",
+                      "description": "Request identifier copied from the command, used for request and response correlation."
+                    },
+                    "apiVersion": {
+                      "type": "string",
+                      "example": "V1.1",
+                      "enum": [
+                        "V1.0",
+                        "V1.1"
+                      ],
+                      "description": "API version used to interpret this response payload."
+                    },
+                    "response": {
+                      "title": "response",
+                      "x-stoplight": {
+                        "id": "1uzw0wye4si2y"
+                      },
+                      "type": "object",
+                      "description": "Execution result object containing status code and result description.",
+                      "properties": {
+                        "code": {
+                          "type": "integer",
+                          "example": 0,
+                          "description": "Command response status code. See x-error-codes for code meanings.",
+                          "minimum": 0,
+                          "maximum": 30
+                        },
+                        "description": {
+                          "type": "string",
+                          "description": "Human-readable result message that explains the response code.",
+                          "example": "Success"
+                        }
+                      },
+                      "required": [
+                        "code",
+                        "description"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "command",
+                    "requestId",
+                    "apiVersion",
+                    "response"
+                  ]
+                },
+                "examples": {
+                  "example1": {
+                    "value": {
+                      "command": "config_events",
+                      "requestId": "abc123",
+                      "apiVersion": "V1.1",
+                      "response": {
+                        "code": 0,
+                        "description": "Success"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

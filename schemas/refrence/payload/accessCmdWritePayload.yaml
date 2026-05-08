@@ -1,5 +1,6 @@
 title: write
 type: object
+description: Object schema for write.
 examples:
   - type: WRITE
     config:

@@ -1,4 +1,5 @@
 type: object
+description: Object schema for alertDetails.
 x-stoplight:
   id: a15e9b2d754c2
 title: alertDetails

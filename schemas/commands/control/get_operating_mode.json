@@ -4,7 +4,7 @@
     "id": "bfmkzfpkuc5h1"
   },
   "type": "object",
-  "description": "This command is designed to fetch the current operating mode information of RFID device within the IOTC system",
+  "description": "This command retrieves the reader's current operating mode configuration. The response can include profile settings, radio start and stop conditions, query parameters, and enabled tag metadata.",
   "properties": {
     "command": {
       "type": "string",

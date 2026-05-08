@@ -1,0 +1,772 @@
+{
+  "tag": "Device Status",
+  "description": "## Overview\n\nQuery the device's current state without changing any settings. These read-only commands provide health monitoring, device identification, and regulatory compliance information.\n\n## Commands\n\n| Command | Returns |\n|---|---|\n| `get_status` | Real-time health — battery level, temperature, radio activity, power source, NTP sync, terminal connection |\n| `get_version` | Device identity — model, serial number, SKU, firmware versions (main, scanner, radio, IoTC) |\n| `get_current_region` | Radio regulation — country code, frequency channels, power limits, frequency hopping, LBT |\n\n## Use Cases\n\n- Monitoring dashboards\n- Firmware audits\n- Compliance verification\n- Fleet status queries",
+  "operationCount": 3,
+  "pathCount": 3,
+  "paths": {
+    "/get_status": {
+      "post": {
+        "tags": [
+          "Device Status"
+        ],
+        "summary": "Get Status",
+        "description": "The get_status command retrieves a live health and readiness snapshot from the reader.\n\nThis command returns:\n- Power source and charging state details\n- RFID radio activity and connectivity status\n- Device time and NTP synchronization state\n- Battery health and capacity metrics\n\nUse this command to:\n- Monitor device health and readiness\n- Verify device connectivity before starting RFID operations\n- Troubleshoot communication, radio, or battery-related issues\n\nNo additional command-specific payload fields are required beyond the standard request envelope fields.\n\n### Command Details\n\n| Property | Value |\n|---|---|\n| Pattern Name | Device Status Retrieval |\n| Communication Type | Bidirectional (Cloud to Device, Device to Cloud) |\n| Applies To | RFD40 Series, RFD90 Series |\n| Related Commands | [get_version](#op-get-version), [get_current_region](#op-get-current-region), [get_config](#op-get-config) |\n| Required Request Fields | command, requestId |\n| Supported Operations | Status retrieval |\n| Supported Response Sections | deviceStatus, response |\n| Supported API Versions | V1.0, V1.1 |",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "command": {
+                    "type": "string",
+                    "example": "get_status",
+                    "description": "Command name for requesting current device status information."
+                  },
+                  "requestId": {
+                    "type": "string",
+                    "example": "abcd123",
+                    "description": "Unique request identifier used to correlate this command with its response."
+                  }
+                },
+                "required": [
+                  "command",
+                  "requestId"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "get_status response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "command": {
+                      "type": "string",
+                      "example": "get_status",
+                      "description": "Echoes the command name so clients can map this response to the get_status request."
+                    },
+                    "requestId": {
+                      "type": "string",
+                      "example": "abc123",
+                      "description": "Request identifier copied from the command, used for request and response correlation."
+                    },
+                    "apiVersion": {
+                      "type": "string",
+                      "enum": [
+                        "V1.0",
+                        "V1.1"
+                      ],
+                      "example": "V1.1",
+                      "description": "API version used to interpret this response payload."
+                    },
+                    "deviceStatus": {
+                      "title": "deviceStatus",
+                      "x-stoplight": {
+                        "id": "remoc4mkht8l3"
+                      },
+                      "type": "object",
+                      "description": "Current device runtime state, including power, radio, connectivity, and battery details.",
+                      "properties": {
+                        "powerSource": {
+                          "type": "string",
+                          "description": "The source of power for the device (e.g., DC, Wall Charger, USB, or Cradle).",
+                          "example": "CRADLE",
+                          "enum": [
+                            "DC",
+                            "WALLCHARGER",
+                            "USB",
+                            "CRADLE"
+                          ]
+                        },
+                        "radioActivity": {
+                          "type": "string",
+                          "description": "The activity status of the device's radio (e.g., Active or Inactive).",
+                          "example": "ACTIVE",
+                          "enum": [
+                            "INACTIVE",
+                            "ACTIVE"
+                          ]
+                        },
+                        "radioConnection": {
+                          "type": "string",
+                          "description": "The connection status of the device's radio (e.g., Connected or Disconnected).",
+                          "example": "CONNECTED",
+                          "enum": [
+                            "CONNECTED",
+                            "DISCONNECTED"
+                          ]
+                        },
+                        "systemTime": {
+                          "type": "string",
+                          "description": "Current device time in ISO 8601 UTC format.",
+                          "example": "2022-07-01T03:01:31.464Z",
+                          "format": "time"
+                        },
+                        "temperature": {
+                          "type": "integer",
+                          "description": "The current temperature of the device in degrees Celsius.",
+                          "example": 32
+                        },
+                        "ntp": {
+                          "type": "object",
+                          "description": "Details about the Network Time Protocol (NTP) synchronization.",
+                          "properties": {
+                            "offset": {
+                              "type": "integer",
+                              "description": "The offset in milliseconds between the device's clock and the NTP server.",
+                              "example": 120
+                            },
+                            "reach": {
+                              "type": "integer",
+                              "description": "The reachability score of the NTP server.",
+                              "example": 321
+                            }
+                          }
+                        },
+                        "terminalConnection": {
+                          "type": "object",
+                          "description": "Details about the terminal connection to the device.",
+                          "properties": {
+                            "status": {
+                              "type": "string",
+                              "description": "The connection status of the terminal (e.g., Connected or Disconnected).",
+                              "enum": [
+                                "CONNECTED",
+                                "DISCONNECTED"
+                              ],
+                              "example": "CONNECTED"
+                            },
+                            "type": {
+                              "type": "string",
+                              "description": "The type of terminal connection (e.g., Bluetooth, CIO, or USB).",
+                              "enum": [
+                                "BLUETOOTH",
+                                "CIO",
+                                "USB"
+                              ]
+                            }
+                          }
+                        },
+                        "batteryStatus": {
+                          "type": "object",
+                          "description": "Information about the battery status of the device.",
+                          "properties": {
+                            "mfgDate": {
+                              "type": "string",
+                              "description": "The battery manufacture date.",
+                              "example": "2024-01-15"
+                            },
+                            "cycleCount": {
+                              "type": "integer",
+                              "description": "The number of completed battery charge cycles.",
+                              "example": 120
+                            },
+                            "fullChargeCapacity": {
+                              "type": "integer",
+                              "description": "The current full charge capacity of the battery in mAh.",
+                              "example": 3200
+                            },
+                            "temperature": {
+                              "type": "integer",
+                              "description": "The battery temperature in degrees Celsius.",
+                              "example": 32
+                            },
+                            "designCapacity": {
+                              "type": "integer",
+                              "description": "The designed battery capacity in mAh.",
+                              "example": 7000
+                            },
+                            "batteryType": {
+                              "type": "string",
+                              "description": "The battery chemistry/type.",
+                              "example": "Li-ion"
+                            },
+                            "capacity": {
+                              "type": "integer",
+                              "description": "The battery capacity remaining in mAh.",
+                              "example": 5000
+                            },
+                            "stateOfHealth": {
+                              "type": "string",
+                              "description": "The overall health of the battery (e.g., Good, Average, or Poor).",
+                              "example": "GOOD",
+                              "enum": [
+                                "GOOD",
+                                "AVERAGE",
+                                "POOR"
+                              ]
+                            },
+                            "chargePercentage": {
+                              "type": "integer",
+                              "description": "The percentage of battery charge remaining.",
+                              "example": 23
+                            },
+                            "chargeStatus": {
+                              "type": "integer",
+                              "description": "The charging status of the device battery:\n0 - Charger not connected,\n1 - Charger connected and charging in progress,\n2 - Charger connected and battery is 100%.",
+                              "example": 1
+                            }
+                          }
+                        }
+                      },
+                      "required": [
+                        "powerSource",
+                        "radioActivity",
+                        "radioConnection",
+                        "systemTime",
+                        "temperature"
+                      ]
+                    },
+                    "response": {
+                      "title": "response",
+                      "x-stoplight": {
+                        "id": "1uzw0wye4si2y"
+                      },
+                      "type": "object",
+                      "description": "Execution result object containing status code and result description.",
+                      "properties": {
+                        "code": {
+                          "type": "integer",
+                          "example": 0,
+                          "description": "Response code indicating success or failure.\n\n- 0 — Success\n- 3 — Not able to retrieve information",
+                          "minimum": 0,
+                          "maximum": 3
+                        },
+                        "description": {
+                          "type": "string",
+                          "description": "Human-readable result message that explains the response code.",
+                          "example": "Success"
+                        }
+                      },
+                      "required": [
+                        "code",
+                        "description"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "command",
+                    "requestId",
+                    "apiVersion",
+                    "response"
+                  ]
+                },
+                "examples": {
+                  "Device status info": {
+                    "description": "Response with current device status including battery and connection details",
+                    "value": {
+                      "command": "get_status",
+                      "requestId": "5a88af4b-9b71-4c76-a724-03e1851afe4a",
+                      "apiVersion": "V1.21",
+                      "deviceStatus": {
+                        "powerSource": "USB",
+                        "radioActivity": "INACTIVE",
+                        "radioConnection": "DISCONNECTED",
+                        "systemTime": "2026-04-28T00:47:39.738Z",
+                        "ntp": {
+                          "offset": 0,
+                          "reach": 0
+                        },
+                        "terminalConnection": {
+                          "status": "CONNECTED",
+                          "type": "USB"
+                        },
+                        "batteryStatus": {
+                          "mfgDate": "25OCT2024",
+                          "cycleCount": 14,
+                          "fullChargeCapacity": 6235,
+                          "temperature": 23,
+                          "designCapacity": 6400,
+                          "batteryType": "LI-ION",
+                          "capacity": 6228,
+                          "stateOfHealth": "GOOD",
+                          "chargePercentage": 100,
+                          "chargeStatus": 2
+                        }
+                      },
+                      "response": {
+                        "code": 0,
+                        "description": "Success"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-error-codes": [
+          {
+            "code": 0,
+            "description": "Success",
+            "iot_status_code": "IOT_STATUS_SUCCESS",
+            "cause": "Command executed successfully",
+            "recommended_action": "No action required"
+          },
+          {
+            "code": 3,
+            "description": "Not able to retrieve information",
+            "iot_status_code": "IOT_ERROR_INFO_NOT_AVAILABLE",
+            "cause": "The device could not gather the requested information at this time",
+            "recommended_action": "Retry the command after a short delay; if persistent, reboot the device"
+          }
+        ]
+      }
+    },
+    "/get_version": {
+      "post": {
+        "tags": [
+          "Device Status"
+        ],
+        "summary": "Get Version",
+        "description": "The get_version command retrieves reader identity and software version information.\n\nThis command returns:\n- Reader model information\n- Reader serial number and SKU\n- Firmware version and component versions\n- Manufacturer and company identity metadata\n\nUse this command to:\n- Identify the exact device model and serial number\n- Verify firmware and component version alignment\n- Confirm device software baseline before updates or troubleshooting\n\nNo additional command-specific payload fields are required beyond the standard request envelope fields.\n\n### Command Details\n\n| Property | Value |\n|---|---|\n| Pattern Name | Device Identity and Firmware Retrieval |\n| Communication Type | Bidirectional (Cloud to Device, Device to Cloud) |\n| Applies To | RFD40 Series, RFD90 Series |\n| Related Commands | [get_config](#op-get-config), [get_status](#op-get-status), [set_os](#op-set-os) |\n| Required Request Fields | command, requestId |\n| Supported Operations | Read reader identity and version details |\n| Supported Response Sections | readerVersion, response |\n| Supported API Versions | V1.0, V1.1 |",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "command": {
+                    "type": "string",
+                    "example": "get_version",
+                    "description": "Command name for requesting reader identity and version details."
+                  },
+                  "requestId": {
+                    "type": "string",
+                    "example": "abc123",
+                    "description": "Unique request identifier used to correlate this command with its response."
+                  }
+                },
+                "required": [
+                  "command",
+                  "requestId"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "get_version response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "command": {
+                      "type": "string",
+                      "default": "get_version",
+                      "description": "Echoes the command name so clients can map this response to the get_version request."
+                    },
+                    "requestId": {
+                      "type": "string",
+                      "example": "abcd123",
+                      "description": "Request identifier copied from the command, used for request and response correlation."
+                    },
+                    "apiVersion": {
+                      "type": "string",
+                      "description": "API version used to interpret this response payload.",
+                      "enum": [
+                        "V1.1",
+                        "V1.0"
+                      ],
+                      "example": "V1.1"
+                    },
+                    "readerVersion": {
+                      "title": "readerVersion",
+                      "x-stoplight": {
+                        "id": "e2effa15ae429"
+                      },
+                      "type": "object",
+                      "description": "Object containing detailed version information about the reader, including firmware version, model, serial number, SKU, company name, manufacturer name, and detailed versions of various components.",
+                      "properties": {
+                        "firmwareVersion": {
+                          "type": "string",
+                          "example": "SAAFKS00-006-R02",
+                          "description": "The firmware version of the reader."
+                        },
+                        "model": {
+                          "type": "string",
+                          "example": "RFD40",
+                          "enum": [
+                            "RFD40",
+                            "RFD90"
+                          ],
+                          "description": "The model of the reader, such as RFD40 or RFD90."
+                        },
+                        "serialNumber": {
+                          "type": "string",
+                          "example": "23053520102096",
+                          "description": "The serial number of the reader."
+                        },
+                        "sku": {
+                          "type": "string",
+                          "example": "RFD4031-G10B700-US",
+                          "description": "The stock keeping unit (SKU) identifier for the reader."
+                        },
+                        "companyName": {
+                          "type": "string",
+                          "example": "Zebra Technologies",
+                          "enum": [
+                            "Zebra Technologies"
+                          ],
+                          "description": "The company name associated with the reader."
+                        },
+                        "manufacturerName": {
+                          "type": "string",
+                          "example": "Zebra Technologies",
+                          "enum": [
+                            "Zebra Technologies"
+                          ],
+                          "description": "The manufacturer name associated with the reader."
+                        },
+                        "detailedVersions": {
+                          "type": "object",
+                          "description": "Detailed version information for the reader.",
+                          "properties": {
+                            "scannerFirmware": {
+                              "type": "string",
+                              "example": "PAAEOC20-003-R01",
+                              "description": "The firmware version of the scanner component."
+                            },
+                            "radioFirmware": {
+                              "type": "string",
+                              "example": "2.0.42.0",
+                              "description": "The firmware version of the radio component."
+                            },
+                            "iotcVersion": {
+                              "type": "string",
+                              "example": "V1.1",
+                              "enum": [
+                                "V1.1"
+                              ],
+                              "description": "The version of the IoT Connector (IoTC) software."
+                            }
+                          }
+                        }
+                      },
+                      "required": [
+                        "firmwareVersion",
+                        "model",
+                        "serialNumber",
+                        "sku",
+                        "companyName",
+                        "manufacturerName"
+                      ]
+                    },
+                    "response": {
+                      "title": "response",
+                      "x-stoplight": {
+                        "id": "1uzw0wye4si2y"
+                      },
+                      "type": "object",
+                      "description": "Object containing the response code and description for the get_version command.",
+                      "properties": {
+                        "code": {
+                          "type": "integer",
+                          "example": 0,
+                          "description": "Command response status code. See x-error-codes for code meanings.",
+                          "minimum": 0,
+                          "maximum": 30
+                        },
+                        "description": {
+                          "type": "string",
+                          "description": "Human-readable result message that explains the response code.",
+                          "example": "Success"
+                        }
+                      },
+                      "required": [
+                        "code",
+                        "description"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "command",
+                    "requestId",
+                    "apiVersion",
+                    "response"
+                  ]
+                },
+                "examples": {
+                  "Device version info": {
+                    "description": "Response with device serial, model, SKU and firmware version details",
+                    "value": {
+                      "command": "get_version",
+                      "requestId": "abcd123",
+                      "apiVersion": "V1.1",
+                      "readerVersion": {
+                        "firmwareVersion": "SAAFKS00-006-R02",
+                        "model": "RFD40",
+                        "serialNumber": "23053520102096",
+                        "sku": "RFD4031-G10B700-US",
+                        "companyName": "Zebra Technologies",
+                        "manufacturerName": "Zebra Technologies",
+                        "detailedVersions": {
+                          "scannerFirmware": "PAAEOC20-003-R01",
+                          "radioFirmware": "2.0.42.0",
+                          "iotcVersion": "V1.1"
+                        }
+                      },
+                      "response": {
+                        "code": 0,
+                        "description": "Success"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/get_current_region": {
+      "post": {
+        "tags": [
+          "Device Status"
+        ],
+        "summary": "Get Current Region",
+        "description": "The get_current_region command retrieves the reader’s currently applied regulatory region settings.\n\nThis command returns:\n- Active country and regulatory region assignment\n- Supported channel set for the selected region\n- Allowed transmit power range information\n- Region-level compliance parameters used by the radio\n\nUse this command to:\n- Confirm that the device is configured for the correct regulatory region\n- Validate channel and power constraints before inventory operations\n- Audit compliance settings across deployments\n\nNo additional command-specific payload fields are required beyond the standard request envelope fields.\n\n### Command Details\n\n| Property | Value |\n|---|---|\n| Pattern Name | Regulatory Configuration Query |\n| Communication Type | Bidirectional (Cloud to Device, Device to Cloud) |\n| Applies To | RFD40 Series, RFD90 Series |\n| Related Commands | [get_config](#op-get-config), [get_status](#op-get-status), [get_version](#op-get-version) |\n| Required Request Fields | command, requestId |\n| Supported Operations | Retrieve active regulatory region settings |\n| Supported Response Sections | currentRegion, response |\n| Supported API Versions | V1.0, V1.1 |",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "command": {
+                    "type": "string",
+                    "example": "get_current_region",
+                    "description": "Command name for requesting current region configuration."
+                  },
+                  "requestId": {
+                    "type": "string",
+                    "example": "abc123",
+                    "description": "Unique request identifier used to correlate this command with its response."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "get_current_region response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "command": {
+                      "type": "string",
+                      "example": "get_current_region",
+                      "description": "Echoes the command name so clients can map this response to the get_current_region request."
+                    },
+                    "requestId": {
+                      "type": "string",
+                      "example": "abc123",
+                      "description": "Request identifier copied from the command, used for request and response correlation."
+                    },
+                    "apiVersion": {
+                      "type": "string",
+                      "enum": [
+                        "V1.0",
+                        "V1.1"
+                      ],
+                      "example": "V1.1",
+                      "description": "API version used to interpret this response payload."
+                    },
+                    "currentRegion": {
+                      "title": "currentRegion",
+                      "x-stoplight": {
+                        "id": "380edc8b7805d"
+                      },
+                      "type": "object",
+                      "description": "Current regulatory region information, including country, channels, and power limits.",
+                      "properties": {
+                        "frequencyHopping": {
+                          "type": "boolean",
+                          "description": "Indicates whether frequency hopping is enabled in the region."
+                        },
+                        "channelData": {
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "example": "915250,915750"
+                          },
+                          "description": "List of RF frequency channels available for operation in the configured region."
+                        },
+                        "country": {
+                          "type": "string",
+                          "example": "USA",
+                          "description": "The country for which the device is configured."
+                        },
+                        "lbtEnabled": {
+                          "type": "boolean",
+                          "description": "Specifies whether Listen Before Talk (LBT) is enabled for the region."
+                        },
+                        "maxTxPowerSupported": {
+                          "type": "number",
+                          "example": 29.2,
+                          "description": "The maximum transmission power supported in the region, measured in dBm."
+                        },
+                        "minTxPowerSupported": {
+                          "type": "number",
+                          "example": 10.0,
+                          "description": "The minimum transmission power supported in the region, measured in dBm."
+                        },
+                        "regulatoryStandard": {
+                          "type": "string",
+                          "example": "ETSI_EU_800M_900M_3_CHANNEL",
+                          "description": "The regulatory standard governing the region's transmission rules."
+                        }
+                      },
+                      "required": [
+                        "frequencyHopping",
+                        "channelData",
+                        "country",
+                        "lbtEnabled",
+                        "maxTxPowerSupported",
+                        "minTxPowerSupported",
+                        "regulatoryStandard"
+                      ]
+                    },
+                    "response": {
+                      "title": "response",
+                      "x-stoplight": {
+                        "id": "1uzw0wye4si2y"
+                      },
+                      "type": "object",
+                      "description": "Execution result object containing status code and result description.",
+                      "properties": {
+                        "code": {
+                          "type": "integer",
+                          "example": 0,
+                          "description": "Response code indicating success or failure.\n\n- 0 — Success\n- 3 — Not able to retrieve information",
+                          "minimum": 0,
+                          "maximum": 3
+                        },
+                        "description": {
+                          "type": "string",
+                          "description": "Human-readable result message that explains the response code.",
+                          "example": "Success"
+                        }
+                      },
+                      "required": [
+                        "code",
+                        "description"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "command",
+                    "requestId",
+                    "apiVersion",
+                    "response"
+                  ]
+                },
+                "examples": {
+                  "Current region info": {
+                    "description": "Response with current device region configuration",
+                    "value": {
+                      "command": "get_current_region",
+                      "requestId": "abc123",
+                      "apiVersion": "V1.1",
+                      "currentRegion": {
+                        "frequencyHopping": true,
+                        "channelData": [
+                          "91575",
+                          "91525",
+                          "90325",
+                          "92675",
+                          "92625",
+                          "90425",
+                          "92725",
+                          "92025",
+                          "91925",
+                          "90925",
+                          "91875",
+                          "91775",
+                          "90525",
+                          "90475",
+                          "92525",
+                          "92175",
+                          "91475",
+                          "90675",
+                          "91375",
+                          "92225",
+                          "91125",
+                          "91175",
+                          "90375",
+                          "90875",
+                          "90575",
+                          "91225",
+                          "90625",
+                          "91725",
+                          "91425",
+                          "90725",
+                          "91825",
+                          "91625",
+                          "91025",
+                          "91075",
+                          "90775",
+                          "92475",
+                          "90975",
+                          "91975",
+                          "91675",
+                          "91325",
+                          "92375",
+                          "90825",
+                          "92575",
+                          "91275",
+                          "92425",
+                          "92125",
+                          "92075",
+                          "92275",
+                          "90275",
+                          "92325"
+                        ],
+                        "country": "United States",
+                        "lbtEnabled": false,
+                        "maxTxPowerSupported": 300,
+                        "minTxPowerSupported": 0,
+                        "regulatoryStandard": "FCC"
+                      },
+                      "response": {
+                        "code": 0,
+                        "description": "Success"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-error-codes": [
+          {
+            "code": 0,
+            "description": "Success",
+            "iot_status_code": "IOT_STATUS_SUCCESS",
+            "cause": "Command executed successfully",
+            "recommended_action": "No action required"
+          },
+          {
+            "code": 3,
+            "description": "Not able to retrieve information",
+            "iot_status_code": "IOT_ERROR_INFO_NOT_AVAILABLE",
+            "cause": "The device could not gather the requested information at this time",
+            "recommended_action": "Retry the command after a short delay; if persistent, reboot the device"
+          }
+        ]
+      }
+    }
+  }
+}

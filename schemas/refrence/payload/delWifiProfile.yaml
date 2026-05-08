@@ -2,6 +2,7 @@ title: wifiProfileInfo
 x-stoplight:
   id: g7xr6cuym4h26
 type: object
+description: Object schema for wifiProfileInfo.
 examples: []
 properties:
   essid:

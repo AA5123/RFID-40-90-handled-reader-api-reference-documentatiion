@@ -4,6 +4,7 @@
     "id": "0w0vybwwfkw0u"
   },
   "type": "object",
+  "description": "Response returned for get_eth. It includes Ethernet interface configuration and command execution status.",
   "examples": [
     {
   "command": "get_eth",
@@ -54,11 +55,13 @@
   "properties": {
     "command": {
       "type": "string",
-      "example": "get_eth"
+      "example": "get_eth",
+      "description": "The command issued by the client, indicating the operation to retrieve Ethernet configuration and status information."
     },
     "requestId": {
       "type": "string",
-      "example": "abc123"
+      "example": "abc123",
+      "description": "Request identifier copied from the command, used for request and response correlation."
     },
     "apiVersion": {
       "type": "string",
@@ -66,13 +69,16 @@
       "enum": [
         "V1.0",
         "V1.1"
-      ]
+      ],
+      "description": "The version of the API being used for the request."
     },
     "ethConfig": {
-      "$ref": "../../refrence/response/ethResponseSoti.yaml"
+      "$ref": "../../refrence/response/ethResponseSoti.yaml",
+      "description": "Ethernet interface details, including status, link information, and IPv4 configuration."
     },
     "response": {
-      "$ref": "../../refrence/response/response.yaml"
+      "$ref": "../../refrence/response/response.yaml",
+      "description": "Execution result object containing status code and result description."
     }
   }
 }

@@ -1,0 +1,91 @@
+{
+  "tag": "MQTT Connectivity",
+  "description": "## Overview\n\nTrack when the device connects to or loses connection with the MQTT broker. Connection events enable fleet-wide connectivity monitoring.\n\n## Events\n\n| Event | Description |\n|---|---|\n| `mqttConnEVT` | Broker connection/disconnection events with device and version details |\n\n## Use Cases\n\n- Monitor broker connectivity across device fleet\n- Trigger reconnection alerts\n- Track connection history and uptime\n- Verify device availability",
+  "operationCount": 1,
+  "pathCount": 1,
+  "paths": {
+    "/mqttConnEVT": {
+      "post": {
+        "tags": [
+          "MQTT Connectivity"
+        ],
+        "summary": "Mqttconnevt",
+        "description": "The mqttConnEVT event provides endpoint connectivity state changes and device identity context for the reader.\n\nThis event includes:\n- Connection state indicating CONNECTED or DISCONNECTED\n- Device model and serial number at the time of the transition\n- API and protocol version metadata for the active connection\n\nUse this event to:\n- Monitor endpoint connectivity transitions in real time\n- Detect reconnect and disconnect behavior in deployment environments\n- Correlate connection state with device identity and version context\n\n### Event Details\n\n| Property | Value |\n|---|---|\n| Event Type | Connection Event |\n| Communication Type | Device to Cloud |\n| Applies To | RFD40 Series, RFD90 Series |\n| Trigger Condition | Generated when the device establishes or loses endpoint connectivity |\n| Related Events | [alerts](#op-alerts), [heartBeatEVT](#op-heartbeat-evt), [exceptionEVT](#op-exception-evt) |\n| Supported API Versions | V1.0, V1.1 |",
+        "responses": {
+          "default": {
+            "description": "mqttConnEVT event payload",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "connectionState": {
+                      "type": "string",
+                      "example": "CONNECTED",
+                      "enum": [
+                        "CONNECTED",
+                        "DISCONNECTED"
+                      ],
+                      "description": "Indicates the connection status of the device. Possible values are 'CONNECTED' or 'DISCONNECTED'."
+                    },
+                    "timestamp": {
+                      "type": "string",
+                      "example": "12:17:56",
+                      "format": "time",
+                      "description": "The time at which the MQTT connection event occurred, formatted as HH:MM:SS."
+                    },
+                    "deviceModel": {
+                      "type": "string",
+                      "example": "RFD40",
+                      "enum": [
+                        "RFD40",
+                        "RFD90"
+                      ],
+                      "description": "Specifies the model of the device involved in the MQTT connection event. Supported models are 'RFD40' and 'RFD90'."
+                    },
+                    "deviceSerialNo": {
+                      "type": "string",
+                      "example": "RFD40-24190525100354",
+                      "description": "The unique serial number of the device involved in the MQTT connection event."
+                    },
+                    "apiVersion": {
+                      "type": "number",
+                      "example": "1.0",
+                      "description": "The version of the API in use during the MQTT connection event."
+                    },
+                    "mqttVersion": {
+                      "type": "number",
+                      "example": "3.1.1",
+                      "description": "The version of the MQTT protocol being used for the connection."
+                    }
+                  }
+                },
+                "examples": {
+                  "example1": {
+                    "value": {
+                      "connectionState": "CONNECTED",
+                      "timestamp": "12:17:56",
+                      "deviceModel": "RFD40",
+                      "deviceSerialNo": "RFD40-24190525100354",
+                      "apiVersion": "1.0",
+                      "mqttVersion": "3.1.1"
+                    }
+                  },
+                  "example2": {
+                    "value": {
+                      "connectionState": "DISCONNECTED",
+                      "deviceModel": "RFD40",
+                      "deviceSerialNo": "RFD40-24190525100354",
+                      "apiVersion": 1.2,
+                      "mqttVersion": 3.0999999
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,4 +1,5 @@
 type: object
+description: Object schema for dataEvts.
 properties:
   tagData:
     type: array

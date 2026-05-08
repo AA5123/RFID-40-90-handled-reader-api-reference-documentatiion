@@ -84,3 +84,4 @@ anyOf:
         required:
           - decodedBarcode
 type: object
+description: Object schema for readerDataEVTs.

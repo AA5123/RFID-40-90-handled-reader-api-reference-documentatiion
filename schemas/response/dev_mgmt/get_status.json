@@ -4,17 +4,17 @@
     "id": "24fcpat4g238u"
   },
   "type": "object",
+  "description": "Response returned for get_status. It provides current runtime status details and command execution status.",
   "examples": [
     {
       "command": "get_status",
-      "requestId": "abc123",
-      "apiVersion": "V1.1",
+      "requestId": "5a88af4b-9b71-4c76-a724-03e1851afe4a",
+      "apiVersion": "V1.21",
       "deviceStatus": {
         "powerSource": "USB",
         "radioActivity": "INACTIVE",
-        "radioConnection": "CONNECTED",
-        "systemTime": "2024-02-26T13:45:53.728Z",
-        "temperature": 32,
+        "radioConnection": "DISCONNECTED",
+        "systemTime": "2026-04-28T00:47:39.738Z",
         "ntp": {
           "offset": 0,
           "reach": 0
@@ -24,10 +24,16 @@
           "type": "USB"
         },
         "batteryStatus": {
-          "capacity": 6400,
+          "mfgDate": "25OCT2024",
+          "cycleCount": 14,
+          "fullChargeCapacity": 6235,
+          "temperature": 23,
+          "designCapacity": 6400,
+          "batteryType": "LI-ION",
+          "capacity": 6228,
           "stateOfHealth": "GOOD",
           "chargePercentage": 100,
-          "chargeStatus": 1
+          "chargeStatus": 2
         }
       },
       "response": {
@@ -39,11 +45,13 @@
   "properties": {
     "command": {
       "type": "string",
-      "example": "get_status"
+      "example": "get_status",
+      "description": "Echoes the command name so clients can map this response to the get_status request."
     },
     "requestId": {
       "type": "string",
-      "example": "abc123"
+      "example": "abc123",
+      "description": "Request identifier copied from the command, used for request and response correlation."
     },
     "apiVersion": {
       "type": "string",
@@ -51,13 +59,16 @@
         "V1.0",
         "V1.1"
       ],
-      "example": "V1.1"
+      "example": "V1.1",
+      "description": "API version used to interpret this response payload."
     },
     "deviceStatus": {
-      "$ref": "../../refrence/response/deviceStatusResponse.yaml"
+      "$ref": "../../refrence/response/deviceStatusResponse.yaml",
+      "description": "Current device runtime state, including power, radio, connectivity, and battery details."
     },
     "response": {
-      "$ref": "../../refrence/response/response.yaml"
+      "$ref": "../../refrence/response/response.yaml",
+      "description": "Execution result object containing status code and result description."
     }
   },
   "required": [

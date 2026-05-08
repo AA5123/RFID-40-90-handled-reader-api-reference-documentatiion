@@ -1,8 +1,21 @@
-Define where the scanner sends data by configuring the MQTT broker connection.
+## Overview
 
-| Command | What It Does |
+Define where the device sends data by configuring the broker connection parameters including URL, security, and topics.
+
+## Commands
+
+| Command | Description |
 |---|---|
-| `config_endpoint` | Set up or update the MQTT broker "” URL, port, protocol, credentials, topics, and TLS settings |
-| `get_endpoint_config` | Retrieve the current MQTT endpoint configuration |
+| `config_endpoint` | Configure broker URL, port, protocol, credentials, topics, and TLS settings |
+| `get_endpoint_config` | Retrieve current endpoint configuration |
 
-These commands control the broker URL, publish/subscribe topics, QoS levels, keep-alive interval, and reconnect behavior.
+## Configuration
+
+Includes:
+- Broker URL and port
+- Publish/subscribe topics
+- QoS levels
+- Keep-alive interval
+- Authentication credentials
+- Reconnect behavior and timeouts
+- TLS/certificate settings

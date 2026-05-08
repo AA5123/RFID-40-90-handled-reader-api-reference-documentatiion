@@ -3,18 +3,18 @@
   "x-stoplight": {
     "id": "v4uqym3mk9bt0"
   },
-  "description": "This command is used to retrieve the current region configuration of the device.  ",
+  "description": "Retrieves the current regulatory region configuration applied on the reader.",
   "type": "object",
   "properties": {
     "command": {
       "type": "string",
       "example": "get_current_region",
-      "description": "Specifies the operation being performed, in this case, retrieving the current region configuration."
+      "description": "Command name for requesting current region configuration."
     },
     "requestId": {
       "type": "string",
       "example": "abc123",
-      "description": "A unique identifier for the request, allowing tracking and debugging of the operation."
+      "description": "Unique request identifier used to correlate this command with its response."
     }
   }
 }

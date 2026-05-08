@@ -2,6 +2,7 @@ title: fwUpdateStatus
 x-stoplight:
   id: 21xypho3gasa6
 type: object
+description: Object schema for fwUpdateStatus.
 properties:
   updateStatus:
     type: string

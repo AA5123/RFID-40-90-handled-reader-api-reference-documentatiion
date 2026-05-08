@@ -47,7 +47,8 @@
       "description": "A unique identifier for the request, allowing tracking and debugging of the operation."
     },
     "OSUpdateDetails": {
-      "$ref": "../../refrence/payload/osUpdatePayload.yaml"
+      "$ref": "../../refrence/payload/osUpdatePayload.yaml",
+      "description": "Object containing the details required for the OS update, including the URL of the firmware, authentication type, verification type, and CA certificate file content if applicable."
     }
   },
   "required": [

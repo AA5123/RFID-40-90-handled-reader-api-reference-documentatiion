@@ -2,6 +2,7 @@ title: certDetails
 x-stoplight:
   id: 0114c36cfa592
 type: object
+description: Object schema for certDetails.
 examples: []
 properties:
   name:

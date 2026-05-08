@@ -50,7 +50,6 @@
         "heartBeatEVT": "Device Health",
         "alerts": "Alerts",
         "alert_short": "Alerts",
-        "exceptionEVT": "Exceptions",
         "mqttConnEVT": "MQTT Connectivity",
         "dataEVT": "Tag Data Event"
     },

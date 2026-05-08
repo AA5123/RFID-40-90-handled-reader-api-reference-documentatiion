@@ -1,7 +1,18 @@
-Choose which events the scanner publishes to the MQTT broker.
+## Overview
 
-| Command | What It Does |
+Choose which events the device publishes to configured endpoints. Configure event types, thresholds, and delivery parameters.
+
+## Commands
+
+| Command | Description |
 |---|---|
-| `config_events` | Enable or disable specific events "” heartbeat, battery, temperature, network, firmware, NTP, and more |
+| `config_events` | Enable/disable specific events and set thresholds (heartbeat, battery, temperature, network, firmware, etc.) |
 
-You can also set the heartbeat interval and choose what data to include in each heartbeat.
+## Configuration Options
+
+- Event enable/disable flags
+- Heartbeat interval and content
+- Threshold values (CPU, RAM, temperature)
+- Which events trigger alerts
+
+Note: Configuration changes require device reboot to apply.

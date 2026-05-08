@@ -4,6 +4,7 @@
     "id": "2sjnogoidh0ik"
   },
   "type": "object",
+  "description": "Response returned for get_installed_certificates. It provides installed certificate metadata and command execution status.",
   "examples": [
     {
       "command": "get_installed_certificates",
@@ -77,23 +78,28 @@
   "properties": {
     "command": {
       "type": "string",
-      "example": "get_installed_certificates"
+      "example": "get_installed_certificates",
+      "description": "Echoes the command name so clients can map this response to the get_installed_certificates request."
     },
     "requestId": {
       "type": "string",
-      "example": "abc123"
+      "example": "abc123",
+      "description": "Request identifier copied from the command, used for request and response correlation."
     },
     "apiVersion": {
       "type": "string",
+      "description": "API version used to interpret this response payload.",
       "enum": [
         "V1.0",
         "V1.1"
       ]
     },
     "installedCerts": {
+      "description": "List of installed certificates with certificate metadata.",
       "$ref": "../../refrence/response/installedCertResponse.yaml"
     },
     "response": {
+      "description": "Execution result object containing status code and result description.",
       "$ref": "../../refrence/response/response.yaml"
     }
   }

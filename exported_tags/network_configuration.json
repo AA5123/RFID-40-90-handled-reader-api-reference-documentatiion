@@ -1,0 +1,1862 @@
+{
+  "tag": "Network Configuration",
+  "description": "## Overview\n\nManage the device's WiFi and Ethernet connections. The device supports both interfaces simultaneously for flexible networking.\n\n## Commands\n\n| Command | Description |\n|---|---|\n| `get_wifi` | Retrieve WiFi status including connected SSID, IP, signal strength, security type |\n| `set_wifi` | Configure WiFi access point, security (WPA2/WPA3/Enterprise), and IP settings |\n| `delete_wifi_profile` | Remove a saved WiFi profile by SSID |\n| `get_eth` | Retrieve Ethernet status including link state, speed, IP address, security |\n\n## Features\n\n- WiFi profiles stored on device\n- Automatic reconnection after reboot\n- IPv4 DHCP addressing\n- WPA2/WPA3 security support",
+  "operationCount": 4,
+  "pathCount": 4,
+  "paths": {
+    "/delete_wifi_profile": {
+      "post": {
+        "tags": [
+          "Network Configuration"
+        ],
+        "summary": "Delete Wifi Profile",
+        "description": "The delete_wifi_profile command removes a saved Wi-Fi profile from the reader.\n\nWhen you run this command, the profile identified by ESSID is deleted from stored Wi-Fi configurations.\n\nUse this command to:\n- Remove obsolete or incorrect Wi-Fi profiles\n- Clean up profile lists before adding updated configurations\n- Manage active and fallback network profile sets\n\n### Command Details\n\n| Property | Value |\n|---|---|\n| Pattern Name | Wi-Fi Profile Deletion |\n| Communication Type | Bidirectional (Cloud to Device, Device to Cloud) |\n| Applies To | RFD40 Series, RFD90 Series |\n| Related commands | [set_wifi](#op-set-wifi), [get_wifi](#op-get-wifi), [delete_certificate](#op-delete-certificate) |\n| Parameters | command, requestId, wifiProfileInfo |\n| Supported Identifier | essid |",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "command": {
+                    "type": "string",
+                    "default": "delete_wifi_profile",
+                    "description": "Specifies the operation being performed, in this case, deleting wifi profile."
+                  },
+                  "requestId": {
+                    "type": "string",
+                    "description": "A unique identifier for the request, allowing tracking and debugging of the operation."
+                  },
+                  "wifiProfileInfo": {
+                    "title": "wifiProfileInfo",
+                    "x-stoplight": {
+                      "id": "g7xr6cuym4h26"
+                    },
+                    "type": "object",
+                    "description": "Object containing the details of the wifi profile to be deleted, including its ESSID and security type.",
+                    "properties": {
+                      "essid": {
+                        "type": "string",
+                        "example": "JioFi",
+                        "description": "SSID of the wifi profile to be deleted"
+                      }
+                    }
+                  }
+                },
+                "required": [
+                  "command",
+                  "requestId"
+                ]
+              },
+              "examples": {
+                "Delete wifi profile": {
+                  "description": "Payload to delete a saved WiFi profile",
+                  "value": {
+                    "command": "delete_wifi_profile",
+                    "requestId": "abc123",
+                    "wifiProfileInfo": {
+                      "essid": "TestAP2"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "delete_wifi_profile response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "command": {
+                      "type": "string",
+                      "default": "delete_wifi_profile",
+                      "description": "Echoes the command name so clients can map this response to the delete_wifi_profile request."
+                    },
+                    "requestId": {
+                      "type": "string",
+                      "default": 1235,
+                      "description": "Request identifier copied from the command, used for request and response correlation."
+                    },
+                    "response": {
+                      "title": "response",
+                      "x-stoplight": {
+                        "id": "1uzw0wye4si2y"
+                      },
+                      "type": "object",
+                      "description": "Execution result object containing status code and result description.",
+                      "properties": {
+                        "code": {
+                          "type": "integer",
+                          "example": 0,
+                          "description": "Response code indicating success or failure.\n\n- 0 — Success\n- 2 — Invalid payload\n- 15 — WIFI Error - SSID not found\n- 16 — WIFI Error - Cannot delete active SSID\n- 17 — WIFI Error - SSID missed",
+                          "minimum": 0,
+                          "maximum": 17
+                        },
+                        "description": {
+                          "type": "string",
+                          "description": "Human-readable result message that explains the response code.",
+                          "example": "Success"
+                        }
+                      },
+                      "required": [
+                        "code",
+                        "description"
+                      ]
+                    }
+                  }
+                },
+                "examples": {
+                  "example1": {
+                    "value": {
+                      "command": "delete_wifi_profile",
+                      "requestId": "abc345",
+                      "response": {
+                        "code": 0,
+                        "description": "Success"
+                      }
+                    }
+                  },
+                  "example2": {
+                    "value": {
+                      "command": "delete_wifi_profile",
+                      "requestId": "1235",
+                      "apiVersion": "V1.1",
+                      "response": {
+                        "code": 16,
+                        "description": "WIFI Error - Cannot delete active SSID"
+                      }
+                    }
+                  },
+                  "example3": {
+                    "value": {
+                      "command": "delete_wifi_profile",
+                      "requestId": "1235",
+                      "apiVersion": "V1.1",
+                      "response": {
+                        "code": 15,
+                        "description": "WIFI Error - SSID not found"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-error-codes": [
+          {
+            "code": 0,
+            "description": "Success",
+            "iot_status_code": "IOT_STATUS_SUCCESS",
+            "cause": "Command executed successfully",
+            "recommended_action": "No action required"
+          },
+          {
+            "code": 2,
+            "description": "Invalid payload",
+            "iot_status_code": "IOT_ERROR_INVALID_PAYLOAD",
+            "cause": "The JSON payload is malformed or contains invalid field values",
+            "recommended_action": "Validate the payload against the command schema and correct any errors"
+          },
+          {
+            "code": 15,
+            "description": "WIFI Error - SSID not found",
+            "iot_status_code": "IOT_ERROR_SSID_NOT_FOUND",
+            "cause": "The specified Wi-Fi SSID does not exist in saved profiles",
+            "recommended_action": "Verify the SSID name is correct and that the profile has been saved"
+          },
+          {
+            "code": 16,
+            "description": "WIFI Error - Cannot delete active SSID",
+            "iot_status_code": "IOT_ERROR_DELETE_ACTIVE_SSID",
+            "cause": "The Wi-Fi profile being deleted is the currently connected network",
+            "recommended_action": "Disconnect from the network or connect to a different SSID before deleting"
+          },
+          {
+            "code": 17,
+            "description": "WIFI Error - SSID missed",
+            "iot_status_code": "IOT_ERROR_SSID_MISSED",
+            "cause": "The required SSID field is missing from the payload",
+            "recommended_action": "Include the SSID field in the command payload"
+          }
+        ]
+      }
+    },
+    "/get_eth": {
+      "post": {
+        "tags": [
+          "Network Configuration"
+        ],
+        "summary": "Get Eth",
+        "description": "The get_eth command retrieves Ethernet interface configuration and connection state from the reader.\n\nThis command returns:\n- Ethernet interface status and link state details\n- DHCP enablement and IPv4 addressing information\n- Interface-level network parameters and connectivity metadata\n- Response metadata for command execution\n\nUse this command to:\n- Verify Ethernet connectivity and link speed\n- Check interface status and network addressing\n- Confirm DHCP-based IPv4 network configuration\n- Troubleshoot wired network availability\n\nNo additional command-specific payload fields are required beyond the standard request envelope fields.\n\n### Command Details\n\n| Property | Value |\n|---|---|\n| Pattern Name | Ethernet Configuration Query |\n| Communication Type | Bidirectional (Cloud to Device, Device to Cloud) |\n| Applies To | RFD40 Series, RFD90 Series |\n| Related Commands | [get_wifi](#op-get-wifi), [get_config](#op-get-config), [set_config](#op-set-config) |\n| Required Request Fields | command, requestId |\n| Supported Operations | Retrieve Ethernet network configuration and interface status |\n| Supported Response Sections | ethConfig, response |\n| Supported API Versions | V1.0, V1.1 |",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "command": {
+                    "type": "string",
+                    "example": "get_eth",
+                    "description": "Command name for requesting Ethernet configuration details."
+                  },
+                  "requestId": {
+                    "type": "string",
+                    "example": "abc123",
+                    "description": "Unique request identifier used to correlate this command with its response."
+                  }
+                },
+                "required": [
+                  "command",
+                  "requestId"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "get_eth response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "command": {
+                      "type": "string",
+                      "example": "get_eth",
+                      "description": "The command issued by the client, indicating the operation to retrieve Ethernet configuration and status information."
+                    },
+                    "requestId": {
+                      "type": "string",
+                      "example": "abc123",
+                      "description": "Request identifier copied from the command, used for request and response correlation."
+                    },
+                    "apiVersion": {
+                      "type": "string",
+                      "example": "V1.1",
+                      "enum": [
+                        "V1.0",
+                        "V1.1"
+                      ],
+                      "description": "The version of the API being used for the request."
+                    },
+                    "ethConfig": {
+                      "title": "ethConfig",
+                      "x-stoplight": {
+                        "id": "jo5vgcsotp2jr"
+                      },
+                      "type": "object",
+                      "description": "Ethernet interface details, including status, link information, and IPv4 configuration.",
+                      "properties": {
+                        "interfaceDetails": {
+                          "type": "object",
+                          "description": "Ethernet interface details including link state, addressing, and optional security settings.",
+                          "properties": {
+                            "interfaceName": {
+                              "type": "string",
+                              "example": "eth0",
+                              "description": "Name of the network interface."
+                            },
+                            "status": {
+                              "type": "string",
+                              "example": "enabled",
+                              "enum": [
+                                "enabled",
+                                "disabled"
+                              ],
+                              "description": "Status of the network interface."
+                            },
+                            "hostname": {
+                              "type": "string",
+                              "example": "RFD40AB03",
+                              "description": "Hostname assigned to the device."
+                            },
+                            "macAddress": {
+                              "type": "string",
+                              "example": "E0-D0-45-3D-38-1D",
+                              "description": "MAC address of the network interface."
+                            },
+                            "linkStatus": {
+                              "type": "object",
+                              "description": "Ethernet link status information.",
+                              "properties": {
+                                "status": {
+                                  "type": "string",
+                                  "enum": [
+                                    "Connected",
+                                    "Disconnected"
+                                  ],
+                                  "example": "Connected",
+                                  "description": "Current status of the network link."
+                                },
+                                "linkSpeed": {
+                                  "type": "string",
+                                  "example": "100Mbps",
+                                  "description": "Speed of the network link."
+                                }
+                              },
+                              "required": [
+                                "status",
+                                "linkSpeed"
+                              ]
+                            },
+                            "ipv4Configuration": {
+                              "type": "object",
+                              "description": "IPv4 network configuration details.",
+                              "properties": {
+                                "ipAddress": {
+                                  "type": "string",
+                                  "example": "192.168.1.81",
+                                  "format": "ipv4",
+                                  "description": "IPv4 address of the network interface."
+                                },
+                                "subnetMask": {
+                                  "type": "string",
+                                  "example": "255.255.255.0",
+                                  "format": "ipv4",
+                                  "description": "Subnet mask for the IPv4 configuration."
+                                },
+                                "gateway": {
+                                  "type": "string",
+                                  "example": "192.168.1.144",
+                                  "format": "ipv4",
+                                  "description": "Gateway address for the IPv4 configuration."
+                                },
+                                "enableDhcp": {
+                                  "type": "boolean",
+                                  "enum": [
+                                    true,
+                                    false
+                                  ],
+                                  "example": true,
+                                  "description": "Indicates if DHCP is enabled for IPv4 configuration."
+                                },
+                                "dnsServer": {
+                                  "type": "string",
+                                  "format": "ipv4",
+                                  "example": "192.168.1.78",
+                                  "description": "DNS server address for the IPv4 configuration."
+                                },
+                                "domainName": {
+                                  "type": "string",
+                                  "example": "test.soti.com",
+                                  "description": "Domain name for the IPv4 configuration."
+                                }
+                              }
+                            },
+                            "security": {
+                              "type": "object",
+                              "description": "Ethernet security configuration details.",
+                              "properties": {
+                                "securityStatus": {
+                                  "type": "boolean",
+                                  "example": true,
+                                  "description": "Indicates if security features are enabled."
+                                },
+                                "EAP802_1X": {
+                                  "type": "object",
+                                  "description": "IEEE 802.1X authentication configuration details.",
+                                  "properties": {
+                                    "authentication": {
+                                      "type": "string",
+                                      "enum": [
+                                        "EAP-MD5",
+                                        "LEAP",
+                                        "PEAP",
+                                        "EAP-SIM",
+                                        "EAP-AKA",
+                                        "EAP-TLS",
+                                        "EAP-TTLS",
+                                        "EAP-FAST"
+                                      ],
+                                      "example": "PEAP",
+                                      "description": "Authentication method for 802.1X security."
+                                    },
+                                    "innerAuthentication": {
+                                      "type": "string",
+                                      "example": "EAP-MS-CHAPv2",
+                                      "enum": [
+                                        "EAP-MS-CHAPv2",
+                                        "EAP-TLS",
+                                        "EAP-GTC"
+                                      ],
+                                      "description": "Inner authentication method for 802.1X security."
+                                    },
+                                    "certificate": {
+                                      "type": "string",
+                                      "example": "client45",
+                                      "description": "Certificate used for 802.1X authentication."
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "required": [
+                            "interfaceName",
+                            "status",
+                            "hostname",
+                            "macAddress"
+                          ]
+                        }
+                      }
+                    },
+                    "response": {
+                      "title": "response",
+                      "x-stoplight": {
+                        "id": "1uzw0wye4si2y"
+                      },
+                      "type": "object",
+                      "description": "Execution result object containing status code and result description.",
+                      "properties": {
+                        "code": {
+                          "type": "integer",
+                          "example": 0,
+                          "description": "Response code indicating success or failure.\n\n- 0 — Success\n- 3 — Not able to retrieve information",
+                          "minimum": 0,
+                          "maximum": 3
+                        },
+                        "description": {
+                          "type": "string",
+                          "description": "Human-readable result message that explains the response code.",
+                          "example": "Success"
+                        }
+                      },
+                      "required": [
+                        "code",
+                        "description"
+                      ]
+                    }
+                  }
+                },
+                "examples": {
+                  "Ethernet config info": {
+                    "description": "Response with ethernet interface configuration details",
+                    "value": {
+                      "command": "get_eth",
+                      "requestId": "abc123",
+                      "apiVersion": "V1.1",
+                      "ethconfig": {
+                        "InterfaceDetails": {
+                          "interfaceName": "eth0",
+                          "status": "Enabled",
+                          "hostName": "RFD40-211545201D0020",
+                          "macAddress": "AC:3F:A4:00:2C:89",
+                          "linkStatus": {
+                            "status": "Connected",
+                            "linkSpeed": "100Mbps"
+                          },
+                          "ipv4Configuration": {
+                            "ipAddress": "192.168.0.101",
+                            "subnetMask": "255.255.255.0",
+                            "gateway": "192.168.0.1",
+                            "enableDhcp": true,
+                            "dnsServer": "0.0.0.0",
+                            "domainName": "zebra.com"
+                          }
+                        }
+                      },
+                      "response": {
+                        "code": 0,
+                        "description": "Success"
+                      }
+                    }
+                  },
+                  "Ethernet interface disabled": {
+                    "description": "Response when ethernet interface is disabled on the device",
+                    "value": {
+                      "command": "get_eth",
+                      "requestId": "abc123",
+                      "apiVersion": "V1.1",
+                      "ethConfig": {
+                        "interfaceDetails": {
+                          "interfaceName": "eth0",
+                          "status": "Disabled"
+                        }
+                      },
+                      "response": {
+                        "code": 0,
+                        "description": "Success"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-error-codes": [
+          {
+            "code": 0,
+            "description": "Success",
+            "iot_status_code": "IOT_STATUS_SUCCESS",
+            "cause": "Command executed successfully",
+            "recommended_action": "No action required"
+          },
+          {
+            "code": 3,
+            "description": "Not able to retrieve information",
+            "iot_status_code": "IOT_ERROR_INFO_NOT_AVAILABLE",
+            "cause": "The device could not gather the requested information at this time",
+            "recommended_action": "Retry the command after a short delay; if persistent, reboot the device"
+          }
+        ]
+      }
+    },
+    "/get_wifi": {
+      "post": {
+        "tags": [
+          "Network Configuration"
+        ],
+        "summary": "Get Wifi",
+        "description": "The get_wifi command retrieves saved and active Wi-Fi configuration details from the reader.\n\nThis command returns:\n- Saved and active Wi-Fi profile configuration details\n- Interface network settings and DHCP addressing state\n- Access point and security configuration parameters\n- Response metadata for command execution\n\nUse this command to:\n- Verify connected and saved Wi-Fi profiles\n- Check interface addressing and DHCP state\n- Validate security setup and profile preference behavior\n- Troubleshoot Wi-Fi availability and profile issues\n\nNo additional command-specific payload fields are required beyond the standard request envelope fields.\n\n### Command Details\n\n| Property | Value |\n|---|---|\n| Pattern Name | Wi-Fi Configuration Retrieval |\n| Communication Type | Bidirectional (Cloud to Device, Device to Cloud) |\n| Applies To | RFD40 Series, RFD90 Series |\n| Related Commands | [set_wifi](#op-set-wifi), [delete_wifi_profile](#op-delete-wifi-profile), [get_eth](#op-get-eth), [get_config](#op-get-config) |\n| Required Request Fields | command, requestId |\n| Supported Operations | Retrieve Wi-Fi interface and profile configuration details |\n| Supported Response Sections | wifiProfiles, response |\n| Supported API Versions | V1.0, V1.1 |",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "command": {
+                    "type": "string",
+                    "example": "get_wifi",
+                    "description": "Command name for requesting Wi-Fi configuration details."
+                  },
+                  "requestId": {
+                    "type": "string",
+                    "example": "abc123",
+                    "description": "Unique request identifier used to correlate this command with its response."
+                  }
+                },
+                "required": [
+                  "command",
+                  "requestId"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "get_wifi response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "command": {
+                      "type": "string",
+                      "example": "get_wifi",
+                      "description": "The command issued by the client, indicating the operation to retrieve Wi-Fi configuration and status information."
+                    },
+                    "requestId": {
+                      "type": "string",
+                      "example": "abc123",
+                      "description": "Request identifier copied from the command, used for request and response correlation."
+                    },
+                    "apiVersion": {
+                      "type": "string",
+                      "example": "V1.1",
+                      "enum": [
+                        "V1.0",
+                        "V1.1"
+                      ],
+                      "description": "API version used to interpret this response payload."
+                    },
+                    "wifiProfiles": {
+                      "title": "wifiProfiles",
+                      "x-stoplight": {
+                        "id": "d1gjzrdjhbos9"
+                      },
+                      "type": "object",
+                      "description": "Object containing an array of Wi-Fi configuration profiles, each with detailed information about the Wi-Fi interface, access point, IP configuration, and security settings.",
+                      "properties": {
+                        "wifiConfig": {
+                          "type": "array",
+                          "description": "List of Wi-Fi profile entries with interface and security details.",
+                          "items": {
+                            "title": "wifiConfig",
+                            "x-stoplight": {
+                              "id": "05cf5d5pin81a"
+                            },
+                            "type": "object",
+                            "properties": {
+                              "interfaceDetails": {
+                                "type": "object",
+                                "description": "Wi-Fi interface information and associated network configuration.",
+                                "properties": {
+                                  "interfaceName": {
+                                    "type": "string",
+                                    "description": "The name of the network interface (e.g., wlan0).",
+                                    "example": "wlan0"
+                                  },
+                                  "status": {
+                                    "type": "string",
+                                    "description": "The status of the network interface, either \"ENABLED\" or \"DISABLED\".",
+                                    "enum": [
+                                      "ENABLED",
+                                      "DISABLED"
+                                    ],
+                                    "example": "ENABLED"
+                                  },
+                                  "hostname": {
+                                    "type": "string",
+                                    "description": "The hostname of the device.",
+                                    "example": "RFD40S123"
+                                  },
+                                  "macAddress": {
+                                    "type": "string",
+                                    "description": "The MAC address of the network interface.",
+                                    "example": "E0-D0-45-3D-38-1D"
+                                  },
+                                  "accessPoint": {
+                                    "type": "object",
+                                    "description": "Details of the access point profile associated with this Wi-Fi entry.",
+                                    "properties": {
+                                      "essid": {
+                                        "type": "string",
+                                        "description": "The ESSID (network name) of the access point.",
+                                        "example": "Zwireless"
+                                      },
+                                      "status": {
+                                        "type": "string",
+                                        "description": "The connection status to the access point, either \"CONNECTED\" or \"DISCONNECTED\".",
+                                        "enum": [
+                                          "CONNECTED",
+                                          "DISCONNECTED"
+                                        ],
+                                        "example": "CONNECTED"
+                                      },
+                                      "securityType": {
+                                        "type": "string",
+                                        "description": "The security type used by the access point.",
+                                        "enum": [
+                                          "WPA2personal",
+                                          "WPA3Personal",
+                                          "WPA2Enterprise",
+                                          "WPA3Enterprise",
+                                          "OWEPublic",
+                                          "Open"
+                                        ],
+                                        "example": "OWEPublic"
+                                      },
+                                      "isPreferred": {
+                                        "type": "boolean",
+                                        "description": "Indicates whether this access point is preferred for connection."
+                                      },
+                                      "autoConn": {
+                                        "type": "boolean",
+                                        "description": "This field is deprecated and kept for backward compatibility."
+                                      }
+                                    },
+                                    "required": [
+                                      "essid",
+                                      "status",
+                                      "securityType",
+                                      "isPreferred"
+                                    ]
+                                  },
+                                  "ipv4Configuration": {
+                                    "type": "object",
+                                    "description": "IPv4 settings currently applied to the Wi-Fi interface.",
+                                    "properties": {
+                                      "ipAddress": {
+                                        "type": "string",
+                                        "format": "ipv4",
+                                        "description": "The IPv4 address of the device.",
+                                        "example": "192.168.1.81"
+                                      },
+                                      "subnetMask": {
+                                        "type": "string",
+                                        "format": "ipv4",
+                                        "description": "The subnet mask of the network.",
+                                        "example": "255.255.255.0"
+                                      },
+                                      "gateway": {
+                                        "type": "string",
+                                        "format": "ipv4",
+                                        "description": "The IPv4 gateway address.",
+                                        "example": "192.168.1.144"
+                                      },
+                                      "enableDhcp": {
+                                        "type": "boolean",
+                                        "description": "Indicates if DHCP is enabled for IPv4 configuration.",
+                                        "example": true
+                                      },
+                                      "dnsServer": {
+                                        "type": "string",
+                                        "format": "ipv4",
+                                        "description": "The IPv4 address of the DNS server.",
+                                        "example": "192.168.1.78"
+                                      },
+                                      "domainName": {
+                                        "type": "string",
+                                        "description": "The domain name of the network.",
+                                        "example": "test.soti.com"
+                                      }
+                                    }
+                                  },
+                                  "securityDetails": {
+                                    "type": "object",
+                                    "description": "Security configuration details based on the selected Wi-Fi security type.",
+                                    "properties": {
+                                      "WPA2Personal": {
+                                        "type": "object",
+                                        "description": "WPA2-Personal security settings for this Wi-Fi profile.",
+                                        "properties": {
+                                          "password": {
+                                            "type": "string",
+                                            "description": "The password used for WPA2-Personal security.",
+                                            "example": "test@123",
+                                            "format": "password"
+                                          }
+                                        }
+                                      },
+                                      "WPA3Personal": {
+                                        "type": "object",
+                                        "description": "WPA3-Personal security settings for this Wi-Fi profile.",
+                                        "properties": {
+                                          "password": {
+                                            "type": "string",
+                                            "description": "The password used for WPA3-Personal security.",
+                                            "example": "test@123",
+                                            "format": "password"
+                                          }
+                                        }
+                                      },
+                                      "WPA2Enterprise": {
+                                        "type": "object",
+                                        "description": "WPA2-Enterprise security settings for this Wi-Fi profile.",
+                                        "properties": {
+                                          "authentication": {
+                                            "type": "string",
+                                            "description": "The authentication method for WPA2-Enterprise.",
+                                            "enum": [
+                                              "tls",
+                                              "ttls",
+                                              "peap"
+                                            ],
+                                            "example": "tls"
+                                          },
+                                          "innerAuthentication": {
+                                            "type": "string",
+                                            "description": "The inner authentication protocol for WPA2-Enterprise.",
+                                            "enum": [
+                                              "none",
+                                              "tls",
+                                              "mschapv2"
+                                            ],
+                                            "example": "mschapv2"
+                                          },
+                                          "identity": {
+                                            "type": "string",
+                                            "description": "The identity used for WPA2-Enterprise authentication.",
+                                            "example": "test"
+                                          },
+                                          "anonymousIdentity": {
+                                            "type": "string",
+                                            "description": "The anonymous identity used for WPA2-Enterprise authentication.",
+                                            "example": "test"
+                                          },
+                                          "password": {
+                                            "type": "string",
+                                            "format": "password",
+                                            "description": "The password for WPA2-Enterprise authentication.",
+                                            "example": "test@123"
+                                          },
+                                          "passphrase": {
+                                            "type": "string",
+                                            "description": "The passphrase for WPA2-Enterprise.",
+                                            "example": "test@321"
+                                          },
+                                          "certificate": {
+                                            "type": "array",
+                                            "description": "The certificates used for WPA2-Enterprise.",
+                                            "example": "ap1wpa2e",
+                                            "items": {
+                                              "type": "object",
+                                              "description": "One certificate key or value pair for WPA2-Enterprise authentication.",
+                                              "maxProperties": 4,
+                                              "properties": {
+                                                "key": {
+                                                  "type": "string",
+                                                  "description": "The type of certificate (e.g., ca_cert, client_key).",
+                                                  "enum": [
+                                                    "ca_cert",
+                                                    "client_key",
+                                                    "client_cert",
+                                                    "cert_key_password"
+                                                  ]
+                                                },
+                                                "value": {
+                                                  "type": "string",
+                                                  "description": "The value of the certificate."
+                                                }
+                                              }
+                                            }
+                                          },
+                                          "protocol": {
+                                            "type": "string",
+                                            "description": "The protocol used for WPA2-Enterprise.",
+                                            "enum": [
+                                              "WPA2_Enterprise_CCMP"
+                                            ],
+                                            "example": "WPA2_Enterprise_CCMP"
+                                          }
+                                        }
+                                      },
+                                      "WPA3Enterprise": {
+                                        "type": "object",
+                                        "description": "WPA3-Enterprise security settings for this Wi-Fi profile.",
+                                        "properties": {
+                                          "authentication": {
+                                            "type": "string",
+                                            "description": "The authentication method for WPA3-Enterprise.",
+                                            "enum": [
+                                              "tls",
+                                              "ttls",
+                                              "peap"
+                                            ],
+                                            "example": "tls"
+                                          },
+                                          "innerAuthentication": {
+                                            "type": "string",
+                                            "description": "The inner authentication protocol for WPA3-Enterprise.",
+                                            "enum": [
+                                              "none",
+                                              "tls",
+                                              "mschapv2"
+                                            ],
+                                            "example": "mschapv2"
+                                          },
+                                          "identity": {
+                                            "type": "string",
+                                            "description": "The identity used for WPA3-Enterprise authentication.",
+                                            "example": "test"
+                                          },
+                                          "anonymousIdentity": {
+                                            "type": "string",
+                                            "description": "The anonymous identity used for WPA3-Enterprise authentication.",
+                                            "example": "test"
+                                          },
+                                          "password": {
+                                            "type": "string",
+                                            "format": "password",
+                                            "description": "The password for WPA3-Enterprise authentication.",
+                                            "example": "test@123"
+                                          },
+                                          "passphrase": {
+                                            "type": "string",
+                                            "description": "The passphrase for WPA3-Enterprise.",
+                                            "example": "test@321"
+                                          },
+                                          "certificate": {
+                                            "type": "array",
+                                            "description": "The certificates used for WPA3-Enterprise.",
+                                            "example": "ap1wpa2e",
+                                            "items": {
+                                              "type": "object",
+                                              "description": "One certificate key or value pair for WPA3-Enterprise authentication.",
+                                              "maxProperties": 4,
+                                              "properties": {
+                                                "key": {
+                                                  "type": "string",
+                                                  "description": "The type of certificate (e.g., ca_cert, client_key).",
+                                                  "enum": [
+                                                    "ca_cert",
+                                                    "client_key",
+                                                    "client_cert",
+                                                    "cert_key_password"
+                                                  ]
+                                                },
+                                                "value": {
+                                                  "type": "string",
+                                                  "description": "The value of the certificate."
+                                                }
+                                              }
+                                            }
+                                          },
+                                          "protocol": {
+                                            "type": "string",
+                                            "description": "The protocol used for WPA3-Enterprise.",
+                                            "enum": [
+                                              "WPA3_Enterprise_CCMP",
+                                              "WPA3_Enterprise_CCMP_256",
+                                              "WPA3_Enterprise_GCMP_128",
+                                              "WPA3_Enterprise_GCMP_256_SHA256",
+                                              "WPA3_Enterprise_GCMP_256_SUITEB_192"
+                                            ],
+                                            "example": "WPA3_Enterprise_CCMP_256",
+                                            "maxLength": 3
+                                          }
+                                        }
+                                      },
+                                      "OWEPublic": {
+                                        "type": "object",
+                                        "description": "OWE public-network security settings for this Wi-Fi profile.",
+                                        "properties": {
+                                          "authentication": {
+                                            "type": "string",
+                                            "description": "The authentication method for OWE-Public access."
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                },
+                                "required": [
+                                  "interfaceName",
+                                  "status",
+                                  "hostname",
+                                  "macAddress"
+                                ]
+                              }
+                            },
+                            "description": "Wi-Fi network configuration — interface status (enabled/disabled), connected access point (SSID, signal, security type), IP addressing (IPv4, DHCP or static), and enterprise security credentials (WPA2/WPA3 Personal or Enterprise, certificates)."
+                          }
+                        }
+                      }
+                    },
+                    "response": {
+                      "title": "response",
+                      "x-stoplight": {
+                        "id": "1uzw0wye4si2y"
+                      },
+                      "type": "object",
+                      "description": "Object containing the response code and description for the get_wifi command.",
+                      "properties": {
+                        "code": {
+                          "type": "integer",
+                          "example": 0,
+                          "description": "Response code indicating success or failure.\n\n- 0 — Success\n- 3 — Not able to retrieve information",
+                          "minimum": 0,
+                          "maximum": 3
+                        },
+                        "description": {
+                          "type": "string",
+                          "description": "Human-readable result message that explains the response code.",
+                          "example": "Success"
+                        }
+                      },
+                      "required": [
+                        "code",
+                        "description"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "command",
+                    "requestId",
+                    "apiVersion",
+                    "response"
+                  ]
+                },
+                "examples": {
+                  "WPA2 Personal connection": {
+                    "description": "Response with WiFi connected to WPA2 Personal network",
+                    "value": {
+                      "command": "get_wifi",
+                      "requestId": "db4c7adb-0173-4114-9054-daf6dcc3c7df",
+                      "apiVersion": "V1.1",
+                      "wifiProfiles": {
+                        "wifiConfig": [
+                          {
+                            "interfaceDetails": {
+                              "accessPoint": {
+                                "essid": "TestAp",
+                                "status": "DISCONNECTED",
+                                "securityType": "WPA2Personal",
+                                "isPreferred": false
+                              },
+                              "securityDetails": {
+                                "WPA2Personal": {
+                                  "password": "XXXXXXXX"
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "interfaceDetails": {
+                              "interfaceName": "wlan0",
+                              "hostname": "RFD40-211555201D0075",
+                              "macAddress": "AC:3F:A4:00:2A:73",
+                              "accessPoint": {
+                                "essid": "EL114-RF40-90-1",
+                                "status": "CONNECTED",
+                                "securityType": "WPA2Personal",
+                                "isPreferred": false
+                              },
+                              "ipv4Configuration": {
+                                "ipAddress": "10.233.45.78",
+                                "subnetMask": "255.255.255.0",
+                                "gateway": "10.233.45.2",
+                                "enableDhcp": true,
+                                "dnsServer": "10.233.1.200",
+                                "domainName": "zebra.com"
+                              },
+                              "securityDetails": {
+                                "WPA2Personal": {
+                                  "password": "XXXXXXXX"
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "interfaceDetails": {
+                              "accessPoint": {
+                                "essid": "TestAp0",
+                                "status": "DISCONNECTED",
+                                "securityType": "WPA2Personal",
+                                "isPreferred": false
+                              },
+                              "securityDetails": {
+                                "WPA2Personal": {
+                                  "password": "XXXXXXXX"
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      },
+                      "response": {
+                        "code": 0,
+                        "description": "Success"
+                      }
+                    }
+                  },
+                  "WPA2 Enterprise connection": {
+                    "description": "Response with WiFi connected to WPA2 Enterprise network with certificates",
+                    "value": {
+                      "command": "get_wifi",
+                      "requestId": "abc002",
+                      "apiVersion": "V1.1",
+                      "wifiProfiles": {
+                        "wifiConfig": [
+                          {
+                            "interfaceDetails": {
+                              "interfaceName": "wlan0",
+                              "status": "ENABLED",
+                              "hostname": "RFD40-22326520100477",
+                              "macAddress": "E0-D0-45-3D-38-3F",
+                              "accessPoint": {
+                                "essid": "SECURE_AP",
+                                "status": "CONNECTED",
+                                "securityType": "WPA2Enterprise",
+                                "isPreferred": true,
+                                "autoConn": true
+                              },
+                              "ipv4Configuration": {
+                                "ipAddress": "172.16.10.88",
+                                "subnetMask": "255.255.255.0",
+                                "gateway": "172.16.10.1",
+                                "enableDhcp": true,
+                                "dnsServer": "172.16.10.5",
+                                "domainName": "secure.corp"
+                              },
+                              "securityDetails": {
+                                "WPA2Enterprise": {
+                                  "authentication": "tls",
+                                  "passphrase": "XXXXXXXX",
+                                  "certificate": [
+                                    {
+                                      "key": "ca_cert",
+                                      "value": "wifi_root_certificate"
+                                    },
+                                    {
+                                      "key": "client_cert",
+                                      "value": "wifi"
+                                    },
+                                    {
+                                      "key": "client_key",
+                                      "value": "wifi"
+                                    }
+                                  ],
+                                  "protocol": "WPA2_Enterprise_CCMP"
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      },
+                      "response": {
+                        "code": 0,
+                        "description": "Success"
+                      }
+                    }
+                  },
+                  "WPA3 Enterprise connection": {
+                    "description": "Response with WiFi connected to WPA3 Enterprise network with advanced security",
+                    "value": {
+                      "command": "get_wifi",
+                      "requestId": "abc003",
+                      "apiVersion": "V1.1",
+                      "wifiProfiles": {
+                        "wifiConfig": [
+                          {
+                            "interfaceDetails": {
+                              "interfaceName": "wlan0",
+                              "status": "ENABLED",
+                              "hostname": "RFD40-22326520100477",
+                              "macAddress": "E0-D0-45-3D-38-4A",
+                              "accessPoint": {
+                                "essid": "WPA3_ENTERPRISE",
+                                "status": "CONNECTED",
+                                "securityType": "WPA3Enterprise",
+                                "isPreferred": false,
+                                "autoConn": false
+                              },
+                              "ipv4Configuration": {
+                                "ipAddress": "192.168.100.200",
+                                "subnetMask": "255.255.255.0",
+                                "gateway": "192.168.100.1",
+                                "enableDhcp": true,
+                                "dnsServer": "192.168.100.10",
+                                "domainName": "wpa3.enterprise.com"
+                              },
+                              "securityDetails": {
+                                "WPA3Enterprise": {
+                                  "authentication": "ttls",
+                                  "innerAuthentication": "mschapv2",
+                                  "identity": "XXXXXXXX",
+                                  "anonymousIdentity": "XXXXXXXX",
+                                  "password": "XXXXXXXX",
+                                  "certificate": [
+                                    {
+                                      "key": "ca_cert",
+                                      "value": "wpa3_ca_cert"
+                                    }
+                                  ],
+                                  "protocol": "WPA3_Enterprise_GCMP_256_SHA256"
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      },
+                      "response": {
+                        "code": 0,
+                        "description": "Success"
+                      }
+                    }
+                  },
+                  "Open network connection": {
+                    "description": "Response with WiFi connected to open/unsecured network",
+                    "value": {
+                      "command": "get_wifi",
+                      "requestId": "open_network",
+                      "apiVersion": "V1.1",
+                      "wifiProfiles": {
+                        "wifiConfig": [
+                          {
+                            "interfaceDetails": {
+                              "interfaceName": "wlan0",
+                              "status": "ENABLED",
+                              "hostname": "RFD40-22326520100477",
+                              "macAddress": "E0-D0-45-3D-38-5B",
+                              "accessPoint": {
+                                "essid": "PUBLIC_WIFI",
+                                "status": "CONNECTED",
+                                "securityType": "Open",
+                                "isPreferred": false,
+                                "autoConn": false
+                              },
+                              "ipv4Configuration": {
+                                "ipAddress": "203.0.113.45",
+                                "subnetMask": "255.255.255.0",
+                                "gateway": "203.0.113.1",
+                                "enableDhcp": true,
+                                "dnsServer": "8.8.8.8",
+                                "domainName": "public.wifi"
+                              }
+                            }
+                          }
+                        ]
+                      },
+                      "response": {
+                        "code": 0,
+                        "description": "Success"
+                      }
+                    }
+                  },
+                  "WiFi interface disabled": {
+                    "description": "Response when WiFi interface is disabled on the device",
+                    "value": {
+                      "command": "get_wifi",
+                      "requestId": "abc005",
+                      "apiVersion": "V1.1",
+                      "wifiConfig": {
+                        "interfaceDetails": {
+                          "interfaceName": "wlan0",
+                          "status": "DISABLED",
+                          "hostname": "RFD40-22326520100477",
+                          "macAddress": "E0-D0-45-3D-38-3F"
+                        }
+                      },
+                      "response": {
+                        "code": 7,
+                        "description": "Interface is not available"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-error-codes": [
+          {
+            "code": 0,
+            "description": "Success",
+            "iot_status_code": "IOT_STATUS_SUCCESS",
+            "cause": "Command executed successfully",
+            "recommended_action": "No action required"
+          },
+          {
+            "code": 3,
+            "description": "Not able to retrieve information",
+            "iot_status_code": "IOT_ERROR_INFO_NOT_AVAILABLE",
+            "cause": "The device could not gather the requested information at this time",
+            "recommended_action": "Retry the command after a short delay; if persistent, reboot the device"
+          }
+        ]
+      }
+    },
+    "/set_wifi": {
+      "post": {
+        "tags": [
+          "Network Configuration"
+        ],
+        "summary": "Set Wifi",
+        "description": "The set_wifi command configures or updates Wi-Fi interface and access point profile settings on the reader.\n\nThis command allows you to configure:\n- Wi-Fi profile create and modify operations\n- Interface enablement and preferred connection behavior\n- Access point ESSID and connection settings\n- Security type and authentication details for protected networks\n\nUse this command to:\n- Provision new Wi-Fi profiles during device onboarding\n- Update existing Wi-Fi settings for network changes\n- Control security and connection behavior for wireless access\n\n### Command Details\n\n| Property | Value |\n|---|---|\n| Pattern Name | Wi-Fi Configuration |\n| Communication Type | Bidirectional (Cloud to Device, Device to Cloud) |\n| Applies To | RFD40 Series, RFD90 Series |\n| Related Commands | [get_wifi](#op-get-wifi), [delete_wifi_profile](#op-delete-wifi-profile), [set_config](#op-set-config), [install_certificate](#op-install-certificate) |\n| Required Request Fields | command, requestId, wifiConfig |\n| Supported Operations | CREATE, MODIFY |\n| Supported Types | Security types: WPA2Personal, WPA3Personal, WPA2Enterprise, WPA3Enterprise, OWEPublic, Open; enterprise authentication: tls, ttls, peap |\n| Supported Profiles | ESSID-based Wi-Fi access point profiles with optional preferred and auto-connect behavior |\n| Supported Protocols | Not applicable |\n| Supported API Versions | V1.0, V1.1 |\n\nwifiConfig contains the configuration and operation details required by the command.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "command": {
+                    "type": "string",
+                    "example": "set_wifi",
+                    "description": "Specifies the operation being performed, in this case, setting the wifi configuration."
+                  },
+                  "requestId": {
+                    "type": "string",
+                    "example": "abc123",
+                    "description": "A unique identifier for the request, allowing tracking and debugging of the operation."
+                  },
+                  "wifiConfig": {
+                    "title": "wifiConfig",
+                    "description": "Object containing the Wi-Fi configuration details to be set on the device, including interface settings, access point information, and security configurations.",
+                    "x-stoplight": {
+                      "id": "9x3bxuxkt84ag"
+                    },
+                    "type": "object",
+                    "properties": {
+                      "interfaceName": {
+                        "type": "string",
+                        "description": "The name of the network interface for which the Wi-Fi configuration is being set."
+                      },
+                      "enableInterface": {
+                        "type": "boolean",
+                        "description": "Specifies whether the network interface should be enabled or disabled."
+                      },
+                      "operation": {
+                        "type": "string",
+                        "enum": [
+                          "CREATE",
+                          "MODIFY"
+                        ],
+                        "example": "CREATE",
+                        "description": "The operation to be performed on the Wi-Fi configuration. It can either create a new configuration or modify an existing one."
+                      },
+                      "accessPoint": {
+                        "type": "object",
+                        "description": "Configuration details of the Wi-Fi access point.",
+                        "required": [
+                          "connect",
+                          "isPreferred",
+                          "essid",
+                          "enableSecurity"
+                        ],
+                        "properties": {
+                          "connect": {
+                            "type": "boolean",
+                            "description": "Indicates whether to connect to this profile. If true, disconnects the currently connected profile and connects to the specified one; if false, just saves the profile."
+                          },
+                          "isPreferred": {
+                            "type": "boolean",
+                            "description": "Marks this profile as the preferred one to always connect to when available."
+                          },
+                          "autoConn": {
+                            "type": "boolean",
+                            "description": "Reserved for backward compatibility. It will be removed in the future."
+                          },
+                          "essid": {
+                            "type": "string",
+                            "example": "ZWireless",
+                            "description": "The ESSID (network name) of the access point."
+                          },
+                          "enableSecurity": {
+                            "type": "boolean",
+                            "description": "Indicates whether security is enabled for this access point."
+                          },
+                          "ipv4Configuration": {
+                            "type": "object",
+                            "description": "IPv4 network configuration details.",
+                            "properties": {
+                              "ipAddress": {
+                                "type": "string",
+                                "format": "ipv4",
+                                "example": "192.168.1.81",
+                                "description": "The IPv4 address to assign to the interface."
+                              },
+                              "subnetMask": {
+                                "type": "string",
+                                "format": "ipv4",
+                                "example": "255.255.255.0",
+                                "description": "The IPv4 subnet mask."
+                              },
+                              "gateway": {
+                                "type": "string",
+                                "format": "ipv4",
+                                "example": "192.168.1.144",
+                                "description": "The IPv4 gateway address."
+                              },
+                              "enableDhcp": {
+                                "type": "boolean",
+                                "description": "Specifies whether DHCP is enabled for automatic IP address assignment."
+                              },
+                              "dnsServer": {
+                                "type": "string",
+                                "format": "ipv4",
+                                "example": "192.168.1.78",
+                                "description": "The IPv4 address of the DNS server."
+                              },
+                              "domainName": {
+                                "type": "string",
+                                "example": "example.test.com",
+                                "description": "The domain name for the network."
+                              }
+                            }
+                          },
+                          "security": {
+                            "type": "object",
+                            "description": "Security configuration for the access point.",
+                            "properties": {
+                              "securityType": {
+                                "type": "string",
+                                "example": "WPA2Personal",
+                                "enum": [
+                                  "WPA2Personal",
+                                  "WPA3Personal",
+                                  "WPA2Enterprise",
+                                  "WPA3Enterprise",
+                                  "OWEPublic",
+                                  "Open"
+                                ],
+                                "description": "The security type for the access point, specifying the authentication and encryption method."
+                              },
+                              "securityDetails": {
+                                "type": "object",
+                                "description": "Security-specific configuration details.",
+                                "properties": {
+                                  "WPA2Personal": {
+                                    "type": "object",
+                                    "description": "WPA2-Personal security configuration.",
+                                    "properties": {
+                                      "password": {
+                                        "type": "string",
+                                        "example": "test@123",
+                                        "description": "The password for WPA2-Personal authentication."
+                                      }
+                                    },
+                                    "required": [
+                                      "password"
+                                    ]
+                                  },
+                                  "WPA3Personal": {
+                                    "type": "object",
+                                    "description": "WPA3-Personal security configuration.",
+                                    "properties": {
+                                      "password": {
+                                        "type": "string",
+                                        "description": "The password for WPA3-Personal authentication."
+                                      }
+                                    },
+                                    "required": [
+                                      "password"
+                                    ]
+                                  },
+                                  "WPA2Enterprise": {
+                                    "type": "object",
+                                    "description": "WPA2-Enterprise security configuration with optional certificate parameters.",
+                                    "properties": {
+                                      "authentication": {
+                                        "type": "string",
+                                        "enum": [
+                                          "tls",
+                                          "ttls",
+                                          "peap"
+                                        ],
+                                        "example": "peap",
+                                        "description": "Authentication protocol for WPA2-Enterprise."
+                                      },
+                                      "innerAuthentication": {
+                                        "type": "string",
+                                        "enum": [
+                                          "none",
+                                          "tls",
+                                          "mschapv2"
+                                        ],
+                                        "example": "tls",
+                                        "description": "Inner authentication method to be used within the outer authentication protocol."
+                                      },
+                                      "identity": {
+                                        "type": "string",
+                                        "example": "test",
+                                        "description": "The identity (username) for WPA2-Enterprise authentication."
+                                      },
+                                      "anonymousIdentity": {
+                                        "type": "string",
+                                        "example": "test",
+                                        "description": "The anonymous identity for WPA2-Enterprise authentication."
+                                      },
+                                      "password": {
+                                        "type": "string",
+                                        "example": "test@123",
+                                        "description": "The password for WPA2-Enterprise authentication."
+                                      },
+                                      "passphrase": {
+                                        "type": "string",
+                                        "example": "test@123",
+                                        "description": "The passphrase for WPA2-Enterprise."
+                                      },
+                                      "certificate": {
+                                        "type": "array",
+                                        "description": "List of certificates used for WPA2-Enterprise authentication.",
+                                        "example": "ap1wpa2e",
+                                        "items": {
+                                          "type": "object",
+                                          "maxProperties": 4,
+                                          "properties": {
+                                            "key": {
+                                              "type": "string",
+                                              "enum": [
+                                                "ca_cert",
+                                                "client_key",
+                                                "client_cert",
+                                                "cert_key_password"
+                                              ],
+                                              "example": "ca_cert",
+                                              "description": "The type of certificate to be used."
+                                            },
+                                            "value": {
+                                              "type": "string",
+                                              "example": "wifi_ca_cert",
+                                              "description": "The name of the specific certificate."
+                                            }
+                                          }
+                                        }
+                                      },
+                                      "protocol": {
+                                        "type": "string",
+                                        "enum": [
+                                          "WPA2_Enterprise_CCMP"
+                                        ],
+                                        "example": "WPA2_Enterprise_CCMP",
+                                        "description": "The encryption protocol for WPA2-Enterprise."
+                                      }
+                                    },
+                                    "required": [
+                                      "authentication"
+                                    ]
+                                  },
+                                  "WPA3Enterprise": {
+                                    "type": "object",
+                                    "description": "WPA3-Enterprise security configuration with optional certificate parameters.",
+                                    "properties": {
+                                      "authentication": {
+                                        "type": "string",
+                                        "enum": [
+                                          "tls",
+                                          "ttls",
+                                          "peap"
+                                        ],
+                                        "example": "peap",
+                                        "description": "Authentication protocol for WPA3-Enterprise."
+                                      },
+                                      "innerAuthentication": {
+                                        "type": "string",
+                                        "enum": [
+                                          "none",
+                                          "tls",
+                                          "mschapv2"
+                                        ],
+                                        "example": "tls",
+                                        "description": "Inner authentication method to be used within the outer authentication protocol."
+                                      },
+                                      "identity": {
+                                        "type": "string",
+                                        "example": "test",
+                                        "description": "The identity (username) for WPA3-Enterprise authentication."
+                                      },
+                                      "anonymousIdentity": {
+                                        "type": "string",
+                                        "example": "test",
+                                        "description": "The anonymous identity for WPA3-Enterprise authentication."
+                                      },
+                                      "password": {
+                                        "type": "string",
+                                        "example": "test@123",
+                                        "description": "The password for WPA3-Enterprise authentication."
+                                      },
+                                      "passphrase": {
+                                        "type": "string",
+                                        "example": "test@123",
+                                        "description": "The passphrase for WPA3-Enterprise."
+                                      },
+                                      "certificate": {
+                                        "type": "array",
+                                        "description": "List of certificates used for WPA3-Enterprise authentication.",
+                                        "example": "ap1wpa2e",
+                                        "items": {
+                                          "type": "object",
+                                          "maxProperties": 4,
+                                          "properties": {
+                                            "key": {
+                                              "type": "string",
+                                              "enum": [
+                                                "ca_cert",
+                                                "client_key",
+                                                "client_cert",
+                                                "cert_key_password"
+                                              ],
+                                              "description": "The type of certificate to be used."
+                                            },
+                                            "value": {
+                                              "type": "string",
+                                              "description": "The name of the specific certificate."
+                                            }
+                                          }
+                                        }
+                                      },
+                                      "protocol": {
+                                        "type": "string",
+                                        "enum": [
+                                          "WPA3_Enterprise_CCMP",
+                                          "WPA3_Enterprise_CCMP_256",
+                                          "WPA3_Enterprise_GCMP_128",
+                                          "WPA3_Enterprise_GCMP_256_SHA256",
+                                          "WPA3_Enterprise_GCMP_256_SUITEB_192"
+                                        ],
+                                        "example": "WPA3_Enterprise_CCMP",
+                                        "description": "The encryption protocol for WPA3-Enterprise."
+                                      }
+                                    },
+                                    "required": [
+                                      "authentication"
+                                    ]
+                                  },
+                                  "OWEPublic": {
+                                    "type": "object",
+                                    "description": "OWE-Public security configuration.",
+                                    "properties": {
+                                      "authentication": {
+                                        "type": "string",
+                                        "description": "Authentication protocol for OWE-Public."
+                                      }
+                                    },
+                                    "required": [
+                                      "authentication"
+                                    ]
+                                  }
+                                }
+                              }
+                            },
+                            "required": [
+                              "securityType",
+                              "securityDetails"
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    "required": [
+                      "interfaceName",
+                      "enableInterface",
+                      "operation",
+                      "accessPoint"
+                    ]
+                  }
+                },
+                "required": [
+                  "command",
+                  "requestId"
+                ]
+              },
+              "examples": {
+                "Create WPA2 personal": {
+                  "description": "Payload to create a new WiFi profile with WPA2 Personal security",
+                  "value": {
+                    "command": "set_wifi",
+                    "requestId": "abc123",
+                    "wifiConfig": {
+                      "interfaceName": "wlan0",
+                      "enableInterface": true,
+                      "operation": "CREATE",
+                      "accessPoint": {
+                        "connect": false,
+                        "isPreferred": false,
+                        "autoConn": true,
+                        "essid": "TestAP1",
+                        "enableSecurity": true,
+                        "security": {
+                          "securityType": "WPA2Personal",
+                          "securityDetails": {
+                            "WPA2Personal": {
+                              "password": "test@123"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "Modify WPA2 personal": {
+                  "description": "Payload to modify an existing WiFi profile password",
+                  "value": {
+                    "command": "set_wifi",
+                    "requestId": "abc123",
+                    "wifiConfig": {
+                      "interfaceName": "wlan0",
+                      "enableInterface": true,
+                      "operation": "MODIFY",
+                      "accessPoint": {
+                        "connect": false,
+                        "isPreferred": false,
+                        "autoConn": true,
+                        "essid": "TestAP1",
+                        "enableSecurity": true,
+                        "security": {
+                          "securityType": "WPA2Personal",
+                          "securityDetails": {
+                            "WPA2Personal": {
+                              "password": "test@12345678"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "Set preferred AP": {
+                  "description": "Payload to set an access point as preferred",
+                  "value": {
+                    "command": "set_wifi",
+                    "requestId": "abc123",
+                    "wifiConfig": {
+                      "operation": "MODIFY",
+                      "accessPoint": {
+                        "isPreferred": true,
+                        "essid": "TestAP1"
+                      }
+                    }
+                  }
+                },
+                "Create WPA2 enterprise": {
+                  "description": "Payload to create a WiFi profile with WPA2 Enterprise security and certificates",
+                  "value": {
+                    "command": "set_wifi",
+                    "requestId": "abc123",
+                    "wifiConfig": {
+                      "interfaceName": "wlan0",
+                      "enableInterface": true,
+                      "operation": "CREATE",
+                      "accessPoint": {
+                        "connect": false,
+                        "isPreferred": false,
+                        "autoConn": true,
+                        "essid": "TestAP2",
+                        "enableSecurity": true,
+                        "security": {
+                          "securityType": "WPA2Enterprise",
+                          "securityDetails": {
+                            "WPA2Enterprise": {
+                              "authentication": "tls",
+                              "innerAuthentication": "tls",
+                              "identity": "test",
+                              "anonymousIdentity": "test",
+                              "password": "test@123",
+                              "passphrase": "test@123",
+                              "certificate": [
+                                {
+                                  "key": "ca_cert",
+                                  "value": "gen_cert"
+                                },
+                                {
+                                  "key": "client_key",
+                                  "value": "gen_cl_key"
+                                },
+                                {
+                                  "key": "client_cert",
+                                  "value": "gen_cl_cert"
+                                }
+                              ],
+                              "protocol": "WPA2_Enterprise_CCMP"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "set_wifi response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "command": {
+                      "type": "string",
+                      "example": "set_wifi",
+                      "description": "Echoes the command name so clients can map this response to the set_wifi request."
+                    },
+                    "requestId": {
+                      "type": "string",
+                      "example": "abc123",
+                      "description": "Request identifier copied from the command, used for request and response correlation."
+                    },
+                    "apiVersion": {
+                      "type": "string",
+                      "enum": [
+                        "V1.0",
+                        "V1.1"
+                      ],
+                      "example": "V1.1",
+                      "description": "API version used to interpret this response payload."
+                    },
+                    "response": {
+                      "title": "response",
+                      "x-stoplight": {
+                        "id": "1uzw0wye4si2y"
+                      },
+                      "type": "object",
+                      "description": "Execution result object containing status code and result description.",
+                      "properties": {
+                        "code": {
+                          "type": "integer",
+                          "example": 0,
+                          "description": "Response code indicating success or failure.\n\n- 0 — Success\n- 2 — Invalid payload\n- 15 — WIFI Error - SSID not found\n- 17 — WIFI Error - SSID missed\n- 18 — WIFI Error - SSID already exist\n- 19 — WIFI Error - SSID count overflow\n- 20 — Wifi is not supported\n- 23 — Invalid enum value",
+                          "minimum": 0,
+                          "maximum": 23
+                        },
+                        "description": {
+                          "type": "string",
+                          "description": "Human-readable result message that explains the response code.",
+                          "example": "Success"
+                        }
+                      },
+                      "required": [
+                        "code",
+                        "description"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "command",
+                    "requestId",
+                    "apiVersion"
+                  ]
+                },
+                "examples": {
+                  "example1": {
+                    "value": {
+                      "command": "set_wifi",
+                      "requestId": "abc123",
+                      "apiVersion": "V1.1",
+                      "response": {
+                        "code": 0,
+                        "description": "Success"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-error-codes": [
+          {
+            "code": 0,
+            "description": "Success",
+            "iot_status_code": "IOT_STATUS_SUCCESS",
+            "cause": "Command executed successfully",
+            "recommended_action": "No action required"
+          },
+          {
+            "code": 2,
+            "description": "Invalid payload",
+            "iot_status_code": "IOT_ERROR_INVALID_PAYLOAD",
+            "cause": "The JSON payload is malformed or contains invalid field values",
+            "recommended_action": "Validate the payload against the command schema and correct any errors"
+          },
+          {
+            "code": 15,
+            "description": "WIFI Error - SSID not found",
+            "iot_status_code": "IOT_ERROR_SSID_NOT_FOUND",
+            "cause": "The specified Wi-Fi SSID does not exist in saved profiles",
+            "recommended_action": "Verify the SSID name is correct and that the profile has been saved"
+          },
+          {
+            "code": 17,
+            "description": "WIFI Error - SSID missed",
+            "iot_status_code": "IOT_ERROR_SSID_MISSED",
+            "cause": "The required SSID field is missing from the payload",
+            "recommended_action": "Include the SSID field in the command payload"
+          },
+          {
+            "code": 18,
+            "description": "WIFI Error - SSID already exist",
+            "iot_status_code": "IOT_ERROR_SSID_ALREADY_EXIST",
+            "cause": "A Wi-Fi profile with this SSID is already saved on the device",
+            "recommended_action": "Delete the existing profile first or update it instead of creating a new one"
+          },
+          {
+            "code": 19,
+            "description": "WIFI Error - SSID count overflow",
+            "iot_status_code": "IOT_ERROR_SSID_LIMIT_OVERFLOW",
+            "cause": "The maximum number of saved Wi-Fi profiles has been reached",
+            "recommended_action": "Delete an unused Wi-Fi profile before adding a new one"
+          },
+          {
+            "code": 20,
+            "description": "Wifi is not supported",
+            "iot_status_code": "IOT_ERROR_WIFI_INTER_NOT_SUPPORTED",
+            "cause": "The device hardware does not have a Wi-Fi interface",
+            "recommended_action": "Use Ethernet or another supported interface for network connectivity"
+          },
+          {
+            "code": 23,
+            "description": "Invalid enum value",
+            "iot_status_code": "IOT_ERROR_INVALID_ENUM",
+            "cause": "A field value does not match any of the allowed enum options",
+            "recommended_action": "Check the schema for allowed values and correct the field"
+          }
+        ]
+      }
+    }
+  }
+}

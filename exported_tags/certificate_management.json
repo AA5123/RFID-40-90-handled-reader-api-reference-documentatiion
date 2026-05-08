@@ -1,0 +1,893 @@
+{
+  "tag": "Certificate Management",
+  "description": "## Overview\n\nInstall, remove, and inspect TLS/SSL certificates used for secure communication and authentication.\n\n## Commands\n\n| Command | Description |\n|---|---|\n| `install_certificate` | Upload a certificate (CA, client, MQTT, WiFi) to the device |\n| `delete_certificate` | Remove an installed certificate by name |\n| `get_installed_certificate` | List all certificates currently on the device |\n\n## Requirements\n\n- Certificates required for MQTT-TLS connections\n- Certificates needed for WPA2/WPA3 Enterprise WiFi authentication\n- File store certificates for secure file operations",
+  "operationCount": 3,
+  "pathCount": 3,
+  "paths": {
+    "/delete_certificate": {
+      "post": {
+        "tags": [
+          "Certificate Management"
+        ],
+        "summary": "Delete Certificate",
+        "description": "The delete_certificate command removes installed certificates from the reader certificate store.\n\nWhen you run this command, you can delete certificates by type and optionally by name.\n\nUse this command to:\n- Remove expired or replaced certificates\n- Clean up unused certificate entries\n- Manage certificate lifecycle for Wi-Fi, MQTT, and file-store integrations\n\n### Command Details\n\n| Property | Value |\n|---|---|\n| Pattern Name | Certificate Deletion |\n| Communication Type | Bidirectional (Cloud to Device, Device to Cloud) |\n| Applies To | RFD40 Series, RFD90 Series |\n| Related commands | [install_certificate](#op-install-certificate), [get_installed_certificate](#op-get-installed-certificate), [delete_wifi_profile](#op-delete-wifi-profile) |\n| Parameters | command, requestId, certificateInfo |\n| Supported Certificate Types | server, client, mqtt, wifi, filestore |\n| Supported Delete Scope | By type (required), by name (optional), or all certificates of a type |",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "command": {
+                    "type": "string",
+                    "example": "delete_certificate",
+                    "description": "Specifies the operation being performed, in this case, deleting saved certificates."
+                  },
+                  "requestId": {
+                    "type": "string",
+                    "example": "abc123",
+                    "description": "A unique identifier for the request, allowing tracking and debugging of the operation."
+                  },
+                  "certificateInfo": {
+                    "title": "certificateInfo",
+                    "x-stoplight": {
+                      "id": "d98c7f20315ac"
+                    },
+                    "type": "object",
+                    "description": "Object containing the details of the certificate to be deleted, including its name and type.",
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "example": "test_soti",
+                        "description": "Name of the certificate, If certificate name not provided, then we will delete all the previously installed certificate of matching type."
+                      },
+                      "type": {
+                        "type": "string",
+                        "example": "client",
+                        "description": "Different types of supported certificate.",
+                        "enum": [
+                          "server",
+                          "client",
+                          "mqtt",
+                          "wifi",
+                          "filestore"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "type"
+                    ]
+                  }
+                }
+              },
+              "examples": {
+                "Delete wifi ca cert": {
+                  "description": "Payload to delete a WiFi CA certificate from the device",
+                  "value": {
+                    "command": "delete_certificate",
+                    "requestId": "abc123",
+                    "certificateInfo": {
+                      "name": "ca_cert",
+                      "type": "wifi"
+                    }
+                  }
+                },
+                "Delete mqtt client cert": {
+                  "description": "Payload to delete an MQTT client certificate from the device",
+                  "value": {
+                    "command": "delete_certificate",
+                    "requestId": "abc123",
+                    "certificateInfo": {
+                      "name": "client_cert",
+                      "type": "mqtt"
+                    }
+                  }
+                },
+                "Delete filestore ca cert": {
+                  "description": "Payload to delete a filestore CA certificate from the device",
+                  "value": {
+                    "command": "delete_certificate",
+                    "requestId": "abc123",
+                    "certificateInfo": {
+                      "name": "ca_cert",
+                      "type": "filestore"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "delete_certificate response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "command": {
+                      "type": "string",
+                      "example": "delete_certificate",
+                      "description": "Echoes the command name so clients can map this response to the delete_certificate request."
+                    },
+                    "requestId": {
+                      "type": "string",
+                      "example": "abc123",
+                      "description": "Request identifier copied from the command, used for request and response correlation."
+                    },
+                    "apiVersion": {
+                      "type": "string",
+                      "example": "V1.1",
+                      "enum": [
+                        "V1.0",
+                        "V1.1"
+                      ],
+                      "description": "API version used to interpret this response payload."
+                    },
+                    "response": {
+                      "title": "response",
+                      "x-stoplight": {
+                        "id": "1uzw0wye4si2y"
+                      },
+                      "type": "object",
+                      "description": "Execution result object containing status code and result description.",
+                      "properties": {
+                        "code": {
+                          "type": "integer",
+                          "example": 0,
+                          "description": "Response code indicating success or failure.\n\n- 0 — Success\n- 9 — File not found\n- 21 — Certificate not found",
+                          "minimum": 0,
+                          "maximum": 21
+                        },
+                        "description": {
+                          "type": "string",
+                          "description": "Human-readable result message that explains the response code.",
+                          "example": "Success"
+                        }
+                      },
+                      "required": [
+                        "code",
+                        "description"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "command",
+                    "requestId",
+                    "apiVersion",
+                    "response"
+                  ]
+                },
+                "examples": {
+                  "example1": {
+                    "value": {
+                      "command": "delete_certificate",
+                      "requestId": "abc123",
+                      "apiVersion": "V1.1",
+                      "response": {
+                        "code": 0,
+                        "description": "Success"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-error-codes": [
+          {
+            "code": 0,
+            "description": "Success",
+            "iot_status_code": "IOT_STATUS_SUCCESS",
+            "cause": "Command executed successfully",
+            "recommended_action": "No action required"
+          },
+          {
+            "code": 9,
+            "description": "File not found",
+            "iot_status_code": "IOT_STATUS_FILE_NOT_FOUND",
+            "cause": "The specified file or certificate could not be found on the device or server",
+            "recommended_action": "Verify the file path or URL is correct and the file exists"
+          },
+          {
+            "code": 21,
+            "description": "Certificate not found",
+            "iot_status_code": "IOT_ERROR_CERT_NOT_FOUND",
+            "cause": "The specified certificate is not installed on the device",
+            "recommended_action": "Verify the certificate name and install it using install_certificate if needed"
+          }
+        ]
+      }
+    },
+    "/get_installed_certificate": {
+      "post": {
+        "tags": [
+          "Certificate Management"
+        ],
+        "summary": "Get Installed Certificate",
+        "description": "The get_installed_certificate command retrieves certificate entries currently installed on the reader.\n\nThis command returns:\n- Installed certificate names and certificate types\n- Certificate issuer, serial, and key algorithm details\n- Certificate validity period metadata\n- Response metadata for query execution\n\nUse this command to:\n- Audit installed certificate inventory on the device\n- Confirm certificate availability before endpoint or Wi-Fi configuration\n- Verify certificate validity windows for rotation planning\n\nNo additional command-specific payload fields are required beyond the standard request envelope fields.\n\n### Command Details\n\n| Property | Value |\n|---|---|\n| Pattern Name | Installed Certificate Query |\n| Communication Type | Bidirectional (Cloud to Device, Device to Cloud) |\n| Applies To | RFD40 Series, RFD90 Series |\n| Related Commands | [install_certificate](#op-install-certificate), [delete_certificate](#op-delete-certificate), [config_endpoint](#op-config-endpoint) |\n| Required Request Fields | command, requestId |\n| Supported Operations | Retrieve installed certificate inventory details |\n| Supported Response Sections | installedCerts, response |\n| Supported API Versions | V1.0, V1.1 |",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "command": {
+                    "type": "string",
+                    "example": "get_installed_certificates",
+                    "description": "Command name for requesting installed certificate details."
+                  },
+                  "requestId": {
+                    "type": "string",
+                    "example": "abc123",
+                    "description": "Unique request identifier used to correlate this command with its response."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "get_installed_certificate response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "command": {
+                      "type": "string",
+                      "example": "get_installed_certificates",
+                      "description": "Echoes the command name so clients can map this response to the get_installed_certificates request."
+                    },
+                    "requestId": {
+                      "type": "string",
+                      "example": "abc123",
+                      "description": "Request identifier copied from the command, used for request and response correlation."
+                    },
+                    "apiVersion": {
+                      "type": "string",
+                      "description": "API version used to interpret this response payload.",
+                      "enum": [
+                        "V1.0",
+                        "V1.1"
+                      ]
+                    },
+                    "installedCerts": {
+                      "title": "installedCerts",
+                      "x-stoplight": {
+                        "id": "svr3iljexdwdi"
+                      },
+                      "type": "object",
+                      "description": "List of installed certificates with certificate metadata.",
+                      "properties": {
+                        "certInfo": {
+                          "type": "array",
+                          "description": "A list of installed certificates with their details.",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "name": {
+                                "type": "string",
+                                "description": "The name of the certificate.",
+                                "example": "Reader Main Certificate"
+                              },
+                              "type": {
+                                "type": "string",
+                                "description": "Usage category for the certificate.",
+                                "example": "server",
+                                "enum": [
+                                  "client",
+                                  "server",
+                                  "mqtt",
+                                  "wifi",
+                                  "filestore"
+                                ]
+                              },
+                              "installTime": {
+                                "type": "string",
+                                "description": "The date and time when the certificate was installed.",
+                                "example": "2022-07-01T03:01:31.464Z",
+                                "format": "date-time"
+                              },
+                              "issuerName": {
+                                "type": "string",
+                                "description": "The name of the issuer of the certificate.",
+                                "example": "FX9600EE5729"
+                              },
+                              "publicKeyAlg": {
+                                "type": "string",
+                                "description": "The algorithm used for the public key.",
+                                "enum": [
+                                  "RSA256",
+                                  "RSA512"
+                                ]
+                              },
+                              "publicKey": {
+                                "type": "string",
+                                "description": "The public key of the certificate in string format.",
+                                "example": "091234acgbe12"
+                              },
+                              "serial": {
+                                "type": "string",
+                                "description": "The serial number of the certificate.",
+                                "example": "410835777"
+                              },
+                              "subjectName": {
+                                "type": "string",
+                                "description": "The name of the subject to whom the certificate belongs.",
+                                "example": "FX9600EE572"
+                              },
+                              "validFrom": {
+                                "type": "string",
+                                "description": "The start date from which the certificate is valid.",
+                                "example": "2022-07-01",
+                                "format": "date"
+                              },
+                              "validTill": {
+                                "type": "string",
+                                "description": "The end date until which the certificate is valid.",
+                                "example": "2023-07-01",
+                                "format": "date"
+                              }
+                            },
+                            "required": [
+                              "type",
+                              "installTime",
+                              "issuerName",
+                              "subjectName",
+                              "validFrom",
+                              "validTill"
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    "response": {
+                      "title": "response",
+                      "x-stoplight": {
+                        "id": "1uzw0wye4si2y"
+                      },
+                      "type": "object",
+                      "description": "Execution result object containing status code and result description.",
+                      "properties": {
+                        "code": {
+                          "type": "integer",
+                          "example": 0,
+                          "description": "Response code indicating success or failure.\n\n- 0 — Success\n- 3 — Not able to retrieve information\n- 9 — File not found\n- 21 — Certificate not found",
+                          "minimum": 0,
+                          "maximum": 21
+                        },
+                        "description": {
+                          "type": "string",
+                          "description": "Human-readable result message that explains the response code.",
+                          "example": "Success"
+                        }
+                      },
+                      "required": [
+                        "code",
+                        "description"
+                      ]
+                    }
+                  }
+                },
+                "examples": {
+                  "example1": {
+                    "value": {
+                      "command": "get_installed_certificates",
+                      "requestId": "abc123",
+                      "apiVersion": "V1.1",
+                      "installedCerts": {
+                        "certInfo": [
+                          {
+                            "name": "ca_cert",
+                            "type": "filestore",
+                            "issuerName": "SotiConnectRoot",
+                            "publicKeyAlg": "RSA",
+                            "publicKey": "RSA",
+                            "serial": "ed:83:dd:4a:47:dd:07:98",
+                            "subjectName": "SotiConnectRoot",
+                            "validFrom": "2024-07-01T07:00:00Z",
+                            "validTill": "2034-02-28T15:18:47Z"
+                          },
+                          {
+                            "name": "ca_cert",
+                            "type": "wifi",
+                            "issuerName": "CA",
+                            "publicKeyAlg": "RSA",
+                            "publicKey": "RSA",
+                            "serial": "1e:e0:12:f6:75:68:39:f1",
+                            "subjectName": "CA",
+                            "validFrom": "2024-07-01T07:00:00Z",
+                            "validTill": "2025-04-16T07:26:35Z"
+                          },
+                          {
+                            "name": "ca_cert",
+                            "type": "mqtt",
+                            "issuerName": "SOTI-mqtt-ca",
+                            "publicKeyAlg": "RSA",
+                            "publicKey": "RSA",
+                            "serial": "7d:1b:c5:9f:ea:ff:0f:56",
+                            "subjectName": "SOTI-mqtt-ca",
+                            "validFrom": "2024-07-01T07:00:00Z",
+                            "validTill": "2038-01-19T03:14:07Z"
+                          },
+                          {
+                            "name": "client_cert",
+                            "type": "mqtt",
+                            "issuerName": "RootCA",
+                            "publicKeyAlg": "RSA",
+                            "publicKey": "RSA",
+                            "serial": "1",
+                            "subjectName": "Client",
+                            "validFrom": "2024-07-01T07:00:00Z",
+                            "validTill": "2030-05-06T08:06:57Z"
+                          },
+                          {
+                            "name": "client_cert",
+                            "type": "wifi",
+                            "issuerName": "CA",
+                            "publicKeyAlg": "RSA",
+                            "publicKey": "RSA",
+                            "serial": "26:00:16:e0:c4:a1:b5:00",
+                            "subjectName": "CLIENT",
+                            "validFrom": "2024-07-01T07:00:00Z",
+                            "validTill": "2025-04-16T07:27:52Z"
+                          }
+                        ]
+                      },
+                      "response": {
+                        "code": 0,
+                        "description": "Success"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-error-codes": [
+          {
+            "code": 0,
+            "description": "Success",
+            "iot_status_code": "IOT_STATUS_SUCCESS",
+            "cause": "Command executed successfully",
+            "recommended_action": "No action required"
+          },
+          {
+            "code": 3,
+            "description": "Not able to retrieve information",
+            "iot_status_code": "IOT_ERROR_INFO_NOT_AVAILABLE",
+            "cause": "The device could not gather the requested information at this time",
+            "recommended_action": "Retry the command after a short delay; if persistent, reboot the device"
+          },
+          {
+            "code": 9,
+            "description": "File not found",
+            "iot_status_code": "IOT_STATUS_FILE_NOT_FOUND",
+            "cause": "The specified file or certificate could not be found on the device or server",
+            "recommended_action": "Verify the file path or URL is correct and the file exists"
+          },
+          {
+            "code": 21,
+            "description": "Certificate not found",
+            "iot_status_code": "IOT_ERROR_CERT_NOT_FOUND",
+            "cause": "The specified certificate is not installed on the device",
+            "recommended_action": "Verify the certificate name and install it using install_certificate if needed"
+          }
+        ]
+      }
+    },
+    "/install_certificate": {
+      "post": {
+        "tags": [
+          "Certificate Management"
+        ],
+        "summary": "Install Certificate",
+        "description": "## Overview\n\nThe `install_certificate` command installs certificates on the device for authentication purposes. Certificates can be downloaded from HTTP sources and stored for WiFi, MQTT, and file store authentication. This command supports various certificate types including CA certificates, client certificates, and client keys.\n\nUse this command to:\n- Install WiFi authentication certificates\n- Deploy MQTT client and CA certificates\n- Configure file store authentication certificates\n- Update device security credentials\n- Establish secure communication channels\n\n---\n\n### Command Details\n\n| Property | Value |\n|---|---|\n| Pattern Name | Certificate Installation |\n| Communication Type | Bidirectional (Cloud to Device, Device to Cloud) |\n| Applies To | RFD40 Series, RFD90 Series |\n\n---\n\n## Request Parameters\n\n| Parameter | Description |\n|---|---|\n| `command` | Specifies the operation to be executed. Must be set to `install_certificate`. |\n| `requestId` | A unique identifier for the request allowing tracking and debugging. |\n| `certDetails` | Contains certificate installation details including name, type, authentication method, source URL, and verification type. |\n\n---\n\n## Certificate Types\n\n- **filestore** - File store authentication certificates\n- **wifi** - WiFi network authentication certificates\n- **mqtt** - MQTT client certificates and CA certificates\n\n---\n\n## Authentication & Verification Options\n\n- **Authentication Types**: CERTIFICATE, PASSWORD\n- **Sources**: HTTP for certificate download\n- **Verification Types**: VERIFY_HOST_PEER, VERIFY_HOST, VERIFY_PEER, NONE\n\n---\n\n## Related Commands\n\n| Command | Description |\n|---|---|\n| `delete_certificate` | Removes installed certificates from the device. |\n| `get_installed_certificate` | Retrieves the list of installed certificates. |\n| `config_endpoint` | Configures endpoints that use certificates for authentication. |",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "command": {
+                    "type": "string",
+                    "example": "install_certificate",
+                    "description": "Command issued to install new certificate"
+                  },
+                  "requestId": {
+                    "type": "string",
+                    "example": "abc123",
+                    "description": "A unique identifier for the request, allowing tracking and debugging of the operation."
+                  },
+                  "certDetails": {
+                    "title": "certDetails",
+                    "x-stoplight": {
+                      "id": "0114c36cfa592"
+                    },
+                    "type": "object",
+                    "description": "Object containing the details of the certificate to be installed, including its name, type, authentication method, source, and verification type.",
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "example": "sotiAgent",
+                        "description": "A logical name for the certificate entry, typically representing the application, service, or agent."
+                      },
+                      "type": {
+                        "type": "string",
+                        "example": "client",
+                        "enum": [
+                          "client",
+                          "server",
+                          "mqtt",
+                          "wifi",
+                          "filestore"
+                        ],
+                        "description": "Certificate category that identifies where the certificate is used."
+                      },
+                      "authenticationType": {
+                        "type": "string",
+                        "enum": [
+                          "NONE",
+                          "BASIC",
+                          "TOKEN",
+                          "CERTIFICATE"
+                        ],
+                        "example": "BASIC",
+                        "description": "Specifies the authentication method used to access the remote certificate source.\n- `NONE`: No authentication is used.\n- `BASIC`: HTTP Basic authentication using username and password. In this case, `authenticateOptions` is required.\n- `TOKEN`: Token-based authentication. This option is currently not supported.\n- `CERTIFICATE`: Certificate-based authentication used to download or retrieve certificates."
+                      },
+                      "certSource": {
+                        "type": "string",
+                        "enum": [
+                          "HTTP",
+                          "DIRECT"
+                        ],
+                        "example": "HTTP",
+                        "description": "Specifies how certificate content is supplied for installation. This field is optional.\nIf omitted, the default behavior is `HTTP`, and the device attempts to download certificate content from the URLs provided in `url`.\n- `DIRECT`: Certificate content is provided inline in `certificateBundle`.\n- `HTTP`: Certificate content is downloaded from remote URLs in `url`.\nFor `HTTP` with `authenticationType` set to `CERTIFICATE`, authentication can use inline certificate content in `caCertificateFileContent` or an already installed filestore certificate."
+                      },
+                      "url": {
+                        "type": "array",
+                        "description": "A list of key-value entries that map certificate components to downloadable URLs.",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "key": {
+                              "type": "string",
+                              "description": "The certificate component identifier.",
+                              "enum": [
+                                "ca_cert",
+                                "client_key",
+                                "client_cert",
+                                "cert_key_password"
+                              ]
+                            },
+                            "value": {
+                              "type": "string",
+                              "description": "The URL for the specified component. For `cert_key_password`, this is the key password value."
+                            }
+                          }
+                        }
+                      },
+                      "authenticateOptions": {
+                        "type": "object",
+                        "description": "Authentication options for credential-based access. Required when `authenticationType` is `BASIC`.",
+                        "properties": {
+                          "username": {
+                            "type": "string",
+                            "example": "rfid",
+                            "description": "Username used for HTTP Basic authentication."
+                          },
+                          "password": {
+                            "type": "string",
+                            "example": "rfid",
+                            "description": "Password used for HTTP Basic authentication."
+                          }
+                        }
+                      },
+                      "pfxPassword": {
+                        "type": "string",
+                        "example": "pass@123",
+                        "description": "Password for the PFX (PKCS#12) bundle when a PFX certificate is provided. This field is currently not supported for RFD40/90."
+                      },
+                      "headerParams": {
+                        "type": "array",
+                        "description": "A list of key-value pairs representing HTTP header parameters. This field is currently not supported.",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "key": {
+                              "type": "string",
+                              "description": "The key for the HTTP header parameter."
+                            },
+                            "value": {
+                              "type": "string",
+                              "description": "The value associated with the HTTP header parameter."
+                            }
+                          }
+                        }
+                      },
+                      "queryParams": {
+                        "type": "array",
+                        "description": "A list of key-value pairs representing query parameters. This field is currently not supported.",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "key": {
+                              "type": "string",
+                              "description": "The key for the query parameter."
+                            },
+                            "value": {
+                              "type": "string",
+                              "description": "The value associated with the query parameter."
+                            }
+                          }
+                        }
+                      },
+                      "verificationType": {
+                        "type": "string",
+                        "enum": [
+                          "NONE",
+                          "VERIFY_PEER",
+                          "VERIFY_HOST",
+                          "VERIFY_HOST_PEER"
+                        ],
+                        "example": "NONE",
+                        "description": "Specifies the TLS verification mode used when validating remote endpoints."
+                      },
+                      "certificateBundle": {
+                        "type": "object",
+                        "description": "Optional inline certificate payload used when `certSource` is `DIRECT`.\nProvide certificate content for one certificate `type`: `client`, `server`, `mqtt`, `wifi`, or `filestore`.",
+                        "properties": {
+                          "ca_cert": {
+                            "type": "string",
+                            "description": "Inline CA certificate content, typically in PEM or base64-encoded form."
+                          },
+                          "client_key": {
+                            "type": "string",
+                            "description": "Inline client private key content, typically in PEM or base64-encoded form."
+                          },
+                          "client_cert": {
+                            "type": "string",
+                            "description": "Inline client certificate content, typically in PEM or base64-encoded form."
+                          },
+                          "cert_key_password": {
+                            "type": "string",
+                            "description": "Password used to decrypt an encrypted client private key, when required."
+                          }
+                        }
+                      },
+                      "caCertificateFileContent": {
+                        "type": "string",
+                        "description": "Optional inline certificate content used only for remote certificate download authentication.\n- Not applicable when `certSource` is `DIRECT`.\n- Applicable only when `certSource` is `HTTP` and `authenticationType` is `CERTIFICATE`.\n- If applicable and this field is empty, the device uses an already installed filestore certificate for authentication."
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "authenticationType"
+                    ]
+                  }
+                },
+                "required": [
+                  "command",
+                  "requestId"
+                ]
+              },
+              "examples": {
+                "Filestore certificate using URL": {
+                  "description": "Payload to install filestore CA certificate",
+                  "value": {
+                    "command": "install_certificate",
+                    "requestId": "19001",
+                    "certDetails": {
+                      "name": "root_certs",
+                      "type": "filestore",
+                      "authenticationType": "CERTIFICATE",
+                      "certSource": "HTTP",
+                      "url": [
+                        {
+                          "key": "ca_cert",
+                          "value": "http://192.168.0.107:8080/filestore_ca_cert.pem"
+                        }
+                      ],
+                      "verificationType": "VERIFY_HOST_PEER"
+                    }
+                  }
+                },
+                "MQTT certificates using URL": {
+                  "description": "Payload to install MQTT client certificates",
+                  "value": {
+                    "command": "install_certificate",
+                    "requestId": "19001",
+                    "certDetails": {
+                      "name": "mqtt_certs",
+                      "type": "mqtt",
+                      "authenticationType": "CERTIFICATE",
+                      "certSource": "HTTP",
+                      "url": [
+                        {
+                          "key": "client_cert",
+                          "value": "http://192.168.0.107:8080/mqtt_client_cert.pem"
+                        },
+                        {
+                          "key": "client_key",
+                          "value": "http://192.168.0.107:8080/mqtt_client_key.pem"
+                        },
+                        {
+                          "key": "ca_cert",
+                          "value": "http://192.168.0.107:8080/mqtt_ca_cert.pem"
+                        }
+                      ],
+                      "verificationType": "VERIFY_HOST_PEER"
+                    }
+                  }
+                },
+                "WiFi certificates using URL": {
+                  "description": "Payload to install WiFi certificates with CA, client cert and key",
+                  "value": {
+                    "command": "install_certificate",
+                    "requestId": "abc456",
+                    "certDetails": {
+                      "name": "wifi_test",
+                      "type": "wifi",
+                      "authenticationType": "NONE",
+                      "url": [
+                        {
+                          "key": "client_cert",
+                          "value": "http://192.168.0.107:8080/wifi_client_cert.pem"
+                        },
+                        {
+                          "key": "ca_cert",
+                          "value": "http://192.168.0.107:8080/wifi_ca_cert.pem"
+                        },
+                        {
+                          "key": "client_key",
+                          "value": "http://192.168.0.107:8080/wifi_client_key.pem"
+                        }
+                      ],
+                      "verificationType": "NONE"
+                    }
+                  }
+                },
+                "WiFi CA certificate using direct content": {
+                  "description": "Installing WiFi CA certificate, where certificate content is provided as part of API",
+                  "value": {
+                    "requestId": "0001",
+                    "command": "install_certificate",
+                    "certDetails": {
+                      "type": "wifi",
+                      "authenticationType": "NONE",
+                      "certSource": "DIRECT",
+                      "certificateBundle": {
+                        "ca_cert": "-----BEGIN CERTIFICATE-----\n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\nfE5gqNCequc7cftY6rCanls=\n-----END CERTIFICATE-----"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "install_certificate response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "command": {
+                      "type": "string",
+                      "example": "install_certificate",
+                      "description": "Echoes the command name so clients can map this response to the install_certificate request."
+                    },
+                    "requestId": {
+                      "type": "string",
+                      "example": "abc123",
+                      "description": "Request identifier copied from the command, used for request and response correlation."
+                    },
+                    "apiVersion": {
+                      "type": "string",
+                      "enum": [
+                        "V1.0",
+                        "V1.1"
+                      ],
+                      "description": "API version used to interpret this response payload."
+                    },
+                    "response": {
+                      "title": "response",
+                      "x-stoplight": {
+                        "id": "1uzw0wye4si2y"
+                      },
+                      "type": "object",
+                      "description": "Execution result object containing status code and result description.",
+                      "properties": {
+                        "code": {
+                          "type": "integer",
+                          "example": 0,
+                          "description": "Response code indicating success or failure.\n\n- 0 — Success\n- 1 — Command payload is accepted\n- 9 — File not found\n- 21 — Certificate not found\n- 23 — Invalid enum value",
+                          "minimum": 0,
+                          "maximum": 23
+                        },
+                        "description": {
+                          "type": "string",
+                          "description": "Human-readable result message that explains the response code.",
+                          "example": "Success"
+                        }
+                      },
+                      "required": [
+                        "code",
+                        "description"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "command",
+                    "requestId",
+                    "apiVersion",
+                    "response"
+                  ]
+                },
+                "examples": {
+                  "example1": {
+                    "value": {
+                      "command": "install_certificate",
+                      "requestId": "18996",
+                      "apiVersion": "V1.1",
+                      "response": {
+                        "code": 1,
+                        "description": "Command payload is accepted"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-error-codes": [
+          {
+            "code": 0,
+            "description": "Success",
+            "iot_status_code": "IOT_STATUS_SUCCESS",
+            "cause": "Command executed successfully",
+            "recommended_action": "No action required"
+          },
+          {
+            "code": 1,
+            "description": "Command payload is accepted",
+            "iot_status_code": "IOT_STATUS_CMD_PAYLOAD_ACCEPTED",
+            "cause": "The device accepted the payload and is processing it asynchronously",
+            "recommended_action": "Wait for a follow-up event or poll status to confirm completion"
+          },
+          {
+            "code": 9,
+            "description": "File not found",
+            "iot_status_code": "IOT_STATUS_FILE_NOT_FOUND",
+            "cause": "The specified file or certificate could not be found on the device or server",
+            "recommended_action": "Verify the file path or URL is correct and the file exists"
+          },
+          {
+            "code": 21,
+            "description": "Certificate not found",
+            "iot_status_code": "IOT_ERROR_CERT_NOT_FOUND",
+            "cause": "The specified certificate is not installed on the device",
+            "recommended_action": "Verify the certificate name and install it using install_certificate if needed"
+          },
+          {
+            "code": 23,
+            "description": "Invalid enum value",
+            "iot_status_code": "IOT_ERROR_INVALID_ENUM",
+            "cause": "A field value does not match any of the allowed enum options",
+            "recommended_action": "Check the schema for allowed values and correct the field"
+          }
+        ]
+      }
+    }
+  }
+}

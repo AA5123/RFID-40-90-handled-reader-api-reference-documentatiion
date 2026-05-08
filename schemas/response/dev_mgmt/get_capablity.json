@@ -4,6 +4,7 @@
     "id": "9cbh9nhrs0mlr"
   },
   "type": "object",
+  "description": "Response returned for get_capablity. It provides supported device and platform capabilities along with operation status.",
   "examples": [
     {
       "command": "get_capablity",
@@ -116,12 +117,12 @@
     "command": {
       "type": "string",
       "example": "get_capablity",
-      "description": "Specifies the command name."
+      "description": "Echoes the command name so clients can map this response to the get_capablity request."
     },
     "requestId": {
       "type": "string",
       "example": "abc123",
-      "description": "Unique identifier for the request."
+      "description": "Request identifier copied from the command, used for request and response correlation."
     },
     "apiVersion": {
       "type": "string",
@@ -130,13 +131,15 @@
         "V1.1"
       ],
       "example": "V1.1",
-      "description": "Specifies the version of the API."
+      "description": "API version used to interpret this response payload."
     },
     "payload": {
-      "$ref": "../../refrence/response/deviceCapablity.yaml"
+      "$ref": "../../refrence/response/deviceCapablity.yaml",
+      "description": "Detailed capability matrix for device hardware, interfaces, and supported platform features."
     },
     "response": {
-      "$ref": "../../refrence/response/response.yaml"
+      "$ref": "../../refrence/response/response.yaml",
+      "description": "Execution result object containing status code and result description."
     }
   },
   "required": [

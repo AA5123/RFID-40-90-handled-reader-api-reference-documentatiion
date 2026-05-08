@@ -2,6 +2,7 @@ title: deviceCapablity
 x-stoplight:
   id: 0iwbo2tlsrsrz
 type: object
+description: Device capability matrix describing supported hardware, interfaces, and platform features.
 examples: []
 properties:
   deviceClass:
@@ -15,6 +16,7 @@ properties:
     description: Specifies the class of the device (e.g., handheld, fixed-reader, etc.).
   deviceCapablity:
     type: object
+    description: Core hardware capabilities supported by the device.
     required:
       - rtcSupported
       - keypadSupported
@@ -45,6 +47,7 @@ properties:
         description: Lists the supported power sources for the device.
   iotcCapablity:
     type: object
+    description: Connector-level capabilities related to endpoint and management features.
     properties:
       asyncManagementEventsSupported:
         type: boolean
@@ -67,6 +70,7 @@ properties:
         type: array
         items:
           type: object
+          description: Capability details for a supported endpoint interface.
           properties:
             batchingSupported:
               type: boolean
@@ -127,6 +131,7 @@ properties:
       - maxDataEndpoints
   scannerCapablity:
     type: object
+    description: Scanner-specific capability details.
     properties:
       scannerType:
         type: string
@@ -136,6 +141,7 @@ properties:
         description: Specifies the scan engine used in the device.
   radioCapablity:
     type: object
+    description: RFID radio capabilities and supported limits.
     properties:
       rssiFilterSupported:
         type: boolean
@@ -164,11 +170,13 @@ properties:
         description: Lists the supported tag data formats.
       antennaCapablity:
         type: object
+        description: Antenna capability limits and supported antenna types.
         properties:
           antenna:
             type: array
             items:
               type: object
+              description: Capability details for one antenna port.
               properties:
                 port:
                   type: number
@@ -191,6 +199,7 @@ properties:
       - supportedTagDataFormat
   uifCapablity:
     type: object
+    description: User-interface feature capabilities.
     properties:
       beepersSupported:
         type: boolean
@@ -208,6 +217,7 @@ properties:
       - beepersSupported
   generalIoCapablity:
     type: object
+    description: General purpose I/O capability limits.
     properties:
       maxNumOfGPIs:
         type: integer
@@ -219,6 +229,7 @@ properties:
         description: Specifies the maximum number of General Purpose Outputs (GPOs).
   daAppsCapablity:
     type: object
+    description: Capabilities related to downloadable application support.
     properties:
       daAppPackageFormat:
         type: array
@@ -237,11 +248,13 @@ properties:
         description: Lists the supported language bindings for DA Apps.
   networkCapablity:
     type: object
+    description: Supported network interface capabilities.
     properties:
       interfaceDetails:
         type: array
         items:
           type: object
+          description: Capability details for one network interface type.
           properties:
             type:
               type: string
@@ -273,6 +286,7 @@ properties:
               description: Lists the supported IP assignment methods.
   bluetoothCapablity:
     type: object
+    description: Bluetooth capability details.
     properties:
       supportedProfiles:
         type: array
@@ -285,6 +299,7 @@ properties:
         description: Lists the supported Bluetooth profiles.
   llrpCapablity:
     type: object
+    description: LLRP protocol support details.
     properties:
       llrpVersion:
         type: string

@@ -3,19 +3,19 @@
   "x-stoplight": {
     "id": "np1ehj39n4xp4"
   },
-  "description": "This API used to retrieve ethernet configuration details. Security features, static IP configuration, and IPv6 support are not available in the current API version.",
+  "description": "Retrieves Ethernet interface configuration and link status. Security features, static IPv4 configuration, and IPv6 are not available in the current API version.",
   "type": "object",
   "examples": [],
   "properties": {
     "command": {
       "type": "string",
       "example": "get_eth",
-      "description": "Command issued to get the ethernet configuration"
+      "description": "Command name for requesting Ethernet configuration details."
     },
     "requestId": {
       "type": "string",
       "example": "abc123",
-      "description": "A unique identifier for the request, allowing tracking and debugging of the operation."
+      "description": "Unique request identifier used to correlate this command with its response."
     }
   },
   "required": [

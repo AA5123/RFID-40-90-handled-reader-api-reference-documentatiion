@@ -3,19 +3,19 @@
   "x-stoplight": {
     "id": "tzc9hszry476y"
   },
-  "description": "Command issued to retrieve the complete device configuration such as version details, device status, current region details, ethernet & wifi configuration, end point configuration, details of installed certificates, event and alert configuration   ",
+  "description": "Retrieves consolidated device configuration, including version details, status, region settings, network configuration, endpoint configuration, installed certificates, and event or alert settings.",
   "type": "object",
   "examples":[],
   "properties": {
     "command": {
       "type": "string",
       "example": "get_config",
-      "description": "Specifies the operation being performed, in this case, retrieving the complete device configuration."
+      "description": "Command name for requesting complete device configuration."
     },
     "requestId": {
       "type": "string",
       "example": "abc123",
-      "description": "A unique identifier for the request, allowing tracking and debugging of the operation."
+      "description": "Unique request identifier used to correlate this command with its response."
     }
   }
 }

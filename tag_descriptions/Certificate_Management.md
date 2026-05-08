@@ -1,9 +1,17 @@
-﻿Install, remove, and inspect TLS/SSL certificates used for secure MQTT and Wi-Fi Enterprise connections.
+﻿## Overview
 
-| Command | What It Does |
+Install, remove, and inspect TLS/SSL certificates used for secure communication and authentication.
+
+## Commands
+
+| Command | Description |
 |---|---|
-| `install_certificate` | Upload a certificate (CA, client, MQTT, or Wi-Fi) to the scanner |
+| `install_certificate` | Upload a certificate (CA, client, MQTT, WiFi) to the device |
 | `delete_certificate` | Remove an installed certificate by name |
 | `get_installed_certificate` | List all certificates currently on the device |
 
-Certificates are required for MQTT-TLS connections and WPA2/WPA3 Enterprise Wi-Fi authentication.
+## Requirements
+
+- Certificates required for MQTT-TLS connections
+- Certificates needed for WPA2/WPA3 Enterprise WiFi authentication
+- File store certificates for secure file operations

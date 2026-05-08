@@ -1,5 +1,6 @@
 title: antennaStopCondition
 type: object
+description: Object schema for antennaStopCondition.
 properties:
   type:
     type: string

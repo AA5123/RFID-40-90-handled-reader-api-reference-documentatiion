@@ -2,9 +2,10 @@ title: savedEpconfigs
 x-stoplight:
   id: 2ady007bo7b6l
 type: object
+description: List of endpoint names saved on the device.
 properties:
   epNames:
     type: array
-    description: An array containing endpoint configurations.
+    description: Array of saved endpoint names available on the device.
     items:
       type: string

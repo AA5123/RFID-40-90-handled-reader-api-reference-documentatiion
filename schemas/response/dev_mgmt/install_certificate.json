@@ -4,24 +4,29 @@
     "id": "pyaqnm42or6o5"
   },
   "type": "object",
+  "description": "Response returned after install_certificate is processed. It confirms command context and operation result.",
   "properties": {
     "command": {
       "type": "string",
-      "example": "install_certificate"
+      "example": "install_certificate",
+      "description": "Echoes the command name so clients can map this response to the install_certificate request."
     },
     "requestId": {
       "type": "string",
-      "example": "abc123"
+      "example": "abc123",
+      "description": "Request identifier copied from the command, used for request and response correlation."
     },
     "apiVersion": {
       "type": "string",
       "enum": [
         "V1.0",
         "V1.1"
-      ]
+      ],
+      "description": "API version used to interpret this response payload."
     },
     "response": {
-      "$ref": "../../refrence/response/response.yaml"
+      "$ref": "../../refrence/response/response.yaml",
+      "description": "Execution result object containing status code and result description."
     }
   },
   "examples": [

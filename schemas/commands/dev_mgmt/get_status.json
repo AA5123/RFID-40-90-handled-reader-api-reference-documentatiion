@@ -3,18 +3,18 @@
   "x-stoplight": {
     "id": "2a0e5dee1bcgq"
   },
-  "description": "This command used to retrieve the reader status information.",
+  "description": "Retrieves current reader runtime status, such as power source, radio state, connectivity, and battery information.",
   "type": "object",
   "properties": {
     "command": {
       "type": "string",
       "example": "get_status",
-      "description": "Command used to get the reader status information "
+      "description": "Command name for requesting current device status information."
     },
     "requestId": {
       "type": "string",
       "example": "abcd123",
-      "description": "A unique identifier for the request, allowing tracking and debugging of the operation."
+      "description": "Unique request identifier used to correlate this command with its response."
     }
   },
   "required": [

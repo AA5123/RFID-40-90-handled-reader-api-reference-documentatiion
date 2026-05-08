@@ -1,4 +1,5 @@
 type: object
+description: Object schema for exceptionEvents.
 x-stoplight:
   id: df25a86e1061a
 title: exceptions

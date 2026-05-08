@@ -1,0 +1,204 @@
+{
+  "tag": "Inventory Control",
+  "description": "## Overview\n\nStart and stop RFID tag reading operations on the device. During active inventory, the device continuously reads tags and publishes tag data events.\n\n## Commands\n\n| Command | Description |\n|---|---|\n| `control_operation` | Start or stop RFID inventory scanning operations |\n| `start_inventory` | Initiate RFID tag reading based on current configuration |\n\n## Behavior\n\nWhile running, the device continuously reads RFID tags and publishes tag data events. Operating mode and post-filter settings affect read behavior.",
+  "operationCount": 1,
+  "pathCount": 1,
+  "paths": {
+    "/control_operation": {
+      "post": {
+        "tags": [
+          "Inventory Control"
+        ],
+        "summary": "Control Operation",
+        "description": "The control_operation command configures or updates the active radio or scanner operation state on the reader.\n\nThis command allows you to configure:\n- Control type selection (RFID or SCANNER)\n- Start or stop operation for the selected control type\n- Real-time radio activity state management\n- Inventory operation lifecycle control\n\nUse this command to:\n- Start RFID inventory operations on demand\n- Stop active radio or scanner operations\n- Manage device activity state in real-time\n\n### Command Details\n\n| Property | Value |\n|---|---|\n| Pattern Name | RFID Operation Control |\n| Communication Type | Bidirectional (Cloud to Device, Device to Cloud) |\n| Applies To | RFD40 Series, RFD90 Series |\n| Related Commands | [get_operating_mode](#op-get-operating-mode), [set_operating_mode](#op-set-operating-mode), [get_status](#op-get-status) |\n| Required Request Fields | command, requestId, ctrlOprPayload |\n| Supported Operations | START, STOP |\n| Supported Types | Control types: RFID, SCANNER |\n| Supported Profiles | Not applicable |\n| Supported Protocols | Not applicable |\n| Supported API Versions | V1.0, V1.1 |",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "command": {
+                    "type": "string",
+                    "enum": [
+                      "control_operation"
+                    ],
+                    "description": "Specifies the name of the command to be executed. In this case, it is control_operation."
+                  },
+                  "requestId": {
+                    "type": "string",
+                    "example": "abc123",
+                    "description": "A unique identifier for the request. This ensures traceability and prevents duplicate processing of the same request."
+                  },
+                  "ctrlOprPayload": {
+                    "title": "ctrlOprPayload",
+                    "x-stoplight": {
+                      "id": "p5pvffwkuqqm1"
+                    },
+                    "type": "object",
+                    "description": "Object that defines what to control and which action to perform. Typical values include control type RFID and operation START or STOP.",
+                    "properties": {
+                      "controlType": {
+                        "type": "string",
+                        "description": "Selects which reader subsystem to control.",
+                        "enum": [
+                          "RFID",
+                          "SCANNER"
+                        ],
+                        "example": "RFID"
+                      },
+                      "operation": {
+                        "type": "string",
+                        "description": "Action to execute for the selected control type. Use START to begin the operation and STOP to end it.",
+                        "enum": [
+                          "START",
+                          "STOP"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "controlType",
+                      "operation"
+                    ]
+                  }
+                }
+              },
+              "examples": {
+                "Start inventory": {
+                  "description": "Payload to start inventory",
+                  "value": {
+                    "command": "control_operation",
+                    "requestId": "abcd1432",
+                    "ctrlOprPayload": {
+                      "controlType": "RFID",
+                      "operation": "START"
+                    }
+                  }
+                },
+                "Stop inventory": {
+                  "description": "Payload to stop inventory",
+                  "value": {
+                    "command": "control_operation",
+                    "requestId": "abcd1432",
+                    "ctrlOprPayload": {
+                      "controlType": "RFID",
+                      "operation": "STOP"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "control_operation response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "command": {
+                      "type": "string",
+                      "example": "control_operation",
+                      "description": "Echoes the command name so clients can map this response to the control_operation request."
+                    },
+                    "requestId": {
+                      "type": "string",
+                      "example": "abc123",
+                      "description": "Request identifier copied from the command, used for request and response correlation."
+                    },
+                    "apiVersion": {
+                      "type": "string",
+                      "enum": [
+                        "V1.0",
+                        "V1.1"
+                      ],
+                      "example": "V1.1",
+                      "description": "API version used to interpret this response payload."
+                    },
+                    "response": {
+                      "title": "response",
+                      "x-stoplight": {
+                        "id": "1uzw0wye4si2y"
+                      },
+                      "type": "object",
+                      "description": "Execution result object containing status code and result description.",
+                      "properties": {
+                        "code": {
+                          "type": "integer",
+                          "example": 0,
+                          "description": "Response code indicating success or failure.\n\n- 0 — Success\n- 11 — Inventory in progress\n- 12 — No Radio Operation in Progress\n- 23 — Invalid enum value",
+                          "minimum": 0,
+                          "maximum": 23
+                        },
+                        "description": {
+                          "type": "string",
+                          "description": "Human-readable result message that explains the response code.",
+                          "example": "Success"
+                        }
+                      },
+                      "required": [
+                        "code",
+                        "description"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "command",
+                    "requestId",
+                    "apiVersion",
+                    "response"
+                  ]
+                },
+                "examples": {
+                  "example1": {
+                    "value": {
+                      "command": "control_operation",
+                      "requestId": "abc123",
+                      "apiVersion": "V1.1",
+                      "response": {
+                        "code": 0,
+                        "description": "Success"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-error-codes": [
+          {
+            "code": 0,
+            "description": "Success",
+            "iot_status_code": "IOT_STATUS_SUCCESS",
+            "cause": "Command executed successfully",
+            "recommended_action": "No action required"
+          },
+          {
+            "code": 11,
+            "description": "Inventory in progress",
+            "iot_status_code": "IOT_ERROR_INVENTORY_IN_PROGRESS",
+            "cause": "An RFID inventory operation is currently running",
+            "recommended_action": "Stop the current inventory before starting a new operation or changing the mode"
+          },
+          {
+            "code": 12,
+            "description": "No Radio Operation in Progress",
+            "iot_status_code": "IOT_ERROR_NO_RADIO_OP_IN_PROGRESS",
+            "cause": "A stop command was sent but no radio operation is currently active",
+            "recommended_action": "No action required — the radio is already idle"
+          },
+          {
+            "code": 23,
+            "description": "Invalid enum value",
+            "iot_status_code": "IOT_ERROR_INVALID_ENUM",
+            "cause": "A field value does not match any of the allowed enum options",
+            "recommended_action": "Check the schema for allowed values and correct the field"
+          }
+        ]
+      }
+    }
+  }
+}

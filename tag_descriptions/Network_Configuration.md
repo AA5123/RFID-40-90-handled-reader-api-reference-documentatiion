@@ -1,10 +1,19 @@
-Manage the scanner's Wi-Fi and Ethernet connections. The scanner supports both interfaces simultaneously.
+## Overview
 
-| Command | What It Does |
+Manage the device's WiFi and Ethernet connections. The device supports both interfaces simultaneously for flexible networking.
+
+## Commands
+
+| Command | Description |
 |---|---|
-| `get_wifi` | Retrieve Wi-Fi status "” connected SSID, IP address, signal strength, security type |
-| `set_wifi` | Configure Wi-Fi "” add or update an SSID, set security (WPA2/WPA3/Enterprise), assign IP settings |
-| `delete_wifi_profile` | Remove a saved Wi-Fi profile by SSID |
-| `get_eth` | Retrieve Ethernet status "” link state, speed, IP address, 802.1X security |
+| `get_wifi` | Retrieve WiFi status including connected SSID, IP, signal strength, security type |
+| `set_wifi` | Configure WiFi access point, security (WPA2/WPA3/Enterprise), and IP settings |
+| `delete_wifi_profile` | Remove a saved WiFi profile by SSID |
+| `get_eth` | Retrieve Ethernet status including link state, speed, IP address, security |
 
-Wi-Fi profiles are stored on the device and reconnect automatically after a reboot.
+## Features
+
+- WiFi profiles stored on device
+- Automatic reconnection after reboot
+- IPv4 DHCP addressing
+- WPA2/WPA3 security support

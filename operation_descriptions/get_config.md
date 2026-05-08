@@ -1,19 +1,27 @@
-Retrieves the **complete device configuration** in a single response — equivalent to calling `get_version`, `get_status`, `get_current_region`, `get_wifi`, `get_eth`, `get_endpoint_config`, and `get_installed_certificate` all at once.
+The get_config command retrieves a consolidated device configuration snapshot in a single response.
 
-**Response sections:**
+This command returns:
+- Device identity, status, and regional configuration data
+- Network configuration details for Wi-Fi and Ethernet
+- Endpoint and event routing configuration settings
+- Certificate inventory and related configuration state
 
-| Section | Contents |
+Use this command to:
+- Capture full-device configuration for diagnostics
+- Validate baseline settings during onboarding or audits
+- Compare runtime configuration across devices in a fleet
+
+No additional command-specific payload fields are required beyond the standard request envelope fields.
+
+### Command Details
+
+| Property | Value |
 |---|---|
-| `readerVersion` | Model, serial number, SKU, firmware versions (main, scanner, radio, IoTC) |
-| `deviceStatus` | Power source, radio state, temperature, battery health, NTP sync, terminal connection |
-| `currentRegion` | Country, regulatory standard, frequency channels, power limits, frequency hopping, LBT |
-| `wifiConfig` | Wi-Fi interface status, connected SSID, IP address, MAC, DHCP, security type |
-| `ethConfig` | Ethernet interface status, link speed, IP configuration |
-| `epConfig` | Active MQTT endpoint: type, broker URL, port, protocol, credentials, topics, security |
-| `installedCerts` | List of installed certificates with type, validity dates, and algorithms |
-| `eventConfiguration` | Which events/alerts are enabled (heartbeat, battery, temperature, firmware, network, etc.) |
-
-**Typical use cases:**
-- First-time setup — see how a blank scanner is configured before applying changes via `set_config`.
-- Troubleshooting — get the full picture when something isn't working.
-- Auditing — verify all settings across a fleet of scanners.
+| Pattern Name | Complete Device Configuration Retrieval |
+| Communication Type | Bidirectional (Cloud to Device, Device to Cloud) |
+| Applies To | RFD40 Series, RFD90 Series |
+| Related Commands | [get_version](#op-get-version), [get_status](#op-get-status), [get_current_region](#op-get-current-region), [set_config](#op-set-config) |
+| Required Request Fields | command, requestId |
+| Supported Operations | Retrieve complete device configuration snapshot |
+| Supported Response Sections | currentConfig, response |
+| Supported API Versions | V1.0, V1.1 |

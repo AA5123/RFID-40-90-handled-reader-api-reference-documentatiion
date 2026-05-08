@@ -1,0 +1,1360 @@
+{
+  "tag": "Operating Mode",
+  "description": "## Overview\n\nControl how the device reads tags through transmit power, session parameters, and RF settings. Operating mode affects read range, scan speed, and tag population handling.\n\n## Commands\n\n| Command | Description |\n|---|---|\n| `set_operating_mode` | Configure RFID operating mode — transmit power, session, tag access operations |\n| `get_operating_mode` | Retrieve current operating mode settings and parameters |\n| `set_post_filter` | Configure tag filtering rules and patterns |\n| `get_post_filter` | Retrieve current post-filter configuration |\n\n## Impact\n\n- Affects read range and scan speed\n- Influences tag population handling\n- Determines access operation support",
+  "operationCount": 2,
+  "pathCount": 2,
+  "paths": {
+    "/get_operating_mode": {
+      "post": {
+        "tags": [
+          "Operating Mode"
+        ],
+        "summary": "Get Operating Mode",
+        "description": "The get_operating_mode command retrieves the reader’s current RFID operating mode configuration.\n\nThis command returns:\n- Active operating profile configuration\n- Radio trigger and query behavior settings\n- Access operation and metadata reporting configuration\n- Response metadata for command execution\n\nUse this command to:\n- Verify current RFID operating profile selection\n- Inspect current query and radio trigger behavior\n- Confirm active metadata and access operation settings\n\nNo additional command-specific payload fields are required beyond the standard request envelope fields.\n\n### Command Details\n\n| Property | Value |\n|---|---|\n| Pattern Name | Operating Mode Query |\n| Communication Type | Bidirectional (Cloud to Device, Device to Cloud) |\n| Applies To | RFD40 Series, RFD90 Series |\n| Related Commands | [set_operating_mode](#op-set-operating-mode), [control_operation](#op-control-operation), [get_post_filter](#op-get-post-filter) |\n| Required Request Fields | command, requestId |\n| Supported Operations | Retrieve active RFID operating mode and profile settings |\n| Supported Response Sections | operatingMode, response |\n| Supported API Versions | V1.0, V1.1 |",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "command": {
+                    "type": "string",
+                    "example": "get_operating_mode",
+                    "enum": [
+                      "get_operating_mode"
+                    ],
+                    "description": "Specifies the name of the command executed. In this case, it is get_operating_mode to fetch the current operating mode information of the device."
+                  },
+                  "requestId": {
+                    "type": "string",
+                    "example": "abc123",
+                    "description": "A unique identifier assigned to the request, used to track and correlate responses with their corresponding requests."
+                  }
+                },
+                "required": [
+                  "command",
+                  "requestId"
+                ]
+              },
+              "examples": {
+                "Get operating mode": {
+                  "description": "Payload to get operating mode configurations",
+                  "value": {
+                    "command": "get_operating_mode",
+                    "requestId": "abc123"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "get_operating_mode response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "command": {
+                      "type": "string",
+                      "example": "get_operating_mode",
+                      "description": "Echoes the command name so clients can map this response to the get_operating_mode request.",
+                      "x-stoplight": {
+                        "id": "i35qtqsq8emxm"
+                      }
+                    },
+                    "requestId": {
+                      "type": "string",
+                      "example": "abc123",
+                      "x-stoplight": {
+                        "id": "ozyqw9bx2zxps"
+                      },
+                      "description": "Request identifier copied from the command, used for request and response correlation."
+                    },
+                    "apiVersion": {
+                      "type": "string",
+                      "enum": [
+                        "V1.0",
+                        "V1.1"
+                      ],
+                      "example": "V1.1",
+                      "x-stoplight": {
+                        "id": "upiudaa00opi5"
+                      },
+                      "description": "API version used to interpret this response payload."
+                    },
+                    "operatingMode": {
+                      "title": "operatingMode",
+                      "x-stoplight": {
+                        "id": "vmmn2ju2w2bhp"
+                      },
+                      "type": "object",
+                      "description": "Current operating mode configuration, including profile and related operating parameters.",
+                      "properties": {
+                        "operatingModes": {
+                          "title": "operatingMode",
+                          "type": "object",
+                          "description": "Container for operating profile and runtime behavior settings used during inventory.",
+                          "properties": {
+                            "profiles": {
+                              "type": "string",
+                              "enum": [
+                                "FAST_READ",
+                                "CYCLE_COUNT",
+                                "DENSE_READERS",
+                                "OPTIMAL_BATTERY",
+                                "BALANCED_PERFORMANCE",
+                                "ADVANCED"
+                              ],
+                              "default": "BALANCED_PERFORMANCE",
+                              "description": "The type of mode of operation \n\nFAST_READ: Configures the radio for maximum read speed within short range. (Currently not supported)\n\nCYCLE_COUNT: Configures the radio to read as many unique tags as possible.\n\nDENSE_READERS: Used when multiple readers in proximity.\n\nOPTIMAL_BATTERY: Gives best battery life.\n\nBALANCED_PERFORMANCE: Maintains balance between performance and battery life.\n\nADVANCED: Allows custom link profile settings in the advancedConfigurations.In this case, advancedConfigurations must be configured."
+                            },
+                            "advancedConfigurations": {
+                              "type": "object",
+                              "description": "To be set when profiles is ADVANCED. In other cases, link profile will be mapped internally.",
+                              "properties": {
+                                "transmitPower": {
+                                  "type": "number",
+                                  "example": 27,
+                                  "description": "Reader transmit power level used for RF operation."
+                                },
+                                "linkProfile": {
+                                  "type": "string",
+                                  "description": "RF link profile that controls modulation and data rate.",
+                                  "enum": [
+                                    "M4_256K",
+                                    "M2_240K",
+                                    "M2_256K",
+                                    "M2_320K",
+                                    "M4_240K",
+                                    "M4_320K",
+                                    "FM0_0K",
+                                    "FM0_320K",
+                                    "M8_240K",
+                                    "M8_256K",
+                                    "M8_320K"
+                                  ]
+                                },
+                                "session": {
+                                  "type": "string",
+                                  "description": "Gen2 session used by inventory and singulation.",
+                                  "enum": [
+                                    "SESSION_0",
+                                    "SESSION_1",
+                                    "SESSION_2",
+                                    "SESSION_3"
+                                  ]
+                                },
+                                "dynamicPower": {
+                                  "type": "boolean",
+                                  "description": "Enables automatic power adjustment during inventory."
+                                }
+                              }
+                            },
+                            "accessOperations": {
+                              "title": "access_cmds",
+                              "type": "array",
+                              "description": "Array of access operations to be performed on the tags during inventory. Each operation includes the type of access (e.g., READ, WRITE) and the specific configuration for that operation, such as memory bank, offset, and length.",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "operationType": {
+                                    "type": "string",
+                                    "enum": [
+                                      "READ",
+                                      "WRITE",
+                                      "ACCESS",
+                                      "LOCK",
+                                      "KILL"
+                                    ],
+                                    "description": "Specifies the type of access operation to perform on the tag.  - `READ`: Reads data from the specified memory bank. - `WRITE`: Writes data to the specified memory bank. - `ACCESS`: Performs access operations using a password. - `LOCK`: Locks or unlocks specified memory banks. - `KILL`: Permanently disables the tag using the kill password.\n"
+                                  },
+                                  "config": {
+                                    "type": "object",
+                                    "properties": {
+                                      "memoryBank": {
+                                        "type": "string",
+                                        "enum": [
+                                          "EPC",
+                                          "TID",
+                                          "USER",
+                                          "RESERVED"
+                                        ],
+                                        "description": "Specifies the memory bank to be accessed. \n"
+                                      },
+                                      "offset": {
+                                        "type": "integer",
+                                        "description": "Indicates the starting word position within the specified memory bank  where the operation will be applied. Offset is measured in 16-bit words.\n"
+                                      },
+                                      "length": {
+                                        "type": "integer",
+                                        "description": "Specifies the number of 16-bit words to be read or written.  This determines the size of the data block for the operation.\n"
+                                      },
+                                      "data": {
+                                        "type": "string",
+                                        "description": "A hex string indicating the words to be written.  The length of the data field can exceed a single 16-bit word, but it must be a multiple of 16-bit words(see EPC Gen2 Spec).\n"
+                                      },
+                                      "password": {
+                                        "type": "string",
+                                        "description": "A hex string with exactly 8 hex characters  (32 bits) used for access, lock, or kill operations(see EPC Gen2 Spec).\n"
+                                      },
+                                      "lockMemBank": {
+                                        "type": "string",
+                                        "enum": [
+                                          "EPC",
+                                          "ACCESS_PWD",
+                                          "KILL_PWD",
+                                          "TID",
+                                          "USER",
+                                          "ALL"
+                                        ],
+                                        "description": "Specifies the memory bank to be locked or unlocked. \n"
+                                      },
+                                      "lockAction": {
+                                        "type": "string",
+                                        "enum": [
+                                          "READ_AND_WRITE",
+                                          "PERMANENT_LOCK",
+                                          "PERMANENT_UNLOCK",
+                                          "UNLOCK"
+                                        ],
+                                        "description": "Specifies the lock operation to perform on the memory bank with password if given."
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            },
+                            "radioStartConditions": {
+                              "title": "radioStartConditions",
+                              "type": "object",
+                              "description": "Conditions that trigger the start of the radio for inventory operations. This includes the type of trigger (e.g., PRESSED, ALWAYS), any delay before starting, periodic duration for repeated starts, and whether the start should be repeated.",
+                              "properties": {
+                                "trigger": {
+                                  "type": "string",
+                                  "enum": [
+                                    "PRESSED",
+                                    "RELEASED",
+                                    "IMMEDIATE"
+                                  ],
+                                  "description": "Represents the trigger configuration to start the inventory operation.  - `PRESSED`: Inventory starts when the trigger is pressed. - `RELEASED`: Inventory starts when the trigger is released. - `IMMEDIATE`: Inventory starts immediately without requiring a trigger action.\n"
+                                },
+                                "startDelay": {
+                                  "type": "integer",
+                                  "example": 3000,
+                                  "description": "Specifies the delay (in milliseconds) before starting the inventory operation.  This delay applies to any trigger configuration when set to a value greater than 0.  For example, if set to 3000 milliseconds, the inventory will start 3 seconds after the trigger action.\n"
+                                },
+                                "repeat": {
+                                  "type": "boolean",
+                                  "description": "Determines whether the inventory operation can be repeated using the trigger.  If enabled, pressing the trigger will start reading tags, and releasing it will stop the read operation (not abort).  Pressing the trigger again will restart the inventory operation. If disabled, pressing the trigger after stopping the inventory will not restart the operation."
+                                }
+                              }
+                            },
+                            "radioStopConditions": {
+                              "title": "radioStopConditions",
+                              "type": "object",
+                              "description": "Conditions that trigger the stop of the radio during inventory operations. This includes the type of trigger (e.g., PRESSED, ALWAYS), tag count threshold, stop timeout, and inventory count threshold for stopping the radio.",
+                              "properties": {
+                                "trigger": {
+                                  "type": "string",
+                                  "enum": [
+                                    "PRESSED",
+                                    "RELEASED",
+                                    "IMMEDIATE"
+                                  ],
+                                  "description": "Represents the trigger configuration to stop the inventory operation.  - `PRESSED`: Inventory stops when the trigger is pressed. - `RELEASED`: Inventory stops when the trigger is released. - `IMMEDIATE`: Inventory stops immediately without requiring a trigger action.\n"
+                                },
+                                "tagCount": {
+                                  "type": "integer",
+                                  "description": "Specifies the number of unique tags to be read before stopping the inventory. \n"
+                                },
+                                "stopTimeout": {
+                                  "type": "integer",
+                                  "description": "Specifies the duration (in milliseconds) after which the inventory operation will stop. \n"
+                                },
+                                "inventoryCount": {
+                                  "type": "integer",
+                                  "description": "Specifies the number of inventory cycles to complete before stopping.  Each cycle represents a full scan for tags in the field."
+                                }
+                              }
+                            },
+                            "query": {
+                              "title": "query",
+                              "type": "object",
+                              "description": "Query parameters for inventory operations, including tag population estimate, select criteria (sel), session, and target. These parameters help optimize the inventory process based on the expected tag density and application requirements.",
+                              "properties": {
+                                "session": {
+                                  "type": "string",
+                                  "description": "Session field (see EPC Gen2 Spec). Determines the session used for inventory operations.  Sessions are used to manage tag states and collisions during inventory.  SESSION_0 is typically used for single inventory rounds, while SESSION_1, SESSION_2, and SESSION_3  are used for multi-round inventories with varying persistence levels.\n",
+                                  "enum": [
+                                    "SESSION_0",
+                                    "SESSION_1",
+                                    "SESSION_2",
+                                    "SESSION_3"
+                                  ]
+                                },
+                                "inventoryState": {
+                                  "type": "string",
+                                  "description": "Target field (see EPC Gen2 Spec). Specifies the inventory state of tags to be selected.  'STATE_A' and 'STATE_B' represent the two possible states of a tag's inventory flag.  'STATE_AB' flips between states to optimize tag selection during inventory rounds.\n",
+                                  "enum": [
+                                    "STATE_A",
+                                    "STATE_B",
+                                    "STATE_AB"
+                                  ]
+                                },
+                                "slFlag": {
+                                  "type": "string",
+                                  "description": "Sel field (see EPC Gen2 Spec). Indicates the SL (Select) flag used to filter tags.  'ALL' selects all tags regardless of SL flag state.  'ASSERTED' selects only tags with an asserted SL flag, while 'DEASSERTED' selects tags with a deasserted SL flag.\n",
+                                  "enum": [
+                                    "ALL",
+                                    "ASSERTED",
+                                    "DEASSERTED"
+                                  ]
+                                },
+                                "tagPopulation": {
+                                  "type": "integer",
+                                  "minimum": 0,
+                                  "description": "Estimates tag count to optimize reading. This value helps the reader adjust its settings  (e.g., Q parameter) to improve inventory performance for the expected number of tags in the field."
+                                }
+                              }
+                            },
+                            "select": {
+                              "type": "array",
+                              "description": "Configures the pre-filtering of tags during inventory operations. \nThis allows for selective reading of tags based on specific criteria, optimizing inventory performance.\nSupports up to 32 select filters.",
+                              "items": {
+                                "title": "select",
+                                "type": "object",
+                                "description": "Each select filter includes parameters such as target, action, memory bank, offset, length, mask, truncate, and delay after selects to define the filtering criteria for tags during inventory.",
+                                "properties": {
+                                  "enable": {
+                                    "type": "boolean",
+                                    "description": "Used to enable and disable the pre-filter. Set to true to enable the pre-filter,  allowing the reader to apply specific filtering criteria to tags before inventory operations.\n"
+                                  },
+                                  "tagPattern": {
+                                    "type": "string",
+                                    "description": "Specifies the bit pattern to match against the tag's memory content.  The value must be a hex string (only values 0-9, a-f or A-F) and must have an even number of characters, max 64 characters.  This is used to filter tags based on specific data stored in their memory(see EPC Gen2 Spec).\n"
+                                  },
+                                  "memoryBank": {
+                                    "type": "string",
+                                    "enum": [
+                                      "EPC",
+                                      "TID",
+                                      "USER"
+                                    ],
+                                    "description": "Membank field (see EPC Gen2 Spec). Specifies the memory bank to be accessed for filtering. \n"
+                                  },
+                                  "offset": {
+                                    "type": "integer",
+                                    "description": "Indicates the starting bit position within the specified memory bank where the tagPattern will be applied for matching(see EPC Gen2 Spec).\n"
+                                  },
+                                  "action": {
+                                    "type": "string",
+                                    "enum": [
+                                      "INV_A_NOT_INV_B_OR_ASRT_SL_NOT_DSRT_SL",
+                                      "INV_A_OR_ASRT_SL",
+                                      "NOT_INV_B_OR_NOT_DSRT_SL",
+                                      "INV_A2BB2A_NOT_INV_A_OR_NEG_SL_NOT_ASRT_SL",
+                                      "INV_B_NOT_INV_A_OR_DSRT_SL_NOT_ASRT_SL",
+                                      "INV_B_OR_DSRT_SL",
+                                      "NOT_INV_A_OR_NOT_ASRT_SL",
+                                      "NOT_INV_A2BB2A_OR_NOT_NEG_SL"
+                                    ],
+                                    "description": "Defines how to set SL/invnetory flag if match/mismatch occurs. These actions determine how tags are selected or excluded during inventory operations(see EPC Gen2 Spec).\n"
+                                  },
+                                  "target": {
+                                    "type": "string",
+                                    "enum": [
+                                      "SESSION_SL",
+                                      "SESSION_0",
+                                      "SESSION_1",
+                                      "SESSION_2",
+                                      "SESSION_3"
+                                    ],
+                                    "description": "Specifies the session or SL (Select) flag to be used for filtering tags.  This helps in managing tag states and collisions during inventory(see EPC Gen2 Spec).\n"
+                                  },
+                                  "length": {
+                                    "type": "integer",
+                                    "description": "Specifies the number of bits in the tag's memory to be compared against the tagPattern.  This determines the size of the filter applied to the memory bank(see EPC Gen2 Spec).\n"
+                                  }
+                                },
+                                "required": [
+                                  "enable",
+                                  "tagPattern",
+                                  "memoryBank",
+                                  "offset",
+                                  "action",
+                                  "target",
+                                  "length"
+                                ]
+                              }
+                            },
+                            "tagMetaDataToEnable": {
+                              "type": "object",
+                              "description": "Specifies which metadata fields of the tag should be reported when it is read. Each field can be enabled or disabled based on the application's requirements. Note: For RFD4090 devices, XPC and CRC metadata fields are not supported.\n",
+                              "properties": {
+                                "RSSI": {
+                                  "type": "boolean",
+                                  "description": "Indicates whether to report the RSSI.  RSSI provides the strength of the signal received from the tag, which can be useful for determining tag proximity.\n"
+                                },
+                                "PHASE": {
+                                  "type": "boolean",
+                                  "description": "Indicates whether to report the phase angle of the tag's signal.  Phase information is often used for advanced applications like tag localization or movement tracking.\n"
+                                },
+                                "SEENCOUNT": {
+                                  "type": "boolean",
+                                  "description": "Indicates whether to report the number of times the tag was detected during inventory.  This helps in understanding tag visibility and read consistency over multiple scans.\n"
+                                },
+                                "CHANNEL": {
+                                  "type": "boolean",
+                                  "description": "Indicates whether to report the communication channel used to read the tag.  This is useful in environments with multiple channels or frequency hopping to identify the channel of operation.\n"
+                                },
+                                "PC": {
+                                  "type": "boolean",
+                                  "description": "Indicates whether to report the Protocol Control (PC) word.  The PC word contains information about the tag's memory structure and encoding, such as the length of the EPC.\n"
+                                },
+                                "XPC": {
+                                  "type": "boolean",
+                                  "description": "Indicates whether to report the Extended Protocol Control (XPC) word.  XPC provides additional protocol-related information for advanced tags, such as custom memory configurations.\n"
+                                },
+                                "CRC": {
+                                  "type": "boolean",
+                                  "description": "Indicates whether to report the CRC value.  CRC is used to verify the integrity of the tag's data and ensure error-free communication.\n"
+                                },
+                                "EPC": {
+                                  "type": "boolean",
+                                  "description": "Indicates whether to report the EPC.  EPC is the unique identifier stored in the tag's memory, typically used for item identification.\n"
+                                },
+                                "TID": {
+                                  "type": "boolean",
+                                  "description": "Indicates whether to report the TID.  TID is a factory-programmed, unique identifier for the tag, often used for authentication or anti-counterfeiting.\n"
+                                },
+                                "USER": {
+                                  "type": "boolean",
+                                  "description": "Indicates whether to report the User memory bank data.  The User memory bank can store custom data defined by the application, such as additional product information.\n"
+                                },
+                                "MAC": {
+                                  "type": "boolean",
+                                  "description": "Indicates whether to report the MAC address of the reader.  This is useful for identifying the specific reader that performed the tag read in networked environments.\n"
+                                },
+                                "HOSTNAME": {
+                                  "type": "boolean",
+                                  "description": "Indicates whether to report the hostname of the reader.  Hostnames are helpful in networked environments where readers are identified by their assigned names.\n"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "response": {
+                      "title": "response",
+                      "x-stoplight": {
+                        "id": "nd5i7f91ono2u"
+                      },
+                      "type": "object",
+                      "description": "Execution result object containing status code and result description.",
+                      "properties": {
+                        "code": {
+                          "type": "integer",
+                          "example": 0,
+                          "description": "Response code indicating success or failure.\n\n- 0 — Success\n- 3 — Not able to retrieve information",
+                          "minimum": 0,
+                          "maximum": 3
+                        },
+                        "description": {
+                          "type": "string",
+                          "description": "Human-readable result message that explains the response code.",
+                          "example": "Success"
+                        }
+                      },
+                      "required": [
+                        "code",
+                        "description"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "command",
+                    "requestId",
+                    "apiVersion",
+                    "response"
+                  ]
+                },
+                "examples": {
+                  "example1": {
+                    "value": {
+                      "command": "get_operating_mode",
+                      "requestId": "abc123",
+                      "apiVersion": "V1.1",
+                      "operatingMode": {
+                        "operatingModes": {
+                          "profiles": "BALANCED_PERFORMANCE",
+                          "radioStartConditions": {
+                            "trigger": "IMMEDIATE",
+                            "startDelay": 0,
+                            "periodicDuration": 0,
+                            "repeat": false
+                          },
+                          "radioStopConditions": {
+                            "trigger": "IMMEDIATE"
+                          },
+                          "query": {
+                            "session": "SESSION_1",
+                            "inventoryState": "STATE_A",
+                            "slFlag": "ALL",
+                            "tagPopulation": 30
+                          },
+                          "tagMetaDataToEnable": {
+                            "RSSI": true,
+                            "SEENCOUNT": true,
+                            "XPC": false,
+                            "CRC": false,
+                            "EPC": false,
+                            "TID": false,
+                            "USER": false,
+                            "MAC": false,
+                            "HOSTNAME": false
+                          }
+                        }
+                      },
+                      "response": {
+                        "code": 0,
+                        "description": "Success"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-error-codes": [
+          {
+            "code": 0,
+            "description": "Success",
+            "iot_status_code": "IOT_STATUS_SUCCESS",
+            "cause": "Command executed successfully",
+            "recommended_action": "No action required"
+          },
+          {
+            "code": 3,
+            "description": "Not able to retrieve information",
+            "iot_status_code": "IOT_ERROR_INFO_NOT_AVAILABLE",
+            "cause": "The device could not gather the requested information at this time",
+            "recommended_action": "Retry the command after a short delay; if persistent, reboot the device"
+          }
+        ]
+      }
+    },
+    "/set_operating_mode": {
+      "post": {
+        "tags": [
+          "Operating Mode"
+        ],
+        "summary": "Set Operating Mode",
+        "description": "The set_operating_mode command updates RFID operating behavior on the reader, including profile selection, radio conditions, query behavior, tag access operations, and metadata reporting.\n\nThis command allows you to configure:\n- Reader operating profile and advanced radio settings\n- Access operations such as read, write, lock, and kill\n- Radio start and stop trigger conditions\n- Query and select behavior used during inventory\n\nUse this command to:\n- Optimize performance for your use case\n- Tune inventory behavior for dense or dynamic tag populations\n- Enable only the tag data fields needed by your application\n\n### Command Details\n\n| Property | Value |\n|---|---|\n| Pattern Name | Operating Mode Configuration |\n| Communication Type | Bidirectional (Cloud to Device, Device to Cloud) |\n| Applies To | RFD40 Series, RFD90 Series |\n| Related Commands | [get_operating_mode](#op-get-operating-mode), [control_operation](#op-control-operation), [set_post_filter](#op-set-post-filter) |\n| Required Request Fields | command, requestId, operatingMode |\n| Supported Operations | Configure operating profile, query/select behavior, radio triggers, access operations, and metadata reporting |\n| Supported Types | Access operations: READ, WRITE, ACCESS, LOCK, KILL; memory banks: EPC, TID, USER, RESERVED; query states: STATE_A, STATE_B, STATE_AB; SL flags: ALL, ASSERTED, DEASSERTED |\n| Supported Profiles | Profiles: FAST_READ, CYCLE_COUNT, DENSE_READERS, OPTIMAL_BATTERY, BALANCED_PERFORMANCE, ADVANCED; link profiles: M4_256K, M2_240K, M2_256K, M2_320K, M4_240K, M4_320K, FM0_0K, FM0_320K, M8_240K, M8_256K, M8_320K; sessions: SESSION_0, SESSION_1, SESSION_2, SESSION_3 |\n| Supported Protocols | Not applicable |\n| Supported API Versions | V1.0, V1.1 |",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "x-extension-1": null,
+                "properties": {
+                  "command": {
+                    "type": "string",
+                    "default": "set_operating_mode",
+                    "enum": [
+                      "set_operating_mode"
+                    ],
+                    "description": "Specifies the name of the command to be executed. In this case, it is set_operating_mode."
+                  },
+                  "requestId": {
+                    "type": "string",
+                    "example": "1286",
+                    "description": "A unique identifier for the request. This ensures traceability and prevents duplicate processing of the same request."
+                  },
+                  "operatingMode": {
+                    "title": "operatingMode",
+                    "x-stoplight": {
+                      "id": "n6w85laru1or5"
+                    },
+                    "type": "object",
+                    "description": "Object containing the operating mode configurations to be set on the device, including profiles, advanced configurations, access operations, radio start and stop conditions, query parameters, select configurations, and tag metadata to enable.",
+                    "properties": {
+                      "operatingModes": {
+                        "title": "operatingMode",
+                        "type": "object",
+                        "description": "Container for operating profile and runtime behavior settings used during inventory.",
+                        "properties": {
+                          "profiles": {
+                            "type": "string",
+                            "enum": [
+                              "FAST_READ",
+                              "CYCLE_COUNT",
+                              "DENSE_READERS",
+                              "OPTIMAL_BATTERY",
+                              "BALANCED_PERFORMANCE",
+                              "ADVANCED"
+                            ],
+                            "default": "BALANCED_PERFORMANCE",
+                            "description": "The type of mode of operation \n\nFAST_READ: Configures the radio for maximum read speed within short range. (Currently not supported)\n\nCYCLE_COUNT: Configures the radio to read as many unique tags as possible.\n\nDENSE_READERS: Used when multiple readers in proximity.\n\nOPTIMAL_BATTERY: Gives best battery life.\n\nBALANCED_PERFORMANCE: Maintains balance between performance and battery life.\n\nADVANCED: Allows custom link profile settings in the advancedConfigurations.In this case, advancedConfigurations must be configured."
+                          },
+                          "advancedConfigurations": {
+                            "type": "object",
+                            "description": "To be set when profiles is ADVANCED. In other cases, link profile will be mapped internally.",
+                            "properties": {
+                              "transmitPower": {
+                                "type": "number",
+                                "example": 27,
+                                "description": "Reader transmit power level used for RF operation."
+                              },
+                              "linkProfile": {
+                                "type": "string",
+                                "description": "RF link profile that controls modulation and data rate.",
+                                "enum": [
+                                  "M4_256K",
+                                  "M2_240K",
+                                  "M2_256K",
+                                  "M2_320K",
+                                  "M4_240K",
+                                  "M4_320K",
+                                  "FM0_0K",
+                                  "FM0_320K",
+                                  "M8_240K",
+                                  "M8_256K",
+                                  "M8_320K"
+                                ]
+                              },
+                              "session": {
+                                "type": "string",
+                                "description": "Gen2 session used by inventory and singulation.",
+                                "enum": [
+                                  "SESSION_0",
+                                  "SESSION_1",
+                                  "SESSION_2",
+                                  "SESSION_3"
+                                ]
+                              },
+                              "dynamicPower": {
+                                "type": "boolean",
+                                "description": "Enables automatic power adjustment during inventory."
+                              }
+                            }
+                          },
+                          "accessOperations": {
+                            "title": "access_cmds",
+                            "type": "array",
+                            "description": "Array of access operations to be performed on the tags during inventory. Each operation includes the type of access (e.g., READ, WRITE) and the specific configuration for that operation, such as memory bank, offset, and length.",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "operationType": {
+                                  "type": "string",
+                                  "enum": [
+                                    "READ",
+                                    "WRITE",
+                                    "ACCESS",
+                                    "LOCK",
+                                    "KILL"
+                                  ],
+                                  "description": "Specifies the type of access operation to perform on the tag.  - `READ`: Reads data from the specified memory bank. - `WRITE`: Writes data to the specified memory bank. - `ACCESS`: Performs access operations using a password. - `LOCK`: Locks or unlocks specified memory banks. - `KILL`: Permanently disables the tag using the kill password.\n"
+                                },
+                                "config": {
+                                  "type": "object",
+                                  "properties": {
+                                    "memoryBank": {
+                                      "type": "string",
+                                      "enum": [
+                                        "EPC",
+                                        "TID",
+                                        "USER",
+                                        "RESERVED"
+                                      ],
+                                      "description": "Specifies the memory bank to be accessed. \n"
+                                    },
+                                    "offset": {
+                                      "type": "integer",
+                                      "description": "Indicates the starting word position within the specified memory bank  where the operation will be applied. Offset is measured in 16-bit words.\n"
+                                    },
+                                    "length": {
+                                      "type": "integer",
+                                      "description": "Specifies the number of 16-bit words to be read or written.  This determines the size of the data block for the operation.\n"
+                                    },
+                                    "data": {
+                                      "type": "string",
+                                      "description": "A hex string indicating the words to be written.  The length of the data field can exceed a single 16-bit word, but it must be a multiple of 16-bit words(see EPC Gen2 Spec).\n"
+                                    },
+                                    "password": {
+                                      "type": "string",
+                                      "description": "A hex string with exactly 8 hex characters  (32 bits) used for access, lock, or kill operations(see EPC Gen2 Spec).\n"
+                                    },
+                                    "lockMemBank": {
+                                      "type": "string",
+                                      "enum": [
+                                        "EPC",
+                                        "ACCESS_PWD",
+                                        "KILL_PWD",
+                                        "TID",
+                                        "USER",
+                                        "ALL"
+                                      ],
+                                      "description": "Specifies the memory bank to be locked or unlocked. \n"
+                                    },
+                                    "lockAction": {
+                                      "type": "string",
+                                      "enum": [
+                                        "READ_AND_WRITE",
+                                        "PERMANENT_LOCK",
+                                        "PERMANENT_UNLOCK",
+                                        "UNLOCK"
+                                      ],
+                                      "description": "Specifies the lock operation to perform on the memory bank with password if given."
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "radioStartConditions": {
+                            "title": "radioStartConditions",
+                            "type": "object",
+                            "description": "Conditions that trigger the start of the radio for inventory operations. This includes the type of trigger (e.g., PRESSED, ALWAYS), any delay before starting, periodic duration for repeated starts, and whether the start should be repeated.",
+                            "properties": {
+                              "trigger": {
+                                "type": "string",
+                                "enum": [
+                                  "PRESSED",
+                                  "RELEASED",
+                                  "IMMEDIATE"
+                                ],
+                                "description": "Represents the trigger configuration to start the inventory operation.  - `PRESSED`: Inventory starts when the trigger is pressed. - `RELEASED`: Inventory starts when the trigger is released. - `IMMEDIATE`: Inventory starts immediately without requiring a trigger action.\n"
+                              },
+                              "startDelay": {
+                                "type": "integer",
+                                "example": 3000,
+                                "description": "Specifies the delay (in milliseconds) before starting the inventory operation.  This delay applies to any trigger configuration when set to a value greater than 0.  For example, if set to 3000 milliseconds, the inventory will start 3 seconds after the trigger action.\n"
+                              },
+                              "repeat": {
+                                "type": "boolean",
+                                "description": "Determines whether the inventory operation can be repeated using the trigger.  If enabled, pressing the trigger will start reading tags, and releasing it will stop the read operation (not abort).  Pressing the trigger again will restart the inventory operation. If disabled, pressing the trigger after stopping the inventory will not restart the operation."
+                              }
+                            }
+                          },
+                          "radioStopConditions": {
+                            "title": "radioStopConditions",
+                            "type": "object",
+                            "description": "Conditions that trigger the stop of the radio during inventory operations. This includes the type of trigger (e.g., PRESSED, ALWAYS), tag count threshold, stop timeout, and inventory count threshold for stopping the radio.",
+                            "properties": {
+                              "trigger": {
+                                "type": "string",
+                                "enum": [
+                                  "PRESSED",
+                                  "RELEASED",
+                                  "IMMEDIATE"
+                                ],
+                                "description": "Represents the trigger configuration to stop the inventory operation.  - `PRESSED`: Inventory stops when the trigger is pressed. - `RELEASED`: Inventory stops when the trigger is released. - `IMMEDIATE`: Inventory stops immediately without requiring a trigger action.\n"
+                              },
+                              "tagCount": {
+                                "type": "integer",
+                                "description": "Specifies the number of unique tags to be read before stopping the inventory. \n"
+                              },
+                              "stopTimeout": {
+                                "type": "integer",
+                                "description": "Specifies the duration (in milliseconds) after which the inventory operation will stop. \n"
+                              },
+                              "inventoryCount": {
+                                "type": "integer",
+                                "description": "Specifies the number of inventory cycles to complete before stopping.  Each cycle represents a full scan for tags in the field."
+                              }
+                            }
+                          },
+                          "query": {
+                            "title": "query",
+                            "type": "object",
+                            "description": "Query parameters for inventory operations, including tag population estimate, select criteria (sel), session, and target. These parameters help optimize the inventory process based on the expected tag density and application requirements.",
+                            "properties": {
+                              "session": {
+                                "type": "string",
+                                "description": "Session field (see EPC Gen2 Spec). Determines the session used for inventory operations.  Sessions are used to manage tag states and collisions during inventory.  SESSION_0 is typically used for single inventory rounds, while SESSION_1, SESSION_2, and SESSION_3  are used for multi-round inventories with varying persistence levels.\n",
+                                "enum": [
+                                  "SESSION_0",
+                                  "SESSION_1",
+                                  "SESSION_2",
+                                  "SESSION_3"
+                                ]
+                              },
+                              "inventoryState": {
+                                "type": "string",
+                                "description": "Target field (see EPC Gen2 Spec). Specifies the inventory state of tags to be selected.  'STATE_A' and 'STATE_B' represent the two possible states of a tag's inventory flag.  'STATE_AB' flips between states to optimize tag selection during inventory rounds.\n",
+                                "enum": [
+                                  "STATE_A",
+                                  "STATE_B",
+                                  "STATE_AB"
+                                ]
+                              },
+                              "slFlag": {
+                                "type": "string",
+                                "description": "Sel field (see EPC Gen2 Spec). Indicates the SL (Select) flag used to filter tags.  'ALL' selects all tags regardless of SL flag state.  'ASSERTED' selects only tags with an asserted SL flag, while 'DEASSERTED' selects tags with a deasserted SL flag.\n",
+                                "enum": [
+                                  "ALL",
+                                  "ASSERTED",
+                                  "DEASSERTED"
+                                ]
+                              },
+                              "tagPopulation": {
+                                "type": "integer",
+                                "minimum": 0,
+                                "description": "Estimates tag count to optimize reading. This value helps the reader adjust its settings  (e.g., Q parameter) to improve inventory performance for the expected number of tags in the field."
+                              }
+                            }
+                          },
+                          "select": {
+                            "type": "array",
+                            "description": "Configures the pre-filtering of tags during inventory operations. \nThis allows for selective reading of tags based on specific criteria, optimizing inventory performance.\nSupports up to 32 select filters.",
+                            "items": {
+                              "title": "select",
+                              "type": "object",
+                              "description": "Each select filter includes parameters such as target, action, memory bank, offset, length, mask, truncate, and delay after selects to define the filtering criteria for tags during inventory.",
+                              "properties": {
+                                "enable": {
+                                  "type": "boolean",
+                                  "description": "Used to enable and disable the pre-filter. Set to true to enable the pre-filter,  allowing the reader to apply specific filtering criteria to tags before inventory operations.\n"
+                                },
+                                "tagPattern": {
+                                  "type": "string",
+                                  "description": "Specifies the bit pattern to match against the tag's memory content.  The value must be a hex string (only values 0-9, a-f or A-F) and must have an even number of characters, max 64 characters.  This is used to filter tags based on specific data stored in their memory(see EPC Gen2 Spec).\n"
+                                },
+                                "memoryBank": {
+                                  "type": "string",
+                                  "enum": [
+                                    "EPC",
+                                    "TID",
+                                    "USER"
+                                  ],
+                                  "description": "Membank field (see EPC Gen2 Spec). Specifies the memory bank to be accessed for filtering. \n"
+                                },
+                                "offset": {
+                                  "type": "integer",
+                                  "description": "Indicates the starting bit position within the specified memory bank where the tagPattern will be applied for matching(see EPC Gen2 Spec).\n"
+                                },
+                                "action": {
+                                  "type": "string",
+                                  "enum": [
+                                    "INV_A_NOT_INV_B_OR_ASRT_SL_NOT_DSRT_SL",
+                                    "INV_A_OR_ASRT_SL",
+                                    "NOT_INV_B_OR_NOT_DSRT_SL",
+                                    "INV_A2BB2A_NOT_INV_A_OR_NEG_SL_NOT_ASRT_SL",
+                                    "INV_B_NOT_INV_A_OR_DSRT_SL_NOT_ASRT_SL",
+                                    "INV_B_OR_DSRT_SL",
+                                    "NOT_INV_A_OR_NOT_ASRT_SL",
+                                    "NOT_INV_A2BB2A_OR_NOT_NEG_SL"
+                                  ],
+                                  "description": "Defines how to set SL/invnetory flag if match/mismatch occurs. These actions determine how tags are selected or excluded during inventory operations(see EPC Gen2 Spec).\n"
+                                },
+                                "target": {
+                                  "type": "string",
+                                  "enum": [
+                                    "SESSION_SL",
+                                    "SESSION_0",
+                                    "SESSION_1",
+                                    "SESSION_2",
+                                    "SESSION_3"
+                                  ],
+                                  "description": "Specifies the session or SL (Select) flag to be used for filtering tags.  This helps in managing tag states and collisions during inventory(see EPC Gen2 Spec).\n"
+                                },
+                                "length": {
+                                  "type": "integer",
+                                  "description": "Specifies the number of bits in the tag's memory to be compared against the tagPattern.  This determines the size of the filter applied to the memory bank(see EPC Gen2 Spec).\n"
+                                }
+                              },
+                              "required": [
+                                "enable",
+                                "tagPattern",
+                                "memoryBank",
+                                "offset",
+                                "action",
+                                "target",
+                                "length"
+                              ]
+                            }
+                          },
+                          "tagMetaDataToEnable": {
+                            "type": "object",
+                            "description": "Specifies which metadata fields of the tag should be reported when it is read. Each field can be enabled or disabled based on the application's requirements. Note: For RFD4090 devices, XPC and CRC metadata fields are not supported.\n",
+                            "properties": {
+                              "RSSI": {
+                                "type": "boolean",
+                                "description": "Indicates whether to report the RSSI.  RSSI provides the strength of the signal received from the tag, which can be useful for determining tag proximity.\n"
+                              },
+                              "PHASE": {
+                                "type": "boolean",
+                                "description": "Indicates whether to report the phase angle of the tag's signal.  Phase information is often used for advanced applications like tag localization or movement tracking.\n"
+                              },
+                              "SEENCOUNT": {
+                                "type": "boolean",
+                                "description": "Indicates whether to report the number of times the tag was detected during inventory.  This helps in understanding tag visibility and read consistency over multiple scans.\n"
+                              },
+                              "CHANNEL": {
+                                "type": "boolean",
+                                "description": "Indicates whether to report the communication channel used to read the tag.  This is useful in environments with multiple channels or frequency hopping to identify the channel of operation.\n"
+                              },
+                              "PC": {
+                                "type": "boolean",
+                                "description": "Indicates whether to report the Protocol Control (PC) word.  The PC word contains information about the tag's memory structure and encoding, such as the length of the EPC.\n"
+                              },
+                              "XPC": {
+                                "type": "boolean",
+                                "description": "Indicates whether to report the Extended Protocol Control (XPC) word.  XPC provides additional protocol-related information for advanced tags, such as custom memory configurations.\n"
+                              },
+                              "CRC": {
+                                "type": "boolean",
+                                "description": "Indicates whether to report the CRC value.  CRC is used to verify the integrity of the tag's data and ensure error-free communication.\n"
+                              },
+                              "EPC": {
+                                "type": "boolean",
+                                "description": "Indicates whether to report the EPC.  EPC is the unique identifier stored in the tag's memory, typically used for item identification.\n"
+                              },
+                              "TID": {
+                                "type": "boolean",
+                                "description": "Indicates whether to report the TID.  TID is a factory-programmed, unique identifier for the tag, often used for authentication or anti-counterfeiting.\n"
+                              },
+                              "USER": {
+                                "type": "boolean",
+                                "description": "Indicates whether to report the User memory bank data.  The User memory bank can store custom data defined by the application, such as additional product information.\n"
+                              },
+                              "MAC": {
+                                "type": "boolean",
+                                "description": "Indicates whether to report the MAC address of the reader.  This is useful for identifying the specific reader that performed the tag read in networked environments.\n"
+                              },
+                              "HOSTNAME": {
+                                "type": "boolean",
+                                "description": "Indicates whether to report the hostname of the reader.  Hostnames are helpful in networked environments where readers are identified by their assigned names.\n"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "required": [
+                  "command",
+                  "requestId"
+                ]
+              },
+              "examples": {
+                "Set operating mode": {
+                  "description": "Payload to set operating mode configurations",
+                  "value": {
+                    "command": "set_operating_mode",
+                    "requestId": "1286",
+                    "operatingMode": {
+                      "operatingModes": {
+                        "profiles": "ADVANCED",
+                        "advancedConfigurations": {
+                          "transmitPower": 300,
+                          "linkProfile": "M2_240K",
+                          "session": "SESSION_1",
+                          "dynamicPower": true
+                        },
+                        "accessOperations": [
+                          {
+                            "operationType": "READ",
+                            "config": {
+                              "memoryBank": "EPC",
+                              "offset": 1,
+                              "length": 2
+                            }
+                          },
+                          {
+                            "operationType": "READ",
+                            "config": {
+                              "memoryBank": "TID",
+                              "offset": 2,
+                              "length": 2
+                            }
+                          },
+                          {
+                            "operationType": "WRITE",
+                            "config": {
+                              "memoryBank": "USER",
+                              "offset": 2,
+                              "length": 2,
+                              "data": "FFFFEEEE",
+                              "password": "0000"
+                            }
+                          },
+                          {
+                            "operationType": "ACCESS",
+                            "config": {
+                              "password": "0000"
+                            }
+                          },
+                          {
+                            "operationType": "LOCK",
+                            "config": {
+                              "password": "0000",
+                              "lockMemBank": "TID",
+                              "lockAction": "UNLOCK"
+                            }
+                          }
+                        ],
+                        "radioStartConditions": {
+                          "trigger": "IMMEDIATE",
+                          "startDelay": 3000,
+                          "repeat": false
+                        },
+                        "radioStopConditions": {
+                          "trigger": "IMMEDIATE",
+                          "tagCount": 10,
+                          "stopTimeout": 10000,
+                          "inventoryCount": 0
+                        },
+                        "query": {
+                          "session": "SESSION_1",
+                          "inventoryState": "STATE_B",
+                          "slFlag": "ALL",
+                          "tagPopulation": 30
+                        },
+                        "select": [
+                          {
+                            "enable": true,
+                            "tagPattern": "2222EEEEFFFF1111AAAABBBB",
+                            "memoryBank": "EPC",
+                            "offset": 32,
+                            "action": "INV_B_NOT_INV_A_OR_DSRT_SL_NOT_ASRT_SL",
+                            "target": "SESSION_1",
+                            "length": 16
+                          }
+                        ],
+                        "tagMetaDataToEnable": {
+                          "RSSI": false,
+                          "PHASE": false,
+                          "SEENCOUNT": false,
+                          "CHANNEL": false,
+                          "PC": false,
+                          "XPC": true,
+                          "CRC": true,
+                          "EPC": true,
+                          "TID": true,
+                          "USER": true,
+                          "MAC": true,
+                          "HOSTNAME": true
+                        }
+                      }
+                    }
+                  }
+                },
+                "Profile setting": {
+                  "description": "Payload to set operating mode profile type",
+                  "value": {
+                    "command": "set_operating_mode",
+                    "requestId": "1286",
+                    "operatingMode": {
+                      "operatingModes": {
+                        "profiles": "BALANCED_PERFORMANCE"
+                      }
+                    }
+                  }
+                },
+                "Access operations": {
+                  "description": "Payload to set the required access operations",
+                  "value": {
+                    "command": "set_operating_mode",
+                    "requestId": "1286",
+                    "operatingMode": {
+                      "operatingModes": {
+                        "accessOperations": [
+                          {
+                            "operationType": "READ",
+                            "config": {
+                              "memoryBank": "EPC",
+                              "offset": 2,
+                              "length": 3
+                            }
+                          },
+                          {
+                            "operationType": "READ",
+                            "config": {
+                              "memoryBank": "TID",
+                              "offset": 1,
+                              "length": 2
+                            }
+                          },
+                          {
+                            "operationType": "WRITE",
+                            "config": {
+                              "memoryBank": "USER",
+                              "offset": 2,
+                              "length": 2,
+                              "data": "FFFFEEEE",
+                              "password": "0000"
+                            }
+                          },
+                          {
+                            "operationType": "ACCESS",
+                            "config": {
+                              "password": "0000"
+                            }
+                          },
+                          {
+                            "operationType": "LOCK",
+                            "config": {
+                              "password": "0000",
+                              "lockMemBank": "EPC",
+                              "lockAction": "UNLOCK"
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                },
+                "Radio start/stop conditions": {
+                  "description": "Payload to set inventory start and stop conditions",
+                  "value": {
+                    "command": "set_operating_mode",
+                    "requestId": "1286",
+                    "operatingMode": {
+                      "operatingModes": {
+                        "radioStartConditions": {
+                          "trigger": "IMMEDIATE",
+                          "startDelay": 5000,
+                          "repeat": false
+                        },
+                        "radioStopConditions": {
+                          "trigger": "IMMEDIATE",
+                          "tagCount": 10,
+                          "stopTimeout": 10000,
+                          "inventoryCount": 0
+                        }
+                      }
+                    }
+                  }
+                },
+                "Query settings": {
+                  "description": "Payload to set query parameters",
+                  "value": {
+                    "command": "set_operating_mode",
+                    "requestId": "1286",
+                    "operatingMode": {
+                      "operatingModes": {
+                        "query": {
+                          "session": "SESSION_1",
+                          "inventoryState": "STATE_B",
+                          "slFlag": "ALL",
+                          "tagPopulation": 30
+                        }
+                      }
+                    }
+                  }
+                },
+                "Select settings": {
+                  "description": "Payload to set select pre-filters parameters",
+                  "value": {
+                    "command": "set_operating_mode",
+                    "requestId": "1286",
+                    "operatingMode": {
+                      "operatingModes": {
+                        "select": [
+                          {
+                            "enable": true,
+                            "tagPattern": "2222EEEEFFFF1111AAAABBBB",
+                            "memoryBank": "EPC",
+                            "offset": 32,
+                            "action": "INV_B_NOT_INV_A_OR_DSRT_SL_NOT_ASRT_SL",
+                            "target": "SESSION_SL",
+                            "length": 16
+                          }
+                        ]
+                      }
+                    }
+                  }
+                },
+                "Query and select settings": {
+                  "description": "Payload to set query and select parameters",
+                  "value": {
+                    "command": "set_operating_mode",
+                    "requestId": "8f07804c-4af1-41c8-9959-417b0aa8047d",
+                    "operatingMode": {
+                      "operatingModes": {
+                        "profiles": "BALANCED_PERFORMANCE",
+                        "query": {
+                          "session": "SESSION_1",
+                          "inventoryState": "STATE_B",
+                          "slFlag": "ALL",
+                          "tagPopulation": 40
+                        },
+                        "select": [
+                          {
+                            "enable": true,
+                            "tagPattern": "FFFFEEEE3435363742426666",
+                            "memoryBank": "EPC",
+                            "offset": 32,
+                            "action": "INV_B_NOT_INV_A_OR_DSRT_SL_NOT_ASRT_SL",
+                            "target": "SESSION_1",
+                            "length": 96
+                          }
+                        ]
+                      }
+                    }
+                  }
+                },
+                "Tag metadata settings": {
+                  "description": "Payload to enable/disable tag metadata to be reported",
+                  "value": {
+                    "command": "set_operating_mode",
+                    "requestId": "1286",
+                    "operatingMode": {
+                      "operatingModes": {
+                        "tagMetaDataToEnable": {
+                          "RSSI": true,
+                          "PHASE": true,
+                          "SEENCOUNT": true,
+                          "CHANNEL": true,
+                          "PC": false,
+                          "XPC": false,
+                          "CRC": true,
+                          "EPC": true,
+                          "TID": false,
+                          "USER": false,
+                          "MAC": false,
+                          "HOSTNAME": false
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "set_operating_mode response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "command": {
+                      "type": "string",
+                      "example": "set_operating_mode",
+                      "description": "Echoes the command name so clients can map this response to the set_operating_mode request."
+                    },
+                    "requestId": {
+                      "type": "string",
+                      "example": "abc123",
+                      "description": "Request identifier copied from the command, used for request and response correlation."
+                    },
+                    "apiVersion": {
+                      "type": "string",
+                      "example": "V1.1",
+                      "enum": [
+                        "V1.0",
+                        "V1.1"
+                      ],
+                      "description": "API version used to interpret this response payload."
+                    },
+                    "response": {
+                      "title": "response",
+                      "x-stoplight": {
+                        "id": "1uzw0wye4si2y"
+                      },
+                      "type": "object",
+                      "description": "Execution result object containing status code and result description.",
+                      "properties": {
+                        "code": {
+                          "type": "integer",
+                          "example": 0,
+                          "description": "Response code indicating success or failure.\n\n- 0 — Success\n- 11 — Inventory in progress\n- 22 — Advanced configuration not set\n- 23 — Invalid enum value\n- 24 — Max 32 prefilters limit exceeded\n- 28 — Tag match pattern length exceeded",
+                          "minimum": 0,
+                          "maximum": 28
+                        },
+                        "description": {
+                          "type": "string",
+                          "description": "Human-readable result message that explains the response code.",
+                          "example": "Success"
+                        }
+                      },
+                      "required": [
+                        "code",
+                        "description"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "command",
+                    "requestId",
+                    "apiVersion",
+                    "response"
+                  ]
+                },
+                "examples": {
+                  "example1": {
+                    "value": {
+                      "command": "set_operating_mode",
+                      "requestId": "abc123",
+                      "apiVersion": "V1.1",
+                      "response": {
+                        "code": 0,
+                        "description": "Success"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-error-codes": [
+          {
+            "code": 0,
+            "description": "Success",
+            "iot_status_code": "IOT_STATUS_SUCCESS",
+            "cause": "Command executed successfully",
+            "recommended_action": "No action required"
+          },
+          {
+            "code": 11,
+            "description": "Inventory in progress",
+            "iot_status_code": "IOT_ERROR_INVENTORY_IN_PROGRESS",
+            "cause": "An RFID inventory operation is currently running",
+            "recommended_action": "Stop the current inventory before starting a new operation or changing the mode"
+          },
+          {
+            "code": 22,
+            "description": "Advanced configuration not set",
+            "iot_status_code": "IOT_CTRL_ADVANCED_PROFILE_NOT_SET",
+            "cause": "The operating mode requires an advanced profile that has not been configured",
+            "recommended_action": "Configure the advanced profile settings before setting the operating mode"
+          },
+          {
+            "code": 23,
+            "description": "Invalid enum value",
+            "iot_status_code": "IOT_ERROR_INVALID_ENUM",
+            "cause": "A field value does not match any of the allowed enum options",
+            "recommended_action": "Check the schema for allowed values and correct the field"
+          },
+          {
+            "code": 24,
+            "description": "Max 32 prefilters limit exceeded",
+            "iot_status_code": "IOT_ERROR_PREFILTERS_LIMIT_EXCEEDED",
+            "cause": "More than 32 prefilter rules were specified",
+            "recommended_action": "Reduce the number of prefilter rules to 32 or fewer"
+          },
+          {
+            "code": 28,
+            "description": "Tag match pattern length exceeded",
+            "iot_status_code": "IOT_ERROR_TAG_MATCH_PATTERN_LENGTH_EXCEEDED",
+            "cause": "The tag match pattern string exceeds the maximum allowed length",
+            "recommended_action": "Shorten the tag match pattern to within the allowed limit"
+          }
+        ]
+      }
+    }
+  }
+}

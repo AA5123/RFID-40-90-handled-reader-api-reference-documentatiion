@@ -4,11 +4,12 @@
     "id": "gmklnshp7siw3"
   },
   "type": "object",
+  "description": "Response returned for get_operating_mode. It provides the current reader operating mode configuration and command execution status.",
   "properties": {
     "command": {
       "type": "string",
       "example": "get_operating_mode",
-      "description": "The type of command being executed or responded to. For MQTT, this specifies the operation type.",
+      "description": "Echoes the command name so clients can map this response to the get_operating_mode request.",
       "x-stoplight": {
         "id": "i35qtqsq8emxm"
       }
@@ -19,7 +20,7 @@
       "x-stoplight": {
         "id": "ozyqw9bx2zxps"
       },
-      "description": "A unique identifier for the request, used for tracking the request and its corresponding response in the MQTT protocol."
+      "description": "Request identifier copied from the command, used for request and response correlation."
     },
     "apiVersion": {
       "type": "string",
@@ -31,16 +32,18 @@
       "x-stoplight": {
         "id": "upiudaa00opi5"
       },
-      "description": "The version of the API being used in this MQTT response message."
+      "description": "API version used to interpret this response payload."
     },
     "operatingMode": {
       "$ref": "../../refrence/payload/operatingModePayload.yaml",
+      "description": "Current operating mode configuration, including profile and related operating parameters.",
       "x-stoplight": {
         "id": "vmmn2ju2w2bhp"
       }
     },
     "response": {
       "$ref": "../../refrence/response/response.yaml",
+      "description": "Execution result object containing status code and result description.",
       "x-stoplight": {
         "id": "nd5i7f91ono2u"
       }

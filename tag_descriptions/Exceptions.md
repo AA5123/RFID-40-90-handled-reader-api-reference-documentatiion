@@ -1,7 +1,18 @@
-Receive error events when the scanner encounters an unexpected condition.
+## Overview
 
-| Event | What It Reports |
+Receive error events when the device encounters an unexpected condition. Exception events help diagnose system issues.
+
+## Events
+
+| Event | Description |
 |---|---|
-| `exceptionEVT` | Error details "” radio failures, configuration errors, and other exceptional conditions |
+| `exceptionEVT` | Error details including radio failures, configuration errors, system issues |
 
-Exceptions indicate something went wrong that may require operator attention or automated recovery.
+## Indication
+
+Exceptions indicate:
+- Something went wrong in system operations
+- May require operator attention or intervention
+- Potential need for automated recovery or reboot
+
+Note: Currently not fully supported on all device types.
