@@ -414,7 +414,7 @@ function getSchemaEnumLine(schema) {
      doc.setTextColor(white[0], white[1], white[2]);
      doc.text('RFD40 / RFD90 MQTT API Reference  |  Zebra Technologies', margin, pageH - 5);
      /* use jsPDF's built-in page number — never drift */
-     doc.text('Page ' + doc.getCurrentPage(), pageW - margin, pageH - 5, { align: 'right' });
+     doc.text('Page ' + doc.internal.getCurrentPageInfo().pageNumber, pageW - margin, pageH - 5, { align: 'right' });
    }
 
    function checkPageBreak(needed) {
