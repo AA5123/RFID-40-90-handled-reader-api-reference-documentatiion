@@ -387,9 +387,9 @@ function getSchemaEnumLine(schema) {
    var margin = 16;
    var contentW = pageW - margin * 2;
    var y = 0;
-   var pageNum = 1;
 
-   function drawHeader() {
+   /* draws only the banner graphics — safe to call inside didDrawPage without resetting y */
+   function drawHeaderBanner() {
      doc.setFillColor(navy[0], navy[1], navy[2]);
      doc.rect(0, 0, pageW, 18, 'F');
      doc.setFont('helvetica', 'bold');
@@ -399,6 +399,10 @@ function getSchemaEnumLine(schema) {
      doc.setFont('helvetica', 'normal');
      doc.setFontSize(8);
      doc.text(op.summary || path, pageW - margin, 11, { align: 'right' });
+   }
+
+   function drawHeader() {
+     drawHeaderBanner();
      y = 24;
    }
 
@@ -409,11 +413,12 @@ function getSchemaEnumLine(schema) {
      doc.setFontSize(7);
      doc.setTextColor(white[0], white[1], white[2]);
      doc.text('RFD40 / RFD90 MQTT API Reference  |  Zebra Technologies', margin, pageH - 5);
-     doc.text('Page ' + pageNum, pageW - margin, pageH - 5, { align: 'right' });
+     /* use jsPDF's built-in page number — never drift */
+     doc.text('Page ' + doc.getCurrentPage(), pageW - margin, pageH - 5, { align: 'right' });
    }
 
    function checkPageBreak(needed) {
-     if (y + needed > pageH - 18) { drawFooter(); doc.addPage(); pageNum++; drawHeader(); }
+     if (y + needed > pageH - 18) { drawFooter(); doc.addPage(); drawHeader(); }
    }
 
    function sectionHeading(title) {
@@ -451,16 +456,32 @@ function getSchemaEnumLine(schema) {
      if (!jsonObj) return;
      var jsonStr = JSON.stringify(jsonObj, null, 2);
      var lines = jsonStr.split('\n');
-     var blockH = lines.length * 4.5 + 6;
-     checkPageBreak(Math.min(blockH, 40));
-     doc.setFillColor(30, 41, 59);
-     doc.roundedRect(margin, y, contentW, Math.min(blockH, 80), 2, 2, 'F');
-     doc.setFont('courier', 'normal');
-     doc.setFontSize(7);
-     doc.setTextColor(249, 250, 251);
-     var lineY = y + 5;
-     lines.forEach(function (line) { if (lineY > y + 78) return; doc.text(line, margin + 3, lineY); lineY += 4.5; });
-     y += Math.min(blockH, 80) + 4;
+     var lineH = 4.5;
+     var topPad = 5;
+     var bottomPad = 4;
+     var i = 0;
+     while (i < lines.length) {
+       /* how many lines fit in remaining page space (above footer) */
+       var spaceLeft = (pageH - 12) - y - topPad - bottomPad;
+       if (spaceLeft < lineH) {
+         /* not enough room for even one line — break page */
+         drawFooter(); doc.addPage(); drawHeader();
+         spaceLeft = (pageH - 12) - y - topPad - bottomPad;
+       }
+       var count = Math.min(Math.max(1, Math.floor(spaceLeft / lineH)), lines.length - i);
+       var blockH = count * lineH + topPad + bottomPad;
+       doc.setFillColor(30, 41, 59);
+       doc.roundedRect(margin, y, contentW, blockH, 2, 2, 'F');
+       doc.setFont('courier', 'normal');
+       doc.setFontSize(7);
+       doc.setTextColor(249, 250, 251);
+       for (var j = 0; j < count; j++) {
+         doc.text(lines[i + j], margin + 3, y + topPad + j * lineH);
+       }
+       y += blockH + 4;
+       i += count;
+       if (i < lines.length) { drawFooter(); doc.addPage(); drawHeader(); }
+     }
    }
 
    function schemaTablePdf(schema, title) {
@@ -479,12 +500,12 @@ function getSchemaEnumLine(schema) {
        startY: y,
        head: [['Field', 'Type', 'Description']],
        body: rows,
-       margin: { left: margin, right: margin },
+       margin: { top: 24, left: margin, right: margin },
        styles: { fontSize: 7.5, cellPadding: 2.5, textColor: textDark, lineColor: borderGray, lineWidth: 0.3 },
        headStyles: { fillColor: navy, textColor: white, fontStyle: 'bold', fontSize: 8 },
        alternateRowStyles: { fillColor: lightGray },
        columnStyles: { 0: { cellWidth: 45, font: 'courier', fontStyle: 'bold' }, 1: { cellWidth: 25 }, 2: { cellWidth: 'auto' } },
-       didDrawPage: function (data) { drawFooter(); if (data.pageCount > 1) { pageNum++; drawHeader(); } }
+       didDrawPage: function () { drawHeaderBanner(); drawFooter(); }
      });
      y = doc.lastAutoTable.finalY + 6;
    }
@@ -497,14 +518,14 @@ function getSchemaEnumLine(schema) {
      });
      doc.autoTable({
        startY: y,
-      head: [['Code', 'Description', 'Cause', 'Action']],
+       head: [['Code', 'Description', 'Cause', 'Action']],
        body: rows,
-       margin: { left: margin, right: margin },
+       margin: { top: 24, left: margin, right: margin },
        styles: { fontSize: 7, cellPadding: 2, textColor: textDark, lineColor: borderGray, lineWidth: 0.3 },
        headStyles: { fillColor: navy, textColor: white, fontStyle: 'bold', fontSize: 7.5 },
        alternateRowStyles: { fillColor: lightGray },
-      columnStyles: { 0: { cellWidth: 14 }, 1: { cellWidth: 46 }, 2: { cellWidth: 42 }, 3: { cellWidth: 'auto' } },
-       didDrawPage: function (data) { drawFooter(); if (data.pageCount > 1) { pageNum++; drawHeader(); } }
+       columnStyles: { 0: { cellWidth: 14 }, 1: { cellWidth: 46 }, 2: { cellWidth: 42 }, 3: { cellWidth: 'auto' } },
+       didDrawPage: function () { drawHeaderBanner(); drawFooter(); }
      });
      y = doc.lastAutoTable.finalY + 6;
    }
@@ -562,11 +583,11 @@ function getSchemaEnumLine(schema) {
            startY: y,
            head: [headers],
            body: bodyRows.map(function (row) { return headers.map(function (_, i) { return stripMarkdown(row[i] || ''); }); }),
-           margin: { left: margin, right: margin },
+           margin: { top: 24, left: margin, right: margin },
            styles: { fontSize: 7.5, cellPadding: 2.5, textColor: textDark, lineColor: borderGray, lineWidth: 0.3 },
            headStyles: { fillColor: navy, textColor: white, fontStyle: 'bold' },
            alternateRowStyles: { fillColor: lightGray },
-           didDrawPage: function () { drawFooter(); pageNum++; drawHeader(); }
+           didDrawPage: function () { drawHeaderBanner(); drawFooter(); }
          });
          y = doc.lastAutoTable.finalY + 6;
          return;
@@ -594,15 +615,17 @@ function getSchemaEnumLine(schema) {
        sectionHeading('MQTT Command Payload');
        var exObj = ct.examples || {};
        var exKeys = Object.keys(exObj);
-       var exampleToShow = null;
-       if (exKeys.length && exObj[exKeys[0]].value) {
-         exampleToShow = exObj[exKeys[0]].value;
+       if (exKeys.length) {
+         /* render every named example */
+         exKeys.forEach(function (key) {
+           if (exObj[key] && exObj[key].value !== undefined) {
+             subHeading(exKeys.length > 1 ? 'Example: ' + key : 'Example');
+             jsonBlock(exObj[key].value);
+           }
+         });
        } else if (ct.schema) {
-         exampleToShow = generateExampleFromSchema(ct.schema);
-       }
-       if (exampleToShow) {
          subHeading('Example');
-         jsonBlock(exampleToShow);
+         jsonBlock(generateExampleFromSchema(ct.schema));
        }
        if (ct.schema) schemaTablePdf(ct.schema, 'Command');
      }
@@ -616,15 +639,17 @@ function getSchemaEnumLine(schema) {
        sectionHeading('MQTT Response Payload');
        var resExObj = rct.examples || {};
        var resExKeys = Object.keys(resExObj);
-       var resExampleToShow = null;
-       if (resExKeys.length && resExObj[resExKeys[0]].value) {
-         resExampleToShow = resExObj[resExKeys[0]].value;
+       if (resExKeys.length) {
+         /* render every named example */
+         resExKeys.forEach(function (key) {
+           if (resExObj[key] && resExObj[key].value !== undefined) {
+             subHeading(resExKeys.length > 1 ? 'Example: ' + key : 'Example');
+             jsonBlock(resExObj[key].value);
+           }
+         });
        } else if (rct.schema) {
-         resExampleToShow = generateExampleFromSchema(rct.schema);
-       }
-       if (resExampleToShow) {
          subHeading('Example');
-         jsonBlock(resExampleToShow);
+         jsonBlock(generateExampleFromSchema(rct.schema));
        }
        if (rct.schema) schemaTablePdf(rct.schema, 'Response');
      }
