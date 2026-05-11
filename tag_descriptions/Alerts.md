@@ -6,9 +6,7 @@ Receive automatic alert events when the device crosses a threshold or changes st
 
 | Event | Description |
 |---|---|
-| `alerts` | Full alert details including battery, temperature, power, network, firmware conditions |
-| `alert_short` | Compact alert summary with human-readable message descriptions |
+| [`alert_short`](#alert_short) | Compact alert summary with human-readable message descriptions |
+| [`alerts`](#alerts) | Full alert details including battery, temperature, power, network, firmware conditions |
 
-## Configuration
 
-Enable or disable specific alert types via `config_events` command. Use `config_endpoint` to specify delivery endpoints.

@@ -6,16 +6,6 @@ Define where the device sends data by configuring the broker connection paramete
 
 | Command | Description |
 |---|---|
-| `config_endpoint` | Configure broker URL, port, protocol, credentials, topics, and TLS settings |
-| `get_endpoint_config` | Retrieve current endpoint configuration |
+| [`get_endpoint_config`](#get_endpoint_config) | Retrieve current endpoint configuration |
+| [`config_endpoint`](#config_endpoint) | Configure broker URL, port, protocol, credentials, topics, and TLS settings |
 
-## Configuration
-
-Includes:
-- Broker URL and port
-- Publish/subscribe topics
-- QoS levels
-- Keep-alive interval
-- Authentication credentials
-- Reconnect behavior and timeouts
-- TLS/certificate settings

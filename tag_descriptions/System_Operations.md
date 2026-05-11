@@ -6,12 +6,6 @@ Restart the device or trigger a firmware update. Both operations interrupt norma
 
 | Command | Description |
 |---|---|
-| `reboot` | Restart the device and apply pending configuration changes |
-| `set_os` | Trigger a firmware update on the device |
+| [`set_os`](#set_os) | Trigger a firmware update on the device |
+| [`reboot`](#reboot) | Restart the device and apply pending configuration changes |
 
-## Requirements
-
-- Reboot: No active inventory operation
-- Firmware update: Sufficient battery level required
-- Both operations apply configuration changes
-- Device will reconnect to broker after reboot
