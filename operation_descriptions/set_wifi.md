@@ -1,4 +1,4 @@
-## Description
+## 1. Description
 
 The `set_wifi` command configures or updates Wi-Fi interface and access point profile settings on the reader.
 
@@ -15,8 +15,7 @@ Use this command to:
 - Update existing Wi-Fi settings for network changes
 - Control security and connection behavior for wireless access
 
-
-## Command Details
+## 2. Command Details
 
 | Property | Value |
 |---|---|
@@ -33,8 +32,7 @@ Use this command to:
 
 `wifiConfig` contains the configuration and operation details required by the command.
 
-
-## Before You Begin
+## 3. Before You Begin
 
 Gather the access point details and security credentials before sending this command. An incorrect ESSID or security mismatch will result in a saved but non-functional profile, and the reader will not connect.
 
@@ -49,8 +47,7 @@ Gather the access point details and security credentials before sending this com
 | Connection behavior | Decide whether the command should immediately connect (`connect: true`) and whether this profile should always be preferred (`isPreferred: true`). |
 | Interface name | Confirm the Wi-Fi interface name on the device (typically `wlan0`). An incorrect name will result in an invalid payload error. |
 
-
-## Operations
+## 4. Operations
 
 The `operation` field inside `wifiConfig` determines whether you are creating a new Wi-Fi profile or modifying an existing one.
 
@@ -59,9 +56,7 @@ The `operation` field inside `wifiConfig` determines whether you are creating a 
 
 > **Important:** Always verify the response code after sending this command. A successful response (code 0) confirms the profile was saved. Use the `connect` field to control whether the device switches to the new profile immediately.
 
----
-
-## Security Types
+## 5. Security Types
 
 The `securityType` field in the `security` object defines the authentication and encryption method for the access point. Choose the type that matches your network's security configuration.
 
@@ -74,8 +69,7 @@ The `securityType` field in the `security` object defines the authentication and
 | OWEPublic | Opportunistic Wireless Encryption. Open network with encryption but no authentication. | None |
 | Open | No security. Open network with no encryption or authentication. | None |
 
-
-## Rules and Constraints
+## 6. Rules and Constraints
 
 Violating any of these rules will cause the command to fail or the Wi-Fi profile to be configured incorrectly.
 
@@ -104,5 +98,3 @@ Violating any of these rules will cause the command to fail or the Wi-Fi profile
 - Delete unused profiles using `delete_wifi_profile` before adding new ones when the limit is reached.
 
 > **Security Note:** Never hardcode Wi-Fi passwords or enterprise credentials in your payload. Use a secrets manager or environment variable to supply sensitive values at runtime.
-
-

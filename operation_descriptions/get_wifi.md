@@ -11,8 +11,6 @@ This command returns:
 
 No additional payload fields are required beyond `command` and `requestId`.
 
----
-
 ## 2. Command Details
 
 | Property | Value |
@@ -25,8 +23,6 @@ No additional payload fields are required beyond `command` and `requestId`.
 | Supported Operations | Retrieve Wi-Fi interface and profile configuration details |
 | Supported Response Sections | wifiProfiles, response |
 | Supported API Versions | V1.0, V1.1 |
-
----
 
 ## 3. When to Use This Command
 

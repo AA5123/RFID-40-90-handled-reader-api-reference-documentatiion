@@ -24,7 +24,6 @@ No additional payload fields are required beyond `command` and `requestId`.
 | Supported Response Sections | operatingMode, response |
 | Supported API Versions | V1.0, V1.1 |
 
-
 ## 3. When to Use This Command
 
 Use `get_operating_mode` to:
@@ -43,4 +42,3 @@ Key fields to check in the response:
 | `query.session` | Which Gen2 session is in use? | Confirms session alignment with tag population management strategy. |
 | `query.tagPopulation` | Is the tag estimate configured correctly? | An inaccurate estimate degrades inventory performance in dense environments. |
 | `tagMetaDataToEnable` | Which data fields are being reported? | Unused fields add overhead. Verify only required fields are enabled before a production run. |
-

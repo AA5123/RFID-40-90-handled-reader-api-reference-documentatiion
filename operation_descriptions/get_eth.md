@@ -45,5 +45,3 @@ Key fields to check in the response:
 | `ipv4Configuration.gateway` | Is the gateway correct? | An incorrect gateway prevents the device from reaching external networks or the MQTT broker. |
 
 > **Note:** When the Ethernet interface is disabled, the response only contains `interfaceName` and `status`. Fields such as `linkStatus` and `ipv4Configuration` are not present in the response.
-
-

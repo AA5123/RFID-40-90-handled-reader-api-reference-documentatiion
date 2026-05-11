@@ -36,5 +36,3 @@ The reader publishes `mqttConnEVT` automatically whenever the MQTT endpoint conn
 | Device reconnects after a drop | `CONNECTED` | A new CONNECTED event is published each time the device re-establishes the connection. |
 
 > **Note:** The absence of a `CONNECTED` event after a `DISCONNECTED` event indicates the device has not yet successfully reconnected. Monitor the gap between DISCONNECTED and the next CONNECTED event to detect prolonged outages in your deployment.
-
-

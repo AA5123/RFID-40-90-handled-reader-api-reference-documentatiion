@@ -48,7 +48,6 @@ Decide which aspects of the operating mode you need to configure before sending 
 | Metadata requirements | Know which tag metadata fields (RSSI, TID, USER, MAC, etc.) your backend application needs. Enabling unnecessary fields increases data volume. |
 | Inventory state | `set_operating_mode` cannot be sent while inventory is in progress. Stop any active inventory first — error code 11 is returned if violated. |
 
-
 ## 3. Choosing an Operating Profile
 
 The `profiles` field selects the reader's overall RF operating mode. Choose based on your deployment environment and performance priorities.
@@ -62,7 +61,6 @@ The `profiles` field selects the reader's overall RF operating mode. Choose base
 | `BALANCED_PERFORMANCE` | Maintains a balance between read performance and battery life. **This is the default.** |
 | `ADVANCED` | Unlocks manual control of `transmitPower`, `linkProfile`, `session`, and `dynamicPower` via `advancedConfigurations`. `advancedConfigurations` is required when this profile is selected. |
 
-
 ## 4. Choosing Access Operations
 
 Access operations let the reader do more than just read the EPC during inventory. Each entry in the `accessOperations` array runs against every tag singulated in that inventory cycle. Choose operations based on what your application needs to do with each tag.
@@ -74,7 +72,6 @@ Access operations let the reader do more than just read the EPC during inventory
 | `ACCESS` | Authenticates to the tag using the access password, enabling subsequent protected operations. | `password` must be exactly 8 hex characters (32 bits). If the tag has no password set, use `00000000`. |
 | `LOCK` | Locks or unlocks a specified memory bank, or permanently locks it so it can never be changed again. | `lockAction: PERMANENT_LOCK` is irreversible. `lockMemBank` additionally supports `ACCESS_PWD` and `KILL_PWD` beyond the standard memory banks. |
 | `KILL` | Permanently and irreversibly disables the tag. The tag will never respond to any reader again. | This operation cannot be undone. `password` must match the tag's kill password exactly. |
-
 
 ## 5. Choosing Radio Start and Stop Conditions
 
@@ -169,7 +166,7 @@ The `action` field defines what happens to the SL flag and inventory state when 
 | `INV_A2BB2A_NOT_INV_A_OR_NEG_SL_NOT_ASRT_SL` | Flip A↔B / Negate SL | Set to INV_A / Assert SL |
 | `NOT_INV_A2BB2A_OR_NOT_NEG_SL` | No change | Flip A↔B / Negate SL |
 
-## 10. Rules and Constraints
+## 8. Rules and Constraints
 
 ### Inventory State
 
@@ -200,4 +197,3 @@ The `action` field defines what happens to the SL flag and inventory state when 
 ### Enum Values
 
 - All enum fields must exactly match one of the allowed values listed in [Section 12 — Schema Reference](#12-schema-reference). Any mismatch returns error code **23**.
-

@@ -14,8 +14,6 @@ Use this event to:
 - Track device health and infrastructure-related changes
 - Feed alert pipelines that require structured alert context
 
----
-
 ## 2. Event Details
 
 | Property | Value |
@@ -26,8 +24,6 @@ Use this event to:
 | Trigger Condition | Generated when a device condition transitions state or crosses a monitored threshold |
 | Related Events | alert_short, heartBeatEVT, exceptionEVT |
 | Supported API Versions | V1.0, V1.1 |
-
----
 
 ## 3. When This Event Is Published
 

@@ -1,4 +1,4 @@
-## Description
+## 1. Description
 
 The `config_events` command configures or updates event and alert behavior on the reader.
 
@@ -15,7 +15,7 @@ Use this command to:
 - Tune heartbeat reporting to match monitoring requirements
 - Configure threshold-based alerts for proactive device health monitoring
 
-## Command Details
+## 2. Command Details
 
 | Property | Value |
 |---|---|
@@ -29,8 +29,7 @@ Use this command to:
 | Supported Threshold Fields | `cpuThreshold`, `ramThreshold`, `flashThreshold`, `temperatureThreshold` |
 | Supported API Versions | V1.0, V1.1 |
 
-
-## Before You Begin
+## 3. Before You Begin
 
 Decide which events and alerts your application needs before sending this command. All event flags and threshold fields inside `eventConfiguration` are optional — include only what you need to change.
 
@@ -43,7 +42,7 @@ Decide which events and alerts your application needs before sending this comman
 | Flash alert threshold | Know the flash usage percentage above which you want a flash alert triggered. Only relevant when `flashUsage` is enabled. |
 | Temperature alert threshold | Know the temperature value above which you want a temperature alert triggered. Only relevant when `temperature` is enabled. |
 
-## Event Types
+## 4. Event Types
 
 Each boolean flag in `eventConfiguration` controls an independent event stream on the device.
 
@@ -66,7 +65,7 @@ Each boolean flag in `eventConfiguration` controls an independent event stream o
 | `flashUsage` | Flash storage usage alert events. Requires `flashThreshold` to define the trigger level. |
 | `ramUsage` | RAM usage alert events. Requires `ramThreshold` to define the trigger level. |
 
-## Rules and Constraints
+## 5. Rules and Constraints
 
 Violating any of these rules will cause the command to fail or the event configuration to behave unexpectedly.
 

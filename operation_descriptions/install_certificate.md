@@ -1,4 +1,4 @@
-## Description
+## 1. Description
 
 The `install_certificate` command installs certificates on the device for authentication purposes. Certificates can be downloaded from HTTP sources or provided inline, and stored for WiFi, MQTT, and file store authentication. This command supports various certificate types including CA certificates, client certificates, and client keys.
 
@@ -10,7 +10,7 @@ Use this command to:
 - Update device security credentials
 - Establish secure communication channels
 
-## Command Details
+## 2. Command Details
 
 | Property | Value |
 |---|---|
@@ -25,7 +25,7 @@ Use this command to:
 | Supported Verification Types | `NONE`, `VERIFY_PEER`, `VERIFY_HOST`, `VERIFY_HOST_PEER` |
 | Supported API Versions | V1.0, V1.1 |
 
-## Before You Begin
+## 3. Before You Begin
 
 Gather certificate details and source information before sending this command. A missing URL, incorrect certificate type, or unsupported authentication method will cause installation to fail.
 
@@ -41,9 +41,7 @@ Gather certificate details and source information before sending this command. A
 
 > **Important:** A response code of `1` (Command payload is accepted) does not mean installation is complete. The device processes the certificate installation asynchronously. Monitor follow-up events or poll `get_installed_certificate` to confirm completion.
 
----
-
-## Certificate Types
+## 4. Certificate Types
 
 The `type` field in `certDetails` defines where the certificate will be used. Choose the correct type based on the service that will consume the certificate.
 
@@ -53,9 +51,7 @@ The `type` field in `certDetails` defines where the certificate will be used. Ch
 - `client` — Client-side certificates for general authentication.
 - `server` — Server-side certificates.
 
----
-
-## Authentication and Verification Options
+## 5. Authentication and Verification Options
 
 ### Authentication Types (`authenticationType`)
 
@@ -82,8 +78,7 @@ Specifies the TLS verification mode used when validating remote endpoints during
 - `VERIFY_HOST` — Verifies the host name matches the certificate.
 - `VERIFY_HOST_PEER` — Verifies both the host name and the peer certificate. Recommended for production.
 
-
-## Rules and Constraints
+## 6. Rules and Constraints
 
 Violating any of these rules will cause the command to fail or the certificate to be installed incorrectly.
 
@@ -113,4 +108,3 @@ Violating any of these rules will cause the command to fail or the certificate t
 - `queryParams` — HTTP query parameters. Currently not supported.
 
 > **Security Note:** Never hardcode certificate passwords or credentials in your payload. Use a secrets manager or environment variable to supply sensitive values at runtime.
-

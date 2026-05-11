@@ -1,4 +1,4 @@
-## Description
+## 1. Description
 
 `config_endpoint` manages the communication endpoints on the RFD40/RFD90 reader. An endpoint is a named connection profile that tells the reader how to reach an external system — specifying the protocol, broker URL, port, credentials, and MQTT topic mappings for that connection.
 
@@ -6,7 +6,7 @@ Before the reader can send or receive any data, at least one endpoint must be co
 
 > **Important:** The reader cannot communicate with any external system until at least one endpoint is configured and active. Always verify the response code after sending this command before expecting the reader to connect.
 
-## Command Details
+## 2. Command Details
 
 | Property | Value |
 |---|---|
@@ -21,7 +21,7 @@ Before the reader can send or receive any data, at least one endpoint must be co
 | Supported Verification Types | `NONE`, `VERIFY_PEER`, `VERIFY_HOST`, `VERIFY_HOST_PEER` |
 | Supported API Versions | V1.0, V1.1 |
 
-## Endpoint Provisioning Behavior
+## 3. Endpoint Provisioning Behavior
 
 Understanding how endpoints are provisioned helps you know which endpoints to configure yourself and which are handled automatically by the system.
 
@@ -50,7 +50,7 @@ Operational endpoints you configure using `config_endpoint`:
 
 > **Important:** `config_endpoint` can only be sent after the reader has an active management endpoint and is connected to the broker. If the management endpoint is not yet established, this command cannot reach the reader.
 
-## Choosing an Endpoint Type
+## 4. Choosing an Endpoint Type
 
 The `epType` field defines the role of the endpoint. A reader can have multiple endpoints with different types simultaneously — for example, one `MGMT` endpoint for commands and one `DATA1` endpoint for tag data. Choose based on what this connection will carry.
 
@@ -63,8 +63,7 @@ The `epType` field defines the role of the endpoint. A reader can have multiple 
 | `SOTI` | SOTI MDM | Your device management platform is SOTI MobiControl. |
 | `MDM` | Generic MDM | Your device management platform is not covered by a dedicated type. |
 
-
-## Before You Begin
+## 5. Before You Begin
 
 Gather the following before sending the command. Missing any of these will cause the endpoint to fail to connect even if the command succeeds.
 
@@ -77,7 +76,7 @@ Gather the following before sending the command. Missing any of these will cause
 | Protocol | The connection protocol — `MQTT` for standard connections, `MQTT_TLS` for encrypted connections, or a cloud-specific protocol such as `AWS` or `AZURE`. |
 | Certificates (if using TLS) | CA certificate, client certificate, and client private key files provisioned on the device. Required when `verificationType` is not `NONE`. Install them using `install_certificate` before sending this command. |
 
-## Operations
+## 6. Operations
 
 The `operation` field inside `epConfig` determines the action performed on the endpoint definition.
 
@@ -85,7 +84,7 @@ The `operation` field inside `epConfig` determines the action performed on the e
 - **update** — Modifies an existing endpoint. The `endpointName` must already exist on the device.
 - **delete** — Permanently removes an existing endpoint. Only `endpointName` and `epType` are required for this operation.
 
-## Rules and Constraints
+## 7. Rules and Constraints
 
 Violating any of these rules will cause the command to fail or the endpoint to be configured incorrectly.
 
@@ -116,7 +115,6 @@ Violating any of these rules will cause the command to fail or the endpoint to b
 
 > **Security Note:** Never hardcode MQTT credentials or certificate passwords in your payload. Use a secrets manager or environment variable to supply sensitive values at runtime.
 
-
 | Field | Type | Description |
 |---|---|---|
 | `command` | string | Echoes the command name so clients can map this response to the `config_endpoint` request. |
@@ -125,7 +123,5 @@ Violating any of these rules will cause the command to fail or the endpoint to b
 | `response` | object | Execution result object containing status code and result description. |
 | `response.code` * | integer | Response code indicating success or failure. `0` — Success. `10` — Configuration already exists. `23` — Invalid enum value. `25` — Max 3 publish topics exceeded. `26` — Max 1 subscribe topic exceeded. `27` — Invalid tenant ID length. Min: 0 \| Max: 27 |
 | `response.description` * | string | Human-readable result message that explains the response code. |
-
----
 
 *RFD40 / RFD90 MQTT API Reference | config_endpoint | Zebra Technologies*

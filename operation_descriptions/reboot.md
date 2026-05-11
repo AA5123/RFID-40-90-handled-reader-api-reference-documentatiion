@@ -1,4 +1,4 @@
-## Description
+## 1. Description
 
 The `reboot` command performs a warm reset of the device. After a successful reboot, the device automatically reinitializes its connection to the previously connected server. If the reboot fails, a failure notification is sent.
 
@@ -9,8 +9,7 @@ Use this command to:
 - Reinitialize device connections
 - Apply pending device updates
 
-
-## Command Details
+## 2. Command Details
 
 | Property | Value |
 |---|---|
@@ -22,7 +21,7 @@ Use this command to:
 | Supported Operations | Warm reset of the device |
 | Supported API Versions | V1.0, V1.1 |
 
-## Before You Begin
+## 3. Before You Begin
 
 This is a minimal command with no configuration payload. Confirm the following before sending.
 
@@ -31,7 +30,7 @@ This is a minimal command with no configuration payload. Confirm the following b
 | Inventory state | The device cannot be rebooted while an RFID inventory operation is in progress. Stop the active inventory using `control_operation` before sending this command. Attempting to reboot during an active inventory returns error code 5. |
 | Server reconnection | After a successful reboot, the device automatically reconnects to the previously connected server. No manual reconnection is required. |
 
-## Rules and Constraints
+## 4. Rules and Constraints
 
 Violating any of these rules will cause the command to be rejected.
 
@@ -39,4 +38,3 @@ Violating any of these rules will cause the command to be rejected.
 
 - The device cannot be rebooted while an RFID inventory operation is active. Sending `reboot` during an active inventory returns error code 5.
 - Use `control_operation` with `operation: STOP` to halt the inventory before sending this command.
-

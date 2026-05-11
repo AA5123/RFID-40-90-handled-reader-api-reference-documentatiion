@@ -4,9 +4,7 @@
 **API Versions:** V1.0, V1.1
 **Communication:** Cloud to Device / Device to Cloud
 
----
-
-## Description
+## 1. Description
 
 The `control_operation` command configures or updates the active radio or scanner operation state on the reader.
 
@@ -23,7 +21,7 @@ Use this command to:
 - Stop active radio or scanner operations
 - Manage device activity state in real-time
 
-## Command Details
+## 2. Command Details
 
 | Property | Value |
 |---|---|
@@ -36,8 +34,7 @@ Use this command to:
 | Supported Control Types | `RFID`, `SCANNER` |
 | Supported API Versions | V1.0, V1.1 |
 
-
-## Before You Begin
+## 3. Before You Begin
 
 This is a lightweight command with only two required payload fields. Confirm the following before sending.
 
@@ -47,15 +44,14 @@ This is a lightweight command with only two required payload fields. Confirm the
 | Operation | Decide whether to `START` or `STOP` the selected subsystem. Sending `START` when an inventory is already in progress returns error code 11. Sending `STOP` when no operation is active returns error code 12 — this is not a failure condition. |
 | Operating mode | Ensure the desired operating mode is already configured via `set_operating_mode` before sending a `START` command. `control_operation` does not set operating parameters — it only triggers or halts the operation. |
 
-## Operations
+## 4. Operations
 
 The `operation` field inside `ctrlOprPayload` determines the action performed on the selected reader subsystem.
 
 - **START** — Begins the operation for the selected control type. For `RFID`, this starts the inventory cycle using the currently configured operating mode. Returns error code 11 if an inventory is already in progress.
 - **STOP** — Halts the active operation for the selected control type. Returns error code 12 if no operation is currently running — this is informational, not a failure.
 
-
-## Rules and Constraints
+## 5. Rules and Constraints
 
 Violating any of these rules will cause the command to fail or the device to return an unexpected response.
 

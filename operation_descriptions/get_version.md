@@ -24,7 +24,6 @@ No additional payload fields are required beyond `command` and `requestId`.
 | Supported Response Sections | readerVersion, response |
 | Supported API Versions | V1.0, V1.1 |
 
-
 ## 3. When to Use This Command
 
 Use `get_version` to:

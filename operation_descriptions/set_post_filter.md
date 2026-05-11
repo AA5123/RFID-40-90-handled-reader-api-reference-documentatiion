@@ -1,4 +1,4 @@
-## Description
+## 1. Description
 
 The `set_post_filter` command configures which tag reads should be reported by the reader after matching rules are applied.
 
@@ -15,8 +15,7 @@ Use this command to:
 - Focus reporting on specific tag patterns
 - Update filter logic without changing the inventory command flow
 
-
-## Command Details
+## 2. Command Details
 
 | Property | Value |
 |---|---|
@@ -31,7 +30,7 @@ Use this command to:
 | Supported Report Behaviors | `INCLUDE`, `EXCLUDE` |
 | Supported API Versions | V1.0, V1.1 |
 
-## Before You Begin
+## 3. Before You Begin
 
 Gather the filter details before sending this command. An incorrect match pattern or method mismatch will result in a saved but non-functional filter.
 
@@ -44,7 +43,7 @@ Gather the filter details before sending this command. An incorrect match patter
 | Report operation | Decide whether matching tags should be reported (`INCLUDE`) or suppressed (`EXCLUDE`). |
 | Select filter compatibility | Note that when a `PREFIX` match filter is used, select filters (configured via `set_operating_mode`) cannot be applied simultaneously. |
 
-## Operations
+## 4. Operations
 
 The `operation` field inside `postFilterPayload` determines the action performed on the post filter.
 
@@ -52,7 +51,7 @@ The `operation` field inside `postFilterPayload` determines the action performed
 - **MODIFY** — Updates an existing post filter rule on the specified data endpoint.
 - **DELETE** — Removes an existing post filter rule from the specified data endpoint.
 
-## Match Methods
+## 5. Match Methods
 
 The `matchPatternMethod` field defines how the `matchPattern` value is compared against the tag ID.
 
@@ -62,7 +61,7 @@ The `matchPatternMethod` field defines how the `matchPattern` value is compared 
 | `SUFFIX` | Matches the end of the tag ID. | Hex string, even number of digits |
 | `REGEX` | Matches the tag ID using a regular expression. | Valid regular expression string |
 
-## Rules and Constraints
+## 6. Rules and Constraints
 
 Violating any of these rules will cause the command to fail or the filter to behave incorrectly.
 
@@ -83,4 +82,3 @@ Violating any of these rules will cause the command to fail or the filter to beh
 ### Data Endpoints
 
 - Each filter is scoped to a specific data endpoint (`DATA_EP1` or `DATA_EP2`). Filters applied to one endpoint do not affect the other.
-

@@ -25,7 +25,6 @@ Use this event to:
 | Related Events | [alerts](#op-alerts), [heartBeatEVT](#op-heartbeat-evt), [exceptionEVT](#op-exception-evt) |
 | Supported API Versions | V1.0, V1.1 |
 
-
 ## 3. When This Event Is Published
 
 The reader publishes `alert_short` automatically when a monitored device condition is triggered. No command is required.

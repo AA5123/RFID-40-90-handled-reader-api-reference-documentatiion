@@ -1,4 +1,4 @@
-## Description
+## 1. Description
 
 The `set_config` command applies multiple configuration settings to the reader in a single request.
 
@@ -15,7 +15,7 @@ Use this command to:
 - Reduce multiple configuration round trips
 - Control whether changes apply immediately or after reboot
 
-## Command Details
+## 2. Command Details
 
 | Property | Value |
 |---|---|
@@ -30,7 +30,7 @@ Use this command to:
 | Supported Verification Types | `NONE`, `VERIFY_PEER`, `VERIFY_HOST`, `VERIFY_HOST_PEER` |
 | Supported API Versions | V1.0, V1.1 |
 
-## Before You Begin
+## 3. Before You Begin
 
 Decide which configuration areas you need to update before sending this command. `wifiConfig` and `epConfig` are independent — include only the sub-objects relevant to your use case.
 
@@ -43,7 +43,7 @@ Decide which configuration areas you need to update before sending this command.
 | Tenant ID length | Ensure the `tenantId` value is within the allowed character length. An oversized value returns error code 27. |
 | Existing configurations | Attempting to `add` an endpoint with a name that already exists returns error code 10. Use `update` to modify an existing endpoint, or delete it first. |
 
-## Rules and Constraints
+## 4. Rules and Constraints
 
 Violating any of these rules will cause the command to fail or the configuration to be applied incorrectly.
 

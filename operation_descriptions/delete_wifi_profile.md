@@ -1,4 +1,4 @@
-## Description
+## 1. Description
 
 The `delete_wifi_profile` command removes a saved Wi-Fi profile from the reader. When you run this command, the profile identified by ESSID is deleted from stored Wi-Fi configurations.
 
@@ -8,7 +8,7 @@ Use this command to:
 - Clean up profile lists before adding updated configurations
 - Manage active and fallback network profile sets
 
-## Command Details
+## 2. Command Details
 
 | Property | Value |
 |---|---|
@@ -20,7 +20,7 @@ Use this command to:
 | Supported Identifier | essid |
 | Supported API Versions | V1.0, V1.1 |
 
-## Before You Begin
+## 3. Before You Begin
 
 Gather Wi-Fi profile information before sending this command. An invalid SSID or attempting to delete an active connection will cause the command to fail.
 
@@ -31,4 +31,3 @@ Gather Wi-Fi profile information before sending this command. An invalid SSID or
 | Profile Existence | Confirm the profile has been previously saved on the device using `set_wifi` or `get_wifi` commands. |
 
 > **Important:** Before deleting a Wi-Fi profile, ensure you are not currently connected to that network. Attempting to delete an active SSID will result in error code 16.
-

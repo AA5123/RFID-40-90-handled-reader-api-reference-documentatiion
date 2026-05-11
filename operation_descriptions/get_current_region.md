@@ -24,8 +24,6 @@ No additional payload fields are required beyond `command` and `requestId`.
 | Supported Response Sections | currentRegion, response |
 | Supported API Versions | V1.0, V1.1 |
 
----
-
 ## 3. When to Use This Command
 
 Use `get_current_region` to:

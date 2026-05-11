@@ -11,8 +11,6 @@ This command returns:
 
 No additional payload fields are required for retrieving all active endpoints. To query a specific endpoint, include the optional `endpointDetails` object with the endpoint name.
 
----
-
 ## 2. Command Details
 
 | Property | Value |
@@ -25,8 +23,6 @@ No additional payload fields are required for retrieving all active endpoints. T
 | Supported Operations | Retrieve active and saved endpoint configuration details |
 | Supported Response Sections | endpointResponse, response |
 | Supported API Versions | V1.0, V1.1 |
-
----
 
 ## 3. When to Use This Command
 
