@@ -1,19 +1,17 @@
-The get_version command retrieves reader identity and software version information.
+## 1. Description
+
+The `get_version` command retrieves reader identity and software version information.
 
 This command returns:
+
 - Reader model information
 - Reader serial number and SKU
 - Firmware version and component versions
 - Manufacturer and company identity metadata
 
-Use this command to:
-- Identify the exact device model and serial number
-- Verify firmware and component version alignment
-- Confirm device software baseline before updates or troubleshooting
+No additional payload fields are required beyond `command` and `requestId`.
 
-No additional command-specific payload fields are required beyond the standard request envelope fields.
-
-### Command Details
+## 2. Command Details
 
 | Property | Value |
 |---|---|
@@ -25,3 +23,22 @@ No additional command-specific payload fields are required beyond the standard r
 | Supported Operations | Read reader identity and version details |
 | Supported Response Sections | readerVersion, response |
 | Supported API Versions | V1.0, V1.1 |
+
+
+## 3. When to Use This Command
+
+Use `get_version` to:
+
+- Identify the exact device model and serial number
+- Verify firmware and component version alignment
+- Confirm device software baseline before updates or troubleshooting
+
+Key fields to check in the response:
+
+| Field | What to Check | Why It Matters |
+|---|---|---|
+| `model` | RFD40 or RFD90? | Confirm the correct device type is connected before applying model-specific configurations. |
+| `firmwareVersion` | Is the firmware up to date? | Compare against the expected baseline before running updates or diagnosing issues. |
+| `serialNumber` | Does it match the device label? | Used for asset tracking, support tickets, and device registration. |
+| `sku` | Is the correct variant deployed? | SKU identifies the regional and hardware variant of the reader. |
+| `detailedVersions.iotcVersion` | Is IoTC at the expected version? | IoTC version determines which MQTT API commands and features are available. |

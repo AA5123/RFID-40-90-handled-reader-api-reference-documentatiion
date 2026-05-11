@@ -1,14 +1,14 @@
-## Overview
+## Description
 
 The `reboot` command performs a warm reset of the device. After a successful reboot, the device automatically reinitializes its connection to the previously connected server. If the reboot fails, a failure notification is sent.
 
 Use this command to:
+
 - Restart the device for applying configuration changes
 - Recover from error states
 - Reinitialize device connections
 - Apply pending device updates
 
----
 
 ## Command Details
 
@@ -17,30 +17,26 @@ Use this command to:
 | Pattern Name | Device Reboot |
 | Communication Type | Bidirectional (Cloud to Device, Device to Cloud) |
 | Applies To | RFD40 Series, RFD90 Series |
+| Related Commands | [config_events](#op-config-events), [config_endpoint](#op-config-endpoint), [set_operating_mode](#op-set-operating-mode) |
+| Required Request Fields | `command`, `requestId` |
+| Supported Operations | Warm reset of the device |
+| Supported API Versions | V1.0, V1.1 |
 
----
+## Before You Begin
 
-## Request Parameters
+This is a minimal command with no configuration payload. Confirm the following before sending.
 
-| Parameter | Description |
+| What You Need | Details |
 |---|---|
-| `command` | Specifies the operation to be executed. Must be set to `reboot`. |
-| `requestId` | A unique identifier for the request, allowing tracking and debugging of the operation. |
+| Inventory state | The device cannot be rebooted while an RFID inventory operation is in progress. Stop the active inventory using `control_operation` before sending this command. Attempting to reboot during an active inventory returns error code 5. |
+| Server reconnection | After a successful reboot, the device automatically reconnects to the previously connected server. No manual reconnection is required. |
 
----
+## Rules and Constraints
 
-## Important Notes
+Violating any of these rules will cause the command to be rejected.
 
-- Upon successful reboot, the device will reconnect to the previously connected server.
-- Configuration changes made via `config_events` and `set_operating_mode` require a reboot to take effect.
-- The device may be temporarily unavailable during the reboot process.
+### Inventory State
 
----
+- The device cannot be rebooted while an RFID inventory operation is active. Sending `reboot` during an active inventory returns error code 5.
+- Use `control_operation` with `operation: STOP` to halt the inventory before sending this command.
 
-### Related Commands
-
-| Command | Description |
-|---|---|
-| `config_events` | Configures device events (changes require reboot). |
-| `config_endpoint` | Configures data transmission endpoints. |
-| `set_operating_mode` | Configures operating mode (changes may require reboot). |
