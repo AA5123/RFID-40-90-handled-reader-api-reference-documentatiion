@@ -84,6 +84,16 @@ a:hover { text-decoration: underline; }
  z-index: 9;
  box-shadow: var(--shadow-sm);
 }
+#topbar-logo-section {
+ display: flex;
+ align-items: center;
+ gap: var(--sp-3);
+}
+.topbar-logo {
+ height: 36px;
+ width: auto;
+ object-fit: contain;
+}
 #topbar-title {
  font-size: var(--text-md);
  font-weight: 700;
