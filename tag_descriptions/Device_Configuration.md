@@ -1,11 +1,8 @@
-## Overview
 
-Read or write the device's entire configuration in a single command without calling individual endpoints separately.
-
-## Commands
+Device configuration lets you read or update all device settings in a single operation, streamlining setup and management. This includes network, region, endpoints, certificates, and event settings—no need to call individual endpoints separately.
 
 | Command | Description |
 |---|---|
-| [`get_config`](#get_config) | Retrieve full configuration — version, status, region, WiFi, Ethernet, endpoints, certificates, events |
-| [`set_config`](#set_config) | Apply configuration changes — WiFi, endpoints, events, region, and more in one payload |
+| [get_config](#op-get-config) | Retrieve full configuration — version, status, region, WiFi, Ethernet, endpoints, certificates, events |
+| [set_config](#op-set-config) | Apply configuration changes — WiFi, endpoints, events, region, and more in one payload |
 

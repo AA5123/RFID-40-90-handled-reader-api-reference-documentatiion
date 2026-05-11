@@ -1,9 +1,3 @@
-# control_operation
-
-**Applies To:** RFD40 Series, RFD90 Series
-**API Versions:** V1.0, V1.1
-**Communication:** Cloud to Device / Device to Cloud
-
 ## 1. Description
 
 The `control_operation` command configures or updates the active radio or scanner operation state on the reader.

@@ -1,10 +1,7 @@
-## Overview
 
-Receive RFID tag data published by the device during an active inventory scan. Tag data streams continuously during operations.
-
-## Events
+Receive detailed RFID tag data published by the device during inventory scans. Tag data streams continuously, providing EPC, RSSI, antenna, timestamp, and more for advanced analytics and tracking.
 
 | Event | Description |
 |---|---|
-| [`dataEVT`](#dataevt) | Tag data including EPC, RSSI, antenna, timestamp, TID, user memory, access results |
+| [dataEVT](#op-dataevt) | Tag data including EPC, RSSI, antenna, timestamp, TID, user memory, access results |
 

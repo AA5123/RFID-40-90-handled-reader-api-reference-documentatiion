@@ -1,11 +1,8 @@
-## Overview
 
-Restart the device or trigger a firmware update. Both operations interrupt normal device operation and require careful timing.
-
-## Commands
+Perform critical system operations such as firmware updates and device restarts. These actions interrupt normal operation, so schedule them carefully to minimize downtime.
 
 | Command | Description |
 |---|---|
-| [`set_os`](#set_os) | Trigger a firmware update on the device |
-| [`reboot`](#reboot) | Restart the device and apply pending configuration changes |
+| [set_os](#op-set-os) | Trigger a firmware update on the device |
+| [reboot](#op-reboot) | Restart the device and apply pending configuration changes |
 

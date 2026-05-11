@@ -1,12 +1,9 @@
-## Overview
 
-Receive automatic alert events when the device crosses a threshold or changes state. Alerts are push-based notifications triggered by device conditions.
-
-## Events
+Alerts provide automatic notifications when the device crosses important thresholds or changes state. These push-based events help you monitor device health, battery, temperature, network, and firmware status in real time. Use alerts to quickly respond to issues and maintain operational continuity.
 
 | Event | Description |
 |---|---|
-| [`alert_short`](#alert_short) | Compact alert summary with human-readable message descriptions |
-| [`alerts`](#alerts) | Full alert details including battery, temperature, power, network, firmware conditions |
+| [alert_short](#op-alert-short) | Compact alert summary with human-readable message descriptions |
+| [alerts](#op-alerts) | Full alert details including battery, temperature, power, network, firmware conditions |
 
 

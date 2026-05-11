@@ -1,9 +1,6 @@
-﻿## Overview
-
-Track when the device connects to or loses connection with the MQTT broker. Connection events enable fleet-wide connectivity monitoring.
-
-## Events
+﻿
+Monitor device connectivity to the MQTT broker. Connection and disconnection events help you track fleet-wide status, troubleshoot issues, and ensure reliable data delivery.
 
 | Event | Description |
 |---|---|
-| [`mqttConnEVT`](#mqttconnevt) | Broker connection/disconnection events with device and version details |
+| [mqttConnEVT](#op-mqttconnevt) | Broker connection/disconnection events with device and version details |
