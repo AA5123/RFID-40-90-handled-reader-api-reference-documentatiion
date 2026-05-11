@@ -41,7 +41,6 @@ Gather the filter details before sending this command. An incorrect match patter
 | Match pattern | Prepare the value to match against the tag ID. For `PREFIX` and `SUFFIX` methods, only hexadecimal digits are allowed and the number of digits must be even. For `REGEX`, prepare a valid regular expression string. |
 | Match method | Choose how the pattern is applied — `PREFIX` matches the beginning of the tag ID, `SUFFIX` matches the end, and `REGEX` matches using a regular expression. |
 | Report operation | Decide whether matching tags should be reported (`INCLUDE`) or suppressed (`EXCLUDE`). |
-| Select filter compatibility | Note that when a `PREFIX` match filter is used, select filters (configured via `set_operating_mode`) cannot be applied simultaneously. |
 
 ## 4. Operations
 
@@ -55,11 +54,11 @@ The `operation` field inside `postFilterPayload` determines the action performed
 
 The `matchPatternMethod` field defines how the `matchPattern` value is compared against the tag ID.
 
-| matchPatternMethod | Description | Pattern Format |
-|---|---|---|
-| `PREFIX` | Matches the beginning of the tag ID. Cannot be used simultaneously with select filters. | Hex string, even number of digits |
-| `SUFFIX` | Matches the end of the tag ID. | Hex string, even number of digits |
-| `REGEX` | Matches the tag ID using a regular expression. | Valid regular expression string |
+| matchPatternMethod | Description |
+|---|---|
+| `PREFIX` | Matches the beginning of the tag ID. |
+| `SUFFIX` | Matches the end of the tag ID. |
+| `REGEX` | Matches the tag ID using a regular expression. |
 
 ## 6. Rules and Constraints
 
@@ -71,9 +70,7 @@ Violating any of these rules will cause the command to fail or the filter to beh
 - For `REGEX` method, `matchPattern` must be a valid regular expression string.
 - An incorrectly formatted pattern will result in a saved but non-functional filter.
 
-### Filter Compatibility
 
-- `PREFIX` match filters and select filters (configured via `set_operating_mode`) cannot be used simultaneously. If a prefix post filter is active, select filters will not be applied during inventory.
 
 ### Report Duration
 

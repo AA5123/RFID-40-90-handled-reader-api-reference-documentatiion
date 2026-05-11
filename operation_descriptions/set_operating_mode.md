@@ -22,16 +22,16 @@ The `set_operating_mode` command updates RFID operating behavior on the RFD40/RF
 | Pattern Name | Operating Mode Configuration |
 | Communication Type | Bidirectional (Cloud to Device, Device to Cloud) |
 | Applies To | RFD40 Series, RFD90 Series |
-| Related Commands | [get_operating_mode](#op-get-operating-mode), [control_operation](#op-control-operation), [set_post_filter](#op-set-post-filter) |
+| Related Commands | get_operating_mode, control_operation, set_post_filter |
 | Required Request Fields | `command`, `requestId`, `operatingMode` |
 | Supported Operations | Configure operating profile, query/select behavior, radio triggers, access operations, and metadata reporting |
-| Supported Access Operations | `READ` \| `WRITE` \| `ACCESS` \| `LOCK` \| `KILL` |
-| Supported Memory Banks | `EPC` \| `TID` \| `USER` \| `RESERVED` |
-| Supported Query States | `STATE_A` \| `STATE_B` \| `STATE_AB` |
-| Supported SL Flags | `ALL` \| `ASSERTED` \| `DEASSERTED` |
-| Supported Profiles | `FAST_READ` \| `CYCLE_COUNT` \| `DENSE_READERS` \| `OPTIMAL_BATTERY` \| `BALANCED_PERFORMANCE` \| `ADVANCED` |
-| Supported Link Profiles | `M4_256K` \| `M2_240K` \| `M2_256K` \| `M2_320K` \| `M4_240K` \| `M4_320K` \| `FM0_0K` \| `FM0_320K` \| `M8_240K` \| `M8_256K` \| `M8_320K` |
-| Supported Sessions | `SESSION_0` \| `SESSION_1` \| `SESSION_2` \| `SESSION_3` |
+| Supported Access Operations | READ, WRITE, ACCESS, LOCK, KILL |
+| Supported Memory Banks | EPC, TID, USER, RESERVED |
+| Supported Query States | STATE_A, STATE_B, STATE_AB |
+| Supported SL Flags | ALL, ASSERTED, DEASSERTED |
+| Supported Profiles | FAST_READ, CYCLE_COUNT, DENSE_READERS, OPTIMAL_BATTERY, BALANCED_PERFORMANCE, ADVANCED |
+| Supported Link Profiles | M4_256K, M2_240K, M2_256K, M2_320K, M4_240K, M4_320K, FM0_0K, FM0_320K, M8_240K, M8_256K, M8_320K |
+| Supported Sessions | SESSION_0, SESSION_1, SESSION_2, SESSION_3 |
 | Supported API Versions | V1.0, V1.1 |
 
 ## 2. Before You Begin
@@ -79,11 +79,11 @@ Radio conditions define when the reader begins and ends an inventory round. Star
 
 ### Start Trigger
 
-| `trigger` Value | Behavior | Commonly Paired With |
-|---|---|---|
-| `IMMEDIATE` | Inventory starts as soon as the command is applied. No physical action required. | `stopTimeout` or `inventoryCount` to bound duration. `repeat: false` for one-shot, `true` for continuous. |
-| `PRESSED` | Inventory starts when the operator presses the physical trigger button. | `RELEASED` for stop so releasing the trigger ends inventory. `repeat: true` so the operator can scan again. |
-| `RELEASED` | Inventory starts when the operator releases the trigger button. | Less common for start; more often used as a stop trigger. |
+| `trigger` Value | Behavior |
+|---|---|
+| `IMMEDIATE` | Inventory starts as soon as the command is applied. No physical action required. |
+| `PRESSED` | Inventory starts when the operator presses the physical trigger button. |
+| `RELEASED` | Inventory starts when the operator releases the trigger button. |
 
 ### Stop Trigger and Thresholds
 
@@ -172,10 +172,7 @@ The `action` field defines what happens to the SL flag and inventory state when 
 
 - `set_operating_mode` cannot be sent while an RFID inventory is in progress. If inventory is running, stop it first — the command will be rejected with error code **11**.
 
-### Operating Profile
 
-- When `profiles` is set to `ADVANCED`, the `advancedConfigurations` block is **required**. Omitting it returns error code **22**.
-- For all other profiles, `advancedConfigurations` is ignored — the reader maps the link profile internally.
 
 ### Access Operations
 
@@ -189,11 +186,4 @@ The `action` field defines what happens to the SL flag and inventory state when 
 - `tagPattern` must be a hex string with an even number of characters, **maximum 64 characters**. Exceeding this returns error code **28**.
 - `offset` in `select` is a **bit position**, not a word offset — unlike `accessOperations.offset` which is in 16-bit words.
 
-### Tag Metadata
 
-- `XPC` and `CRC` are **not supported on RFD4090 devices**.
-- Enabling metadata fields your application does not consume increases MQTT message payload size unnecessarily.
-
-### Enum Values
-
-- All enum fields must exactly match one of the allowed values listed in [Section 12 — Schema Reference](#12-schema-reference). Any mismatch returns error code **23**.

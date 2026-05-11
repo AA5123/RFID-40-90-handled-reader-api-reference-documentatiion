@@ -36,7 +36,6 @@ This is a lightweight command with only two required payload fields. Confirm the
 |---|---|
 | Control type | Decide which reader subsystem to control — `RFID` for the radio frequency inventory engine, or `SCANNER` for the barcode scanner. |
 | Operation | Decide whether to `START` or `STOP` the selected subsystem. Sending `START` when an inventory is already in progress returns error code 11. Sending `STOP` when no operation is active returns error code 12 — this is not a failure condition. |
-| Operating mode | Ensure the desired operating mode is already configured via `set_operating_mode` before sending a `START` command. `control_operation` does not set operating parameters — it only triggers or halts the operation. |
 
 ## 4. Operations
 
@@ -58,7 +57,4 @@ Violating any of these rules will cause the command to fail or the device to ret
 
 - Sending `STOP` when no operation is active returns error code 12. This is not a failure — the device is already in the desired idle state. No corrective action is required.
 
-### Control Type
 
-- `controlType` is required. Omitting it or providing an invalid value returns error code 23.
-- `RFID` controls the radio frequency inventory engine. `SCANNER` controls the barcode scanner subsystem.

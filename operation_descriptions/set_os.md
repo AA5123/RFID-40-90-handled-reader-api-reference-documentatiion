@@ -75,18 +75,7 @@ Violating any of these rules will cause the command to fail or the firmware upda
 - `url` must be a valid URI. The device will attempt to download the firmware directly from this address.
 - Ensure the URL is reachable from the device's active network interface before sending the command.
 
-### Authentication
 
-- `authenticationType` is required. Omitting it or providing an invalid value returns error code 23.
-- For `BASIC` authentication, both `username` and `password` must be provided in `authOptions`.
-- For `TOKEN` authentication, supply the token via `authOptions.headerParam` or `authOptions.queryParam`.
-- For `CERTIFICATE` authentication, provide either `caCertificateFileContent` (inline PEM string) or `caCertificateFile` (path to a preinstalled certificate). If using a preinstalled certificate, install it first using `install_certificate`.
-
-### TLS Verification
-
-- `verificationType` is required. Omitting it or providing an invalid value returns error code 23.
-- Use `VERIFY_HOST_PEER` in production environments for maximum TLS security.
-- `NONE` should only be used in controlled, trusted network environments.
 
 ### Device State
 
