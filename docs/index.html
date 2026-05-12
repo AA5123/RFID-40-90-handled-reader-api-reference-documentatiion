@@ -1320,16 +1320,56 @@ function getSchemaEnumLine(schema) {
      var top = target.getBoundingClientRect().top + window.pageYOffset - TOPBAR_H - 8;
      window.scrollTo({ top: top, behavior: 'smooth' });
      history.pushState(null, '', '#' + id);
+     updateActiveNavState();
    });
 
-   var allTags = document.querySelectorAll('.nav-tag');
-   var sections = document.querySelectorAll('.tag-section');
-   window.addEventListener('scroll', function () {
-     var scrollY = window.scrollY + 80;
-     var current = '';
-     sections.forEach(function (sec) { if (sec.offsetTop <= scrollY) current = sec.id; });
-     allTags.forEach(function (a) { a.classList.toggle('active', a.getAttribute('href') === '#' + current); });
-   });
+   var navTagLinks = Array.prototype.slice.call(document.querySelectorAll('.nav-tag'));
+   var navOpLinks = Array.prototype.slice.call(document.querySelectorAll('.nav-op'));
+   var tagSections = Array.prototype.slice.call(document.querySelectorAll('.tag-section'));
+   var operationSections = Array.prototype.slice.call(document.querySelectorAll('.operation'));
+   var lastActiveNavLink = null;
+
+   function setActiveLink(links, targetId) {
+     links.forEach(function (link) {
+       link.classList.toggle('active', !!targetId && link.getAttribute('href') === '#' + targetId);
+     });
+   }
+
+   function getCurrentSectionId(sections, scrollY) {
+     var currentId = '';
+     sections.forEach(function (section) {
+       if (section.offsetTop <= scrollY) currentId = section.id;
+     });
+     return currentId;
+   }
+
+   function revealActiveNavLink(activeLink) {
+     if (!activeLink || activeLink === lastActiveNavLink) return;
+     lastActiveNavLink = activeLink;
+     activeLink.scrollIntoView({ block: 'nearest' });
+   }
+
+   function updateActiveNavState() {
+     var scrollY = window.scrollY + TOPBAR_H + 32;
+     var currentOpId = getCurrentSectionId(operationSections, scrollY);
+     var currentTagId = getCurrentSectionId(tagSections, scrollY);
+
+     setActiveLink(navOpLinks, currentOpId);
+     setActiveLink(navTagLinks, currentTagId);
+
+     var activeNavLink = null;
+     if (currentOpId) {
+       activeNavLink = nav.querySelector('.nav-op.active');
+     }
+     if (!activeNavLink && currentTagId) {
+       activeNavLink = nav.querySelector('.nav-tag.active');
+     }
+     revealActiveNavLink(activeNavLink);
+   }
+
+   window.addEventListener('scroll', updateActiveNavState);
+   window.addEventListener('hashchange', updateActiveNavState);
+   updateActiveNavState();
  }
 
  fetch('openapi_md.json?v=' + Date.now())
