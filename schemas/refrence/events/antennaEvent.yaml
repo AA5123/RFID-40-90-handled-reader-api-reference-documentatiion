@@ -2,6 +2,7 @@ title: antennaEvent
 x-stoplight:
   id: aqw5xmnoocpk6
 type: array
+description: Antenna events reporting status changes for device antennas.
 examples: []
 items:
   type: object

@@ -96,7 +96,6 @@
       "enum": [
         "EVENT",
         "NOTIFICATION",
-        "EXCEPTION",
         "ALERT"
       ],
       "description": "Specifies the type of alert or message being generated, such as an event, notification, exception, or alert."
@@ -121,9 +120,7 @@
       "enum": [
         "BATTERY",
         "FIRMWARE_UPDATE",
-        "GPI_EVENT",
         "NETWORK_EVENT",
-        "ANTENNA_EVENT",
         "TEMPERATURE",
         "POWER"
       ],

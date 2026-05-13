@@ -2,6 +2,7 @@ title: certDetails
 x-stoplight:
   id: 0114c36cfa592
 type: object
+description: Defines the certificate details required for installation on the device.
 examples: []
 properties:
   name:
@@ -22,15 +23,11 @@ properties:
     type: string
     enum:
       - NONE
-      - BASIC
-      - TOKEN
       - CERTIFICATE
     example: BASIC
     description: |-
       Specifies the authentication method used to access the remote certificate source.
       - `NONE`: No authentication is used.
-      - `BASIC`: HTTP Basic authentication using username and password. In this case, `authenticateOptions` is required.
-      - `TOKEN`: Token-based authentication. This option is currently not supported.
       - `CERTIFICATE`: Certificate-based authentication used to download or retrieve certificates.
   certSource:
     type: string
@@ -61,46 +58,6 @@ properties:
         value:
           type: string
           description: 'The URL for the specified component. For `cert_key_password`, this is the key password value.'
-  authenticateOptions:
-    type: object
-    description: Authentication options for credential-based access. Required when `authenticationType` is `BASIC`.
-    properties:
-      username:
-        type: string
-        example: rfid
-        description: Username used for HTTP Basic authentication.
-      password:
-        type: string
-        example: rfid
-        description: Password used for HTTP Basic authentication.
-  pfxPassword:
-    type: string
-    example: pass@123
-    description: Password for the PFX (PKCS#12) bundle when a PFX certificate is provided. This field is currently not supported for RFD40/90.
-  headerParams:
-    type: array
-    description: A list of key-value pairs representing HTTP header parameters. This field is currently not supported.
-    items:
-      type: object
-      properties:
-        key:
-          type: string
-          description: The key for the HTTP header parameter.
-        value:
-          type: string
-          description: The value associated with the HTTP header parameter.
-  queryParams:
-    type: array
-    description: A list of key-value pairs representing query parameters. This field is currently not supported.
-    items:
-      type: object
-      properties:
-        key:
-          type: string
-          description: The key for the query parameter.
-        value:
-          type: string
-          description: The value associated with the query parameter.
   verificationType:
     type: string
     enum:

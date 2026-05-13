@@ -2,6 +2,7 @@ title: usageEvent
 x-stoplight:
   id: 670q4pj0exx46
 type: object
+description: Usage status event reporting device usage metrics and operational statistics.
 properties:
   type:
     type: string

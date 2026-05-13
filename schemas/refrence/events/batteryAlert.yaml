@@ -2,6 +2,7 @@ title: batteryAlert
 x-stoplight:
   id: gcmvpvvellk4h
 type: object
+description: Battery alert event indicating changes in battery status such as low or critical level.
 properties:
   status:
     type: string

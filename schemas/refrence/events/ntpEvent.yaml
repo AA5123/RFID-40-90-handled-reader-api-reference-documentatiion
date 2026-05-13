@@ -2,6 +2,7 @@ title: ntpAlert
 x-stoplight:
   id: bqyqfmu9p4334
 type: object
+description: NTP event reporting time synchronization status and offset information.
 properties:
   offset:
     type: number

@@ -2,6 +2,7 @@ title: configData
 x-stoplight:
   id: uq4x24ym4hs58
 type: object
+description: Specifies the complete device configuration to be applied, including WiFi and endpoint settings.
 properties:
   applyAfterReboot:
     type: boolean

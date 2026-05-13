@@ -2,6 +2,7 @@ title: endpointDetails
 x-stoplight:
   id: o28vdd695rdr6
 type: object
+description: Specifies the endpoint to retrieve configuration details for.
 properties:
   endpointName:
     type: string

@@ -76,36 +76,6 @@ properties:
             type: string
             example: test.soti.com
             description: Domain name for the IPv4 configuration.
-      ipv6Configuration:
-        type: object
-        properties:
-          ipAddress:
-            type: string
-            example: 'fe80::1643:8376:b32:4a16'
-            format: ipv6
-            description: IPv6 address of the network interface.
-          prefix:
-            type: integer
-            example: '64'
-            description: Prefix length for the IPv6 configuration.
-          gateway:
-            type: string
-            example: '2a02:1234:420a:100b::99'
-            format: ipv6
-            description: Gateway address for the IPv6 configuration.
-          enableAuto:
-            type: boolean
-            example: true
-            description: Indicates if auto-configuration is enabled for IPv6.
-          dnsServer:
-            type: string
-            example: '2001:4860:4860::9999'
-            format: ipv6
-            description: DNS server address for the IPv6 configuration.
-          domainName:
-            type: string
-            example: test.soti.com
-            description: Domain name for the IPv6 configuration.
       security:
         type: object
         properties:

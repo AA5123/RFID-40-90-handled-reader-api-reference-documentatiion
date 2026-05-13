@@ -20,13 +20,14 @@
         "Tag metadata settings": "Payload to enable/disable tag metadata to be reported"
     },
     "set_post_filter": {
-        "Set post filter 1": "Payload to filter tags using prefix",
-        "Set post filter 2": "Payload to filter tags based on regex"
+        "Filter tags using prefix": "Payload to filter tags using prefix",
+        "Filter tags using regex": "Payload to filter tags based on regex",
+        "Filter tags using suffix": "Payload to filter tags using suffix"
     },
     "set_os": {
-        "Firmware update 1": "Payload to initiate firmware update with CA certificate content",
-        "Firmware update 2": "Payload to initiate firmware update without CA certificate content",
-        "Firmware update 3": "Payload to initiate firmware update with no authentication"
+        "No authentication HTTP": "Payload to initiate firmware update with no authentication",
+        "Pre-installed CA certificate HTTPS": "Payload to initiate firmware update with pre-installed CA certificate content",
+        "Inline CA certificate HTTPS": "Payload to initiate firmware update with inline CA certificate content"
     },
     "reboot": {
         "Reboot device": "Payload to perform a device reboot"
@@ -42,10 +43,13 @@
         "Create WPA2 enterprise": "Payload to create a WiFi profile with WPA2 Enterprise security and certificates"
     },
     "config_endpoint": {
-        "Add MDM endpoint": "Payload to add a new MDM endpoint configuration",
-        "Delete endpoint": "Payload to delete an existing endpoint configuration",
+        "Add MGMT endpoint for MQTT TLS": "Payload to add a new management endpoint configuration with MQTT TLS protocol",
+        "Add control endpoint for MQTT TLS": "Payload to add a new control endpoint configuration with MQTT TLS protocol and security parameters",
         "Add data endpoint": "Payload to add a new data endpoint configuration",
-        "Add control endpoint": "Payload to add a new control endpoint with publish/subscribe topics"
+        "Add MDM endpoint": "Payload to add a new MDM endpoint configuration",
+        "Add control endpoint": "Payload to add a new control endpoint with publish/subscribe topics",
+        "Add data endpoint for MQTT TLS": "Payload to add a new data endpoint configuration with MQTT TLS protocol and security parameters",
+        "Delete endpoint": "Payload to delete an existing endpoint configuration"
     },
     "config_events": {
         "Enable all events": "Payload to enable all event types with threshold configuration",
@@ -68,9 +72,10 @@
         "Delete filestore ca cert": "Payload to delete a filestore CA certificate from the device"
     },
     "install_certificate": {
-        "Filestore certificate using URL": "Payload to install filestore CA certificate",
-        "MQTT certificates using URL": "Payload to install MQTT client certificates",
-        "WiFi certificates using URL": "Payload to install WiFi certificates with CA, client cert and key",
+        "MQTT certificates with certificate authentication": "Payload to install MQTT certificates using CA certificate",
+        "Filestore certificate with certificate authentication": "Payload to install filestore CA certificate",
+        "MQTT certificates without authentication": "Payload to install MQTT client certificates without authentication via HTTP",
+        "WiFi certificates without authentication": "Payload to install WiFi certificates without authentication via HTTP",
         "WiFi CA certificate using direct content": "Installing WiFi CA certificate, where certificate content is provided as part of API"
     },
     "get_wifi": {

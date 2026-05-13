@@ -21,25 +21,3 @@ properties:
         reportOperation:
           type: string
           description: The operation type for reporting.
-        reportDuration:
-          type: integer
-          description: The duration (in seconds) for the report operation.
-        seenCount:
-          type: integer
-          description: The number of times the filter condition has been met.
-        rssiThreshold:
-          type: integer
-          description: The RSSI (Received Signal Strength Indicator) threshold value.
-        tagList:
-          type: object
-          description: A list of tags and their associated operations.
-          properties:
-            operation:
-              type: string
-              description: The operation to be performed on the tags.
-            tagPatterns:
-              type: array
-              description: A list of tag patterns to be included or excluded.
-              items:
-                type: string
-                description: A tag pattern string.

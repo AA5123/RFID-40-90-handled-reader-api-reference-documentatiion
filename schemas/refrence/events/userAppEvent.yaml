@@ -2,6 +2,7 @@ title: daAppEvent
 x-stoplight:
   id: mlaz6c9i4in63
 type: object
+description: User application event reporting status changes of user-installed applications on the device.
 properties:
   appName:
     type: string

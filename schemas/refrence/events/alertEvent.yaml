@@ -2,6 +2,7 @@ title: alertEvent
 x-stoplight:
   id: o0nu0f04g6d2y
 type: object
+description: Alert event reporting device alerts such as battery, network, power, and firmware update notifications.
 properties:
   evtData:
     anyOf:
