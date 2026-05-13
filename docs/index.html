@@ -1401,9 +1401,19 @@ function getSchemaEnumLine(schema) {
        reqHtml += '</div>';
        if (reqExampleJson) {
          reqHtml += '<div class="tab-panel active" id="req-ex-' + id + '">';
+         if (reqExKeys.length) {
+           var firstReqExample = exObj[reqExKeys[0]] || {};
+           var firstReqDesc = typeof firstReqExample.description === 'string' ? firstReqExample.description : '';
+           reqHtml += '<div class="example-description"' + (firstReqDesc ? '' : ' style="display:none;"') + '>' + (firstReqDesc ? md(firstReqDesc) : '') + '</div>';
+         }
          if (reqExKeys.length > 1) {
            var reqExVals = {};
-           reqExKeys.forEach(function (key) { reqExVals[key] = exObj[key].value; });
+           reqExKeys.forEach(function (key) {
+             reqExVals[key] = {
+               value: exObj[key].value,
+               description: typeof exObj[key].description === 'string' ? exObj[key].description : ''
+             };
+           });
            reqHtml += '<select class="example-select" data-panel="req-ex-' + id + '" data-examples="' + encodeURIComponent(JSON.stringify(reqExVals)) + '">';
            reqExKeys.forEach(function (key) { reqHtml += '<option value="' + escHtml(key) + '">' + escHtml(key) + '</option>'; });
            reqHtml += '</select>';
@@ -1445,9 +1455,19 @@ function getSchemaEnumLine(schema) {
          resHtml += '</div>';
          if (resExampleJson) {
            resHtml += '<div class="tab-panel active" id="res-ex-' + id + '">';
+           if (resExKeys.length) {
+             var firstResExample = resExObj[resExKeys[0]] || {};
+             var firstResDesc = typeof firstResExample.description === 'string' ? firstResExample.description : '';
+             resHtml += '<div class="example-description"' + (firstResDesc ? '' : ' style="display:none;"') + '>' + (firstResDesc ? md(firstResDesc) : '') + '</div>';
+           }
            if (resExKeys.length > 1) {
              var resExVals = {};
-             resExKeys.forEach(function(k){ resExVals[k] = resExObj[k].value; });
+             resExKeys.forEach(function(k){
+               resExVals[k] = {
+                 value: resExObj[k].value,
+                 description: typeof resExObj[k].description === 'string' ? resExObj[k].description : ''
+               };
+             });
              resHtml += '<select class="example-select" data-panel="res-ex-' + id + '" data-examples="' + encodeURIComponent(JSON.stringify(resExVals)) + '">';
              resExKeys.forEach(function(k) { resHtml += '<option value="' + escHtml(k) + '">' + escHtml(k) + '</option>'; });
              resHtml += '</select>';
@@ -1672,11 +1692,29 @@ function getSchemaEnumLine(schema) {
        var panel = document.getElementById(panelId);
        if (!panel) return;
        var pre = panel.querySelector('pre code');
+       var descEl = panel.querySelector('.example-description');
        var examplesJson = sel.getAttribute('data-examples');
        if (!examplesJson) return;
        try {
          var examples = JSON.parse(decodeURIComponent(examplesJson));
-         var val = examples[sel.value];
+         var selectedExample = examples[sel.value];
+         var val;
+         var desc = '';
+         if (selectedExample && typeof selectedExample === 'object' && Object.prototype.hasOwnProperty.call(selectedExample, 'value')) {
+           val = selectedExample.value;
+           desc = typeof selectedExample.description === 'string' ? selectedExample.description : '';
+         } else {
+           val = selectedExample;
+         }
+         if (descEl) {
+           if (desc) {
+             descEl.innerHTML = md(desc);
+             descEl.style.display = '';
+           } else {
+             descEl.innerHTML = '';
+             descEl.style.display = 'none';
+           }
+         }
          if (val !== undefined) {
            var viewerWrap = panel.querySelector('.json-viewer-wrap');
            if (viewerWrap) { setJsonViewerData(viewerWrap, val); return; }

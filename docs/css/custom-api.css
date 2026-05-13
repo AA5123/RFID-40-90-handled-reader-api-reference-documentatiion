@@ -1331,6 +1331,14 @@ blockquote p { margin-bottom: 0; }
  color: var(--color-text);
  background: var(--color-bg);
 }
+.example-description {
+ font-size: var(--text-base);
+ color: var(--color-text);
+ margin-bottom: var(--sp-2);
+}
+.example-description p:last-child {
+ margin-bottom: 0;
+}
 /* ── PDF button ────────────────────────────────────────────────── */
 .op-title-bar {
  display: flex;
