@@ -18,6 +18,7 @@
 <body>
 
 <div id="topbar">
+ <button id="sidebar-toggle">☰</button>
  <div id="topbar-logo-section">
    <img src="assets/zebra-logo.jpg" alt="Zebra" class="topbar-logo" />
    <div id="topbar-title">RFD40 / RFD90 MQTT API Reference</div>
@@ -30,6 +31,7 @@
  </div>
 </div>
 
+<div id="sidebar-overlay"></div>
 <nav id="sidebar">
 <div id="sidebar-title">RFD40 / RFD90 MQTT API Reference</div>
 <div id="sidebar-search-wrap">
@@ -162,7 +164,8 @@
    targetLevel = Math.max(1, Math.min(6, targetLevel));
    var idAttr = '';
    if (options.idPrefix) idAttr = ' id="' + options.idPrefix + '-' + slugify(text) + '"';
-   return '<h' + targetLevel + ' class="md-h' + level + '"' + idAttr + '>' + formatInline(text) + '</h' + targetLevel + '>';
+   var displayText = text.replace(/^\d+\.\s+/, '');
+   return '<h' + targetLevel + ' class="md-h' + level + '"' + idAttr + '>' + formatInline(displayText) + '</h' + targetLevel + '>';
  }
 
  function isMarkdownTable(lines) {
@@ -1483,7 +1486,12 @@ function getSchemaEnumLine(schema) {
 
    var groups = spec['x-tagGroups'] || [{ name: 'API', tags: Object.keys(tagMap) }];
    groups.forEach(function (group) {
-     navHtml += '<div class="nav-group">' + escHtml(group.name) + '</div>';
+     var groupKey = 'nav-group-' + slugify(group.name);
+     navHtml += '<div class="nav-group nav-group-toggle" data-group-key="' + escHtml(groupKey) + '" role="button" tabindex="0">' +
+       '<span class="nav-group-name">' + escHtml(group.name) + '</span>' +
+       '<span class="nav-group-indicator">−</span>' +
+       '</div>';
+     navHtml += '<div class="nav-group-items" data-group-items="' + escHtml(groupKey) + '">';
      group.tags.forEach(function (tagName) {
        var tag = tagMap[tagName];
        if (!tag) return;
@@ -1491,7 +1499,7 @@ function getSchemaEnumLine(schema) {
        navHtml += '<a class="nav-tag" href="#tag-' + tagId + '">' + escHtml(tagName) + '</a>';
        tag.operations.forEach(function (entry) {
          var opId = slugify(entry.op.summary || entry.path);
-         navHtml += '<a class="nav-op" href="#op-' + opId + '">' + escHtml(entry.op.summary || entry.path) + '</a>';
+         navHtml += '<a class="nav-op" href="#op-' + opId + '">' + escHtml(entry.op.summary) + '</a>';
        });
        html += '<div class="tag-section" id="tag-' + tagId + '">';
        html += '<h2 class="tag-heading">' + escHtml(tagName) + '</h2>';
@@ -1503,11 +1511,65 @@ function getSchemaEnumLine(schema) {
        });
        html += '</div><hr class="tag-divider">';
      });
+     navHtml += '</div>';
    });
 
    content.innerHTML = html;
    nav.innerHTML = navHtml;
 
+   function setGroupExpanded(groupEl, items, expanded, persist) {
+     if (!groupEl || !items) return;
+     var indicator = groupEl.querySelector('.nav-group-indicator');
+     items.style.display = expanded ? '' : 'none';
+     if (indicator) indicator.textContent = expanded ? '−' : '+';
+     if (persist) {
+       var key = groupEl.getAttribute('data-group-key');
+       if (key) sessionStorage.setItem(key, expanded ? 'expanded' : 'collapsed');
+     }
+   }
+
+   function wireNavGroups() {
+     var groupEls = Array.prototype.slice.call(nav.querySelectorAll('.nav-group-toggle'));
+     groupEls.forEach(function(groupEl) {
+       var key = groupEl.getAttribute('data-group-key');
+       var items = nav.querySelector('.nav-group-items[data-group-items="' + key + '"]');
+       if (!items) return;
+       var stored = sessionStorage.getItem(key);
+       setGroupExpanded(groupEl, items, stored !== 'collapsed', false);
+       groupEl.addEventListener('click', function() {
+         var expanded = items.style.display !== 'none';
+         setGroupExpanded(groupEl, items, !expanded, true);
+       });
+       groupEl.addEventListener('keydown', function(e) {
+         if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); groupEl.click(); }
+       });
+     });
+     /* Expand the group containing the initially active operation */
+     var topH = document.getElementById('topbar') ? document.getElementById('topbar').offsetHeight : 52;
+     var threshold = topH + 8;
+     var initBestOp = null;
+     var initBestTop = -Infinity;
+     var ops = Array.prototype.slice.call(document.querySelectorAll('.operation'));
+     ops.forEach(function(op) {
+       var rect = op.getBoundingClientRect();
+       if (rect.top <= threshold && rect.top > initBestTop) { initBestTop = rect.top; initBestOp = op; }
+     });
+     if (!initBestOp && ops.length) initBestOp = ops[0];
+     if (initBestOp) {
+       var activeOpNavLink = nav.querySelector('.nav-op[href="#' + initBestOp.id + '"]');
+       if (activeOpNavLink) {
+         var gItems = activeOpNavLink.parentElement;
+         while (gItems && !gItems.classList.contains('nav-group-items')) gItems = gItems.parentElement;
+         if (gItems) {
+           var gKey = gItems.getAttribute('data-group-items');
+           var gEl = nav.querySelector('.nav-group[data-group-key="' + gKey + '"]');
+           setGroupExpanded(gEl, gItems, true, true);
+         }
+       }
+     }
+   }
+
+   wireNavGroups();
    wireTopbarSearch(spec);
 
    document.querySelectorAll('.pdf-btn').forEach(function (btn) {
@@ -1534,8 +1596,14 @@ function getSchemaEnumLine(schema) {
        if (!q) {
          tagLinks.forEach(function (tag) { tag.style.display = ''; });
          opLinks.forEach(function (op) { op.style.display = ''; });
+         nav.querySelectorAll('.nav-group-items').forEach(function(items) {
+           var key = items.getAttribute('data-group-items');
+           var stored = sessionStorage.getItem(key);
+           items.style.display = (stored === 'collapsed') ? 'none' : '';
+         });
          return;
        }
+       nav.querySelectorAll('.nav-group-items').forEach(function(items) { items.style.display = ''; });
        var opMatchByTag = {};
        opLinks.forEach(function (op) {
          var text = (op.textContent || '').toLowerCase();
@@ -1606,6 +1674,14 @@ function getSchemaEnumLine(schema) {
      var target = document.getElementById(id);
      if (!target) return;
      e.preventDefault();
+     /* If clicked link is inside a collapsed group, expand it */
+     var groupItems = anchor.parentElement;
+     while (groupItems && !groupItems.classList.contains('nav-group-items')) groupItems = groupItems.parentElement;
+     if (groupItems && groupItems.style.display === 'none') {
+       var gKey = groupItems.getAttribute('data-group-items');
+       var gEl = nav.querySelector('.nav-group[data-group-key="' + gKey + '"]');
+       setGroupExpanded(gEl, groupItems, true, true);
+     }
      var top = target.getBoundingClientRect().top + window.pageYOffset - TOPBAR_H - 8;
      window.scrollTo({ top: top, behavior: 'smooth' });
      history.pushState(null, '', '#' + id);
@@ -1618,20 +1694,6 @@ function getSchemaEnumLine(schema) {
    var operationSections = Array.prototype.slice.call(document.querySelectorAll('.operation'));
    var lastActiveNavLink = null;
 
-   function setActiveLink(links, targetId) {
-     links.forEach(function (link) {
-       link.classList.toggle('active', !!targetId && link.getAttribute('href') === '#' + targetId);
-     });
-   }
-
-   function getCurrentSectionId(sections, scrollY) {
-     var currentId = '';
-     sections.forEach(function (section) {
-       if (section.offsetTop <= scrollY) currentId = section.id;
-     });
-     return currentId;
-   }
-
    function revealActiveNavLink(activeLink) {
      if (!activeLink || activeLink === lastActiveNavLink) return;
      lastActiveNavLink = activeLink;
@@ -1639,26 +1701,91 @@ function getSchemaEnumLine(schema) {
    }
 
    function updateActiveNavState() {
-     var scrollY = window.scrollY + TOPBAR_H + 32;
-     var currentOpId = getCurrentSectionId(operationSections, scrollY);
-     var currentTagId = getCurrentSectionId(tagSections, scrollY);
-
-     setActiveLink(navOpLinks, currentOpId);
-     setActiveLink(navTagLinks, currentTagId);
-
-     var activeNavLink = null;
-     if (currentOpId) {
-       activeNavLink = nav.querySelector('.nav-op.active');
+     var threshold = TOPBAR_H + 8;
+     /* Find operation with largest rect.top that is still <= threshold (most recently scrolled past) */
+     var bestOp = null;
+     var bestOpTop = -Infinity;
+     operationSections.forEach(function(op) {
+       var rect = op.getBoundingClientRect();
+       if (rect.top <= threshold && rect.top > bestOpTop) {
+         bestOpTop = rect.top;
+         bestOp = op;
+       }
+     });
+     /* Fallback: first op below threshold */
+     if (!bestOp) {
+       var firstBelow = Infinity;
+       operationSections.forEach(function(op) {
+         var rect = op.getBoundingClientRect();
+         if (rect.top > threshold && rect.top < firstBelow) {
+           firstBelow = rect.top;
+           bestOp = op;
+         }
+       });
      }
-     if (!activeNavLink && currentTagId) {
-       activeNavLink = nav.querySelector('.nav-tag.active');
+     var activeOpId = bestOp ? bestOp.id : null;
+     /* Get parent tag from the active operation */
+     var activeTagId = null;
+     if (bestOp) {
+       var tagSection = bestOp.closest ? bestOp.closest('.tag-section') : null;
+       if (!tagSection) {
+         var el = bestOp.parentElement;
+         while (el && !el.classList.contains('tag-section')) el = el.parentElement;
+         tagSection = el;
+       }
+       if (tagSection) activeTagId = tagSection.id;
      }
+     /* Fallback: nearest tag section when no op active */
+     if (!activeTagId) {
+       var bestTag = null;
+       var bestTagTop = -Infinity;
+       tagSections.forEach(function(tag) {
+         var rect = tag.getBoundingClientRect();
+         if (rect.top <= threshold && rect.top > bestTagTop) {
+           bestTagTop = rect.top;
+           bestTag = tag;
+         }
+       });
+       if (bestTag) activeTagId = bestTag.id;
+     }
+     navOpLinks.forEach(function(link) {
+       link.classList.toggle('active', !!activeOpId && link.getAttribute('href') === '#' + activeOpId);
+     });
+     navTagLinks.forEach(function(link) {
+       link.classList.toggle('active', !!activeTagId && link.getAttribute('href') === '#' + activeTagId);
+     });
+     var activeNavLink = nav.querySelector('.nav-op.active') || nav.querySelector('.nav-tag.active');
      revealActiveNavLink(activeNavLink);
    }
 
    window.addEventListener('scroll', updateActiveNavState);
    window.addEventListener('hashchange', updateActiveNavState);
    updateActiveNavState();
+
+   /* ── FIX 11 — Wire mobile sidebar ── */
+   (function wireMobileSidebar() {
+     var toggle = document.getElementById('sidebar-toggle');
+     var overlay = document.getElementById('sidebar-overlay');
+     var sidebar = document.getElementById('sidebar');
+     if (!toggle || !overlay || !sidebar) return;
+     function openSidebar() {
+       sidebar.classList.add('open');
+       overlay.classList.add('visible');
+       document.body.style.overflow = 'hidden';
+     }
+     function closeSidebar() {
+       sidebar.classList.remove('open');
+       overlay.classList.remove('visible');
+       document.body.style.overflow = '';
+     }
+     toggle.addEventListener('click', openSidebar);
+     overlay.addEventListener('click', closeSidebar);
+     document.querySelectorAll('.nav-tag, .nav-op').forEach(function (link) {
+       link.addEventListener('click', function () {
+         if (window.innerWidth <= 768) closeSidebar();
+       });
+     });
+   })();
  }
 
  fetch('openapi_md.json?v=' + Date.now())
