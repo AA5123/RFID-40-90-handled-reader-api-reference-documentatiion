@@ -7,11 +7,13 @@
   "properties": {
     "command": {
       "type": "string",
-      "default": "delete_wifi_profile"
+      "default": "delete_wifi_profile",
+      "description": "The command that was executed to delete a WiFi profile."
     },
     "requestId": {
       "type": "string",
-      "default": 1235
+      "default": 1235,
+      "description": "The unique identifier of the original request."
     },
     "response": {
       "$ref": "../../refrence/response/response.yaml"

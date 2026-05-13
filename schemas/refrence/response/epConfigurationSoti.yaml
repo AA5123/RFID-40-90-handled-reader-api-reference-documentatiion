@@ -27,9 +27,19 @@ properties:
         type: string
         enum:
           - MQTT
-          - MQTT_TLS
+          - MQTTWS
+          - MQT-TLS
+          - MQTT-WSS
+          - TCPIP
+          - WS
+          - WSS
+          - HID
+          - HTTPS
+          - HTTP
+          - AWS
+          - AZURE
         example: MQTT
-        description: The communication protocol used by the endpoint.
+        description: The communication protocol used by the endpoint, such as MQTT or HTTP.
       activate:
         type: boolean
         default: false

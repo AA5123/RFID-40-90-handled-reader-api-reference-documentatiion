@@ -7,7 +7,7 @@ This command allows you to configure:
 - Firmware download source URL
 - Authentication mode for firmware access
 - TLS verification mode
-- Optional authentication credentials, headers, query parameters, and certificate material
+- Optional certificate material
 
 Use this command to:
 
@@ -25,7 +25,7 @@ Use this command to:
 | Related Commands | [get_version](#op-get-version), [reboot](#op-reboot), [install_certificate](#op-install-certificate) |
 | Required Request Fields | `command`, `requestId`, `OSUpdateDetails` |
 | Supported Operations | Start firmware update using URL, authentication, and verification settings |
-| Supported Authentication Types | `NONE`, `BASIC`, `TOKEN`, `CERTIFICATE` |
+| Supported Authentication Types | `NONE`, `CERTIFICATE` |
 | Supported Verification Types | `NONE`, `VERIFY_PEER`, `VERIFY_HOST`, `VERIFY_HOST_PEER` |
 | Supported Protocols | URI-based firmware source URLs |
 | Supported API Versions | V1.0, V1.1 |
@@ -37,8 +37,7 @@ Prepare your firmware source and access credentials before sending this command.
 | What You Need | Details |
 |---|---|
 | Firmware URL | Have the full, valid URI to the firmware file ready. The device will download from this URL directly. Verify the URL is reachable from the device's network. |
-| Authentication type | Know which authentication method the firmware server requires — `NONE` for open access, `BASIC` for username and password, `TOKEN` for token-based auth, or `CERTIFICATE` for certificate-based access. |
-| Credentials | For `BASIC` authentication: have the username and password ready. For `TOKEN` authentication: prepare the token as a custom header or query parameter in `authOptions`. |
+| Authentication type | Know which authentication method the firmware server requires — `NONE` for open access or `CERTIFICATE` for certificate-based access. |
 | Certificate material | For `CERTIFICATE` authentication: either provide the CA certificate content inline as a PEM-formatted string in `caCertificateFileContent`, or provide the file path to a preinstalled certificate in `caCertificateFile`. |
 | Verification type | Decide the TLS verification level — `NONE` to skip verification, `VERIFY_PEER` to verify the server's certificate, `VERIFY_HOST` to verify the hostname, or `VERIFY_HOST_PEER` to verify both. |
 | Device battery level | Ensure the device is sufficiently charged or connected to external power before initiating a firmware update. A low battery will cause the update to be rejected with error code 14. |
@@ -51,8 +50,6 @@ The `authenticationType` field defines how the device authenticates to the firmw
 | authenticationType | Description | Required Fields |
 |---|---|---|
 | `NONE` | No authentication. The firmware URL is publicly accessible. | None |
-| `BASIC` | Username and password authentication. | `authOptions.username`, `authOptions.password` |
-| `TOKEN` | Token-based authentication. Supply the token via `authOptions.headerParam` or `authOptions.queryParam`. | `authOptions.headerParam` or `authOptions.queryParam` |
 | `CERTIFICATE` | Certificate-based authentication. Supply CA certificate content inline or as a file reference. | `caCertificateFileContent` or `caCertificateFile` |
 
 ## 5. Verification Types
@@ -74,8 +71,6 @@ Violating any of these rules will cause the command to fail or the firmware upda
 
 - `url` must be a valid URI. The device will attempt to download the firmware directly from this address.
 - Ensure the URL is reachable from the device's active network interface before sending the command.
-
-
 
 ### Device State
 

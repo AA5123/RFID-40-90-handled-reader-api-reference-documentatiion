@@ -18,11 +18,13 @@
   "properties": {
     "command": {
       "type": "string",
-      "example": "reboot"
+      "example": "reboot",
+      "description": "The command that was executed to reboot the device."
     },
     "requestId": {
       "type": "string",
-      "example": "123abcd"
+      "example": "123abcd",
+      "description": "The unique identifier of the original request."
     },
     "apiVersion": {
       "type": "string",

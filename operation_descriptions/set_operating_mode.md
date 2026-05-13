@@ -29,7 +29,7 @@ The `set_operating_mode` command updates RFID operating behavior on the RFD40/RF
 | Supported Memory Banks | EPC, TID, USER, RESERVED |
 | Supported Query States | STATE_A, STATE_B, STATE_AB |
 | Supported SL Flags | ALL, ASSERTED, DEASSERTED |
-| Supported Profiles | FAST_READ, CYCLE_COUNT, DENSE_READERS, OPTIMAL_BATTERY, BALANCED_PERFORMANCE, ADVANCED |
+| Supported Profiles | CYCLE_COUNT, DENSE_READERS, OPTIMAL_BATTERY, BALANCED_PERFORMANCE, ADVANCED |
 | Supported Link Profiles | M4_256K, M2_240K, M2_256K, M2_320K, M4_240K, M4_320K, FM0_0K, FM0_320K, M8_240K, M8_256K, M8_320K |
 | Supported Sessions | SESSION_0, SESSION_1, SESSION_2, SESSION_3 |
 | Supported API Versions | V1.0, V1.1 |
@@ -54,7 +54,6 @@ The `profiles` field selects the reader's overall RF operating mode. Choose base
 
 | Profile | Description |
 |---|---|
-| `FAST_READ` | Configures the radio for maximum read speed within short range. *(Currently not supported)* |
 | `CYCLE_COUNT` | Reads as many unique tags as possible in each inventory cycle. |
 | `DENSE_READERS` | Optimised for environments with multiple readers operating in proximity. |
 | `OPTIMAL_BATTERY` | Prioritises battery longevity over read performance. |
@@ -87,14 +86,14 @@ Radio conditions define when the reader begins and ends an inventory round. Star
 
 ### Stop Trigger and Thresholds
 
-| Field | What It Controls | Notes |
-|---|---|---|
-| `trigger: RELEASED` | Inventory stops when the operator releases the trigger. | Pair with `trigger: PRESSED` for start. With `repeat: true`, pressing again restarts inventory. |
-| `trigger: PRESSED` | Inventory stops when the trigger is pressed. | Less common. Ensure the UI makes it clear that pressing stops rather than starts. |
-| `trigger: IMMEDIATE` | Inventory stops based on threshold conditions rather than a physical action. | Use with `tagCount`, `stopTimeout`, or `inventoryCount`. Set unused thresholds to `0` to disable. |
-| `tagCount` | Stops inventory after the specified number of unique tags have been read. | Set to `0` to disable. Counts unique tags only — not duplicates. |
-| `stopTimeout` | Stops inventory after the specified duration in milliseconds. | Set to `0` to disable. Pair with `tagCount` so inventory does not run forever if expected tags are absent. |
-| `inventoryCount` | Stops inventory after the specified number of full inventory cycles complete. | Set to `0` to disable. One cycle = one full scan pass. |
+| Field | What It Controls |
+|---|---|
+| `trigger: RELEASED` | Inventory stops when the operator releases the trigger. |
+| `trigger: PRESSED` | Inventory stops when the trigger is pressed. |
+| `trigger: IMMEDIATE` | Inventory stops based on threshold conditions rather than a physical action. |
+| `tagCount` | Stops inventory after the specified number of unique tags have been read. |
+| `stopTimeout` | Stops inventory after the specified duration in milliseconds. |
+| `inventoryCount` | Stops inventory after the specified number of full inventory cycles complete. |
 
 ## 6. Choosing Query Settings
 

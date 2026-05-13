@@ -26,7 +26,7 @@ Use this command to:
 | Required Request Fields | `command`, `requestId`, `configData` |
 | Supported Operations | `CREATE` and `MODIFY` Wi-Fi profiles; `add`, `update`, and `delete` endpoint configuration; apply after reboot |
 | Supported Endpoint Types | `MGMT`, `MGMT_EVT`, `CTRL`, `DATA1`, `DATA2`, `SOTI`, `MDM` |
-| Supported Protocols | `MQTT`, `MQTT_WS`, `MQTT_WSS`, `MQTT_TLS`, `TCP`, `HTTP`, `HTTPS`, `WS`, `WSS`, `AWS`, `AZURE`, `HID` |
+| Supported Protocols | `MQTT`, `MQTT_TLS` |
 | Supported Verification Types | `NONE`, `VERIFY_PEER`, `VERIFY_HOST`, `VERIFY_HOST_PEER` |
 | Supported API Versions | V1.0, V1.1 |
 

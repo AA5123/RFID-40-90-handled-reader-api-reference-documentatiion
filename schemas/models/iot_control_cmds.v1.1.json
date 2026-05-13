@@ -12,11 +12,13 @@
         "set_operating_mode",
         "get_operating_mode",
         "set_post_filter"
-      ]
+      ],
+      "description": "The control command to be executed on the device."
     },
     "requestId": {
       "type": "string",
-      "example": "abc123"
+      "example": "abc123",
+      "description": "The unique identifier of the original request."
     },
     "payload": {
       "oneOf": [

@@ -234,6 +234,14 @@ properties:
                     description: The encryption protocol for WPA3-Enterprise.
                 required:
                   - authentication
+              OWEPublic:
+                type: object
+                properties:
+                  authentication:
+                    type: string
+                    description: Authentication protocol for OWE-Public.
+                required:
+                  - authentication
         required:
           - securityType
           - securityDetails

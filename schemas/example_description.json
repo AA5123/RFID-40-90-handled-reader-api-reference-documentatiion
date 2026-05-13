@@ -93,7 +93,6 @@
         "WPA2 Personal connection": "Response with WiFi connected to WPA2 Personal network",
         "WPA2 Enterprise connection": "Response with WiFi connected to WPA2 Enterprise network with certificates", 
         "WPA3 Enterprise connection": "Response with WiFi connected to WPA3 Enterprise network with advanced security",
-        "Open network connection": "Response with WiFi connected to open/unsecured network",
         "WiFi interface disabled": "Response when WiFi interface is disabled on the device"
     },
     "get_version": {

@@ -9,8 +9,6 @@ This command returns:
 - Access operation and metadata reporting configuration
 - Response metadata for command execution
 
-No additional payload fields are required beyond `command` and `requestId`.
-
 ## 2. Command Details
 
 | Property | Value |

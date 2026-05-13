@@ -41,5 +41,3 @@ Key fields to check in the response:
 | `validFrom` | Is the certificate already active? | A future `validFrom` means the certificate is not yet valid and will be rejected by the broker. |
 | `issuerName` | Does it match the expected CA? | Confirms the certificate chain is from the correct issuer for your environment. |
 | `serial` | Does the serial match the expected certificate? | Used to uniquely identify a certificate when multiple entries share the same name and type. |
-
-> **Note:** The command name in the payload is `get_installed_certificates` (plural). Use this exact string in the `command` field.

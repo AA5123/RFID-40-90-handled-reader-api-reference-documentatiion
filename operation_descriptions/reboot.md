@@ -29,7 +29,7 @@ This is a minimal command with no configuration payload. Confirm the following b
 |---|---|
 | Inventory state | The device cannot be rebooted while an RFID inventory operation is in progress. Stop the active inventory using `control_operation` before sending this command. Attempting to reboot during an active inventory returns error code 5. |
 | Server reconnection | After a successful reboot, the device automatically reconnects to the previously connected server. No manual reconnection is required. |
-| Configuration persistence | All the device configurations done in management will be restored, only the radio operations config that is control endpoint operations will be lost on reboot. |
+| Configuration persistence | All management endpoint configurations are restored after reboot. Only radio operation configurations from control endpoint operations are lost on reboot. |
 
 ## 4. Rules and Constraints
 

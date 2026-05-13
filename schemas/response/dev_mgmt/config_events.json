@@ -18,11 +18,13 @@
   "properties": {
     "command": {
       "type": "string",
-      "example": "config_events"
+      "example": "config_events",
+      "description": "The command that was executed to configure events."
     },
     "requestId": {
       "type": "string",
-      "example": "abc123"
+      "example": "abc123",
+      "description": "The unique identifier of the original request."
     },
     "apiVersion": {
       "type": "string",

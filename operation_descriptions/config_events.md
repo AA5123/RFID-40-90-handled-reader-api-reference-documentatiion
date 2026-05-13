@@ -65,22 +65,3 @@ Each boolean flag in `eventConfiguration` controls an independent event stream o
 | `flashUsage` | Flash storage usage alert events. Requires `flashThreshold` to define the trigger level. |
 | `ramUsage` | RAM usage alert events. Requires `ramThreshold` to define the trigger level. |
 
-## 5. Rules and Constraints
-
-Violating any of these rules will cause the command to fail or the event configuration to behave unexpectedly.
-
-### Event Flags
-
-- All event flags are boolean. Set to `true` to enable or `false` to disable the corresponding event stream.
-- Omitting an event flag from the payload does not disable it — the device retains its current state for that flag.
-
-### Heartbeat Configuration
-
-- `heartbeatConfiguration` is only meaningful when `heartbeat` is set to `true`. Sending `heartbeatConfiguration` without enabling `heartbeat` has no effect.
-- `interval` specifies the heartbeat frequency in seconds. Ensure the interval is appropriate for your monitoring infrastructure to avoid flooding.
-
-### Threshold-Based Alerts
-
-- `cpuThreshold`, `ramThreshold`, and `flashThreshold` define the usage percentage above which an alert event is triggered. These only take effect when their corresponding event flag (`cpuUsage`, `ramUsage`, `flashUsage`) is enabled.
-- `temperatureThreshold` defines the temperature value above which a temperature alert is triggered. This only takes effect when `temperature` is enabled.
-- Thresholds are integer values. Ensure the values are within a range meaningful for your device and environment.

@@ -148,42 +148,6 @@
     },
     {
       "command": "get_wifi",
-      "requestId": "open_network",
-      "apiVersion": "V1.1",
-      "wifiProfiles": {
-        "wifiConfig": [
-          {
-            "interfaceDetails": {
-              "interfaceName": "wlan0",
-              "status": "ENABLED",
-              "hostname": "RFD40-22326520100477",
-              "macAddress": "E0-D0-45-3D-38-5B",
-              "accessPoint": {
-                "essid": "PUBLIC_WIFI",
-                "status": "CONNECTED",
-                "securityType": "Open",
-                "isPreferred": false,
-                "autoConn": false
-              },
-              "ipv4Configuration": {
-                "ipAddress": "203.0.113.45",
-                "subnetMask": "255.255.255.0",
-                "gateway": "203.0.113.1",
-                "enableDhcp": true,
-                "dnsServer": "8.8.8.8",
-                "domainName": "public.wifi"
-              }
-            }
-          }
-        ]
-      },
-      "response": {
-        "code": 0,
-        "description": "Success"
-      }
-    },
-    {
-      "command": "get_wifi",
       "requestId": "abc005",
       "apiVersion": "V1.1",
       "wifiConfig": {
@@ -203,11 +167,13 @@
   "properties": {
     "command": {
       "type": "string",
-      "example": "get_wifi"
+      "example": "get_wifi",
+      "description": "The command that was executed to retrieve the WiFi configuration."
     },
     "requestId": {
       "type": "string",
-      "example": "abc123"
+      "example": "abc123",
+      "description": "The unique identifier of the original request."
     },
     "apiVersion": {
       "type": "string",

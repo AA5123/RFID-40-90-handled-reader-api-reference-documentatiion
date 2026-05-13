@@ -53,11 +53,13 @@
   "properties": {
     "command": {
       "type": "string",
-      "example": "get_eth"
+      "example": "get_eth",
+      "description": "The command that was executed to retrieve the ethernet configuration."
     },
     "requestId": {
       "type": "string",
-      "example": "abc123"
+      "example": "abc123",
+      "description": "The unique identifier of the original request."
     },
     "apiVersion": {
       "type": "string",

@@ -9,8 +9,6 @@ This command returns:
 - Match method and pattern behavior configuration
 - Report operation filtering settings
 
-No additional payload fields are required beyond `command` and `requestId`.
-
 ## 2. Command Details
 
 | Property | Value |
@@ -41,4 +39,3 @@ Key fields to check in the response:
 | `matchPatternMethod` | Is the match method correct? | `PREFIX`, `SUFFIX`, and `REGEX` behave differently. A method mismatch causes incorrect filtering even with a correct pattern. |
 | `reportOperation` | Is the filter set to INCLUDE or EXCLUDE? | Determines whether matching tags are reported or suppressed. Verify this before a production inventory run. |
 
-> **Note:** Use `get_post_filter` before calling `set_post_filter` to review existing rules. This prevents accidental overwrites of active filter configuration.

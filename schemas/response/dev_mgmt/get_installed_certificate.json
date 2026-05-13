@@ -77,11 +77,13 @@
   "properties": {
     "command": {
       "type": "string",
-      "example": "get_installed_certificates"
+      "example": "get_installed_certificates",
+      "description": "The command that was executed to retrieve the list of installed certificates."
     },
     "requestId": {
       "type": "string",
-      "example": "abc123"
+      "example": "abc123",
+      "description": "The unique identifier of the original request."
     },
     "apiVersion": {
       "type": "string",

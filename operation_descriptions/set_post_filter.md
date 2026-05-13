@@ -70,12 +70,6 @@ Violating any of these rules will cause the command to fail or the filter to beh
 - For `REGEX` method, `matchPattern` must be a valid regular expression string.
 - An incorrectly formatted pattern will result in a saved but non-functional filter.
 
-
-
-### Report Duration
-
-- `reportDuration` specifies how long (in seconds) to wait before reporting a tag again after it has already been reported. This field is currently not supported. Do not rely on it in production deployments.
-
 ### Data Endpoints
 
 - Each filter is scoped to a specific data endpoint (`DATA_EP1` or `DATA_EP2`). Filters applied to one endpoint do not affect the other.

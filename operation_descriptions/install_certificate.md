@@ -39,8 +39,6 @@ Gather certificate details and source information before sending this command. A
 | TLS verification type | Decide the verification level for the remote certificate source connection — `NONE`, `VERIFY_PEER`, `VERIFY_HOST`, or `VERIFY_HOST_PEER`. |
 | Logical name | Assign a meaningful logical name for the certificate entry via the `name` field. This name is used when referencing the certificate in other commands such as `set_wifi` and `config_endpoint`. |
 
-> **Important:** A response code of `1` (Command payload is accepted) does not mean installation is complete. The device processes the certificate installation asynchronously. Monitor follow-up events or poll `get_installed_certificate` to confirm completion.
-
 ## 4. Certificate Types
 
 The `type` field in `certDetails` defines where the certificate will be used. Choose the correct type based on the service that will consume the certificate.
@@ -86,21 +84,6 @@ Violating any of these rules will cause the command to fail or the certificate t
 - If `certSource` is `DIRECT`, the `url` array is ignored — provide content in `certificateBundle` instead.
 - `DIRECT` and `HTTP` cannot be combined in the same request.
 
-### URL Array Keys
-
-- `ca_cert` — CA certificate. Supported for all certificate types.
-- `client_cert` — Client certificate. Required for mutual TLS.
-- `client_key` — Client private key. Required when `client_cert` is provided.
-- `cert_key_password` — Password for the encrypted client private key, when required.
-
 ### Authentication
 
 - `CERTIFICATE` authentication can use inline CA certificate content in `caCertificateFileContent`, or an already installed filestore certificate if that field is empty.
-
-### Unsupported Fields
-
-- `pfxPassword` — PFX/PKCS#12 bundle password. Currently not supported on RFD40/RFD90.
-- `headerParams` — Custom HTTP header parameters. Currently not supported.
-- `queryParams` — HTTP query parameters. Currently not supported.
-
-> **Security Note:** Never hardcode certificate passwords or credentials in your payload. Use a secrets manager or environment variable to supply sensitive values at runtime.
