@@ -4,7 +4,6 @@
     "id": "rp32fizym3650"
   },
   "type": "object",
-  "description": "Response returned after a control_operation request is processed. It confirms the command context and reports whether the requested action succeeded.",
   "examples": [
     {
       "command": "control_operation",
@@ -20,12 +19,12 @@
     "command": {
       "type": "string",
       "example": "control_operation",
-      "description": "Echoes the command name so clients can map this response to the control_operation request."
+      "description": "The type of command being executed or responded to. For MQTT, this specifies the operation type."
     },
     "requestId": {
       "type": "string",
       "example": "abc123",
-      "description": "Request identifier copied from the command, used for request and response correlation."
+      "description": "A unique identifier for the request, used for tracking the request and its corresponding response in the MQTT protocol."
     },
     "apiVersion": {
       "type": "string",
@@ -34,11 +33,10 @@
         "V1.1"
       ],
       "example": "V1.1",
-      "description": "API version used to interpret this response payload."
+      "description": "The version of the API being used in this MQTT response message."
     },
     "response": {
-      "$ref": "../../refrence/response/response.yaml",
-      "description": "Execution result object containing status code and result description."
+      "$ref": "../../refrence/response/response.yaml"
     }
   },
   "required": [

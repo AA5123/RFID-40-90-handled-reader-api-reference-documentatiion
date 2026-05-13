@@ -2,10 +2,8 @@ title: wifiProfiles
 x-stoplight:
   id: d1gjzrdjhbos9
 type: object
-description: Collection of Wi-Fi profiles currently stored on the device.
 properties:
   wifiConfig:
     type: array
-    description: List of Wi-Fi profile entries with interface and security details.
     items:
       $ref: ./wifiResponseSoti.yaml

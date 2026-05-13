@@ -2,18 +2,17 @@ title: ctrlOprPayload
 x-stoplight:
   id: p5pvffwkuqqm1
 type: object
-description: Object schema for ctrlOprPayload.
 properties:
   controlType:
     type: string
-    description: Selects which reader subsystem to control.
+    description: Specifies whether the control is for RFID or Scanner operations.
     enum:
       - RFID
       - SCANNER
     example: RFID
   operation:
     type: string
-    description: Action to execute for the selected control type. Use START to begin the operation and STOP to end it.
+    description: Indicates the operation to be performed such as start or stop the inventory.
     enum:
       - START
       - STOP

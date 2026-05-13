@@ -4,7 +4,6 @@
     "id": "p27qq8ptz3k7b"
   },
   "type": "object",
-  "description": "Response returned for get_config. It provides consolidated reader configuration and command execution status.",
   "examples": [
     {
       "command": "get_config",
@@ -205,26 +204,21 @@
   "properties": {
     "command": {
       "type": "string",
-      "example": "get_config",
-      "description": "Echoes the command name so clients can map this response to the get_config request."
+      "example": "get_config"
     },
     "requestId": {
       "type": "string",
-      "example": "abc123",
-      "description": "Request identifier copied from the command, used for request and response correlation."
+      "example": "abc123"
     },
     "apiVersion": {
       "type": "string",
-      "example": "V1.1",
-      "description": "API version used to interpret this response payload."
+      "example": "V1.1"
     },
     "currentConfig": {
-      "$ref": "../../refrence/response/getConfigResponse.yaml",
-      "description": "Combined current device configuration across major management domains."
+      "$ref": "../../refrence/response/getConfigResponse.yaml"
     },
     "response": {
-      "$ref": "../../refrence/response/response.yaml",
-      "description": "Execution result object containing status code and result description."
+      "$ref": "../../refrence/response/response.yaml"
     }
   },
   "required": [

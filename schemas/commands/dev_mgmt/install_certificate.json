@@ -7,6 +7,32 @@
   "description": "This API is used to install certificates. ",
   "examples": [
     {
+  "command": "install_certificate",
+  "requestId": "cert-test-001",
+  "certDetails": {
+    "type": "mqtt",
+    "name": "testMqttCert",
+    "authenticationType": "CERTIFICATE",
+    "certSource": "HTTP",
+    "verificationType": "VERIFY_PEER",
+    "caCertificateFileContent": "-----BEGIN CERTIFICATE-----\nMIIDPTCCAiWgAwIBAgIUHtj1WDceNR9Nf+vZBB1Ne7sFmHkwDQYJKoZIhvcNAQEL\nBQAwLjEPMA0GA1UEAwwGVGVzdENBMQ4wDAYDVQQKDAVaZWJyYTELMAkGA1UEBhMC\nVVMwHhcNMjYwNTExMTMxNDQ3WhcNMzYwNTA4MTMxNDQ3WjAuMQ8wDQYDVQQDDAZU\nZXN0Q0ExDjAMBgNVBAoMBVplYnJhMQswCQYDVQQGEwJVUzCCASIwDQYJKoZIhvcN\nAQEBBQADggEPADCCAQoCggEBANR8E/mxoQ5uTPW/muWnGoWDM7+YH5lIJiCM/n92\ndMLIQ+TVgb9mcOz80VnpgkQqomhbZaIG4CtnBufyIJvNKid+mgrrFh18HtMnE78d\nlGoPC4M469Rm+0oEN9GkUHgtgF2N4Qt9bYomySux3yyPlFuUOC+uaYRCCn3Hm8ko\nXE/a7XWdXeJkpIB0Mzzf7MoNq14AfX431RKgvpMgAqZTnDWtm4TVnK9Hq0t64tP7\naKIAJV2avJd87dF8x+K80kLBErDnKtuNFpXN7KoC7BBwdTzbG8VWYNUZeG8eCqBh\neL9MY5Ik7POmR0AM/TxRBLAXyoZHSPdEpEoaQZjSzJ7IHv0CAwEAAaNTMFEwHQYD\nVR0OBBYEFJHms5XPEyFYnVcf2++X9N8UlkahMB8GA1UdIwQYMBaAFJHms5XPEyFY\nnVcf2++X9N8UlkahMA8GA1UdEwEB/wQFMAMBAf8wDQYJKoZIhvcNAQELBQADggEB\nAL4HEEMhuQ9sQLFE9wiGw4BIILxnX30FbphWM8/xpHKuYNsH/NOWpjulG+ZAxe8n\n+QUhaU9hruBEajT7mYjKvZ9NtUumcAmAh3s29KD4NpjwglqUYfKQpzT4QxkcMXuW\nzCmqlAqGVzK3ve/Fuurgdbk3kApOZTTyqFw629dmmRhoP+2sdCYMAukyf348/4Gl\nY6ZtwwAJygC4/WCfWg/7XaeQ+6kqKtY6ijSJFfCNwEPPY7CW3XAqP+kZ0e2taL5a\nrvm5UUPRMGCs20JOucntSF8uPOICNWUEr3DbqAJ4jXKhSHdsG6fNDyJIOzX1zn0j\nVqh5mX6k2PZe0eylcukyu/s=\n-----END CERTIFICATE-----",
+    "url": [
+      { 
+        "key": "ca_cert",     
+        "value": "https://192.168.0.104:8443/mqtt_ca_cert.pem" 
+      },
+      { 
+        "key": "client_cert", 
+        "value": "https://192.168.0.104:8443/mqtt_client_cert.pem" 
+      },
+      { 
+        "key": "client_key",  
+        "value": "https://192.168.0.104:8443/mqtt_client_key.pem" 
+      }
+    ]
+  }
+},
+    {
       "command": "install_certificate",
       "requestId": "19001",
       "certDetails": {
@@ -29,7 +55,7 @@
       "certDetails": {
         "name": "mqtt_certs",
         "type": "mqtt",
-        "authenticationType": "CERTIFICATE",
+        "authenticationType": "NONE",
         "certSource": "HTTP",
         "url": [
           {
@@ -97,7 +123,6 @@
       "description": "A unique identifier for the request, allowing tracking and debugging of the operation."
     },
     "certDetails": {
-      "description": "Object containing the details of the certificate to be installed, including its name, type, authentication method, source, and verification type.",
       "$ref": "../../refrence/payload/installCertPayload.yaml"
     }
   },

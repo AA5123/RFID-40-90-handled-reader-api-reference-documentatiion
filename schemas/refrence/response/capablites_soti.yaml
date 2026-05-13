@@ -2,7 +2,6 @@ title: deviceCapabilities
 x-stoplight:
   id: 7gxiz1we1sv22
 type: object
-description: Summary of major optional capabilities supported by the device.
 properties:
   isBluetoothSupported:
     type: boolean

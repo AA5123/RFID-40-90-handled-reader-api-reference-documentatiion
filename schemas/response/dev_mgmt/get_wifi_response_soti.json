@@ -1,36 +1,29 @@
 {
-  "title": "setWifiResponse",
+  "title": "get_wifi_response",
   "x-stoplight": {
-    "id": "vdmaqk96eai0f"
+    "id": "fjn0l5j3z4gh1"
   },
   "type": "object",
-  "examples": [
-     {
-       "command": "reboot",
-       "requestId": "18996",
-       "apiVersion": "V1.1",
-       "response": {
-           "code": 1,
-            "description": "Command payload is accepted"
-        }
-     }
-  ],
+  "examples": [],
   "properties": {
     "command": {
       "type": "string",
-      "example": "reboot"
+      "example": "get_wifi"
     },
     "requestId": {
       "type": "string",
-      "example": "123abcd"
+      "example": "abc123"
     },
     "apiVersion": {
       "type": "string",
+      "example": "V1.1",
       "enum": [
         "V1.0",
         "V1.1"
-      ],
-      "example": "V1.1"
+      ]
+    },
+    "payload": {
+      "$ref": "../../refrence/response/wifiResponseSoti.yaml"
     },
     "response": {
       "$ref": "../../refrence/response/response.yaml"

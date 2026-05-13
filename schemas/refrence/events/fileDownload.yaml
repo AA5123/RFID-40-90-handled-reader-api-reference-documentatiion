@@ -2,7 +2,6 @@ title: downloadInfo
 x-stoplight:
   id: qwygdhcgpch4h
 type: object
-description: Object schema for downloadInfo.
 properties:
   fileType:
     type: string

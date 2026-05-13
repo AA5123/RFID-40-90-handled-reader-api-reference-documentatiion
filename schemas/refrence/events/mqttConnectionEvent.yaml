@@ -2,7 +2,6 @@ title: epConnection
 x-stoplight:
   id: 6614a3b0a035f
 type: object
-description: Object schema for epConnection.
 properties:
   connectionState:
     type: boolean

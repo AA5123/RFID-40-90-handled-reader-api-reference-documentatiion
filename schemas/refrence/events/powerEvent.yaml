@@ -2,7 +2,6 @@ title: powerEvent
 x-stoplight:
   id: zo9rfssxbwg10
 type: object
-description: Object schema for powerEvent.
 properties:
   powerSource:
     type: string

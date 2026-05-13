@@ -4,7 +4,7 @@
     "id": "y06se8in4n2n4"
   },
   "type": "object",
-  "description": "This command starts or stops a control function on the reader. Use this operation to control runtime actions such as starting or stopping RFID inventory.",
+  "description": "This command controls device functionality, including RFID operations and scan operations.",
   "properties": {
     "command": {
       "type": "string",
@@ -20,7 +20,7 @@
     },
     "ctrlOprPayload": {
       "$ref": "../../refrence/payload/ctrlOprPayload.yaml",
-      "description": "Object that defines what to control and which action to perform. Typical values include control type RFID and operation START or STOP."
+      "description": "Defines the control operation to be performed on the device, including the control type and the operation to start or stop."
     }
   },
   "examples": [

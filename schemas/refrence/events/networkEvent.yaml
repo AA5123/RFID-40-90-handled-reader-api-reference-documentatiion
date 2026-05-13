@@ -2,7 +2,6 @@ title: networkEvent
 x-stoplight:
   id: tdp0o2i33nrul
 type: object
-description: Object schema for networkEvent.
 examples: []
 properties:
   networkInterface:
@@ -14,7 +13,6 @@ properties:
         description: List of Ethernet interface statuses.
         items:
           type: object
-          description: Ethernet interface status information including connection state and IP addresses.
           properties:
             interface:
               type: string
@@ -57,7 +55,6 @@ properties:
         description: List of WiFi interface statuses.
         items:
           type: object
-          description: WiFi interface status information including connection state, SSID, and IP addresses.
           properties:
             interface:
               type: string

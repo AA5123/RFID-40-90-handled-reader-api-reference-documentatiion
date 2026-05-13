@@ -2,14 +2,12 @@ title: alertEvent
 x-stoplight:
   id: o0nu0f04g6d2y
 type: object
-description: Object schema for alertEvent.
 properties:
   evtData:
     anyOf:
       - properties:
           ntp:
             type: object
-            description: NTP (Network Time Protocol) synchronization details.
             properties:
               offset:
                 type: number
@@ -23,7 +21,6 @@ properties:
             type: number
           userApp:
             type: object
-            description: User application information and status.
             properties:
               appName:
                 type: string
@@ -31,7 +28,6 @@ properties:
                 type: string
           temperature:
             type: object
-            description: Device temperature readings from different sensors.
             properties:
               nge:
                 type: number

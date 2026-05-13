@@ -2,17 +2,12 @@ title: cfgResponse
 x-stoplight:
   id: nmjdhs4gawcqj
 type: object
-description: Optional response payload for set_config containing configuration data returned by the device.
 properties:
   ethConfig:
     $ref: ../payload/ethConfigPayload.yaml
-    description: Ethernet configuration section.
   wifiConfigResp:
     $ref: ../payload/cfgWifiPayload.yaml
-    description: Wi-Fi configuration section.
   epConfig:
     $ref: ../payload/cfgEndpointPayload.yaml
-    description: Endpoint configuration section.
   wifiProfiles:
     $ref: ./getWifiResponse.yaml
-    description: Current Wi-Fi profiles as reported by the device.

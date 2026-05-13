@@ -4,77 +4,39 @@
     "id": "ya5mj1gornet6"
   },
   "type": "object",
-  "description": "Response returned for get_wifi. It includes saved Wi-Fi profile details and command execution status.",
   "examples": [
-    {
-      "command": "get_wifi",
-      "requestId": "db4c7adb-0173-4114-9054-daf6dcc3c7df",
-      "apiVersion": "V1.1",
-      "wifiProfiles": {
-        "wifiConfig": [
-          {
-            "interfaceDetails": {
-              "accessPoint": {
-                "essid": "TestAp",
-                "status": "DISCONNECTED",
-                "securityType": "WPA2Personal",
-                "isPreferred": false
-              },
-              "securityDetails": {
-                "WPA2Personal": {
-                  "password": "XXXXXXXX"
-                }
-              }
-            }
-          },
-          {
-            "interfaceDetails": {
-              "interfaceName": "wlan0",
-              "hostname": "RFD40-211555201D0075",
-              "macAddress": "AC:3F:A4:00:2A:73",
-              "accessPoint": {
-                "essid": "EL114-RF40-90-1",
-                "status": "CONNECTED",
-                "securityType": "WPA2Personal",
-                "isPreferred": false
-              },
-              "ipv4Configuration": {
-                "ipAddress": "10.233.45.78",
-                "subnetMask": "255.255.255.0",
-                "gateway": "10.233.45.2",
-                "enableDhcp": true,
-                "dnsServer": "10.233.1.200",
-                "domainName": "zebra.com"
-              },
-              "securityDetails": {
-                "WPA2Personal": {
-                  "password": "XXXXXXXX"
-                }
-              }
-            }
-          },
-          {
-            "interfaceDetails": {
-              "accessPoint": {
-                "essid": "TestAp0",
-                "status": "DISCONNECTED",
-                "securityType": "WPA2Personal",
-                "isPreferred": false
-              },
-              "securityDetails": {
-                "WPA2Personal": {
-                  "password": "XXXXXXXX"
-                }
-              }
-            }
-          }
-        ]
-      },
-      "response": {
-        "code": 0,
-        "description": "Success"
-      }
-    },
+    { 
+  "command": "get_wifi", 
+  "requestId": "abc123", 
+  "apiVersion": "V1.1", 
+  "wifiConfig": { 
+    "interfaceDetails": { 
+      "interfaceName": "wlan0", 
+      "status": "Enabled", 
+      "hostname": "RFD40-22326520100477", 
+      "macAddress": "48:A4:93:BD:4A:FC", 
+      "accessPoint": { 
+        "essid": "IOT_TESTAP", 
+        "status": "Connected", 
+        "securityType": "WPA2Personal",
+        "isPreferred": true,
+        "autoConn": true
+      }, 
+      "ipv4Configuration": { 
+        "ipAddress": "192.168.0.104", 
+        "subnetMask": "255.255.255.0", 
+        "gateway": "192.168.0.1", 
+        "enableDhcp": true, 
+        "dnsServer": "1.0.168.192", 
+        "domainName": "zebra.com" 
+      } 
+    } 
+  }, 
+  "response": { 
+    "code": 0, 
+    "description": "Success" 
+  } 
+},
     {
       "command": "get_wifi",
       "requestId": "abc002",
@@ -241,13 +203,11 @@
   "properties": {
     "command": {
       "type": "string",
-      "example": "get_wifi",
-      "description": "The command issued by the client, indicating the operation to retrieve Wi-Fi configuration and status information."
+      "example": "get_wifi"
     },
     "requestId": {
       "type": "string",
-      "example": "abc123",
-      "description": "Request identifier copied from the command, used for request and response correlation."
+      "example": "abc123"
     },
     "apiVersion": {
       "type": "string",
@@ -255,15 +215,12 @@
       "enum": [
         "V1.0",
         "V1.1"
-      ],
-      "description": "API version used to interpret this response payload."
+      ]
     },
     "wifiProfiles": {
-      "description": "Object containing an array of Wi-Fi configuration profiles, each with detailed information about the Wi-Fi interface, access point, IP configuration, and security settings.",
       "$ref": "../../refrence/response/getWifiResponse.yaml"
     },
     "response": {
-      "description": "Object containing the response code and description for the get_wifi command.",
       "$ref": "../../refrence/response/response.yaml"
     }
   },

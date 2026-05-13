@@ -2,11 +2,9 @@ title: wifiStatusResponse
 x-stoplight:
   id: cjkaab7rhrch6
 type: object
-description: Current Wi-Fi status snapshot for the device interface.
 properties:
   wifiStatus:
     type: object
-    description: Wi-Fi interface status details including addressing and SSID.
     properties:
       hostName:
         type: string

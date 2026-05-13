@@ -4,7 +4,6 @@
     "id": "esbrwfwavpx3o"
   },
   "type": "object",
-  "description": "Response returned after set_os is processed. It confirms command context and operation result.",
   "examples": [
      {
        "command": "set_os",
@@ -19,13 +18,11 @@
   "properties": {
     "command": {
       "type": "string",
-      "example": "set_os",
-      "description": "Echoes the command name so clients can map this response to the set_os request."
+      "example": "set_os"
     },
     "requestId": {
       "type": "string",
-      "example": "abc123",
-      "description": "Request identifier copied from the command, used for request and response correlation."
+      "example": "abc123"
     },
     "apiVersion": {
       "type": "string",
@@ -33,12 +30,10 @@
         "V1.0",
         "V1.1"
       ],
-      "example": "V1.1",
-      "description": "API version used to interpret this response payload."
+      "example": "V1.1"
     },
     "response": {
-      "$ref": "../../refrence/response/response.yaml",
-      "description": "Execution result object containing status code and result description."
+      "$ref": "../../refrence/response/response.yaml"
     }
   },
   "required": [

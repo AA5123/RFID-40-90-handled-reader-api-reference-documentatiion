@@ -5,6 +5,12 @@
     "id": "1meg5nwox19b8"
   },
   "type": "object",
+  "examples": [
+    {
+      "command": "get_post_filter",
+      "requestId": "abc123"
+    }
+  ],
   "properties": {
     "command": {
       "type": "string",
@@ -17,10 +23,8 @@
       "description": "A unique identifier assigned to the request, used to track and correlate responses with their corresponding requests."
     }
   },
-  "examples": [
-    {
-      "command": "get_post_filter",
-      "requestId": "abc123"
-    }
+  "required": [
+    "command",
+    "requestId"
   ]
 }

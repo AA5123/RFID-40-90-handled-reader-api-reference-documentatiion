@@ -1,5 +1,4 @@
 title: epConfig
-"description": Endpoint configuration request payload used to add, update, or delete endpoint definitions.
 x-stoplight:
   id: l9v7iab36nd84
 type: object
@@ -12,10 +11,9 @@ properties:
       - delete
       - update
     example: add
-    description: Operation to perform on the endpoint definition.
+    description: Specifies the type of operation to perform, either adding, deleting, or updating a configuration.
   configuration:
     type: object
-    description: Endpoint settings used for the requested operation.
     required:
       - endpointName
       - epType
@@ -63,7 +61,7 @@ properties:
       activate:
         type: boolean
         default: false
-        description: Set to true to mark this endpoint active.
+        description: Set to true to activate the endpoint to which MQTT connections will be made.
       url:
         type: string
         example: soti.example.com
@@ -88,9 +86,8 @@ properties:
       tenantId:
         type: string
         example: ZEBRA
-        description: Tenant identifier associated with this endpoint configuration.
+        description: Identifies the tenantID associated with the configuration.
       mqttParams:
-        description: MQTT-specific parameters for configuring the MQTT connection.
         type: object
         properties:
           keepAlive:
@@ -114,15 +111,14 @@ properties:
             description: Specifies the client ID used for MQTT connections.
           username:
             type: string
-            description: The username for authentication in MQTT connections.
+            description: The username when MQTT broker requires username authentication.
           password:
             type: string
-            description: The password for authentication in MQTT connections.
+            description: The password when MQTT broker requires password authentication.
           publishTopics:
             type: array
             items:
               type: object
-              description: One topic configuration entry for published messages.
               properties:
                 topic:
                   type: string
@@ -143,7 +139,6 @@ properties:
             type: array
             items:
               type: object
-              description: One topic configuration entry for subscribed messages.
               properties:
                 topic:
                   type: string
@@ -160,7 +155,7 @@ properties:
                 - retain
       securityParams:
         type: object
-        description: Security material and certificate settings used by the endpoint connection.
+        description: Defines the security parameters for the endpoint.
         properties:
           format:
             type: string
@@ -196,7 +191,7 @@ properties:
           - clientKey
       eventConfiguration:
         $ref: ./cfgEventPayload.yaml
-        description: Event configuration associated with this endpoint.
+        description: Reference to the event configuration schema.
 required:
   - operation
   - configuration

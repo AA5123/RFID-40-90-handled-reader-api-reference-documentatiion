@@ -22,7 +22,7 @@
     },
     "operatingMode": {
       "$ref": "../../refrence/payload/operatingModePayload.yaml",
-      "description": "Object containing the operating mode configurations to be set on the device, including profiles, advanced configurations, access operations, radio start and stop conditions, query parameters, select configurations, and tag metadata to enable."
+      "description": "Specifies the operating mode configuration for the RFID device, including profile settings, access operations, radio start/stop conditions, query and select pre-filter parameters, and tag metadata options."
     }
   },
   "required": [
@@ -194,12 +194,12 @@
       "operatingMode": {
         "operatingModes": {
           "radioStartConditions": {
-            "trigger": "IMMEDIATE",
+            "trigger": "PRESSED",
             "startDelay": 5000,
             "repeat": false
           },
           "radioStopConditions": {
-            "trigger": "IMMEDIATE",
+            "trigger": "RELEASED",
             "tagCount": 10,
             "stopTimeout": 10000,
             "inventoryCount": 0
@@ -214,7 +214,7 @@
         "operatingModes": {
           "query": {
             "session": "SESSION_1",
-            "inventoryState": "STATE_B",
+            "inventoryState": "STATE_A",
             "slFlag": "ALL",
             "tagPopulation": 30
           }

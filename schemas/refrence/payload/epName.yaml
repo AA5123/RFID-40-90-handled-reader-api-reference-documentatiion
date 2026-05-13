@@ -2,8 +2,6 @@ title: endpointDetails
 x-stoplight:
   id: o28vdd695rdr6
 type: object
-description: Optional endpoint selector used to request configuration for a specific endpoint name.
 properties:
   endpointName:
     type: string
-    description: Name of the endpoint to query. If omitted, all active and saved endpoints are returned.

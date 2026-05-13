@@ -4,7 +4,6 @@
     "id": "fqc2z8f4q1jov"
   },
   "type": "object",
-  "description": "Alternative response schema for get_eth, containing Ethernet details and operation result.",
   "examples": [
     {
   "command": "get_eth",
@@ -54,13 +53,11 @@
   "properties": {
     "command": {
       "type": "string",
-      "example": "get_eth",
-      "description": "Echoes the command name so clients can map this response to the get_eth request."
+      "example": "get_eth"
     },
     "requestId": {
       "type": "string",
-      "example": "abc123",
-      "description": "Request identifier copied from the command, used for request and response correlation."
+      "example": "abc123"
     },
     "apiVersion": {
       "type": "string",
@@ -68,16 +65,13 @@
       "enum": [
         "V1.0",
         "V1.1"
-      ],
-      "description": "API version used to interpret this response payload."
+      ]
     },
     "rspPpayload": {
-      "$ref": "../../refrence/response/ethResponse.yaml",
-      "description": "Ethernet interface details returned by the device."
+      "$ref": "../../refrence/response/ethResponse.yaml"
     },
     "response": {
-      "$ref": "../../refrence/response/response.yaml",
-      "description": "Execution result object containing status code and result description."
+      "$ref": "../../refrence/response/response.yaml"
     }
   }
 }

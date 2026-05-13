@@ -2,15 +2,12 @@ title: antennaEvent
 x-stoplight:
   id: aqw5xmnoocpk6
 type: array
-description: Array of antenna connection events providing status and port information for each antenna on the device.
 examples: []
 items:
   type: object
-  description: An antenna connection event containing status and port details.
   properties:
     antenna:
       type: object
-      description: Antenna connection status and port information.
       properties:
         status:
           type: string

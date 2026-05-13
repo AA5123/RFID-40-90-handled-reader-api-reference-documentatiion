@@ -2,7 +2,6 @@ title: ntpAlert
 x-stoplight:
   id: bqyqfmu9p4334
 type: object
-description: Object schema for ntpAlert.
 properties:
   offset:
     type: number

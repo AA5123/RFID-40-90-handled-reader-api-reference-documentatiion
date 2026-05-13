@@ -2,7 +2,6 @@ title: ethConfig
 x-stoplight:
   id: 74admn3fzfijc
 type: object
-description: Object schema for ethConfig.
 examples: []
 properties:
   interfaceName:

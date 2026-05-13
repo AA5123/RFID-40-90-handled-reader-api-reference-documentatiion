@@ -11,29 +11,29 @@
       "requestId": "abc123",
       "OSUpdateDetails": {
         "url": "https://192.168.29.39:8000/Build-3.10.27/Firmware",
-        "authenticationType": "CERTIFICATE",
-        "verificationType": "VERIFY_HOST",
-        "caCertificateFileContent": "-----BEGIN CERTIFICATE-----\\\\r\\\\nPUdg=\\\\r\\\\n-----END CERTIFICATE-----"
+        "authenticationType": "NONE"
       }
     },
     {
-      "command": "set_os",
-      "requestId": "abc123",
-      "OSUpdateDetails": {
-      "url": "https://192.168.29.39:8000/Build-3.10.27/Firmware",
-      "authenticationType": "CERTIFICATE",
-      "verificationType": "VERIFY_HOST"
-      }
-    },
-    {
-      "command": "set_os",
-      "requestId": "abc123",
-      "OSUpdateDetails": {
-      "url": "https://192.168.29.39:8000/Build-3.10.27/Firmware",
-      "authenticationType": "NONE",
-      "verificationType": "NONE"
-      }
-    }
+  "command": "set_os",
+  "requestId": "abc124",
+  "OSUpdateDetails": {
+    "url": "https://192.168.29.39:8000/Build-3.10.27/Firmware/PAAFKS00-013-R01E0.DAT",
+    "authenticationType": "CERTIFICATE",
+    "verificationType": "VERIFY_PEER",
+    "caCertificateFile": "filestore_ca_cert"
+  }
+},
+{
+  "command": "set_os",
+  "requestId": "abc125",
+  "OSUpdateDetails": {
+    "url": "https://fwserver.example.com/firmware/PAAFKS00-012-R02E0.DAT",
+    "authenticationType": "CERTIFICATE",
+    "verificationType": "VERIFY_PEER",
+    "caCertificateFileContent": "-----BEGIN CERTIFICATE-----\r\nMIID...base64...\r\n-----END CERTIFICATE-----"
+  }
+}
   ],
   "properties": {
     "command": {
@@ -47,8 +47,7 @@
       "description": "A unique identifier for the request, allowing tracking and debugging of the operation."
     },
     "OSUpdateDetails": {
-      "$ref": "../../refrence/payload/osUpdatePayload.yaml",
-      "description": "Object containing the details required for the OS update, including the URL of the firmware, authentication type, verification type, and CA certificate file content if applicable."
+      "$ref": "../../refrence/payload/osUpdatePayload.yaml"
     }
   },
   "required": [

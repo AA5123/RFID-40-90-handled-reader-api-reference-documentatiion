@@ -2,7 +2,6 @@ title: OSUpdateDetails
 x-stoplight:
   id: f9b02122e80a4
 type: object
-description: Object schema for OSUpdateDetails.
 examples: []
 properties:
   url:

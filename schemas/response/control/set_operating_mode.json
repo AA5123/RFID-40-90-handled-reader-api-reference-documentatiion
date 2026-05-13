@@ -4,7 +4,6 @@
     "id": "wd93lnaewrnan"
   },
   "type": "object",
-  "description": "Response returned after a set_operating_mode request is processed. It identifies the command context and provides the operation result.",
   "examples": [
     {
       "command": "set_operating_mode",
@@ -19,13 +18,11 @@
   "properties": {
     "command": {
       "type": "string",
-      "example": "set_operating_mode",
-      "description": "Echoes the command name so clients can map this response to the set_operating_mode request."
+      "example": "set_operating_mode"
     },
     "requestId": {
       "type": "string",
-      "example": "abc123",
-      "description": "Request identifier copied from the command, used for request and response correlation."
+      "example": "abc123"
     },
     "apiVersion": {
       "type": "string",
@@ -33,12 +30,10 @@
       "enum": [
         "V1.0",
         "V1.1"
-      ],
-      "description": "API version used to interpret this response payload."
+      ]
     },
     "response": {
-      "$ref": "../../refrence/response/response.yaml",
-      "description": "Execution result object containing status code and result description."
+      "$ref": "../../refrence/response/response.yaml"
     }
   },
   "required": [

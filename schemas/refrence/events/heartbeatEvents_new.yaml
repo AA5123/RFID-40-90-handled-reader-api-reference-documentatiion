@@ -2,7 +2,6 @@ anyOf:
   - properties:
       inventoryStatus:
         type: object
-        description: Current status of the inventory scanning operation including tag count and scan progress.
         properties:
           status:
             type: string
@@ -15,7 +14,6 @@ anyOf:
             type: integer
       scanStatus:
         type: object
-        description: Status information about the scanning process including scan count.
         properties:
           status:
             type: string
@@ -28,7 +26,6 @@ anyOf:
             example: 120
       batteryStatus:
         type: object
-        description: Battery health and charge level information.
         properties:
           health:
             type: string
@@ -40,10 +37,8 @@ anyOf:
             type: integer
       userApps:
         type: array
-        description: Array of active user applications with resource usage information.
         items:
           type: object
-          description: Information about a user application including name, status, and resource usage.
           properties:
             appName:
               type: string
@@ -58,4 +53,3 @@ anyOf:
 x-stoplight:
   id: knq4zksute27h
 type: object
-description: Object schema for heartbeatEvents new.

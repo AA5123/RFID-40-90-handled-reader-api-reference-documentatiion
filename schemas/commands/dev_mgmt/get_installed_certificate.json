@@ -3,19 +3,23 @@
   "x-stoplight": {
     "id": "9bjcurdina4tr"
   },
-  "description": "Retrieves certificate inventory currently installed on the reader for supported features.",
+  "description": "This API is used to get installed certificates. ",
   "type": "object",
   "examples": [],
   "properties": {
     "command": {
       "type": "string",
       "example": "get_installed_certificates",
-      "description": "Command name for requesting installed certificate details."
+      "description": "Command issued to get install certificate"
     },
     "requestId": {
       "type": "string",
       "example": "abc123",
-      "description": "Unique request identifier used to correlate this command with its response."
+      "description": "A unique identifier for the request, allowing tracking and debugging of the operation."
     }
-  }
+  },
+  "required": [
+    "command",
+    "requestId"
+  ]
 }

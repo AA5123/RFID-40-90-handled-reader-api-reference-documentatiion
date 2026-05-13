@@ -2,7 +2,6 @@ title: currentConfig
 x-stoplight:
   id: n6n85i7x12eoh
 type: object
-description: Consolidated management configuration snapshot returned by get_config.
 properties:
   readerVersion:
     $ref: ./readerVersionResponse.yaml

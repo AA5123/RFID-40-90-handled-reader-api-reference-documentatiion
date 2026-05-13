@@ -4,30 +4,27 @@
     "id": "a66bm23k148jr"
   },
   "type": "object",
-  "description": "Response returned for get_endpoint_config. It provides endpoint configuration details and operation status.",
   "properties": {
     "command": {
       "type": "string",
       "default": "get_endpoint_config",
-      "description": "Echoes the command name so clients can map this response to the get_endpoint_config request."
+      "description": "The command indicating the type of operation or request being performed."
     },
     "requestId": {
       "type": "string",
       "example": "123",
-      "description": "Request identifier copied from the command, used for request and response correlation."
+      "description": "A unique identifier for the request, used for tracking and correlation purposes."
     },
     "apiVersion": {
       "type": "string",
       "example": "V1.1",
-      "description": "API version used to interpret this response payload."
+      "description": "The version of the API being used for the request."
     },
     "epDetails": {
-      "$ref": "../../refrence/response/endpointResponse.yaml",
-      "description": "Endpoint configuration details, including active endpoint settings and saved endpoint names."
+      "$ref": "../../refrence/response/endpointResponse.yaml"
     },
     "response": {
-      "$ref": "../../refrence/response/response.yaml",
-      "description": "Execution result object containing status code and result description."
+      "$ref": "../../refrence/response/response.yaml"
     }
   },
   "examples": [

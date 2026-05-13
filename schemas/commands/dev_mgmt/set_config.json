@@ -3,7 +3,7 @@
   "x-stoplight": {
     "id": "zzhmsbj9vbslf"
   },
-  "description": "Applies device configuration updates in a single request. Use this command to configure network settings, endpoint settings, and event behavior.",
+  "description": "Command issued to set the complete device configuration such as current region details, ethernet & wifi configuration, end point configuration,  event and alert configuration  ",
   "type": "object",
   "examples": [
     {
@@ -219,16 +219,15 @@
     "command": {
       "type": "string",
       "example": "set_config",
-      "description": "Command name for applying device configuration changes."
+      "description": "Specifies the operation being performed, in this case, setting the reader configuration."
     },
     "requestId": {
       "type": "string",
       "example": "abc123",
-      "description": "Unique request identifier used to correlate this command with its response."
+      "description": "A unique identifier for the request, allowing tracking and debugging of the operation."
     },
     "configData": {
-      "$ref": "../../refrence/payload/setCfgPayload.yaml",
-      "description": "Configuration payload containing one or more settings to apply on the device."
+      "$ref": "../../refrence/payload/setCfgPayload.yaml"
     }
   },
   "required": [

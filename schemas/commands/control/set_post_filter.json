@@ -16,7 +16,7 @@
     },
     "postFilterPayload": {
       "$ref": "../../refrence/payload/postFilterPayload.yaml",
-      "description": "Object containing the details of the post filter to be set, including the operation type (e.g., ADD, UPDATE, DELETE), data endpoint type, match pattern, match pattern method (e.g., PREFIX, REGEX), and report operation (e.g., INCLUDE, EXCLUDE) to define how the filter should be applied to the scanned tag data."
+      "description": "Defines the post-filter configuration to apply to scanned RFID tags, including the filter operation, data endpoint type, match pattern, pattern method, and report operation."
     }
   },
   "required": [

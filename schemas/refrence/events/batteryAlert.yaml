@@ -2,7 +2,6 @@ title: batteryAlert
 x-stoplight:
   id: gcmvpvvellk4h
 type: object
-description: Object schema for batteryAlert.
 properties:
   status:
     type: string

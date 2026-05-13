@@ -4,7 +4,6 @@
     "id": "lgyjwi0keqccu"
   },
   "type": "object",
-  "description": "Response returned after cloud_connect is processed. It confirms command context and operation result.",
   "examples": [],
   "properties": {
     "command": {
@@ -27,8 +26,7 @@
       "description": "The version of the API being used in this MQTT response message."
     },
     "response": {
-      "$ref": "../../refrence/response/response.yaml",
-      "description": "Execution result object containing status code and result description."
+      "$ref": "../../refrence/response/response.yaml"
     }
   }
 }

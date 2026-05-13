@@ -4,7 +4,6 @@
     "id": "sa8l4xwwr2xws"
   },
   "type": "object",
-  "description": "Response returned after config_events is processed. It confirms command context and operation result.",
   "examples": [
     {
       "command": "config_events",
@@ -19,13 +18,11 @@
   "properties": {
     "command": {
       "type": "string",
-      "example": "config_events",
-      "description": "Echoes the command name so clients can map this response to the config_events request."
+      "example": "config_events"
     },
     "requestId": {
       "type": "string",
-      "example": "abc123",
-      "description": "Request identifier copied from the command, used for request and response correlation."
+      "example": "abc123"
     },
     "apiVersion": {
       "type": "string",
@@ -33,12 +30,10 @@
       "enum": [
         "V1.0",
         "V1.1"
-      ],
-      "description": "API version used to interpret this response payload."
+      ]
     },
     "response": {
-      "$ref": "../../refrence/response/response.yaml",
-      "description": "Execution result object containing status code and result description."
+      "$ref": "../../refrence/response/response.yaml"
     }
   },
   "required": [

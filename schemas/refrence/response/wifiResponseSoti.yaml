@@ -6,7 +6,6 @@ examples: []
 properties:
   interfaceDetails:
     type: object
-    description: Wi-Fi interface information and associated network configuration.
     properties:
       interfaceName:
         type: string
@@ -29,7 +28,6 @@ properties:
         example: E0-D0-45-3D-38-1D
       accessPoint:
         type: object
-        description: Details of the access point profile associated with this Wi-Fi entry.
         properties:
           essid:
             type: string
@@ -66,7 +64,6 @@ properties:
           - isPreferred
       ipv4Configuration:
         type: object
-        description: IPv4 settings currently applied to the Wi-Fi interface.
         properties:
           ipAddress:
             type: string
@@ -86,7 +83,7 @@ properties:
           enableDhcp:
             type: boolean
             description: Indicates if DHCP is enabled for IPv4 configuration.
-            example: true
+            example: enabled
           dnsServer:
             type: string
             format: ipv4
@@ -96,13 +93,44 @@ properties:
             type: string
             description: The domain name of the network.
             example: test.soti.com
+      ipv6Configuration:
+        type: object
+        properties:
+          ipAddress:
+            type: string
+            format: ipv6
+            description: The IPv6 address of the device.
+            example: fe80::1643:8376:b32:4a16
+          prefix:
+            type: integer
+            description: The prefix length of the IPv6 address.
+            example: 64
+          gateway:
+            type: string
+            format: ipv6
+            description: The IPv6 gateway address.
+            example: 2a02:1234:420a:100b::99
+          enableAuto:
+            type: boolean
+            description: Specifies if automatic IPv6 configuration is enabled.
+            enum:
+              - enabled
+              - disabled
+            example: enabled
+          dnsServer:
+            type: string
+            format: ipv6
+            description: The IPv6 address of the DNS server.
+            example: 2001:4860:4860::9999
+          domainName:
+            type: string
+            description: The domain name of the IPv6 network.
+            example: test.soti.com
       securityDetails:
         type: object
-        description: Security configuration details based on the selected Wi-Fi security type.
         properties:
           WPA2Personal:
             type: object
-            description: WPA2-Personal security settings for this Wi-Fi profile.
             properties:
               password:
                 type: string
@@ -111,7 +139,6 @@ properties:
                 format: password
           WPA3Personal:
             type: object
-            description: WPA3-Personal security settings for this Wi-Fi profile.
             properties:
               password:
                 type: string
@@ -120,7 +147,6 @@ properties:
                 format: password
           WPA2Enterprise:
             type: object
-            description: WPA2-Enterprise security settings for this Wi-Fi profile.
             properties:
               authentication:
                 type: string
@@ -161,7 +187,6 @@ properties:
                 example: ap1wpa2e
                 items:
                   type: object
-                  description: One certificate key or value pair for WPA2-Enterprise authentication.
                   maxProperties: 4
                   properties:
                     key:
@@ -183,7 +208,6 @@ properties:
                 example: WPA2_Enterprise_CCMP
           WPA3Enterprise:
             type: object
-            description: WPA3-Enterprise security settings for this Wi-Fi profile.
             properties:
               authentication:
                 type: string
@@ -224,7 +248,6 @@ properties:
                 example: ap1wpa2e
                 items:
                   type: object
-                  description: One certificate key or value pair for WPA3-Enterprise authentication.
                   maxProperties: 4
                   properties:
                     key:
@@ -251,7 +274,6 @@ properties:
                 maxLength: 3
           OWEPublic:
             type: object
-            description: OWE public-network security settings for this Wi-Fi profile.
             properties:
               authentication:
                 type: string
@@ -261,7 +283,3 @@ properties:
       - status
       - hostname
       - macAddress
-description: >-
-  Wi-Fi network configuration — interface status (enabled/disabled), connected access point
-  (SSID, signal, security type), IP addressing (IPv4, DHCP or static), and enterprise
-  security credentials (WPA2/WPA3 Personal or Enterprise, certificates).

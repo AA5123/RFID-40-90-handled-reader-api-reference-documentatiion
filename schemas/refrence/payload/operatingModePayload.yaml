@@ -110,7 +110,7 @@ properties:
   operatingModes:
     title: operatingMode
     type: object
-    description: Container for operating profile and runtime behavior settings used during inventory.
+    description: Represents the reader operating mode.
     properties:
       profiles:
         type: string
@@ -143,10 +143,8 @@ properties:
           transmitPower:
             type: number
             example: 27
-            description: Reader transmit power level used for RF operation.
           linkProfile:
             type: string
-            description: RF link profile that controls modulation and data rate.
             enum:
               - M4_256K
               - M2_240K
@@ -161,7 +159,6 @@ properties:
               - M8_320K
           session:
             type: string
-            description: Gen2 session used by inventory and singulation.
             enum:
               - SESSION_0
               - SESSION_1
@@ -169,19 +166,14 @@ properties:
               - SESSION_3
           dynamicPower:
             type: boolean
-            description: Enables automatic power adjustment during inventory.
       accessOperations:
         $ref: ./accessCmds.yaml
-        "description": "Array of access operations to be performed on the tags during inventory. Each operation includes the type of access (e.g., READ, WRITE) and the specific configuration for that operation, such as memory bank, offset, and length."
       radioStartConditions:
         $ref: ./radioStartCondPayload.yaml
-        "description": "Conditions that trigger the start of the radio for inventory operations. This includes the type of trigger (e.g., PRESSED, ALWAYS), any delay before starting, periodic duration for repeated starts, and whether the start should be repeated."
       radioStopConditions:
         $ref: ./radioStopCondPayload.yaml
-        "description": "Conditions that trigger the stop of the radio during inventory operations. This includes the type of trigger (e.g., PRESSED, ALWAYS), tag count threshold, stop timeout, and inventory count threshold for stopping the radio."
       query:
         $ref: ./queryPayload.yaml
-        "description": "Query parameters for inventory operations, including tag population estimate, select criteria (sel), session, and target. These parameters help optimize the inventory process based on the expected tag density and application requirements."
       select:
         type: array
         description: |-
@@ -190,7 +182,6 @@ properties:
           Supports up to 32 select filters.
         items:
           $ref: ./selectPayload.yaml
-          "description": "Each select filter includes parameters such as target, action, memory bank, offset, length, mask, truncate, and delay after selects to define the filtering criteria for tags during inventory."
       tagMetaDataToEnable:
         type: object
         description: |

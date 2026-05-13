@@ -2,7 +2,6 @@ title: endpointResponse
 x-stoplight:
   id: u0em8h8xb0dul
 type: object
-description: Endpoint configuration payload containing active endpoint settings and saved endpoint names.
 properties:
   activeEndpoints:
     $ref: ./getepCfgResponse.yaml

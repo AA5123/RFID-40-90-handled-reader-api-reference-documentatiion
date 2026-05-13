@@ -1,6 +1,5 @@
 title: access
 type: object
-description: Object schema for access.
 examples:
   - type: ACCESS
     config:

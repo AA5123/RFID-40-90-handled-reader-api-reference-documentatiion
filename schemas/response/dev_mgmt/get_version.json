@@ -28,21 +28,18 @@
       }
     }
   ],
-  "description": "Response returned for get_version. It contains reader identity and firmware version information with command execution status.",
+  "description": "command to get the reader version details",
   "properties": {
     "command": {
       "type": "string",
-      "default": "get_version",
-      "description": "Echoes the command name so clients can map this response to the get_version request."
+      "default": "get_version"
     },
     "requestId": {
       "type": "string",
-      "example": "abcd123",
-      "description": "Request identifier copied from the command, used for request and response correlation."
+      "example": "abcd123"
     },
     "apiVersion": {
       "type": "string",
-      "description": "API version used to interpret this response payload.",
       "enum": [
         "V1.1",
         "V1.0"
@@ -50,11 +47,9 @@
       "example": "V1.1"
     },
     "readerVersion": {
-      "description": "Object containing detailed version information about the reader, including firmware version, model, serial number, SKU, company name, manufacturer name, and detailed versions of various components.",
       "$ref": "../../refrence/response/readerVersionResponse.yaml"
     },
     "response": {
-      "description": "Object containing the response code and description for the get_version command.",
       "$ref": "../../refrence/response/response.yaml"
     }
   },

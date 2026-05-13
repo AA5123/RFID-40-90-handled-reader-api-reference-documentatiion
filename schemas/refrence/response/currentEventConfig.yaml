@@ -2,55 +2,50 @@ title: currentEventConfig
 x-stoplight:
   id: ybdvjj3a86pb4
 type: object
-description: Current event configuration state returned by the device.
 properties:
   antenna:
     type: boolean
-    description: True when antenna events are enabled.
+    description: set to true to enable antenna events
   connection:
     type: boolean
-    description: True when connection events are enabled.
+    description: set to true to enable connection events
   firmwareUpdate:
     type: boolean
-    description: True when firmware update events are enabled.
+    description: set to true to enable fw update events
   gpi:
     type: boolean
-    description: True when GPI events are enabled.
+    description: set to true to enable gpi events
   network:
     type: boolean
-    description: True when network events are enabled.
+    description: set to true to enable network events
   exceptions:
     type: boolean
-    description: True when exception events are enabled.
+    description: set to true to enable exception events
   alert:
     type: boolean
-    description: True when alert events are enabled.
   heartbeat:
     type: boolean
-    description: True when heartbeat events are enabled.
   power:
     type: boolean
-    description: True when power-related events are enabled.
   heartConfiguration:
     type: object
-    description: Heartbeat payload configuration.
     properties:
       interval:
         type: number
         example: 100
-        description: Heartbeat interval in seconds.
+        description: heart beat interval in seconds
       inventoryStatus:
         type: boolean
-        description: True when inventory status is included in heartbeat messages.
+        description: set to true to enable inventory status as part of heartbeat message
       scanStatus:
         type: boolean
-        description: True when scan status is included in heartbeat messages.
+        description: set to true to enable scan status status as part of heartbeat message
       batteryStatus:
         type: boolean
-        description: True when battery status is included in heartbeat messages.
+        description: set to true to enable battery status as part of heartbeat message
       userApps:
         type: boolean
-        description: True when user app status is included in heartbeat messages.
+        description: set to true to enable user app status as part of heartbeat message
     required:
       - interval
       - inventoryStatus
@@ -59,17 +54,16 @@ properties:
       - userApps
   exceptionConfiguration:
     type: object
-    description: Exception event category toggles.
     properties:
       radio:
         type: boolean
-        description: True when radio exception events are enabled.
+        description: set to true to enable radio exception events
       system:
         type: boolean
-        description: True when system exception events are enabled.
+        description: set to true to enable system exception events
       scanner:
         type: boolean
-        description: True when scanner exception events are enabled.
+        description: set to true to enable scanner exception events
     required:
       - radio
       - system

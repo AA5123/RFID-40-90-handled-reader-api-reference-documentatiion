@@ -2,27 +2,44 @@ title: postFilterPayload
 x-stoplight:
   id: y5oysu0o0kuvb
 type: object
-description: Object schema for postFilterPayload.
 properties:
   postFilter:
     type: array
-    description: List of active post-filter rules currently applied by the reader.
+    description: A list of post-filter configurations.
     items:
       type: object
-      description: One active post-filter rule.
       properties:
         dataEpType:
           type: string
-          description: Data endpoint to which this filter rule applies.
+          description: The type of data endpoint.
         matchPattern:
           type: string
-          description: Pattern used to evaluate tag data for this rule.
+          description: The pattern to match during filtering.
         matchPatternMethod:
           type: string
-          description: Matching method used with the pattern, for example prefix or regex matching.
+          description: The method used to apply the match pattern.
         reportOperation:
           type: string
-          description: Defines whether matching tags are included or excluded from reported data.
+          description: The operation type for reporting.
         reportDuration:
           type: integer
-          description: Optional duration in seconds for which this reporting behavior remains active.
+          description: The duration (in seconds) for the report operation.
+        seenCount:
+          type: integer
+          description: The number of times the filter condition has been met.
+        rssiThreshold:
+          type: integer
+          description: The RSSI (Received Signal Strength Indicator) threshold value.
+        tagList:
+          type: object
+          description: A list of tags and their associated operations.
+          properties:
+            operation:
+              type: string
+              description: The operation to be performed on the tags.
+            tagPatterns:
+              type: array
+              description: A list of tag patterns to be included or excluded.
+              items:
+                type: string
+                description: A tag pattern string.

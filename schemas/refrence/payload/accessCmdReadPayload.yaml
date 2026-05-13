@@ -1,6 +1,5 @@
 title: read
 type: object
-description: Object schema for read.
 properties:
   config:
     type: object
