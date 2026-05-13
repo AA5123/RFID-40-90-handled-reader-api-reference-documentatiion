@@ -2808,7 +2808,8 @@
                                     }
                                 },
                                 "examples": {
-                                    "example1": {
+                                    "Successful deletion": {
+                                        "description": "Response when WiFi profile is successfully deleted",
                                         "value": {
                                             "command": "delete_wifi_profile",
                                             "requestId": "abc345",
@@ -2818,7 +2819,8 @@
                                             }
                                         }
                                     },
-                                    "example2": {
+                                    "Cannot delete active SSID": {
+                                        "description": "Error response when attempting to delete an active/connected WiFi profile",
                                         "value": {
                                             "command": "delete_wifi_profile",
                                             "requestId": "1235",
@@ -2829,7 +2831,8 @@
                                             }
                                         }
                                     },
-                                    "example3": {
+                                    "SSID not found": {
+                                        "description": "Error response when the specified WiFi profile SSID is not found on the device",
                                         "value": {
                                             "command": "delete_wifi_profile",
                                             "requestId": "1235",

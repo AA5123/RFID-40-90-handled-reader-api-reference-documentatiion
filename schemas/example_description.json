@@ -62,7 +62,9 @@
         "Selective events": "Payload to selectively enable/disable specific event types"
     },
     "delete_wifi_profile": {
-        "Delete wifi profile": "Payload to delete a saved WiFi profile",
+        "Delete wifi profile": "Payload to delete a saved WiFi profile"
+    },
+    "delete_wifi_profile_response": {
         "Successful deletion": "Response when WiFi profile is successfully deleted",
         "Cannot delete active SSID": "Error response when attempting to delete an active/connected WiFi profile",
         "SSID not found": "Error response when the specified WiFi profile SSID is not found on the device"
