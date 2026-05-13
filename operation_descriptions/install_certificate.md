@@ -20,7 +20,7 @@ Use this command to:
 | Related Commands | [delete_certificate](#op-delete-certificate), [get_installed_certificate](#op-get-installed-certificate), [config_endpoint](#op-config-endpoint) |
 | Required Request Fields | `command`, `requestId`, `certDetails` |
 | Supported Certificate Types | `client`, `server`, `mqtt`, `wifi`, `filestore`  |
-| Supported Authentication Types | `NONE`, `BASIC`, `TOKEN`, `CERTIFICATE` |
+| Supported Authentication Types | `NONE`, `CERTIFICATE` |
 | Supported Certificate Sources | `HTTP`, `DIRECT` |
 | Supported Verification Types | `NONE`, `VERIFY_PEER`, `VERIFY_HOST`, `VERIFY_HOST_PEER` |
 | Supported API Versions | V1.0, V1.1 |
@@ -36,6 +36,7 @@ Gather certificate details and source information before sending this command. A
 | Certificate URLs | For `HTTP` source: have the full URLs ready for each certificate component (`ca_cert`, `client_cert`, `client_key`). Verify the URLs are reachable from the device's network. |
 | Inline certificate content | For `DIRECT` source: have the PEM or base64-encoded certificate content ready to supply in `certificateBundle`. |
 | Authentication type | Decide how the certificate download server is secured — `NONE` for open servers, `BASIC` for username/password, or `CERTIFICATE` for certificate-based download authentication. Note: `TOKEN` is currently not supported. |
+| Authentication type | Decide how the certificate download server is secured — `NONE` for open servers, or `CERTIFICATE` for certificate-based download authentication. |
 | TLS verification type | Decide the verification level for the remote certificate source connection — `NONE`, `VERIFY_PEER`, `VERIFY_HOST`, or `VERIFY_HOST_PEER`. |
 | Logical name | Assign a meaningful logical name for the certificate entry via the `name` field. This name is used when referencing the certificate in other commands such as `set_wifi` and `config_endpoint`. |
 
@@ -52,15 +53,6 @@ The `type` field in `certDetails` defines where the certificate will be used. Ch
 - `server` — Server-side certificates.
 
 ## 5. Authentication and Verification Options
-
-### Authentication Types (`authenticationType`)
-
-Specifies the authentication method used to access the remote certificate source when `certSource` is `HTTP`.
-
-- `NONE` — No authentication is used when downloading certificates.
-- `BASIC` — HTTP Basic authentication using username and password. Requires the `authenticateOptions` object.
-- `CERTIFICATE` — Certificate-based authentication used to download or retrieve certificates. Supply inline CA cert via `caCertificateFileContent`, or leave empty to use an already installed filestore certificate.
-- `TOKEN` — Token-based authentication. Currently not supported.
 
 ### Certificate Sources (`certSource`)
 
@@ -97,9 +89,7 @@ Violating any of these rules will cause the command to fail or the certificate t
 
 ### Authentication
 
-- `authenticateOptions` is required when `authenticationType` is `BASIC`.
 - `CERTIFICATE` authentication can use inline CA certificate content in `caCertificateFileContent`, or an already installed filestore certificate if that field is empty.
-- `TOKEN` authentication is currently not supported.
 
 ### Unsupported Fields
 
