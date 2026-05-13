@@ -1489,12 +1489,8 @@ function getSchemaEnumLine(schema) {
 
    var groups = spec['x-tagGroups'] || [{ name: 'API', tags: Object.keys(tagMap) }];
    groups.forEach(function (group) {
-     var totalOps = group.tags.reduce(function(sum, tagName) {
-       return sum + (tagMap[tagName] ? tagMap[tagName].operations.length : 0);
-     }, 0);
      navHtml += '<div class="nav-group" data-group="' + escHtml(group.name) + '">' +
        '<span class="nav-group-label">' + escHtml(group.name) + '</span>' +
-       '<span class="nav-group-count">' + totalOps + '</span>' +
        '<span class="nav-group-indicator">−</span>' +
        '</div>' +
        '<div class="nav-group-children" data-group-children="' + escHtml(group.name) + '">';
@@ -1704,24 +1700,35 @@ function getSchemaEnumLine(schema) {
    }
 
    function updateActiveNavState() {
-     var threshold = TOPBAR_H + 8;
-     /* Find operation with largest rect.top that is still <= threshold (most recently scrolled past) */
+     var threshold = TOPBAR_H + 12;
      var bestOp = null;
-     var bestOpTop = -Infinity;
+     var bestDistance = Infinity;
      operationSections.forEach(function(op) {
        var rect = op.getBoundingClientRect();
-       if (rect.top <= threshold && rect.top > bestOpTop) {
-         bestOpTop = rect.top;
+       var isVisible = rect.bottom > threshold && rect.top < window.innerHeight;
+       if (!isVisible) return;
+       var distance = Math.abs(rect.top - threshold);
+       if (distance < bestDistance) {
+         bestDistance = distance;
          bestOp = op;
        }
      });
-     /* Fallback: first op below threshold */
      if (!bestOp) {
        var firstBelow = Infinity;
        operationSections.forEach(function(op) {
          var rect = op.getBoundingClientRect();
          if (rect.top > threshold && rect.top < firstBelow) {
            firstBelow = rect.top;
+           bestOp = op;
+         }
+       });
+     }
+     if (!bestOp) {
+       var nearestAbove = -Infinity;
+       operationSections.forEach(function(op) {
+         var rect = op.getBoundingClientRect();
+         if (rect.top <= threshold && rect.top > nearestAbove) {
+           nearestAbove = rect.top;
            bestOp = op;
          }
        });
@@ -1771,6 +1778,14 @@ function getSchemaEnumLine(schema) {
          var activeGroupName = activeChildren.getAttribute('data-group-children');
          var activeGroupEl = nav.querySelector('.nav-group[data-group="' + activeGroupName + '"]');
          if (activeGroupEl) activeGroupEl.classList.add('active-group');
+         if (activeChildren.classList.contains('collapsed')) {
+           activeChildren.classList.remove('collapsed');
+           if (activeGroupEl) {
+             var activeIndicator = activeGroupEl.querySelector('.nav-group-indicator');
+             if (activeIndicator) activeIndicator.textContent = '−';
+           }
+           if (activeGroupName) sessionStorage.setItem('nav-group-' + activeGroupName, 'expanded');
+         }
          /* Breadcrumb update */
          var breadcrumb = document.getElementById('sidebar-breadcrumb');
          if (breadcrumb) {
