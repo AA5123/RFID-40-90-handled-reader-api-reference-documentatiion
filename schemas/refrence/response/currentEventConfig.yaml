@@ -2,6 +2,7 @@ title: currentEventConfig
 x-stoplight:
   id: ybdvjj3a86pb4
 type: object
+description: Contains the current event configuration showing which events are enabled or disabled.
 properties:
   antenna:
     type: boolean

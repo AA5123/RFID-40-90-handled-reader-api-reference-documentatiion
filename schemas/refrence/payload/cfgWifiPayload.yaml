@@ -2,6 +2,7 @@ title: wifiConfig
 x-stoplight:
   id: 9x3bxuxkt84ag
 type: object
+description: Defines the WiFi profile configuration including network credentials and security settings.
 examples: []
 properties:
   interfaceName:
@@ -71,35 +72,6 @@ properties:
             type: string
             example: example.test.com
             description: The domain name for the network.
-      ipv6Configuration:
-        type: object
-        properties:
-          ipAddress:
-            type: string
-            example: '2a02:1234:420a:100b::99'
-            format: ipv6
-            description: The IPv6 address to assign to the interface.
-          prefix:
-            type: integer
-            example: '65'
-            description: The IPv6 address prefix length.
-          gateway:
-            type: string
-            example: 192.168.1.144
-            format: ipv4
-            description: The IPv6 gateway address.
-          enableAuto:
-            type: boolean
-            description: Specifies whether automatic IPv6 address assignment (e.g., SLAAC) is enabled.
-          dnsServer:
-            type: string
-            example: '2001:4860:4860::9999'
-            format: ipv6
-            description: The IPv6 address of the DNS server.
-          domainName:
-            type: string
-            example: example.com
-            description: The domain name for the IPv6 network.
       security:
         type: object
         properties:
@@ -111,8 +83,6 @@ properties:
               - WPA3Personal
               - WPA2Enterprise
               - WPA3Enterprise
-              - OWEPublic
-              - Open
             description: The security type for the access point, specifying the authentication and encryption method.
           securityDetails:
             type: object

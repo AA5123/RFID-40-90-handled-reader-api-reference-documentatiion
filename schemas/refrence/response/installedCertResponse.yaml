@@ -2,6 +2,7 @@ title: installedCerts
 x-stoplight:
   id: svr3iljexdwdi
 type: object
+description: Contains the list of certificates installed on the device.
 properties:
   certInfo:
     type: array

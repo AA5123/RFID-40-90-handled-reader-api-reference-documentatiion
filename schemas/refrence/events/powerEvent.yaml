@@ -2,6 +2,7 @@ title: powerEvent
 x-stoplight:
   id: zo9rfssxbwg10
 type: object
+description: Power event reporting changes in the device's power source or power state.
 properties:
   powerSource:
     type: string

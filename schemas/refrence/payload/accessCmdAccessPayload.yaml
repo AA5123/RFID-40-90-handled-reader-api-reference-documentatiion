@@ -1,5 +1,6 @@
 title: access
 type: object
+description: Defines the access command payload used to provide the access password for tag operations.
 examples:
   - type: ACCESS
     config:

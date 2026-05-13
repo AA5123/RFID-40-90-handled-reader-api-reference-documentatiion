@@ -1,5 +1,6 @@
 title: select
 type: object
+description: Defines the select pre-filter configuration for filtering tags before inventory.
 properties:
   enable:
     type: boolean

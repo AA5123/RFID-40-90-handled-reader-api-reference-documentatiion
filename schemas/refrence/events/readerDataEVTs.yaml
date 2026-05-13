@@ -1,3 +1,4 @@
+description: Reader data events containing tag or barcode data scanned by the device.
 anyOf:
   - properties:
       tagData:

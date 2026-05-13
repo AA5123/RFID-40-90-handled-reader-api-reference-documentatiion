@@ -1,4 +1,5 @@
 type: object
+description: Data events containing scanned RFID tag data reported by the device.
 properties:
   tagData:
     type: array

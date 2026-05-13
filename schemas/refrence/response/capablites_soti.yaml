@@ -2,6 +2,7 @@ title: deviceCapabilities
 x-stoplight:
   id: 7gxiz1we1sv22
 type: object
+description: Describes the device capabilities including supported hardware features and interfaces.
 properties:
   isBluetoothSupported:
     type: boolean

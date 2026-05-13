@@ -2,6 +2,7 @@ title: wifiConfig
 x-stoplight:
   id: 05cf5d5pin81a
 type: object
+description: Contains the SOTI-specific WiFi configuration and interface details.
 examples: []
 properties:
   interfaceDetails:

@@ -21,8 +21,7 @@
       "description": "A unique identifier for the request. This ensures traceability and prevents duplicate processing of the same request."
     },
     "operatingMode": {
-      "$ref": "../../refrence/payload/operatingModePayload.yaml",
-      "description": "Specifies the operating mode configuration for the RFID device, including profile settings, access operations, radio start/stop conditions, query and select pre-filter parameters, and tag metadata options."
+      "$ref": "../../refrence/payload/operatingModePayload.yaml"
     }
   },
   "required": [

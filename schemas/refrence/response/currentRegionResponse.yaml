@@ -2,6 +2,7 @@ title: currentRegion
 x-stoplight:
   id: 380edc8b7805d
 type: object
+description: Contains the current regulatory region configuration for the device.
 examples: []
 properties:
   frequencyHopping:

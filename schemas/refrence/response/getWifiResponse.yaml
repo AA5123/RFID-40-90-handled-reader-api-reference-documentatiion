@@ -2,6 +2,7 @@ title: wifiProfiles
 x-stoplight:
   id: d1gjzrdjhbos9
 type: object
+description: Contains the list of WiFi profiles and their connection status.
 properties:
   wifiConfig:
     type: array

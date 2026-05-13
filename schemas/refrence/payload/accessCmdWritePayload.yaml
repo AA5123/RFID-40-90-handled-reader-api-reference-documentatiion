@@ -1,5 +1,6 @@
 title: write
 type: object
+description: Defines the write command payload used to write data to a specific memory bank of an RFID tag.
 examples:
   - type: WRITE
     config:

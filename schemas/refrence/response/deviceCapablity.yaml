@@ -2,6 +2,7 @@ title: deviceCapablity
 x-stoplight:
   id: 0iwbo2tlsrsrz
 type: object
+description: Contains device capability details such as device class, supported regions, and profiles.
 examples: []
 properties:
   deviceClass:

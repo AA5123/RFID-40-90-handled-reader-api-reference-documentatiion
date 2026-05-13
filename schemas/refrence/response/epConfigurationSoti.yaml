@@ -2,6 +2,7 @@ title: epConfig
 x-stoplight:
   id: 7g3esr6v8nm8y
 type: object
+description: Contains the SOTI-specific endpoint configuration details.
 examples: []
 properties:
   configuration:

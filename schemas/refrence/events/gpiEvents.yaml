@@ -2,6 +2,7 @@ title: gpiEvent
 x-stoplight:
   id: gwp7v6rmh04cf
 type: object
+description: GPI event reporting pin state changes on the device's general purpose input interface.
 properties:
   pin:
     type: number

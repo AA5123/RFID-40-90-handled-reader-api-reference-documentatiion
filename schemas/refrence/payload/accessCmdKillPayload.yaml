@@ -1,5 +1,6 @@
 title: kill
 type: object
+description: Defines the kill command payload used to permanently disable an RFID tag.
 examples:
   - type: KILL
     config:

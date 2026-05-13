@@ -2,6 +2,7 @@ title: alertConfig
 x-stoplight:
   id: 8muxxmcyfjcoh
 type: object
+description: Contains the current alert configuration settings for the device.
 properties:
   ntp:
     type: boolean

@@ -2,6 +2,7 @@ title: wifiStatusResponse
 x-stoplight:
   id: cjkaab7rhrch6
 type: object
+description: Contains the current WiFi connection status and interface details.
 properties:
   wifiStatus:
     type: object

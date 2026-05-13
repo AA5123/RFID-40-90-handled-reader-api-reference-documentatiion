@@ -2,6 +2,7 @@ type: object
 x-stoplight:
   id: df25a86e1061a
 title: exceptions
+description: Exception events reporting device errors and fault conditions.
 examples:
   - exceptions:
       radio:

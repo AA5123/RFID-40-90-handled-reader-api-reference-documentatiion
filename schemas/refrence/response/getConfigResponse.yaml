@@ -2,6 +2,7 @@ title: currentConfig
 x-stoplight:
   id: n6n85i7x12eoh
 type: object
+description: Contains the complete device configuration including version, WiFi, endpoint, and event settings.
 properties:
   readerVersion:
     $ref: ./readerVersionResponse.yaml

@@ -2,6 +2,7 @@ title: OSUpdateDetails
 x-stoplight:
   id: f9b02122e80a4
 type: object
+description: Defines the firmware update details including the source URL and authentication parameters.
 examples: []
 properties:
   url:
@@ -13,51 +14,11 @@ properties:
     type: string
     enum:
       - NONE
-      - BASIC
-      - TOKEN
       - CERTIFICATE
-    example: BASIC
-    description: Specifies the type of authentication required for accessing the URL.
-      NONE - No authentication is needed.
-      BASIC - Username and password are required.
-      CERTIFICATE - A valid inline certificate or preinstalled certificate is required.
-      TOKEN - Token-based authentication is required.
-  authOptions:
-    type: object
-    properties:
-      username:
-        type: string
-        example: admin
-        description: The username for BASIC authentication.
-      password:
-        type: string
-        example: password
-        description: The password for BASIC authentication.
-    description: Contains authentication options such as username and password for BASIC authentication.
-  headerParam:
-    type: array
-    items:
-      type: object
-      properties:
-        key:
-          type: string
-          description: The name of the HTTP header parameter.
-        value:
-          type: string
-          description: The value of the HTTP header parameter.
-    description: A list of custom header parameters to include in the HTTP request.
-  queryParam:
-    type: array
-    items:
-      type: object
-      properties:
-        key:
-          type: string
-          description: The name of the query parameter.
-        value:
-          type: string
-          description: The value of the query parameter.
-    description: A list of query parameters to include in the URL.
+    example: CERTIFICATE
+    description: Specifies the type of authentication required for accessing the URL. 
+      NONE - No authentication is needed. 
+      CERTIFICATE - A valid inline certificate or preinstalled certificate is required. 
   verificationType:
     type: string
     enum:
@@ -66,10 +27,10 @@ properties:
       - VERIFY_HOST
       - VERIFY_HOST_PEER
     example: NONE
-    description: Specifies the type of verification to perform during the connection.
-      NONE - No verification.
-      VERIFY_PEER - Verify the peer's certificate.
-      VERIFY_HOST - Verify the host's certificate.
+    description: Specifies the type of verification to perform during the connection. 
+      NONE - No verification. 
+      VERIFY_PEER - Verify the peer's certificate. 
+      VERIFY_HOST - Verify the host's certificate. 
       VERIFY_HOST_PEER - Verify both the host and peer certificates.
   caCertificateFileContent:
     type: string

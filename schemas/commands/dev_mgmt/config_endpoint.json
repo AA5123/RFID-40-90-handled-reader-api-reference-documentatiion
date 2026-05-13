@@ -28,24 +28,24 @@
         "reconnectDelayMax": 60,
         "publishTopics": [
           {
-            "topic": "MDM/clients/resp",
+            "topic": "MGMT/clients/resp",
             "qos": 1,
             "retain": false
           },
           {
-            "topic": "MDM/clients/event",
+            "topic": "MGMT/clients/event",
             "qos": 1,
             "retain": false
           },
           {
-            "topic": "MDM/clients/rfid",
+            "topic": "MGMT/clients/rfid",
             "qos": 0,
             "retain": true
           }
         ],
         "subscribeTopics": [
           {
-            "topic": "MDM/clients/cmnd",
+            "topic": "MGMT/clients/cmnd",
             "qos": 0,
             "retain": false
           }
@@ -60,6 +60,84 @@
     }
   }
 },
+{
+      "command": "config_endpoint",
+      "requestId": "1233",
+      "epConfig": {
+        "operation": "add",
+        "configuration": {
+          "endpointName": "ctrlEP_tls",
+          "epType": "CTRL",
+          "protocol": "MQTT_TLS",
+          "activate": false,
+          "url": "broker.ip.com",
+          "port": 8883,
+          "verificationType": "VERIFY_HOST_PEER",
+          "qosCommon": 1,
+          "tenantId": "zebra",
+          "mqttParams": {
+            "keepAlive": 300,
+            "cleanSession": true,
+            "reconnectDelayMin": 5,
+            "reconnectDelayMax": 60,
+            "publishTopics": [
+              {
+                "topic": "CTRL/clients/resp",
+                "qos": 1,
+                "retain": false
+              },
+              {
+                "topic": "CTRL/clients/event",
+                "qos": 1,
+                "retain": false
+              },
+              {
+                "topic": "CTRL/clients/rfid",
+                "qos": 0,
+                "retain": true
+              }
+            ],
+            "subscribeTopics": [
+              {
+                "topic": "CTRL/clients/cmnd",
+                "qos": 0,
+                "retain": false
+              }
+            ]
+          },
+          "securityParams": {
+            "format": "PEM",
+            "caCertificateFile": "mqtt_ca_cert",
+            "clientCert": "mqtt_client_cert",
+            "clientKey": "mqtt_client_key"
+          }
+        }
+      }
+    },
+        {
+  "command": "config_endpoint",
+  "requestId": "1233",
+  "epConfig": {
+    "operation": "add",
+    "configuration": {
+      "endpointName": "dataEP",
+      "epType": "DATA1",
+      "protocol": "MQTT",
+      "activate": true,
+      "url": "17L11-DS3362",
+      "verificationType": "NONE",
+      "port": 1883,
+      "qosCommon": 1,
+      "tenantId": "zebra",
+      "mqttParams": {
+        "keepAlive": 300,
+        "cleanSession": true,
+        "reconnectDelayMin": 50,
+        "reconnectDelayMax": 500
+      }
+    }
+  }
+},
     {
       "command": "config_endpoint",
       "requestId": "1233",
@@ -67,7 +145,7 @@
         "operation": "add",
         "configuration": {
           "endpointName": "mgmt_tst",
-          "epType": "MGMT",
+          "epType": "MDM",
           "protocol": "MQTT",
           "activate": true,
           "url": "test.example.com",
@@ -108,41 +186,6 @@
         }
       }
     },
-    {
-      "command": "config_endpoint",
-      "requestId": "1233",
-      "epConfig": {
-        "operation": "delete",
-        "configuration": {
-          "endpointName": "mgmt_tst",
-          "epType": "MGMT"
-        }
-      }
-    },
-{
-  "command": "config_endpoint",
-  "requestId": "1233",
-  "epConfig": {
-    "operation": "add",
-    "configuration": {
-      "endpointName": "dataEP",
-      "epType": "DATA1",
-      "protocol": "MQTT",
-      "activate": true,
-      "url": "17L11-DS3362",
-      "verificationType": "NONE",
-      "port": 1883,
-      "qosCommon": 1,
-      "tenantId": "zebra",
-      "mqttParams": {
-        "keepAlive": 300,
-        "cleanSession": true,
-        "reconnectDelayMin": 50,
-        "reconnectDelayMax": 500
-      }
-    }
-  }
-},
     {
       "command": "config_endpoint",
       "requestId": "1233",
@@ -188,6 +231,61 @@
               }
             ]
           }
+        }
+      }
+    },
+    {
+      "command": "config_endpoint",
+      "requestId": "1233",
+      "epConfig": {
+        "operation": "add",
+        "configuration": {
+          "endpointName": "dataEP_tls",
+          "epType": "DATA1",
+          "protocol": "MQTT_TLS",
+          "activate": true,
+          "url": "broker.ip.com",
+          "port": 8883,
+          "verificationType": "VERIFY_HOST_PEER",
+          "qosCommon": 1,
+          "tenantId": "zebra",
+          "mqttParams": {
+            "keepAlive": 300,
+            "cleanSession": true,
+            "reconnectDelayMin": 5,
+            "reconnectDelayMax": 60
+          },
+          "securityParams": {
+            "format": "PEM",
+            "caCertificateFile": "mqtt_ca_cert",
+            "clientCert": "mqtt_client_cert",
+            "clientKey": "mqtt_client_key"
+          }
+        }
+      }
+    },
+    {
+      "command": "config_endpoint",
+      "requestId": "1233",
+      "epConfig": {
+        "operation": "delete",
+        "configuration": {
+          "endpointName": "mgmt_tst",
+          "epType": "MGMT"
+        }
+      }
+    },
+    {
+      "command": "config_endpoint",
+      "requestId": "1233",
+      "epConfig": {
+        "operation": "update",
+        "configuration": {
+          "endpointName": "mgmt_tls",
+          "epType": "MGMT",
+          "protocol": "MQTT_TLS",
+          "url": "broker.updated.com",
+          "tenantId": "ZEBRA"
         }
       }
     }

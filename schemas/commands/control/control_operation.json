@@ -19,8 +19,7 @@
       "description": "A unique identifier for the request. This ensures traceability and prevents duplicate processing of the same request."
     },
     "ctrlOprPayload": {
-      "$ref": "../../refrence/payload/ctrlOprPayload.yaml",
-      "description": "Defines the control operation to be performed on the device, including the control type and the operation to start or stop."
+      "$ref": "../../refrence/payload/ctrlOprPayload.yaml"
     }
   },
   "examples": [

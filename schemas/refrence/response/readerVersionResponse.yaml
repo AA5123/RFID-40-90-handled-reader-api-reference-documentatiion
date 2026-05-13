@@ -2,6 +2,7 @@ title: readerVersion
 x-stoplight:
   id: e2effa15ae429
 type: object
+description: Contains device version details including firmware, model, serial number, and SKU.
 examples: []
 properties:
   firmwareVersion:

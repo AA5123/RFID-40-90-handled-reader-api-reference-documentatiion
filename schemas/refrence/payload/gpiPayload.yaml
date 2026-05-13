@@ -1,5 +1,6 @@
 title: gpi
 type: object
+description: Defines the GPI (General Purpose Input) port configuration.
 properties:
   port:
     type: integer

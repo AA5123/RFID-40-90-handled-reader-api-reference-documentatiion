@@ -1,2 +1,3 @@
 examples: []
 type: object
+description: Heartbeat event periodically reporting device health and connectivity status.

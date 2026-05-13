@@ -1,5 +1,6 @@
 title: read
 type: object
+description: Defines the read command payload used to read data from a specific memory bank of an RFID tag.
 properties:
   config:
     type: object

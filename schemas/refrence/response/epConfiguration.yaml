@@ -2,6 +2,7 @@ title: epConfiguration
 x-stoplight:
   id: l9v7iab36nd84
 type: object
+description: Contains the detailed configuration of a specific endpoint.
 examples: []
 properties:
   configuration:

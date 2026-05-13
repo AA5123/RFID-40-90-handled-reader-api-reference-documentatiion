@@ -2,6 +2,7 @@ title: alertConfiguration
 x-stoplight:
   id: 10vb0ludr8vsa
 type: object
+description: Defines the alert configuration thresholds for device monitoring events.
 properties:
   cpuUsage:
     type: object

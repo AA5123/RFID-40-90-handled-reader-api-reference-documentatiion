@@ -39,11 +39,13 @@
   "properties": {
     "command": {
       "type": "string",
-      "example": "get_status"
+      "example": "get_status",
+      "description": "The command that was executed to retrieve the device status."
     },
     "requestId": {
       "type": "string",
-      "example": "abc123"
+      "example": "abc123",
+      "description": "The unique identifier of the original request."
     },
     "apiVersion": {
       "type": "string",

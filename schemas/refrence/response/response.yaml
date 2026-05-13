@@ -2,6 +2,7 @@ title: response
 x-stoplight:
   id: 1uzw0wye4si2y
 type: object
+description: Standard response object containing the status code and description of the operation result.
 properties:
   code:
     type: integer

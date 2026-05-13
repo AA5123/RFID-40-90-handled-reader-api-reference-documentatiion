@@ -1,5 +1,6 @@
 title: lock
 type: object
+description: Defines the lock command payload used to lock or unlock memory banks on an RFID tag.
 examples:
   - type: LOCK
     config:

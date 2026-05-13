@@ -2,6 +2,7 @@ title: ethConfig
 x-stoplight:
   id: 74admn3fzfijc
 type: object
+description: Defines the ethernet interface configuration including network and security settings.
 examples: []
 properties:
   interfaceName:

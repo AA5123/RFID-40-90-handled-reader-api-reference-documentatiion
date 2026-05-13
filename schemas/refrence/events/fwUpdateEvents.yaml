@@ -2,6 +2,7 @@ title: fwUpdateStatus
 x-stoplight:
   id: 21xypho3gasa6
 type: object
+description: Firmware update event reporting the status and progress of a firmware update.
 properties:
   updateStatus:
     type: string

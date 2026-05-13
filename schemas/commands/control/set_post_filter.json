@@ -15,8 +15,7 @@
       "description": "A unique identifier for the request. This ensures traceability and prevents duplicate processing of the same request."
     },
     "postFilterPayload": {
-      "$ref": "../../refrence/payload/postFilterPayload.yaml",
-      "description": "Defines the post-filter configuration to apply to scanned RFID tags, including the filter operation, data endpoint type, match pattern, pattern method, and report operation."
+      "$ref": "../../refrence/payload/postFilterPayload.yaml"
     }
   },
   "required": [
@@ -44,6 +43,17 @@
         "matchPattern": "E280",
         "matchPatternMethod": "REGEX",
         "reportOperation": "EXCLUDE"
+      }
+    },
+    {
+      "command": "set_post_filter",
+      "requestId": "abc123",
+      "postFilterPayload": {
+        "operation": "ADD",
+        "dataEpType": "DATA_EP1",
+        "matchPattern": "BBBBEEEE",
+        "matchPatternMethod": "SUFFIX",
+        "reportOperation": "INCLUDE"
       }
     }
   ]
