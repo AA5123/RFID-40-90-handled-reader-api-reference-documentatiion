@@ -22,17 +22,7 @@ properties:
         type: string
         enum:
           - MQTT
-          - MQTTWS
-          - MQT-TLS
-          - MQTT-WSS
-          - TCPIP
-          - WS
-          - WSS
-          - HID
-          - HTTPS
-          - HTTP
-          - AWS
-          - AZURE
+          - MQTT_TLS
         example: MQTT
       activate:
         type: boolean

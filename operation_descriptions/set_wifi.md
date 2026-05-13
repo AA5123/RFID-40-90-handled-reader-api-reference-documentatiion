@@ -25,7 +25,7 @@ Use this command to:
 | Related Commands | [get_wifi](#op-get-wifi), [delete_wifi_profile](#op-delete-wifi-profile), [set_config](#op-set-config), [install_certificate](#op-install-certificate) |
 | Required Request Fields | `command`, `requestId`, `wifiConfig` |
 | Supported Operations | `CREATE`, `MODIFY` |
-| Supported Security Types | WPA2Personal, WPA3Personal, WPA2Enterprise, WPA3Enterprise, OWEPublic, Open |
+| Supported Security Types | WPA2Personal, WPA3Personal, WPA2Enterprise, WPA3Enterprise |
 | Enterprise Auth Methods | `tls`, `ttls`, `peap` |
 | Supported Profiles | ESSID-based Wi-Fi access point profiles with optional preferred and autoconnect behavior |
 | Supported API Versions | V1.0, V1.1 |
@@ -39,7 +39,7 @@ Gather the access point details and security credentials before sending this com
 |---|---|
 | Operation type | Decide whether you are creating a new profile (`CREATE`) or updating an existing one (`MODIFY`). Use `CREATE` for first-time provisioning. Use `MODIFY` to update the password, security settings, or connection behavior of an existing profile. |
 | ESSID | Have the exact access point network name (ESSID/SSID). The value is case-sensitive. A mismatch results in error code 15 (SSID not found) for `MODIFY`, or creates an unreachable profile for `CREATE`. |
-| Security type | Know which security protocol the access point uses — WPA2Personal, WPA3Personal, WPA2Enterprise, WPA3Enterprise, OWEPublic, or Open. Must match the AP configuration exactly. |
+| Security type | Know which security protocol the access point uses — WPA2Personal, WPA3Personal, WPA2Enterprise, or WPA3Enterprise. Must match the AP configuration exactly. |
 | Security credentials | For Personal networks: have the passphrase ready. For Enterprise networks: know the authentication protocol (`tls`, `ttls`, `peap`), identity, password, and certificate names already installed on the device. |
 | Certificate names (Enterprise) | For WPA2/WPA3 Enterprise with TLS authentication, the `ca_cert`, `client_cert`, and `client_key` must already be installed on the device via `install_certificate`. Have their logical names ready to reference in the `certificate` array. |
 | IPv4 strategy | Decide whether the reader will use DHCP (`enableDhcp: true`) or a static IP address. For static, have the IP address, subnet mask, gateway, and DNS server ready. |
@@ -63,8 +63,6 @@ The `securityType` field in the `security` object defines the authentication and
 | WPA3Personal | WPA3 with Simultaneous Authentication of Equals (SAE). More secure than WPA2. | Password |
 | WPA2Enterprise | WPA2 with 802.1X authentication. Used in corporate and institutional networks. | `tls` \| `ttls` \| `peap` |
 | WPA3Enterprise | WPA3 with 802.1X authentication. Higher security for enterprise environments. | `tls` \| `ttls` \| `peap` |
-| OWEPublic | Opportunistic Wireless Encryption. Open network with encryption but no authentication. | None |
-| Open | No security. Open network with no encryption or authentication. | None |
 
 ## 6. Rules and Constraints
 

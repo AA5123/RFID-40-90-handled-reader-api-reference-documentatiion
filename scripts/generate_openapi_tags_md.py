@@ -26,6 +26,11 @@ TAG_DESCRIPTIONS_DIR = os.path.join(PROJECT_ROOT, "tag_descriptions")
 INFO_DESCRIPTION_PATH = os.path.join(PROJECT_ROOT, "info_description.md")
 SKIP_FILES = set()
 RESPONSE_CODE_MARKER = "Response codes:"
+UNSUPPORTED_DETAIL_ROWS = {
+    "communication type",
+    "supported response sections",
+    "supported api versions",
+}
 
 def load_json(filepath):
    with open(filepath, "r", encoding="utf-8-sig") as f:
@@ -102,6 +107,22 @@ def load_tag_descriptions_from_md():
                descriptions[tag_name] = f.read().strip()
            print(f"  Loaded tag description: '{tag_name}' from {filename}")
    return descriptions
+
+def sanitize_operation_description(description):
+   """Remove unsupported command detail rows from markdown tables."""
+   if not description:
+       return description
+
+   cleaned_lines = []
+   for line in description.splitlines():
+       stripped = line.strip()
+       if stripped.startswith("|"):
+           parts = [p.strip().lower() for p in stripped.split("|") if p.strip()]
+           if parts and parts[0] in UNSUPPORTED_DETAIL_ROWS:
+               continue
+       cleaned_lines.append(line)
+
+   return "\n".join(cleaned_lines)
 
 def discover_operations(operation_tags=None):
    if operation_tags is None:
@@ -383,6 +404,7 @@ def build_openapi():
            continue
        title = req_schema.get("title", op_name)
        description = op_descriptions.get(op_name) or req_schema.get("description", None)
+       description = sanitize_operation_description(description)
        op = OrderedDict()
        op["tags"] = [tag_name]
        op["summary"] = op_name.replace("_", " ").title()

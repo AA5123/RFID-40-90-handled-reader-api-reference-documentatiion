@@ -4,7 +4,7 @@
 
 Before the reader can send or receive any data, at least one endpoint must be configured and set as active. This command is typically the first step when setting up a reader for the first time, and is used again whenever a connection needs to change — rotating credentials, switching broker environments, or removing a decommissioned connection.
 
-> **Important:** The reader cannot communicate with any external system until at least one endpoint is configured and active. Always verify the response code after sending this command before expecting the reader to connect.
+
 
 ## 2. Command Details
 
@@ -17,7 +17,7 @@ Before the reader can send or receive any data, at least one endpoint must be co
 | Required Request Fields | `command`, `requestId`, `epConfig` |
 | Supported Operations | `add`, `update`, `delete` |
 | Supported Endpoint Types | `MGMT`, `MGMT_EVT`, `CTRL`, `DATA1`, `DATA2`, `SOTI`, `MDM` |
-| Supported Protocols | `MQTT`, `MQTT_WS`, `MQTT_WSS`, `MQTT_TLS`, `TCP`, `HTTP`, `HTTPS`, `WS`, `WSS`, `AWS`, `AZURE`, `HID` |
+| Supported Protocols | `MQTT`, `MQTT_TLS` |
 | Supported Verification Types | `NONE`, `VERIFY_PEER`, `VERIFY_HOST`, `VERIFY_HOST_PEER` |
 | Supported API Versions | V1.0, V1.1 |
 
@@ -73,8 +73,8 @@ Gather the following before sending the command. Missing any of these will cause
 | Authentication credentials | Username and password for the broker. Never hardcode these — supply them from a secrets manager or environment variable at runtime. |
 | MQTT topic names | The topics the reader will publish to (up to 3) and subscribe to (up to 1). Confirm these with your broker or platform configuration. |
 | Endpoint type | The role this endpoint will play — management, control, data, or MDM. See the Choosing an Endpoint Type section above. |
-| Protocol | The connection protocol — `MQTT` for standard connections, `MQTT_TLS` for encrypted connections, or a cloud-specific protocol such as `AWS` or `AZURE`. |
-| Certificates (if using TLS) | CA certificate, client certificate, and client private key files provisioned on the device. Required when `verificationType` is not `NONE`. Install them using `install_certificate` before sending this command. |
+| Protocol | The connection protocol — `MQTT` for standard connections or `MQTT_TLS` for encrypted connections. |
+| Certificates (if using TLS) |  Install them using `install_certificate` before sending this command. |
 
 ## 6. Operations
 
@@ -99,9 +99,6 @@ Violating any of these rules will cause the command to fail or the endpoint to b
 - `publishTopics` supports a maximum of 3 entries per endpoint. Exceeding this returns error code 25.
 - `subscribeTopics` supports a maximum of 1 entry per endpoint. Exceeding this returns error code 26.
 
-### Tenant ID
-
-- `tenantId` must be within the allowed character length. An oversized value returns error code 27.
 
 ### Certificates
 
@@ -112,16 +109,3 @@ Violating any of these rules will cause the command to fail or the endpoint to b
 
 - `activate: true` marks the endpoint active immediately. `activate: false` saves the configuration without activating it.
 - Only one endpoint of each type should be active at a time.
-
-> **Security Note:** Never hardcode MQTT credentials or certificate passwords in your payload. Use a secrets manager or environment variable to supply sensitive values at runtime.
-
-| Field | Type | Description |
-|---|---|---|
-| `command` | string | Echoes the command name so clients can map this response to the `config_endpoint` request. |
-| `requestId` | string | Request identifier copied from the command, used for request and response correlation. |
-| `apiVersion` | enum | API version used to interpret this response payload. Allowed: `V1.0` \| `V1.1` |
-| `response` | object | Execution result object containing status code and result description. |
-| `response.code` * | integer | Response code indicating success or failure. `0` — Success. `10` — Configuration already exists. `23` — Invalid enum value. `25` — Max 3 publish topics exceeded. `26` — Max 1 subscribe topic exceeded. `27` — Invalid tenant ID length. Min: 0 \| Max: 27 |
-| `response.description` * | string | Human-readable result message that explains the response code. |
-
-*RFD40 / RFD90 MQTT API Reference | config_endpoint | Zebra Technologies*
