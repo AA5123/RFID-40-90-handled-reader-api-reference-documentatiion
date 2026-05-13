@@ -1351,3 +1351,99 @@ blockquote p:last-child { margin-bottom: 0; }
  max-height: 480px;
  overflow: auto;
 }
+
+/* ── JSON interactive additions ───────────────────────────────── */
+.jv-toolbar-left {
+ display: inline-flex;
+ align-items: center;
+ gap: var(--sp-2);
+}
+
+.jv-lang-label {
+ flex: 1;
+ text-align: center;
+ font-family: var(--font-sans);
+ font-size: 10px;
+ font-weight: 700;
+ letter-spacing: 0.08em;
+ text-transform: uppercase;
+ color: #4a90b8;
+ line-height: 1;
+ pointer-events: none;
+}
+
+.json-interactive {
+ background: #1e293b;
+ color: var(--color-code-text);
+ font-family: var(--font-mono);
+ font-size: var(--text-sm);
+ line-height: 1.6;
+ padding: var(--sp-3);
+ max-height: 480px;
+ overflow: auto;
+}
+
+.jl {
+ display: flex;
+ align-items: flex-start;
+ white-space: pre;
+ min-height: 1.6em;
+}
+
+.ji {
+ display: inline-block;
+ align-self: stretch;
+ flex: 0 0 auto;
+ background-image: repeating-linear-gradient(
+   to right,
+   transparent 0,
+   transparent 15px,
+   rgba(255, 255, 255, 0.08) 15px,
+   rgba(255, 255, 255, 0.08) 16px
+ );
+}
+
+.jt,
+.jt-spacer {
+ width: 14px;
+ height: 14px;
+ margin-right: 6px;
+ margin-top: 0.18em;
+ flex: 0 0 14px;
+}
+
+.jt {
+ display: inline-flex;
+ align-items: center;
+ justify-content: center;
+ border-radius: 3px;
+ border: 1px solid rgba(255, 255, 255, 0.15);
+ background: rgba(255, 255, 255, 0.06);
+ font-family: var(--font-mono);
+ font-size: 11px;
+ line-height: 1;
+ color: #6fb3d2;
+ cursor: pointer;
+ padding: 0;
+}
+
+.jt:hover {
+ background: rgba(255, 255, 255, 0.12);
+ border-color: rgba(255, 255, 255, 0.3);
+}
+
+.jt-spacer {
+ display: inline-block;
+ visibility: hidden;
+}
+
+.jk { color: #6fb3d2; }
+.jstr { color: #a3eea0; }
+.jnum { color: #d19a66; }
+.jbool { color: #4ba7ef; }
+.jnull { color: #df9cf3; }
+.jp { color: #8b9cb5; }
+
+.jpreview {
+ color: rgba(222, 174, 143, 0.7);
+}
