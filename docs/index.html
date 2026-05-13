@@ -204,8 +204,23 @@
 
  function getSchemaDescription(schema) {
    if (!schema) return '';
+   var fallbackDescription = '';
+   if (!schema.description) {
+     if (schema.type === 'array' && schema.items) {
+       if (typeof schema.items.description === 'string' && schema.items.description.trim()) {
+         fallbackDescription = 'Array items: ' + schema.items.description.trim();
+       } else if (schema.items.title) {
+         fallbackDescription = 'Array of ' + String(schema.items.title);
+       } else if (schema.items.type) {
+         fallbackDescription = 'Array of ' + String(schema.items.type);
+       }
+     } else if (schema.type === 'object' && schema.title) {
+       fallbackDescription = String(schema.title);
+     }
+   }
    var parts = [];
    if (schema.description) parts.push(schema.description);
+   else if (fallbackDescription) parts.push(fallbackDescription);
    if (schema.format) parts.push('Format: ' + schema.format);
    if (schema.pattern) parts.push('Pattern: ' + schema.pattern);
    if (schema.minLength !== undefined) parts.push('Min length: ' + schema.minLength);
@@ -219,9 +234,23 @@
 
  function getSchemaDescriptionHtml(schema) {
    if (!schema) return '';
+   var descriptionText = '';
+   if (typeof schema.description === 'string' && schema.description.trim()) {
+     descriptionText = schema.description;
+   } else if (schema.type === 'array' && schema.items) {
+     if (typeof schema.items.description === 'string' && schema.items.description.trim()) {
+       descriptionText = 'Array items: ' + schema.items.description.trim();
+     } else if (schema.items.title) {
+       descriptionText = 'Array of ' + String(schema.items.title);
+     } else if (schema.items.type) {
+       descriptionText = 'Array of ' + String(schema.items.type);
+     }
+   } else if (schema.type === 'object' && schema.title) {
+     descriptionText = String(schema.title);
+   }
    var parts = [];
-   if (schema.description) {
-     parts.push('<div class="schema-description">' + md(schema.description, { headingMap: { 1: 6, 2: 6, 3: 6, 4: 6, 5: 6, 6: 6 } }) + '</div>');
+   if (descriptionText) {
+     parts.push('<div class="schema-description">' + md(descriptionText, { headingMap: { 1: 6, 2: 6, 3: 6, 4: 6, 5: 6, 6: 6 } }) + '</div>');
    }
    var meta = [];
    if (schema.format) meta.push('<span class="schema-meta-item">Format: <strong>' + escHtml(String(schema.format)) + '</strong></span>');
