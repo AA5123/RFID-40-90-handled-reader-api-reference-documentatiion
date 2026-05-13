@@ -2,7 +2,6 @@ title: exception
 x-stoplight:
   id: wqxur4zxw2a0m
 type: object
-description: Error alert event reporting device exceptions and error conditions.
 properties:
   type:
     type: string

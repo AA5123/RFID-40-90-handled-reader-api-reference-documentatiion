@@ -28,6 +28,5 @@ Gather Wi-Fi profile information before sending this command. An invalid SSID or
 |---|---|
 | SSID | Identify the exact ESSID of the Wi-Fi profile you want to delete. The profile must exist in the saved Wi-Fi configurations. |
 | Connection Status | Verify the profile is not currently active. You cannot delete a profile that the device is actively connected to. |
-| Profile Existence | Confirm the profile has been previously saved on the device using `set_wifi` or `get_wifi` commands. |
 
 > **Important:** Before deleting a Wi-Fi profile, ensure you are not currently connected to that network. Attempting to delete an active SSID will result in error code 16.

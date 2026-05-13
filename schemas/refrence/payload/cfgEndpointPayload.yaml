@@ -2,7 +2,6 @@ title: epConfig
 x-stoplight:
   id: l9v7iab36nd84
 type: object
-description: Defines the endpoint configuration including protocol, security, and MQTT parameters.
 examples: []
 properties:
   operation:
@@ -46,7 +45,17 @@ properties:
         type: string
         enum:
           - MQTT
+          - MQTT_WS
+          - MQTT_WSS
           - MQTT_TLS
+          - TCP
+          - HTTP
+          - HTTPS
+          - WS
+          - WSS
+          - AWS
+          - AZURE
+          - HID
         example: MQTT
         description: Defines the communication protocol used by the endpoint.
       activate:
@@ -155,6 +164,13 @@ properties:
               - PFX
             example: PEM
             description: Specifies the format of the security certificates. Currently, only PEM is supported.
+          algorithm:
+            type: string
+            enum:
+              - RSA256
+              - RSA512
+            example: RSA256
+            description: Specifies the algorithm used for encryption.
           caCertificateFile:
             type: string
             example: cloud-trusted-ca-certs.crt
@@ -169,6 +185,7 @@ properties:
             description: Specifies the file containing the client private key.
         required:
           - format
+          - algorithm
           - caCertificateFile
           - clientCert
           - clientKey

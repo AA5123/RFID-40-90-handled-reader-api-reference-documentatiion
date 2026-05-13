@@ -9,8 +9,6 @@ This command returns:
 - Allowed transmit power range information
 - Region-level compliance parameters used by the radio
 
-No additional payload fields are required beyond `command` and `requestId`.
-
 ## 2. Command Details
 
 | Property | Value |

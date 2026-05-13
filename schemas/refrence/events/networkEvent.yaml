@@ -2,7 +2,6 @@ title: networkEvent
 x-stoplight:
   id: tdp0o2i33nrul
 type: object
-description: Network event reporting changes in the device's network interface status.
 examples: []
 properties:
   networkInterface:

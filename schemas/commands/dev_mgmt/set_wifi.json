@@ -3,7 +3,7 @@
   "x-stoplight": {
     "id": "wk91qymmt9ye2"
   },
-  "description": "This API is used to set wifi configuration. It currently supports IPv4 addressing with DHCP-based IP assignment only, static IP configuration and IPv6 support is not available in the current API version.",
+  "description": "This API is used to set wifi configuration. It currently supports IPv4 addressing with DHCP-based IP assignment only; static IP configuration and IPv6 support is not available in the current API version.",
   "type": "object",
   "examples": [
     {

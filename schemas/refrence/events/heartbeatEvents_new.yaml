@@ -1,4 +1,3 @@
-description: Heartbeat event periodically reporting device health, inventory, and connectivity status.
 anyOf:
   - properties:
       inventoryStatus:

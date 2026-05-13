@@ -2,7 +2,6 @@ title: downloadInfo
 x-stoplight:
   id: qwygdhcgpch4h
 type: object
-description: File download event reporting the status and progress of a file download on the device.
 properties:
   fileType:
     type: string

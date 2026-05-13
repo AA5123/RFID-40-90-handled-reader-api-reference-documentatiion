@@ -35,7 +35,6 @@ Gather certificate details and source information before sending this command. A
 | Certificate source | Decide how the certificate content is supplied — `HTTP` to download from a remote URL, or `DIRECT` to provide content inline in `certificateBundle`. If `certSource` is omitted, the device defaults to `HTTP`. |
 | Certificate URLs | For `HTTP` source: have the full URLs ready for each certificate component (`ca_cert`, `client_cert`, `client_key`). Verify the URLs are reachable from the device's network. |
 | Inline certificate content | For `DIRECT` source: have the PEM or base64-encoded certificate content ready to supply in `certificateBundle`. |
-| Authentication type | Decide how the certificate download server is secured — `NONE` for open servers, `BASIC` for username/password, or `CERTIFICATE` for certificate-based download authentication. Note: `TOKEN` is currently not supported. |
 | Authentication type | Decide how the certificate download server is secured — `NONE` for open servers, or `CERTIFICATE` for certificate-based download authentication. |
 | TLS verification type | Decide the verification level for the remote certificate source connection — `NONE`, `VERIFY_PEER`, `VERIFY_HOST`, or `VERIFY_HOST_PEER`. |
 | Logical name | Assign a meaningful logical name for the certificate entry via the `name` field. This name is used when referencing the certificate in other commands such as `set_wifi` and `config_endpoint`. |
@@ -53,6 +52,13 @@ The `type` field in `certDetails` defines where the certificate will be used. Ch
 - `server` — Server-side certificates.
 
 ## 5. Authentication and Verification Options
+
+### Authentication Types (`authenticationType`)
+
+Specifies the authentication method used to access the remote certificate source when `certSource` is `HTTP`.
+
+- `NONE` — No authentication is used when downloading certificates.
+- `CERTIFICATE` — Certificate-based authentication used to download or retrieve certificates. Supply inline CA cert via `caCertificateFileContent`, or leave empty to use an already installed filestore certificate.
 
 ### Certificate Sources (`certSource`)
 

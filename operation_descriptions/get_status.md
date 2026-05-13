@@ -9,7 +9,6 @@ This command returns:
 - Device time and NTP synchronization state
 - Battery health and capacity metrics
 
-No additional payload fields are required beyond `command` and `requestId`.
 
 ## 2. Command Details
 
@@ -43,5 +42,3 @@ Key fields to check in the response:
 | `ntp.reach` | Is the NTP server reachable? | Non-zero means NTP is reachable and syncing. 0 means the NTP server is not reachable. |
 | `stateOfHealth` | Is the battery healthy? | GOOD for normal operation. AVERAGE or POOR may indicate battery replacement is needed. |
 
-> **Note:**
-`radioActivity` and `radioConnection` are two different fields. `radioActivity` shows whether an inventory scan is currently running. `radioConnection` shows whether the reader's radio is connected to the MQTT broker. Both can be INACTIVE / DISCONNECTED at rest — this is normal.

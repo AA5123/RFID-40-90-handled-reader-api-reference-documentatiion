@@ -2,7 +2,6 @@ title: tempEvent
 x-stoplight:
   id: f47vu5sqfdlx9
 type: object
-description: Temperature event reporting the current temperature readings of the device.
 properties:
   nge:
     type: number

@@ -9,7 +9,6 @@ This command returns:
 - Firmware version and component versions
 - Manufacturer and company identity metadata
 
-No additional payload fields are required beyond `command` and `requestId`.
 
 ## 2. Command Details
 

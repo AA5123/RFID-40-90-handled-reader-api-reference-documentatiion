@@ -40,7 +40,12 @@
         "Create WPA2 personal": "Payload to create a new WiFi profile with WPA2 Personal security",
         "Modify WPA2 personal": "Payload to modify an existing WiFi profile password",
         "Set preferred AP": "Payload to set an access point as preferred",
-        "Create WPA2 enterprise": "Payload to create a WiFi profile with WPA2 Enterprise security and certificates"
+        "Create WPA2 enterprise TLS": "Payload to create a WiFi profile with WPA2 Enterprise using TLS authentication and certificates",
+        "Create WPA2 enterprise TTLS": "Payload to create a WiFi profile with WPA2 Enterprise using TTLS authentication and CA certificate",
+        "Create WPA2 enterprise PEAP": "Payload to create a WiFi profile with WPA2 Enterprise using PEAP authentication and CA certificate",
+        "Create WPA3 enterprise TLS": "Payload to create a WiFi profile with WPA3 Enterprise using TLS authentication and certificates",
+        "Create WPA3 enterprise TTLS": "Payload to create a WiFi profile with WPA3 Enterprise using TTLS authentication and CA certificate",
+        "Create WPA3 enterprise PEAP": "Payload to create a WiFi profile with WPA3 Enterprise using PEAP authentication and CA certificate"
     },
     "config_endpoint": {
         "Add MGMT endpoint for MQTT TLS": "Payload to add a new management endpoint configuration with MQTT TLS protocol",
@@ -49,7 +54,8 @@
         "Add MDM endpoint": "Payload to add a new MDM endpoint configuration",
         "Add control endpoint": "Payload to add a new control endpoint with publish/subscribe topics",
         "Add data endpoint for MQTT TLS": "Payload to add a new data endpoint configuration with MQTT TLS protocol and security parameters",
-        "Delete endpoint": "Payload to delete an existing endpoint configuration"
+        "Delete endpoint": "Payload to delete an existing endpoint configuration",
+        "Update endpoint": "Payload to update an existing endpoint configuration with modified parameters"
     },
     "config_events": {
         "Enable all events": "Payload to enable all event types with threshold configuration",

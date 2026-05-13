@@ -15,6 +15,9 @@ properties:
   networkInfo:
     $ref: ../events/networkEvent.yaml
     description: 'Data related to network events, including connectivity and performance metrics.'
+  exception:
+    $ref: ../events/errorAlert.yaml
+    description: 'Information about exceptions or error alerts, including error codes and messages.'
   batteryAlert:
     $ref: ../events/batteryAlert.yaml
     description: 'Details about battery-related alerts, such as low charge or health status.'

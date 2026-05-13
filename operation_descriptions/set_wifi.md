@@ -30,9 +30,6 @@ Use this command to:
 | Supported Profiles | ESSID-based Wi-Fi access point profiles with optional preferred and autoconnect behavior |
 | Supported API Versions | V1.0, V1.1 |
 
-`wifiConfig` contains the configuration and operation details required by the command.
-
-See [Operations](#set_wifi-4-operations) and [Security Types](#set_wifi-5-security-types) for the command-specific rules and supported authentication modes.
 
 ## 3. Before You Begin
 
@@ -47,7 +44,6 @@ Gather the access point details and security credentials before sending this com
 | Certificate names (Enterprise) | For WPA2/WPA3 Enterprise with TLS authentication, the `ca_cert`, `client_cert`, and `client_key` must already be installed on the device via `install_certificate`. Have their logical names ready to reference in the `certificate` array. |
 | IPv4 strategy | Decide whether the reader will use DHCP (`enableDhcp: true`) or a static IP address. For static, have the IP address, subnet mask, gateway, and DNS server ready. |
 | Connection behavior | Decide whether the command should immediately connect (`connect: true`) and whether this profile should always be preferred (`isPreferred: true`). |
-| Interface name | Confirm the Wi-Fi interface name on the device (typically `wlan0`). An incorrect name will result in an invalid payload error. |
 
 ## 4. Operations
 
@@ -56,7 +52,6 @@ The `operation` field inside `wifiConfig` determines whether you are creating a 
 - **CREATE** — Creates a new Wi-Fi access point profile on the device. The ESSID must not already exist. If a profile with the same ESSID already exists, the command returns error code 18.
 - **MODIFY** — Updates an existing Wi-Fi access point profile. The ESSID must already exist on the device. If the ESSID is not found, the command returns error code 15.
 
-> **Important:** Always verify the response code after sending this command. A successful response (code 0) confirms the profile was saved. Use the `connect` field to control whether the device switches to the new profile immediately.
 
 ## 5. Security Types
 
@@ -79,24 +74,21 @@ Violating any of these rules will cause the command to fail or the Wi-Fi profile
 
 - `CREATE` fails with error code 18 if a profile with the same ESSID already exists. Delete the existing profile first, or use `MODIFY` to update it.
 - `MODIFY` fails with error code 15 if the ESSID does not exist. Use `CREATE` for new profiles.
-- `essid` is required for both `CREATE` and `MODIFY` operations.
 
 ### Connection Behavior
 
 - `connect: true` — The device disconnects from the currently active profile and immediately connects to the specified ESSID.
 - `connect: false` — The profile is saved but the device does not switch connections. Use this for pre-provisioning profiles.
 - `isPreferred: true` — The device will always attempt to connect to this ESSID when it is in range.
-- `autoConn` — Reserved for backward compatibility. This field will be removed in a future API version.
 
 ### Enterprise Authentication
 
 - Certificates referenced in the `certificate` array must already be installed on the device using `install_certificate` before this command is sent.
-- The certificate `value` field holds the name of the installed certificate, not a file path or URL.
 - `innerAuthentication` is optional for `ttls` and `peap` authentication methods.
 
 ### Profile Limits
 
-- The device has a maximum number of saved Wi-Fi profiles. Exceeding this limit returns error code 19.
+- The device has a maximum number of saved Wi-Fi profiles. Exceeding this limit returns error code 19. Maximum 10 profiles.
+
 - Delete unused profiles using `delete_wifi_profile` before adding new ones when the limit is reached.
 
-> **Security Note:** Never hardcode Wi-Fi passwords or enterprise credentials in your payload. Use a secrets manager or environment variable to supply sensitive values at runtime.

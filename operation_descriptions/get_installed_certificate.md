@@ -9,7 +9,6 @@ This command returns:
 - Certificate validity period metadata
 - Response metadata for query execution
 
-No additional payload fields are required beyond `command` and `requestId`.
 
 ## 2. Command Details
 

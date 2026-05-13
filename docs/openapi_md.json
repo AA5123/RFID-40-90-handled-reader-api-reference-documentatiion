@@ -110,7 +110,7 @@
                     "Device Status"
                 ],
                 "summary": "Get Status",
-                "description": "## 1. Description\n\nThe `get_status` command retrieves a live health and readiness snapshot from the reader.\n\nThis command returns:\n\n- Power source and charging state details\n- RFID radio activity and connectivity status\n- Device time and NTP synchronization state\n- Battery health and capacity metrics\n\nNo additional payload fields are required beyond `command` and `requestId`.\n\n## 2. Command Details\n\n| Property | Value |\n|---|---|\n| Pattern Name | Device Status Retrieval |\n| Communication Type | Bidirectional (Cloud to Device, Device to Cloud) |\n| Applies To | RFD40 Series, RFD90 Series |\n| Related Commands | [get_version](#op-get-version), [get_current_region](#op-get-current-region), [get_config](#op-get-config)|\n| Required Request Fields | command, requestId |\n| Supported Operations | Status retrieval |\n| Supported Response Sections | deviceStatus, response |\n| Supported API Versions | V1.0, V1.1 |\n\n## 3. When to Use This Command\n\nUse `get_status` to:\n\n- Monitor device health and readiness before starting operations\n- Verify device connectivity before starting RFID operations\n- Troubleshoot communication, radio, or battery-related issues\n\nKey fields to check in the response:\n\n| Field | What to Check | Expected State |\n|---|---|---|\n| `radioActivity` | Is an inventory already running? | INACTIVE before starting a new operation. |\n| `radioConnection` | Is the radio connected to the broker? | CONNECTED for normal operation. |\n| `powerSource` | What is powering the device? | USB, WALLCHARGER, or CRADLE for powered operation. |\n| `chargePercentage` | Is the battery sufficient for the task? | Verify before long inventory runs on battery power. |\n| `ntp.reach` | Is the NTP server reachable? | Non-zero means NTP is reachable and syncing. 0 means the NTP server is not reachable. |\n| `stateOfHealth` | Is the battery healthy? | GOOD for normal operation. AVERAGE or POOR may indicate battery replacement is needed. |\n\n> **Note:**\n`radioActivity` and `radioConnection` are two different fields. `radioActivity` shows whether an inventory scan is currently running. `radioConnection` shows whether the reader's radio is connected to the MQTT broker. Both can be INACTIVE / DISCONNECTED at rest — this is normal.",
+                "description": "## 1. Description\n\nThe `get_status` command retrieves a live health and readiness snapshot from the reader.\n\nThis command returns:\n\n- Power source and charging state details\n- RFID radio activity and connectivity status\n- Device time and NTP synchronization state\n- Battery health and capacity metrics\n\n\n## 2. Command Details\n\n| Property | Value |\n|---|---|\n| Pattern Name | Device Status Retrieval |\n| Communication Type | Bidirectional (Cloud to Device, Device to Cloud) |\n| Applies To | RFD40 Series, RFD90 Series |\n| Related Commands | [get_version](#op-get-version), [get_current_region](#op-get-current-region), [get_config](#op-get-config)|\n| Required Request Fields | command, requestId |\n| Supported Operations | Status retrieval |\n| Supported Response Sections | deviceStatus, response |\n| Supported API Versions | V1.0, V1.1 |\n\n## 3. When to Use This Command\n\nUse `get_status` to:\n\n- Monitor device health and readiness before starting operations\n- Verify device connectivity before starting RFID operations\n- Troubleshoot communication, radio, or battery-related issues\n\nKey fields to check in the response:\n\n| Field | What to Check | Expected State |\n|---|---|---|\n| `radioActivity` | Is an inventory already running? | INACTIVE before starting a new operation. |\n| `radioConnection` | Is the radio connected to the broker? | CONNECTED for normal operation. |\n| `powerSource` | What is powering the device? | USB, WALLCHARGER, or CRADLE for powered operation. |\n| `chargePercentage` | Is the battery sufficient for the task? | Verify before long inventory runs on battery power. |\n| `ntp.reach` | Is the NTP server reachable? | Non-zero means NTP is reachable and syncing. 0 means the NTP server is not reachable. |\n| `stateOfHealth` | Is the battery healthy? | GOOD for normal operation. AVERAGE or POOR may indicate battery replacement is needed. |",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -420,7 +420,7 @@
                     "Device Status"
                 ],
                 "summary": "Get Version",
-                "description": "## 1. Description\n\nThe `get_version` command retrieves reader identity and software version information.\n\nThis command returns:\n\n- Reader model information\n- Reader serial number and SKU\n- Firmware version and component versions\n- Manufacturer and company identity metadata\n\nNo additional payload fields are required beyond `command` and `requestId`.\n\n## 2. Command Details\n\n| Property | Value |\n|---|---|\n| Pattern Name | Device Identity and Firmware Retrieval |\n| Communication Type | Bidirectional (Cloud to Device, Device to Cloud) |\n| Applies To | RFD40 Series, RFD90 Series |\n| Related Commands | [get_config](#op-get-config), [get_status](#op-get-status), [set_os](#op-set-os) |\n| Required Request Fields | command, requestId |\n| Supported Operations | Read reader identity and version details |\n| Supported Response Sections | readerVersion, response |\n| Supported API Versions | V1.0, V1.1 |\n\n## 3. When to Use This Command\n\nUse `get_version` to:\n\n- Identify the exact device model and serial number\n- Verify firmware and component version alignment\n- Confirm device software baseline before updates or troubleshooting\n\nKey fields to check in the response:\n\n| Field | What to Check | Why It Matters |\n|---|---|---|\n| `model` | RFD40 or RFD90? | Confirm the correct device type is connected before applying model-specific configurations. |\n| `firmwareVersion` | Is the firmware up to date? | Compare against the expected baseline before running updates or diagnosing issues. |\n| `serialNumber` | Does it match the device label? | Used for asset tracking, support tickets, and device registration. |\n| `sku` | Is the correct variant deployed? | SKU identifies the regional and hardware variant of the reader. |\n| `detailedVersions.iotcVersion` | Is IoTC at the expected version? | IoTC version determines which MQTT API commands and features are available. |",
+                "description": "## 1. Description\n\nThe `get_version` command retrieves reader identity and software version information.\n\nThis command returns:\n\n- Reader model information\n- Reader serial number and SKU\n- Firmware version and component versions\n- Manufacturer and company identity metadata\n\n\n## 2. Command Details\n\n| Property | Value |\n|---|---|\n| Pattern Name | Device Identity and Firmware Retrieval |\n| Communication Type | Bidirectional (Cloud to Device, Device to Cloud) |\n| Applies To | RFD40 Series, RFD90 Series |\n| Related Commands | [get_config](#op-get-config), [get_status](#op-get-status), [set_os](#op-set-os) |\n| Required Request Fields | command, requestId |\n| Supported Operations | Read reader identity and version details |\n| Supported Response Sections | readerVersion, response |\n| Supported API Versions | V1.0, V1.1 |\n\n## 3. When to Use This Command\n\nUse `get_version` to:\n\n- Identify the exact device model and serial number\n- Verify firmware and component version alignment\n- Confirm device software baseline before updates or troubleshooting\n\nKey fields to check in the response:\n\n| Field | What to Check | Why It Matters |\n|---|---|---|\n| `model` | RFD40 or RFD90? | Confirm the correct device type is connected before applying model-specific configurations. |\n| `firmwareVersion` | Is the firmware up to date? | Compare against the expected baseline before running updates or diagnosing issues. |\n| `serialNumber` | Does it match the device label? | Used for asset tracking, support tickets, and device registration. |\n| `sku` | Is the correct variant deployed? | SKU identifies the regional and hardware variant of the reader. |\n| `detailedVersions.iotcVersion` | Is IoTC at the expected version? | IoTC version determines which MQTT API commands and features are available. |",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -624,7 +624,7 @@
                     "Device Status"
                 ],
                 "summary": "Get Current Region",
-                "description": "## 1. Description\n\nThe `get_current_region` command retrieves the reader's currently applied regulatory region settings.\n\nThis command returns:\n\n- Active country and regulatory region assignment\n- Supported channel set for the selected region\n- Allowed transmit power range information\n- Region-level compliance parameters used by the radio\n\nNo additional payload fields are required beyond `command` and `requestId`.\n\n## 2. Command Details\n\n| Property | Value |\n|---|---|\n| Pattern Name | Regulatory Configuration Query |\n| Communication Type | Bidirectional (Cloud to Device, Device to Cloud) |\n| Applies To | RFD40 Series, RFD90 Series |\n| Related Commands | [get_config](#op-get-config), [get_status](#op-get-status), [get_version](#op-get-version) |\n| Required Request Fields | command, requestId |\n| Supported Operations | Retrieve active regulatory region settings |\n| Supported Response Sections | currentRegion, response |\n| Supported API Versions | V1.0, V1.1 |\n\n## 3. When to Use This Command\n\nUse `get_current_region` to:\n\n- Confirm that the device is configured for the correct regulatory region\n- Validate channel and power constraints before inventory operations\n- Audit compliance settings across deployments\n\nKey fields to check in the response:\n\n| Field | What to Check | Why It Matters |\n|---|---|---|\n| `country` | Is the correct country configured? | The reader must match the regulatory region of its deployment location. |\n| `regulatoryStandard` | FCC, ETSI, or another standard? | Determines which transmission rules apply — channels, power limits, and LBT behavior. |\n| `maxTxPowerSupported` | What is the allowed power ceiling? | Use this to validate transmit power settings before starting inventory. |\n| `lbtEnabled` | Is Listen Before Talk active? | Required in some regions (e.g., ETSI). Affects inventory start behavior. |\n| `frequencyHopping` | Is frequency hopping enabled? | Mandatory in most regions. Confirms the radio is operating compliantly. |\n| `channelData` | How many channels are available? | The channel list defines where the reader can operate within the region. |\n\n> **Note:** Always run `get_current_region` after device provisioning or region changes to confirm the regulatory settings are correct before starting inventory operations.",
+                "description": "## 1. Description\n\nThe `get_current_region` command retrieves the reader's currently applied regulatory region settings.\n\nThis command returns:\n\n- Active country and regulatory region assignment\n- Supported channel set for the selected region\n- Allowed transmit power range information\n- Region-level compliance parameters used by the radio\n\n## 2. Command Details\n\n| Property | Value |\n|---|---|\n| Pattern Name | Regulatory Configuration Query |\n| Communication Type | Bidirectional (Cloud to Device, Device to Cloud) |\n| Applies To | RFD40 Series, RFD90 Series |\n| Related Commands | [get_config](#op-get-config), [get_status](#op-get-status), [get_version](#op-get-version) |\n| Required Request Fields | command, requestId |\n| Supported Operations | Retrieve active regulatory region settings |\n| Supported Response Sections | currentRegion, response |\n| Supported API Versions | V1.0, V1.1 |\n\n## 3. When to Use This Command\n\nUse `get_current_region` to:\n\n- Confirm that the device is configured for the correct regulatory region\n- Validate channel and power constraints before inventory operations\n- Audit compliance settings across deployments\n\nKey fields to check in the response:\n\n| Field | What to Check | Why It Matters |\n|---|---|---|\n| `country` | Is the correct country configured? | The reader must match the regulatory region of its deployment location. |\n| `regulatoryStandard` | FCC, ETSI, or another standard? | Determines which transmission rules apply — channels, power limits, and LBT behavior. |\n| `maxTxPowerSupported` | What is the allowed power ceiling? | Use this to validate transmit power settings before starting inventory. |\n| `lbtEnabled` | Is Listen Before Talk active? | Required in some regions (e.g., ETSI). Affects inventory start behavior. |\n| `frequencyHopping` | Is frequency hopping enabled? | Mandatory in most regions. Confirms the radio is operating compliantly. |\n| `channelData` | How many channels are available? | The channel list defines where the reader can operate within the region. |\n\n> **Note:** Always run `get_current_region` after device provisioning or region changes to confirm the regulatory settings are correct before starting inventory operations.",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -1020,6 +1020,44 @@
                                                                 }
                                                             }
                                                         },
+                                                        "ipv6Configuration": {
+                                                            "type": "object",
+                                                            "properties": {
+                                                                "ipAddress": {
+                                                                    "type": "string",
+                                                                    "example": "fe80::1643:8376:b32:4a16",
+                                                                    "format": "ipv6",
+                                                                    "description": "IPv6 address of the network interface."
+                                                                },
+                                                                "prefix": {
+                                                                    "type": "integer",
+                                                                    "example": "64",
+                                                                    "description": "Prefix length for the IPv6 configuration."
+                                                                },
+                                                                "gateway": {
+                                                                    "type": "string",
+                                                                    "example": "2a02:1234:420a:100b::99",
+                                                                    "format": "ipv6",
+                                                                    "description": "Gateway address for the IPv6 configuration."
+                                                                },
+                                                                "enableAuto": {
+                                                                    "type": "boolean",
+                                                                    "example": true,
+                                                                    "description": "Indicates if auto-configuration is enabled for IPv6."
+                                                                },
+                                                                "dnsServer": {
+                                                                    "type": "string",
+                                                                    "example": "2001:4860:4860::9999",
+                                                                    "format": "ipv6",
+                                                                    "description": "DNS server address for the IPv6 configuration."
+                                                                },
+                                                                "domainName": {
+                                                                    "type": "string",
+                                                                    "example": "test.soti.com",
+                                                                    "description": "Domain name for the IPv6 configuration."
+                                                                }
+                                                            }
+                                                        },
                                                         "security": {
                                                             "type": "object",
                                                             "properties": {
@@ -1183,7 +1221,7 @@
                     "Network Configuration"
                 ],
                 "summary": "Get Wifi",
-                "description": "## 1. Description\n\nThe `get_wifi` command retrieves saved and active Wi-Fi configuration details from the reader.\n\nThis command returns:\n\n- Saved and active Wi-Fi profile configuration details\n- Interface network settings and DHCP addressing state\n- Access point and security configuration parameters\n- Response metadata for command execution\n\nNo additional payload fields are required beyond `command` and `requestId`.\n\n## 2. Command Details\n\n| Property | Value |\n|---|---|\n| Pattern Name | Wi-Fi Configuration Retrieval |\n| Communication Type | Bidirectional (Cloud to Device, Device to Cloud) |\n| Applies To | RFD40 Series, RFD90 Series |\n| Related Commands | [set_wifi](#op-set-wifi), [delete_wifi_profile](#op-delete-wifi-profile), [get_eth](#op-get-eth), [get_config](#op-get-config) |\n| Required Request Fields | command, requestId |\n| Supported Operations | Retrieve Wi-Fi interface and profile configuration details |\n| Supported Response Sections | wifiProfiles, response |\n| Supported API Versions | V1.0, V1.1 |\n\n## 3. When to Use This Command\n\nUse `get_wifi` to:\n\n- Verify connected and saved Wi-Fi profiles\n- Check interface addressing and DHCP state\n- Validate security setup and profile preference behavior\n- Troubleshoot Wi-Fi availability and profile issues\n\nKey fields to check in the response:\n\n| Field | What to Check | Why It Matters |\n|---|---|---|\n| `accessPoint.status` | Is the desired profile CONNECTED? | Confirms the reader is actively using that Wi-Fi network. |\n| `accessPoint.essid` | Is it the correct network? | Multiple profiles can be saved — verify the active one is as expected. |\n| `accessPoint.isPreferred` | Is the preferred profile set correctly? | The preferred profile is the one the reader always connects to when in range. |\n| `accessPoint.securityType` | Does the security type match the AP? | A mismatch prevents connection even if the password is correct. |\n| `ipv4Configuration.ipAddress` | Has the device received a valid IP? | No IP address means DHCP failed or the network is unreachable. |\n| `ipv4Configuration.enableDhcp` | Is DHCP or static addressing in use? | Determines how the IP address is assigned. |\n\n> **Note:** The response contains an array of all saved Wi-Fi profiles under `wifiProfiles.wifiConfig`. Only the currently connected profile includes `interfaceName`, `macAddress`, `hostname`, and `ipv4Configuration`. Disconnected saved profiles contain only `accessPoint` and `securityDetails`.",
+                "description": "## 1. Description\n\nThe `get_wifi` command retrieves saved and active Wi-Fi configuration details from the reader.\n\nThis command returns:\n\n- Saved and active Wi-Fi profile configuration details\n- Interface network settings and DHCP addressing state\n- Access point and security configuration parameters\n- Response metadata for command execution\n\n## 2. Command Details\n\n| Property | Value |\n|---|---|\n| Pattern Name | Wi-Fi Configuration Retrieval |\n| Communication Type | Bidirectional (Cloud to Device, Device to Cloud) |\n| Applies To | RFD40 Series, RFD90 Series |\n| Related Commands | [set_wifi](#op-set-wifi), [delete_wifi_profile](#op-delete-wifi-profile), [get_eth](#op-get-eth), [get_config](#op-get-config) |\n| Required Request Fields | command, requestId |\n| Supported Operations | Retrieve Wi-Fi interface and profile configuration details |\n| Supported Response Sections | wifiProfiles, response |\n| Supported API Versions | V1.0, V1.1 |\n\n## 3. When to Use This Command\n\nUse `get_wifi` to:\n\n- Verify connected and saved Wi-Fi profiles\n- Check interface addressing and DHCP state\n- Validate security setup and profile preference behavior\n- Troubleshoot Wi-Fi availability and profile issues\n\nKey fields to check in the response:\n\n| Field | What to Check | Why It Matters |\n|---|---|---|\n| `accessPoint.status` | Is the desired profile CONNECTED? | Confirms the reader is actively using that Wi-Fi network. |\n| `accessPoint.essid` | Is it the correct network? | Multiple profiles can be saved — verify the active one is as expected. |\n| `accessPoint.isPreferred` | Is the preferred profile set correctly? | The preferred profile is the one the reader always connects to when in range. |\n| `accessPoint.securityType` | Does the security type match the AP? | A mismatch prevents connection even if the password is correct. |\n| `ipv4Configuration.ipAddress` | Has the device received a valid IP? | No IP address means DHCP failed or the network is unreachable. |\n| `ipv4Configuration.enableDhcp` | Is DHCP or static addressing in use? | Determines how the IP address is assigned. |\n\n> **Note:** The response contains an array of all saved Wi-Fi profiles under `wifiProfiles.wifiConfig`. Only the currently connected profile includes `interfaceName`, `macAddress`, `hostname`, and `ipv4Configuration`. Disconnected saved profiles contain only `accessPoint` and `securityDetails`.",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -1888,7 +1926,7 @@
                     "Network Configuration"
                 ],
                 "summary": "Set Wifi",
-                "description": "## 1. Description\n\nThe `set_wifi` command configures or updates Wi-Fi interface and access point profile settings on the reader.\n\nThis command allows you to configure:\n\n- Wi-Fi profile create and modify operations\n- Interface enablement and preferred connection behavior\n- Access point ESSID and connection settings\n- Security type and authentication details for protected networks\n\nUse this command to:\n\n- Provision new Wi-Fi profiles during device onboarding\n- Update existing Wi-Fi settings for network changes\n- Control security and connection behavior for wireless access\n\n## 2. Command Details\n\n| Property | Value |\n|---|---|\n| Pattern Name | Wi-Fi Configuration |\n| Communication Type | Bidirectional (Cloud to Device, Device to Cloud) |\n| Applies To | RFD40 Series, RFD90 Series |\n| Related Commands | `get_wifi`, `delete_wifi_profile`, `set_config`, `install_certificate` |\n| Required Request Fields | `command`, `requestId`, `wifiConfig` |\n| Supported Operations | `CREATE`, `MODIFY` |\n| Supported Security Types | WPA2Personal, WPA3Personal, WPA2Enterprise, WPA3Enterprise, OWEPublic, Open |\n| Enterprise Auth Methods | `tls`, `ttls`, `peap` |\n| Supported Profiles | ESSID-based Wi-Fi access point profiles with optional preferred and autoconnect behavior |\n| Supported API Versions | V1.0, V1.1 |\n\n`wifiConfig` contains the configuration and operation details required by the command.\n\n## 3. Before You Begin\n\nGather the access point details and security credentials before sending this command. An incorrect ESSID or security mismatch will result in a saved but non-functional profile, and the reader will not connect.\n\n| What You Need | Details |\n|---|---|\n| Operation type | Decide whether you are creating a new profile (`CREATE`) or updating an existing one (`MODIFY`). Use `CREATE` for first-time provisioning. Use `MODIFY` to update the password, security settings, or connection behavior of an existing profile. |\n| ESSID | Have the exact access point network name (ESSID/SSID). The value is case-sensitive. A mismatch results in error code 15 (SSID not found) for `MODIFY`, or creates an unreachable profile for `CREATE`. |\n| Security type | Know which security protocol the access point uses — WPA2Personal, WPA3Personal, WPA2Enterprise, WPA3Enterprise, OWEPublic, or Open. Must match the AP configuration exactly. |\n| Security credentials | For Personal networks: have the passphrase ready. For Enterprise networks: know the authentication protocol (`tls`, `ttls`, `peap`), identity, password, and certificate names already installed on the device. |\n| Certificate names (Enterprise) | For WPA2/WPA3 Enterprise with TLS authentication, the `ca_cert`, `client_cert`, and `client_key` must already be installed on the device via `install_certificate`. Have their logical names ready to reference in the `certificate` array. |\n| IPv4 strategy | Decide whether the reader will use DHCP (`enableDhcp: true`) or a static IP address. For static, have the IP address, subnet mask, gateway, and DNS server ready. |\n| Connection behavior | Decide whether the command should immediately connect (`connect: true`) and whether this profile should always be preferred (`isPreferred: true`). |\n| Interface name | Confirm the Wi-Fi interface name on the device (typically `wlan0`). An incorrect name will result in an invalid payload error. |\n\n## 4. Operations\n\nThe `operation` field inside `wifiConfig` determines whether you are creating a new Wi-Fi profile or modifying an existing one.\n\n- **CREATE** — Creates a new Wi-Fi access point profile on the device. The ESSID must not already exist. If a profile with the same ESSID already exists, the command returns error code 18.\n- **MODIFY** — Updates an existing Wi-Fi access point profile. The ESSID must already exist on the device. If the ESSID is not found, the command returns error code 15.\n\n> **Important:** Always verify the response code after sending this command. A successful response (code 0) confirms the profile was saved. Use the `connect` field to control whether the device switches to the new profile immediately.\n\n## 5. Security Types\n\nThe `securityType` field in the `security` object defines the authentication and encryption method for the access point. Choose the type that matches your network's security configuration.\n\n| securityType | Description | Authentication |\n|---|---|---|\n| WPA2Personal | WPA2 with Pre-Shared Key. Standard password-protected home and office Wi-Fi. | Password |\n| WPA3Personal | WPA3 with Simultaneous Authentication of Equals (SAE). More secure than WPA2. | Password |\n| WPA2Enterprise | WPA2 with 802.1X authentication. Used in corporate and institutional networks. | `tls` \\| `ttls` \\| `peap` |\n| WPA3Enterprise | WPA3 with 802.1X authentication. Higher security for enterprise environments. | `tls` \\| `ttls` \\| `peap` |\n| OWEPublic | Opportunistic Wireless Encryption. Open network with encryption but no authentication. | None |\n| Open | No security. Open network with no encryption or authentication. | None |\n\n## 6. Rules and Constraints\n\nViolating any of these rules will cause the command to fail or the Wi-Fi profile to be configured incorrectly.\n\n### Profile Operations\n\n- `CREATE` fails with error code 18 if a profile with the same ESSID already exists. Delete the existing profile first, or use `MODIFY` to update it.\n- `MODIFY` fails with error code 15 if the ESSID does not exist. Use `CREATE` for new profiles.\n- `essid` is required for both `CREATE` and `MODIFY` operations.\n\n### Connection Behavior\n\n- `connect: true` — The device disconnects from the currently active profile and immediately connects to the specified ESSID.\n- `connect: false` — The profile is saved but the device does not switch connections. Use this for pre-provisioning profiles.\n- `isPreferred: true` — The device will always attempt to connect to this ESSID when it is in range.\n- `autoConn` — Reserved for backward compatibility. This field will be removed in a future API version.\n\n### Enterprise Authentication\n\n- Certificates referenced in the `certificate` array must already be installed on the device using `install_certificate` before this command is sent.\n- The certificate `value` field holds the name of the installed certificate, not a file path or URL.\n- `innerAuthentication` is optional for `ttls` and `peap` authentication methods.\n\n### Profile Limits\n\n- The device has a maximum number of saved Wi-Fi profiles. Exceeding this limit returns error code 19.\n- Delete unused profiles using `delete_wifi_profile` before adding new ones when the limit is reached.\n\n> **Security Note:** Never hardcode Wi-Fi passwords or enterprise credentials in your payload. Use a secrets manager or environment variable to supply sensitive values at runtime.",
+                "description": "## 1. Description\n\nThe `set_wifi` command configures or updates Wi-Fi interface and access point profile settings on the reader.\n\nThis command allows you to configure:\n\n- Wi-Fi profile create and modify operations\n- Interface enablement and preferred connection behavior\n- Access point ESSID and connection settings\n- Security type and authentication details for protected networks\n\nUse this command to:\n\n- Provision new Wi-Fi profiles during device onboarding\n- Update existing Wi-Fi settings for network changes\n- Control security and connection behavior for wireless access\n\n## 2. Command Details\n\n| Property | Value |\n|---|---|\n| Pattern Name | Wi-Fi Configuration |\n| Communication Type | Bidirectional (Cloud to Device, Device to Cloud) |\n| Applies To | RFD40 Series, RFD90 Series |\n| Related Commands | [get_wifi](#op-get-wifi), [delete_wifi_profile](#op-delete-wifi-profile), [set_config](#op-set-config), [install_certificate](#op-install-certificate) |\n| Required Request Fields | `command`, `requestId`, `wifiConfig` |\n| Supported Operations | `CREATE`, `MODIFY` |\n| Supported Security Types | WPA2Personal, WPA3Personal, WPA2Enterprise, WPA3Enterprise, OWEPublic, Open |\n| Enterprise Auth Methods | `tls`, `ttls`, `peap` |\n| Supported Profiles | ESSID-based Wi-Fi access point profiles with optional preferred and autoconnect behavior |\n| Supported API Versions | V1.0, V1.1 |\n\n\n## 3. Before You Begin\n\nGather the access point details and security credentials before sending this command. An incorrect ESSID or security mismatch will result in a saved but non-functional profile, and the reader will not connect.\n\n| What You Need | Details |\n|---|---|\n| Operation type | Decide whether you are creating a new profile (`CREATE`) or updating an existing one (`MODIFY`). Use `CREATE` for first-time provisioning. Use `MODIFY` to update the password, security settings, or connection behavior of an existing profile. |\n| ESSID | Have the exact access point network name (ESSID/SSID). The value is case-sensitive. A mismatch results in error code 15 (SSID not found) for `MODIFY`, or creates an unreachable profile for `CREATE`. |\n| Security type | Know which security protocol the access point uses — WPA2Personal, WPA3Personal, WPA2Enterprise, WPA3Enterprise, OWEPublic, or Open. Must match the AP configuration exactly. |\n| Security credentials | For Personal networks: have the passphrase ready. For Enterprise networks: know the authentication protocol (`tls`, `ttls`, `peap`), identity, password, and certificate names already installed on the device. |\n| Certificate names (Enterprise) | For WPA2/WPA3 Enterprise with TLS authentication, the `ca_cert`, `client_cert`, and `client_key` must already be installed on the device via `install_certificate`. Have their logical names ready to reference in the `certificate` array. |\n| IPv4 strategy | Decide whether the reader will use DHCP (`enableDhcp: true`) or a static IP address. For static, have the IP address, subnet mask, gateway, and DNS server ready. |\n| Connection behavior | Decide whether the command should immediately connect (`connect: true`) and whether this profile should always be preferred (`isPreferred: true`). |\n\n## 4. Operations\n\nThe `operation` field inside `wifiConfig` determines whether you are creating a new Wi-Fi profile or modifying an existing one.\n\n- **CREATE** — Creates a new Wi-Fi access point profile on the device. The ESSID must not already exist. If a profile with the same ESSID already exists, the command returns error code 18.\n- **MODIFY** — Updates an existing Wi-Fi access point profile. The ESSID must already exist on the device. If the ESSID is not found, the command returns error code 15.\n\n\n## 5. Security Types\n\nThe `securityType` field in the `security` object defines the authentication and encryption method for the access point. Choose the type that matches your network's security configuration.\n\n| securityType | Description | Authentication |\n|---|---|---|\n| WPA2Personal | WPA2 with Pre-Shared Key. Standard password-protected home and office Wi-Fi. | Password |\n| WPA3Personal | WPA3 with Simultaneous Authentication of Equals (SAE). More secure than WPA2. | Password |\n| WPA2Enterprise | WPA2 with 802.1X authentication. Used in corporate and institutional networks. | `tls` \\| `ttls` \\| `peap` |\n| WPA3Enterprise | WPA3 with 802.1X authentication. Higher security for enterprise environments. | `tls` \\| `ttls` \\| `peap` |\n| OWEPublic | Opportunistic Wireless Encryption. Open network with encryption but no authentication. | None |\n| Open | No security. Open network with no encryption or authentication. | None |\n\n## 6. Rules and Constraints\n\nViolating any of these rules will cause the command to fail or the Wi-Fi profile to be configured incorrectly.\n\n### Profile Operations\n\n- `CREATE` fails with error code 18 if a profile with the same ESSID already exists. Delete the existing profile first, or use `MODIFY` to update it.\n- `MODIFY` fails with error code 15 if the ESSID does not exist. Use `CREATE` for new profiles.\n\n### Connection Behavior\n\n- `connect: true` — The device disconnects from the currently active profile and immediately connects to the specified ESSID.\n- `connect: false` — The profile is saved but the device does not switch connections. Use this for pre-provisioning profiles.\n- `isPreferred: true` — The device will always attempt to connect to this ESSID when it is in range.\n\n### Enterprise Authentication\n\n- Certificates referenced in the `certificate` array must already be installed on the device using `install_certificate` before this command is sent.\n- `innerAuthentication` is optional for `ttls` and `peap` authentication methods.\n\n### Profile Limits\n\n- The device has a maximum number of saved Wi-Fi profiles. Exceeding this limit returns error code 19. Maximum 10 profiles.\n\n- Delete unused profiles using `delete_wifi_profile` before adding new ones when the limit is reached.",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -1912,7 +1950,6 @@
                                             "id": "9x3bxuxkt84ag"
                                         },
                                         "type": "object",
-                                        "description": "Defines the WiFi profile configuration including network credentials and security settings.",
                                         "properties": {
                                             "interfaceName": {
                                                 "type": "string",
@@ -1996,6 +2033,43 @@
                                                                 "type": "string",
                                                                 "example": "example.test.com",
                                                                 "description": "The domain name for the network."
+                                                            }
+                                                        }
+                                                    },
+                                                    "ipv6Configuration": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "ipAddress": {
+                                                                "type": "string",
+                                                                "example": "2a02:1234:420a:100b::99",
+                                                                "format": "ipv6",
+                                                                "description": "The IPv6 address to assign to the interface."
+                                                            },
+                                                            "prefix": {
+                                                                "type": "integer",
+                                                                "example": "65",
+                                                                "description": "The IPv6 address prefix length."
+                                                            },
+                                                            "gateway": {
+                                                                "type": "string",
+                                                                "example": "192.168.1.144",
+                                                                "format": "ipv4",
+                                                                "description": "The IPv6 gateway address."
+                                                            },
+                                                            "enableAuto": {
+                                                                "type": "boolean",
+                                                                "description": "Specifies whether automatic IPv6 address assignment (e.g., SLAAC) is enabled."
+                                                            },
+                                                            "dnsServer": {
+                                                                "type": "string",
+                                                                "example": "2001:4860:4860::9999",
+                                                                "format": "ipv6",
+                                                                "description": "The IPv6 address of the DNS server."
+                                                            },
+                                                            "domainName": {
+                                                                "type": "string",
+                                                                "example": "example.com",
+                                                                "description": "The domain name for the IPv6 network."
                                                             }
                                                         }
                                                     },
@@ -2316,8 +2390,8 @@
                                         }
                                     }
                                 },
-                                "Create WPA2 enterprise": {
-                                    "description": "Payload to create a WiFi profile with WPA2 Enterprise security and certificates",
+                                "Create WPA2 enterprise TLS": {
+                                    "description": "Payload to create a WiFi profile with WPA2 Enterprise using TLS authentication and certificates",
                                     "value": {
                                         "command": "set_wifi",
                                         "requestId": "abc123",
@@ -2506,7 +2580,7 @@
                     "Network Configuration"
                 ],
                 "summary": "Delete Wifi Profile",
-                "description": "## 1. Description\n\nThe `delete_wifi_profile` command removes a saved Wi-Fi profile from the reader. When you run this command, the profile identified by ESSID is deleted from stored Wi-Fi configurations.\n\nUse this command to:\n\n- Remove obsolete or incorrect Wi-Fi profiles\n- Clean up profile lists before adding updated configurations\n- Manage active and fallback network profile sets\n\n## 2. Command Details\n\n| Property | Value |\n|---|---|\n| Pattern Name | Wi-Fi Profile Deletion |\n| Communication Type | Bidirectional (Cloud to Device, Device to Cloud) |\n| Applies To | RFD40 Series, RFD90 Series |\n| Related Commands | [set_wifi](#op-set-wifi), [get_wifi](#op-get-wifi), [delete_certificate](#op-delete-certificate) |\n| Required Request Fields | `command`, `requestId`, `wifiProfileInfo` |\n| Supported Identifier | essid |\n| Supported API Versions | V1.0, V1.1 |\n\n## 3. Before You Begin\n\nGather Wi-Fi profile information before sending this command. An invalid SSID or attempting to delete an active connection will cause the command to fail.\n\n| What You Need | Details |\n|---|---|\n| SSID | Identify the exact ESSID of the Wi-Fi profile you want to delete. The profile must exist in the saved Wi-Fi configurations. |\n| Connection Status | Verify the profile is not currently active. You cannot delete a profile that the device is actively connected to. |\n| Profile Existence | Confirm the profile has been previously saved on the device using `set_wifi` or `get_wifi` commands. |\n\n> **Important:** Before deleting a Wi-Fi profile, ensure you are not currently connected to that network. Attempting to delete an active SSID will result in error code 16.",
+                "description": "## 1. Description\n\nThe `delete_wifi_profile` command removes a saved Wi-Fi profile from the reader. When you run this command, the profile identified by ESSID is deleted from stored Wi-Fi configurations.\n\nUse this command to:\n\n- Remove obsolete or incorrect Wi-Fi profiles\n- Clean up profile lists before adding updated configurations\n- Manage active and fallback network profile sets\n\n## 2. Command Details\n\n| Property | Value |\n|---|---|\n| Pattern Name | Wi-Fi Profile Deletion |\n| Communication Type | Bidirectional (Cloud to Device, Device to Cloud) |\n| Applies To | RFD40 Series, RFD90 Series |\n| Related Commands | [set_wifi](#op-set-wifi), [get_wifi](#op-get-wifi), [delete_certificate](#op-delete-certificate) |\n| Required Request Fields | `command`, `requestId`, `wifiProfileInfo` |\n| Supported Identifier | essid |\n| Supported API Versions | V1.0, V1.1 |\n\n## 3. Before You Begin\n\nGather Wi-Fi profile information before sending this command. An invalid SSID or attempting to delete an active connection will cause the command to fail.\n\n| What You Need | Details |\n|---|---|\n| SSID | Identify the exact ESSID of the Wi-Fi profile you want to delete. The profile must exist in the saved Wi-Fi configurations. |\n| Connection Status | Verify the profile is not currently active. You cannot delete a profile that the device is actively connected to. |\n\n> **Important:** Before deleting a Wi-Fi profile, ensure you are not currently connected to that network. Attempting to delete an active SSID will result in error code 16.",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -2529,7 +2603,6 @@
                                             "id": "g7xr6cuym4h26"
                                         },
                                         "type": "object",
-                                        "description": "Identifies the WiFi profile to be deleted from the device.",
                                         "properties": {
                                             "essid": {
                                                 "type": "string",
@@ -2710,7 +2783,6 @@
                                             "id": "o28vdd695rdr6"
                                         },
                                         "type": "object",
-                                        "description": "Specifies the endpoint to retrieve configuration details for.",
                                         "properties": {
                                             "endpointName": {
                                                 "type": "string"
@@ -3011,8 +3083,11 @@
                                                                                     "id": "jcezrdndi0i9w"
                                                                                 },
                                                                                 "type": "object",
-                                                                                "description": "Reference to the event configuration payload.",
                                                                                 "properties": {
+                                                                                    "antenna": {
+                                                                                        "type": "boolean",
+                                                                                        "description": "set to true to enable antenna events"
+                                                                                    },
                                                                                     "terminalConnection": {
                                                                                         "type": "boolean",
                                                                                         "description": "set to true to enable terminal connection/disconnection events"
@@ -3021,9 +3096,25 @@
                                                                                         "type": "boolean",
                                                                                         "description": "set to true to enable fw update events"
                                                                                     },
+                                                                                    "gpi": {
+                                                                                        "type": "boolean",
+                                                                                        "description": "set to true to enable gpi events"
+                                                                                    },
                                                                                     "network": {
                                                                                         "type": "boolean",
                                                                                         "description": "set to true to enable network events"
+                                                                                    },
+                                                                                    "exceptions": {
+                                                                                        "type": "boolean",
+                                                                                        "description": "set to true to enable exception events"
+                                                                                    },
+                                                                                    "ntp": {
+                                                                                        "type": "boolean",
+                                                                                        "description": "set to true to enable battery alerts"
+                                                                                    },
+                                                                                    "userApp": {
+                                                                                        "type": "boolean",
+                                                                                        "description": "set to true to enable user app events"
                                                                                     },
                                                                                     "heartbeat": {
                                                                                         "type": "boolean",
@@ -3045,6 +3136,18 @@
                                                                                         "type": "boolean",
                                                                                         "description": "set to true to enable file download alerts"
                                                                                     },
+                                                                                    "cpuUsage": {
+                                                                                        "type": "boolean",
+                                                                                        "description": "set to true to enable cpu usage alerts"
+                                                                                    },
+                                                                                    "flashUsage": {
+                                                                                        "type": "boolean",
+                                                                                        "description": "set to true to enable flash usage alerts"
+                                                                                    },
+                                                                                    "ramUsage": {
+                                                                                        "type": "boolean",
+                                                                                        "description": "set to true to enable ram usage alerts"
+                                                                                    },
                                                                                     "heartbeatConfiguration": {
                                                                                         "type": "object",
                                                                                         "properties": {
@@ -3060,10 +3163,31 @@
                                                                                             "batteryStatus": {
                                                                                                 "type": "boolean",
                                                                                                 "description": "set to true to enable battery status as part of heartbeat message"
+                                                                                            },
+                                                                                            "userApps": {
+                                                                                                "type": "boolean",
+                                                                                                "description": "set to true to enable user app status as part of heartbeat message"
                                                                                             }
                                                                                         }
+                                                                                    },
+                                                                                    "cpuThreshold": {
+                                                                                        "type": "integer",
+                                                                                        "description": "cpu usage value(%) above which alert will be triggered"
+                                                                                    },
+                                                                                    "ramThreshold": {
+                                                                                        "type": "integer",
+                                                                                        "description": "ram usage value(%) above which alert will be triggered"
+                                                                                    },
+                                                                                    "flashThreshold": {
+                                                                                        "type": "integer",
+                                                                                        "description": "flash usage value(%) above which alert will be triggered"
+                                                                                    },
+                                                                                    "temperatureThreshold": {
+                                                                                        "type": "integer",
+                                                                                        "description": "temperature treshold value above which alert will be triggered"
                                                                                     }
-                                                                                }
+                                                                                },
+                                                                                "description": "Reference to the event configuration payload."
                                                                             }
                                                                         },
                                                                         "required": [
@@ -3343,7 +3467,6 @@
                                             "id": "83jczha1cflzh"
                                         },
                                         "type": "object",
-                                        "description": "Defines the endpoint configuration including protocol, security, and MQTT parameters.",
                                         "properties": {
                                             "operation": {
                                                 "type": "string",
@@ -3392,7 +3515,17 @@
                                                         "type": "string",
                                                         "enum": [
                                                             "MQTT",
-                                                            "MQTT_TLS"
+                                                            "MQTT_WS",
+                                                            "MQTT_WSS",
+                                                            "MQTT_TLS",
+                                                            "TCP",
+                                                            "HTTP",
+                                                            "HTTPS",
+                                                            "WS",
+                                                            "WSS",
+                                                            "AWS",
+                                                            "AZURE",
+                                                            "HID"
                                                         ],
                                                         "example": "MQTT",
                                                         "description": "Defines the communication protocol used by the endpoint."
@@ -3535,6 +3668,15 @@
                                                                 "example": "PEM",
                                                                 "description": "Specifies the format of the security certificates. Currently, only PEM is supported."
                                                             },
+                                                            "algorithm": {
+                                                                "type": "string",
+                                                                "enum": [
+                                                                    "RSA256",
+                                                                    "RSA512"
+                                                                ],
+                                                                "example": "RSA256",
+                                                                "description": "Specifies the algorithm used for encryption."
+                                                            },
                                                             "caCertificateFile": {
                                                                 "type": "string",
                                                                 "example": "cloud-trusted-ca-certs.crt",
@@ -3553,6 +3695,7 @@
                                                         },
                                                         "required": [
                                                             "format",
+                                                            "algorithm",
                                                             "caCertificateFile",
                                                             "clientCert",
                                                             "clientKey"
@@ -3564,8 +3707,11 @@
                                                             "id": "jcezrdndi0i9w"
                                                         },
                                                         "type": "object",
-                                                        "description": "Reference to the event configuration schema.",
                                                         "properties": {
+                                                            "antenna": {
+                                                                "type": "boolean",
+                                                                "description": "set to true to enable antenna events"
+                                                            },
                                                             "terminalConnection": {
                                                                 "type": "boolean",
                                                                 "description": "set to true to enable terminal connection/disconnection events"
@@ -3574,9 +3720,25 @@
                                                                 "type": "boolean",
                                                                 "description": "set to true to enable fw update events"
                                                             },
+                                                            "gpi": {
+                                                                "type": "boolean",
+                                                                "description": "set to true to enable gpi events"
+                                                            },
                                                             "network": {
                                                                 "type": "boolean",
                                                                 "description": "set to true to enable network events"
+                                                            },
+                                                            "exceptions": {
+                                                                "type": "boolean",
+                                                                "description": "set to true to enable exception events"
+                                                            },
+                                                            "ntp": {
+                                                                "type": "boolean",
+                                                                "description": "set to true to enable battery alerts"
+                                                            },
+                                                            "userApp": {
+                                                                "type": "boolean",
+                                                                "description": "set to true to enable user app events"
                                                             },
                                                             "heartbeat": {
                                                                 "type": "boolean",
@@ -3598,6 +3760,18 @@
                                                                 "type": "boolean",
                                                                 "description": "set to true to enable file download alerts"
                                                             },
+                                                            "cpuUsage": {
+                                                                "type": "boolean",
+                                                                "description": "set to true to enable cpu usage alerts"
+                                                            },
+                                                            "flashUsage": {
+                                                                "type": "boolean",
+                                                                "description": "set to true to enable flash usage alerts"
+                                                            },
+                                                            "ramUsage": {
+                                                                "type": "boolean",
+                                                                "description": "set to true to enable ram usage alerts"
+                                                            },
                                                             "heartbeatConfiguration": {
                                                                 "type": "object",
                                                                 "properties": {
@@ -3613,10 +3787,31 @@
                                                                     "batteryStatus": {
                                                                         "type": "boolean",
                                                                         "description": "set to true to enable battery status as part of heartbeat message"
+                                                                    },
+                                                                    "userApps": {
+                                                                        "type": "boolean",
+                                                                        "description": "set to true to enable user app status as part of heartbeat message"
                                                                     }
                                                                 }
+                                                            },
+                                                            "cpuThreshold": {
+                                                                "type": "integer",
+                                                                "description": "cpu usage value(%) above which alert will be triggered"
+                                                            },
+                                                            "ramThreshold": {
+                                                                "type": "integer",
+                                                                "description": "ram usage value(%) above which alert will be triggered"
+                                                            },
+                                                            "flashThreshold": {
+                                                                "type": "integer",
+                                                                "description": "flash usage value(%) above which alert will be triggered"
+                                                            },
+                                                            "temperatureThreshold": {
+                                                                "type": "integer",
+                                                                "description": "temperature treshold value above which alert will be triggered"
                                                             }
-                                                        }
+                                                        },
+                                                        "description": "Reference to the event configuration schema."
                                                     }
                                                 }
                                             }
@@ -3657,24 +3852,24 @@
                                                     "reconnectDelayMax": 60,
                                                     "publishTopics": [
                                                         {
-                                                            "topic": "MGMT/clients/resp",
+                                                            "topic": "MDM/clients/resp",
                                                             "qos": 1,
                                                             "retain": false
                                                         },
                                                         {
-                                                            "topic": "MGMT/clients/event",
+                                                            "topic": "MDM/clients/event",
                                                             "qos": 1,
                                                             "retain": false
                                                         },
                                                         {
-                                                            "topic": "MGMT/clients/rfid",
+                                                            "topic": "MDM/clients/rfid",
                                                             "qos": 0,
                                                             "retain": true
                                                         }
                                                     ],
                                                     "subscribeTopics": [
                                                         {
-                                                            "topic": "MGMT/clients/cmnd",
+                                                            "topic": "MDM/clients/cmnd",
                                                             "qos": 0,
                                                             "retain": false
                                                         }
@@ -3698,92 +3893,8 @@
                                         "epConfig": {
                                             "operation": "add",
                                             "configuration": {
-                                                "endpointName": "ctrlEP_tls",
-                                                "epType": "CTRL",
-                                                "protocol": "MQTT_TLS",
-                                                "activate": false,
-                                                "url": "broker.ip.com",
-                                                "port": 8883,
-                                                "verificationType": "VERIFY_HOST_PEER",
-                                                "qosCommon": 1,
-                                                "tenantId": "zebra",
-                                                "mqttParams": {
-                                                    "keepAlive": 300,
-                                                    "cleanSession": true,
-                                                    "reconnectDelayMin": 5,
-                                                    "reconnectDelayMax": 60,
-                                                    "publishTopics": [
-                                                        {
-                                                            "topic": "CTRL/clients/resp",
-                                                            "qos": 1,
-                                                            "retain": false
-                                                        },
-                                                        {
-                                                            "topic": "CTRL/clients/event",
-                                                            "qos": 1,
-                                                            "retain": false
-                                                        },
-                                                        {
-                                                            "topic": "CTRL/clients/rfid",
-                                                            "qos": 0,
-                                                            "retain": true
-                                                        }
-                                                    ],
-                                                    "subscribeTopics": [
-                                                        {
-                                                            "topic": "CTRL/clients/cmnd",
-                                                            "qos": 0,
-                                                            "retain": false
-                                                        }
-                                                    ]
-                                                },
-                                                "securityParams": {
-                                                    "format": "PEM",
-                                                    "caCertificateFile": "mqtt_ca_cert",
-                                                    "clientCert": "mqtt_client_cert",
-                                                    "clientKey": "mqtt_client_key"
-                                                }
-                                            }
-                                        }
-                                    }
-                                },
-                                "Add data endpoint": {
-                                    "description": "Payload to add a new data endpoint configuration",
-                                    "value": {
-                                        "command": "config_endpoint",
-                                        "requestId": "1233",
-                                        "epConfig": {
-                                            "operation": "add",
-                                            "configuration": {
-                                                "endpointName": "dataEP",
-                                                "epType": "DATA1",
-                                                "protocol": "MQTT",
-                                                "activate": true,
-                                                "url": "17L11-DS3362",
-                                                "verificationType": "NONE",
-                                                "port": 1883,
-                                                "qosCommon": 1,
-                                                "tenantId": "zebra",
-                                                "mqttParams": {
-                                                    "keepAlive": 300,
-                                                    "cleanSession": true,
-                                                    "reconnectDelayMin": 50,
-                                                    "reconnectDelayMax": 500
-                                                }
-                                            }
-                                        }
-                                    }
-                                },
-                                "Add MDM endpoint": {
-                                    "description": "Payload to add a new MDM endpoint configuration",
-                                    "value": {
-                                        "command": "config_endpoint",
-                                        "requestId": "1233",
-                                        "epConfig": {
-                                            "operation": "add",
-                                            "configuration": {
                                                 "endpointName": "mgmt_tst",
-                                                "epType": "MDM",
+                                                "epType": "MGMT",
                                                 "protocol": "MQTT",
                                                 "activate": true,
                                                 "url": "test.example.com",
@@ -3820,6 +3931,47 @@
                                                             "retain": false
                                                         }
                                                     ]
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "Add data endpoint": {
+                                    "description": "Payload to add a new data endpoint configuration",
+                                    "value": {
+                                        "command": "config_endpoint",
+                                        "requestId": "1233",
+                                        "epConfig": {
+                                            "operation": "delete",
+                                            "configuration": {
+                                                "endpointName": "mgmt_tst",
+                                                "epType": "MGMT"
+                                            }
+                                        }
+                                    }
+                                },
+                                "Add MDM endpoint": {
+                                    "description": "Payload to add a new MDM endpoint configuration",
+                                    "value": {
+                                        "command": "config_endpoint",
+                                        "requestId": "1233",
+                                        "epConfig": {
+                                            "operation": "add",
+                                            "configuration": {
+                                                "endpointName": "dataEP",
+                                                "epType": "DATA1",
+                                                "protocol": "MQTT",
+                                                "activate": true,
+                                                "url": "17L11-DS3362",
+                                                "verificationType": "NONE",
+                                                "port": 1883,
+                                                "qosCommon": 1,
+                                                "tenantId": "zebra",
+                                                "mqttParams": {
+                                                    "keepAlive": 300,
+                                                    "cleanSession": true,
+                                                    "reconnectDelayMin": 50,
+                                                    "reconnectDelayMax": 500
                                                 }
                                             }
                                         }
@@ -3872,53 +4024,6 @@
                                                         }
                                                     ]
                                                 }
-                                            }
-                                        }
-                                    }
-                                },
-                                "Add data endpoint for MQTT TLS": {
-                                    "description": "Payload to add a new data endpoint configuration with MQTT TLS protocol and security parameters",
-                                    "value": {
-                                        "command": "config_endpoint",
-                                        "requestId": "1233",
-                                        "epConfig": {
-                                            "operation": "add",
-                                            "configuration": {
-                                                "endpointName": "dataEP_tls",
-                                                "epType": "DATA1",
-                                                "protocol": "MQTT_TLS",
-                                                "activate": true,
-                                                "url": "broker.ip.com",
-                                                "port": 8883,
-                                                "verificationType": "VERIFY_HOST_PEER",
-                                                "qosCommon": 1,
-                                                "tenantId": "zebra",
-                                                "mqttParams": {
-                                                    "keepAlive": 300,
-                                                    "cleanSession": true,
-                                                    "reconnectDelayMin": 5,
-                                                    "reconnectDelayMax": 60
-                                                },
-                                                "securityParams": {
-                                                    "format": "PEM",
-                                                    "caCertificateFile": "mqtt_ca_cert",
-                                                    "clientCert": "mqtt_client_cert",
-                                                    "clientKey": "mqtt_client_key"
-                                                }
-                                            }
-                                        }
-                                    }
-                                },
-                                "Delete endpoint": {
-                                    "description": "Payload to delete an existing endpoint configuration",
-                                    "value": {
-                                        "command": "config_endpoint",
-                                        "requestId": "1233",
-                                        "epConfig": {
-                                            "operation": "delete",
-                                            "configuration": {
-                                                "endpointName": "mgmt_tst",
-                                                "epType": "MGMT"
                                             }
                                         }
                                     }
@@ -4047,7 +4152,7 @@
                     "Certificate Management"
                 ],
                 "summary": "Get Installed Certificate",
-                "description": "## 1. Description\n\nThe `get_installed_certificate` command retrieves certificate entries currently installed on the reader.\n\nThis command returns:\n\n- Installed certificate names and certificate types\n- Certificate issuer, serial, and key algorithm details\n- Certificate validity period metadata\n- Response metadata for query execution\n\nNo additional payload fields are required beyond `command` and `requestId`.\n\n## 2. Command Details\n\n| Property | Value |\n|---|---|\n| Pattern Name | Installed Certificate Query |\n| Communication Type | Bidirectional (Cloud to Device, Device to Cloud) |\n| Applies To | RFD40 Series, RFD90 Series |\n| Related Commands |[install_certificate](#op-install-certificate), [delete_certificate](#op-delete-certificate), [config_endpoint](#op-config-endpoint)|\n| Required Request Fields | command, requestId |\n| Supported Operations | Retrieve installed certificate inventory details |\n| Supported Response Sections | installedCerts, response |\n| Supported API Versions | V1.0, V1.1 |\n\n## 3. When to Use This Command\n\nUse `get_installed_certificate` to:\n\n- Audit installed certificate inventory on the device\n- Confirm certificate availability before endpoint or Wi-Fi configuration\n- Verify certificate validity windows for rotation planning\n\nKey fields to check in the response:\n\n| Field | What to Check | Why It Matters |\n|---|---|---|\n| `type` | Is the correct certificate type installed? | Certificates are scoped by type (`mqtt`, `wifi`, `filestore`). A certificate installed for one type cannot be used by another. |\n| `name` | Does the name match what config_endpoint or set_wifi expects? | The `name` is what other commands reference when configuring TLS connections. |\n| `validTill` | Is the certificate still within its validity window? | An expired certificate causes TLS connection failures. Check before configuring or rotating. |\n| `validFrom` | Is the certificate already active? | A future `validFrom` means the certificate is not yet valid and will be rejected by the broker. |\n| `issuerName` | Does it match the expected CA? | Confirms the certificate chain is from the correct issuer for your environment. |\n| `serial` | Does the serial match the expected certificate? | Used to uniquely identify a certificate when multiple entries share the same name and type. |\n\n> **Note:** The command name in the payload is `get_installed_certificates` (plural). Use this exact string in the `command` field.",
+                "description": "## 1. Description\n\nThe `get_installed_certificate` command retrieves certificate entries currently installed on the reader.\n\nThis command returns:\n\n- Installed certificate names and certificate types\n- Certificate issuer, serial, and key algorithm details\n- Certificate validity period metadata\n- Response metadata for query execution\n\n\n## 2. Command Details\n\n| Property | Value |\n|---|---|\n| Pattern Name | Installed Certificate Query |\n| Communication Type | Bidirectional (Cloud to Device, Device to Cloud) |\n| Applies To | RFD40 Series, RFD90 Series |\n| Related Commands |[install_certificate](#op-install-certificate), [delete_certificate](#op-delete-certificate), [config_endpoint](#op-config-endpoint)|\n| Required Request Fields | command, requestId |\n| Supported Operations | Retrieve installed certificate inventory details |\n| Supported Response Sections | installedCerts, response |\n| Supported API Versions | V1.0, V1.1 |\n\n## 3. When to Use This Command\n\nUse `get_installed_certificate` to:\n\n- Audit installed certificate inventory on the device\n- Confirm certificate availability before endpoint or Wi-Fi configuration\n- Verify certificate validity windows for rotation planning\n\nKey fields to check in the response:\n\n| Field | What to Check | Why It Matters |\n|---|---|---|\n| `type` | Is the correct certificate type installed? | Certificates are scoped by type (`mqtt`, `wifi`, `filestore`). A certificate installed for one type cannot be used by another. |\n| `name` | Does the name match what config_endpoint or set_wifi expects? | The `name` is what other commands reference when configuring TLS connections. |\n| `validTill` | Is the certificate still within its validity window? | An expired certificate causes TLS connection failures. Check before configuring or rotating. |\n| `validFrom` | Is the certificate already active? | A future `validFrom` means the certificate is not yet valid and will be rejected by the broker. |\n| `issuerName` | Does it match the expected CA? | Confirms the certificate chain is from the correct issuer for your environment. |\n| `serial` | Does the serial match the expected certificate? | Used to uniquely identify a certificate when multiple entries share the same name and type. |\n\n> **Note:** The command name in the payload is `get_installed_certificates` (plural). Use this exact string in the `command` field.",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -4327,7 +4432,7 @@
                     "Certificate Management"
                 ],
                 "summary": "Install Certificate",
-                "description": "## 1. Description\n\nThe `install_certificate` command installs certificates on the device for authentication purposes. Certificates can be downloaded from HTTP sources or provided inline, and stored for WiFi, MQTT, and file store authentication. This command supports various certificate types including CA certificates, client certificates, and client keys.\n\nUse this command to:\n\n- Install WiFi authentication certificates\n- Deploy MQTT client and CA certificates\n- Configure file store authentication certificates\n- Update device security credentials\n- Establish secure communication channels\n\n## 2. Command Details\n\n| Property | Value |\n|---|---|\n| Pattern Name | Certificate Installation |\n| Communication Type | Bidirectional (Cloud to Device, Device to Cloud) |\n| Applies To | RFD40 Series, RFD90 Series |\n| Related Commands | [delete_certificate](#op-delete-certificate), [get_installed_certificate](#op-get-installed-certificate), [config_endpoint](#op-config-endpoint) |\n| Required Request Fields | `command`, `requestId`, `certDetails` |\n| Supported Certificate Types | `client`, `server`, `mqtt`, `wifi`, `filestore`  |\n| Supported Authentication Types | `NONE`, `BASIC`, `TOKEN`, `CERTIFICATE` |\n| Supported Certificate Sources | `HTTP`, `DIRECT` |\n| Supported Verification Types | `NONE`, `VERIFY_PEER`, `VERIFY_HOST`, `VERIFY_HOST_PEER` |\n| Supported API Versions | V1.0, V1.1 |\n\n## 3. Before You Begin\n\nGather certificate details and source information before sending this command. A missing URL, incorrect certificate type, or unsupported authentication method will cause installation to fail.\n\n| What You Need | Details |\n|---|---|\n| Certificate type | Identify where the certificate will be used — `wifi` for WiFi network authentication, `mqtt` for MQTT client and CA certificates, `filestore` for file store authentication, `client` for client certificates, or `server` for server certificates. |\n| Certificate source | Decide how the certificate content is supplied — `HTTP` to download from a remote URL, or `DIRECT` to provide content inline in `certificateBundle`. If `certSource` is omitted, the device defaults to `HTTP`. |\n| Certificate URLs | For `HTTP` source: have the full URLs ready for each certificate component (`ca_cert`, `client_cert`, `client_key`). Verify the URLs are reachable from the device's network. |\n| Inline certificate content | For `DIRECT` source: have the PEM or base64-encoded certificate content ready to supply in `certificateBundle`. |\n| Authentication type | Decide how the certificate download server is secured — `NONE` for open servers, `BASIC` for username/password, or `CERTIFICATE` for certificate-based download authentication. Note: `TOKEN` is currently not supported. |\n| TLS verification type | Decide the verification level for the remote certificate source connection — `NONE`, `VERIFY_PEER`, `VERIFY_HOST`, or `VERIFY_HOST_PEER`. |\n| Logical name | Assign a meaningful logical name for the certificate entry via the `name` field. This name is used when referencing the certificate in other commands such as `set_wifi` and `config_endpoint`. |\n\n> **Important:** A response code of `1` (Command payload is accepted) does not mean installation is complete. The device processes the certificate installation asynchronously. Monitor follow-up events or poll `get_installed_certificate` to confirm completion.\n\n## 4. Certificate Types\n\nThe `type` field in `certDetails` defines where the certificate will be used. Choose the correct type based on the service that will consume the certificate.\n\n- `filestore` — File store authentication certificates used for authenticating certificate downloads.\n- `wifi` — WiFi network authentication certificates for enterprise wireless connections.\n- `mqtt` — MQTT client certificates and CA certificates used for TLS-secured broker connections.\n- `client` — Client-side certificates for general authentication.\n- `server` — Server-side certificates.\n\n## 5. Authentication and Verification Options\n\n### Authentication Types (`authenticationType`)\n\nSpecifies the authentication method used to access the remote certificate source when `certSource` is `HTTP`.\n\n- `NONE` — No authentication is used when downloading certificates.\n- `BASIC` — HTTP Basic authentication using username and password. Requires the `authenticateOptions` object.\n- `CERTIFICATE` — Certificate-based authentication used to download or retrieve certificates. Supply inline CA cert via `caCertificateFileContent`, or leave empty to use an already installed filestore certificate.\n- `TOKEN` — Token-based authentication. Currently not supported.\n\n### Certificate Sources (`certSource`)\n\nSpecifies how the certificate content is supplied. This field is optional — if omitted, the device defaults to `HTTP`.\n\n- `HTTP` — Certificate content is downloaded from remote URLs specified in the `url` array. This is the default when `certSource` is omitted.\n- `DIRECT` — Certificate content is provided inline in the `certificateBundle` object. No network download occurs.\n\n### Verification Types (`verificationType`)\n\nSpecifies the TLS verification mode used when validating remote endpoints during certificate download.\n\n- `NONE` — No TLS verification is performed.\n- `VERIFY_PEER` — Verifies the peer's certificate.\n- `VERIFY_HOST` — Verifies the host name matches the certificate.\n- `VERIFY_HOST_PEER` — Verifies both the host name and the peer certificate. Recommended for production.\n\n## 6. Rules and Constraints\n\nViolating any of these rules will cause the command to fail or the certificate to be installed incorrectly.\n\n### certSource Defaults\n\n- If `certSource` is omitted, the device defaults to `HTTP` and attempts to download from the URLs in the `url` array.\n- If `certSource` is `DIRECT`, the `url` array is ignored — provide content in `certificateBundle` instead.\n- `DIRECT` and `HTTP` cannot be combined in the same request.\n\n### URL Array Keys\n\n- `ca_cert` — CA certificate. Supported for all certificate types.\n- `client_cert` — Client certificate. Required for mutual TLS.\n- `client_key` — Client private key. Required when `client_cert` is provided.\n- `cert_key_password` — Password for the encrypted client private key, when required.\n\n### Authentication\n\n- `authenticateOptions` is required when `authenticationType` is `BASIC`.\n- `CERTIFICATE` authentication can use inline CA certificate content in `caCertificateFileContent`, or an already installed filestore certificate if that field is empty.\n- `TOKEN` authentication is currently not supported.\n\n### Unsupported Fields\n\n- `pfxPassword` — PFX/PKCS#12 bundle password. Currently not supported on RFD40/RFD90.\n- `headerParams` — Custom HTTP header parameters. Currently not supported.\n- `queryParams` — HTTP query parameters. Currently not supported.\n\n> **Security Note:** Never hardcode certificate passwords or credentials in your payload. Use a secrets manager or environment variable to supply sensitive values at runtime.",
+                "description": "## 1. Description\n\nThe `install_certificate` command installs certificates on the device for authentication purposes. Certificates can be downloaded from HTTP sources or provided inline, and stored for WiFi, MQTT, and file store authentication. This command supports various certificate types including CA certificates, client certificates, and client keys.\n\nUse this command to:\n\n- Install WiFi authentication certificates\n- Deploy MQTT client and CA certificates\n- Configure file store authentication certificates\n- Update device security credentials\n- Establish secure communication channels\n\n## 2. Command Details\n\n| Property | Value |\n|---|---|\n| Pattern Name | Certificate Installation |\n| Communication Type | Bidirectional (Cloud to Device, Device to Cloud) |\n| Applies To | RFD40 Series, RFD90 Series |\n| Related Commands | [delete_certificate](#op-delete-certificate), [get_installed_certificate](#op-get-installed-certificate), [config_endpoint](#op-config-endpoint) |\n| Required Request Fields | `command`, `requestId`, `certDetails` |\n| Supported Certificate Types | `client`, `server`, `mqtt`, `wifi`, `filestore`  |\n| Supported Authentication Types | `NONE`, `CERTIFICATE` |\n| Supported Certificate Sources | `HTTP`, `DIRECT` |\n| Supported Verification Types | `NONE`, `VERIFY_PEER`, `VERIFY_HOST`, `VERIFY_HOST_PEER` |\n| Supported API Versions | V1.0, V1.1 |\n\n## 3. Before You Begin\n\nGather certificate details and source information before sending this command. A missing URL, incorrect certificate type, or unsupported authentication method will cause installation to fail.\n\n| What You Need | Details |\n|---|---|\n| Certificate type | Identify where the certificate will be used — `wifi` for WiFi network authentication, `mqtt` for MQTT client and CA certificates, `filestore` for file store authentication, `client` for client certificates, or `server` for server certificates. |\n| Certificate source | Decide how the certificate content is supplied — `HTTP` to download from a remote URL, or `DIRECT` to provide content inline in `certificateBundle`. If `certSource` is omitted, the device defaults to `HTTP`. |\n| Certificate URLs | For `HTTP` source: have the full URLs ready for each certificate component (`ca_cert`, `client_cert`, `client_key`). Verify the URLs are reachable from the device's network. |\n| Inline certificate content | For `DIRECT` source: have the PEM or base64-encoded certificate content ready to supply in `certificateBundle`. |\n| Authentication type | Decide how the certificate download server is secured — `NONE` for open servers, or `CERTIFICATE` for certificate-based download authentication. |\n| TLS verification type | Decide the verification level for the remote certificate source connection — `NONE`, `VERIFY_PEER`, `VERIFY_HOST`, or `VERIFY_HOST_PEER`. |\n| Logical name | Assign a meaningful logical name for the certificate entry via the `name` field. This name is used when referencing the certificate in other commands such as `set_wifi` and `config_endpoint`. |\n\n> **Important:** A response code of `1` (Command payload is accepted) does not mean installation is complete. The device processes the certificate installation asynchronously. Monitor follow-up events or poll `get_installed_certificate` to confirm completion.\n\n## 4. Certificate Types\n\nThe `type` field in `certDetails` defines where the certificate will be used. Choose the correct type based on the service that will consume the certificate.\n\n- `filestore` — File store authentication certificates used for authenticating certificate downloads.\n- `wifi` — WiFi network authentication certificates for enterprise wireless connections.\n- `mqtt` — MQTT client certificates and CA certificates used for TLS-secured broker connections.\n- `client` — Client-side certificates for general authentication.\n- `server` — Server-side certificates.\n\n## 5. Authentication and Verification Options\n\n### Authentication Types (`authenticationType`)\n\nSpecifies the authentication method used to access the remote certificate source when `certSource` is `HTTP`.\n\n- `NONE` — No authentication is used when downloading certificates.\n- `CERTIFICATE` — Certificate-based authentication used to download or retrieve certificates. Supply inline CA cert via `caCertificateFileContent`, or leave empty to use an already installed filestore certificate.\n\n### Certificate Sources (`certSource`)\n\nSpecifies how the certificate content is supplied. This field is optional — if omitted, the device defaults to `HTTP`.\n\n- `HTTP` — Certificate content is downloaded from remote URLs specified in the `url` array. This is the default when `certSource` is omitted.\n- `DIRECT` — Certificate content is provided inline in the `certificateBundle` object. No network download occurs.\n\n### Verification Types (`verificationType`)\n\nSpecifies the TLS verification mode used when validating remote endpoints during certificate download.\n\n- `NONE` — No TLS verification is performed.\n- `VERIFY_PEER` — Verifies the peer's certificate.\n- `VERIFY_HOST` — Verifies the host name matches the certificate.\n- `VERIFY_HOST_PEER` — Verifies both the host name and the peer certificate. Recommended for production.\n\n## 6. Rules and Constraints\n\nViolating any of these rules will cause the command to fail or the certificate to be installed incorrectly.\n\n### certSource Defaults\n\n- If `certSource` is omitted, the device defaults to `HTTP` and attempts to download from the URLs in the `url` array.\n- If `certSource` is `DIRECT`, the `url` array is ignored — provide content in `certificateBundle` instead.\n- `DIRECT` and `HTTP` cannot be combined in the same request.\n\n### URL Array Keys\n\n- `ca_cert` — CA certificate. Supported for all certificate types.\n- `client_cert` — Client certificate. Required for mutual TLS.\n- `client_key` — Client private key. Required when `client_cert` is provided.\n- `cert_key_password` — Password for the encrypted client private key, when required.\n\n### Authentication\n\n- `CERTIFICATE` authentication can use inline CA certificate content in `caCertificateFileContent`, or an already installed filestore certificate if that field is empty.\n\n### Unsupported Fields\n\n- `pfxPassword` — PFX/PKCS#12 bundle password. Currently not supported on RFD40/RFD90.\n- `headerParams` — Custom HTTP header parameters. Currently not supported.\n- `queryParams` — HTTP query parameters. Currently not supported.\n\n> **Security Note:** Never hardcode certificate passwords or credentials in your payload. Use a secrets manager or environment variable to supply sensitive values at runtime.",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -4351,7 +4456,6 @@
                                             "id": "0114c36cfa592"
                                         },
                                         "type": "object",
-                                        "description": "Defines the certificate details required for installation on the device.",
                                         "properties": {
                                             "name": {
                                                 "type": "string",
@@ -4374,10 +4478,12 @@
                                                 "type": "string",
                                                 "enum": [
                                                     "NONE",
+                                                    "BASIC",
+                                                    "TOKEN",
                                                     "CERTIFICATE"
                                                 ],
                                                 "example": "BASIC",
-                                                "description": "Specifies the authentication method used to access the remote certificate source.\n- `NONE`: No authentication is used.\n- `CERTIFICATE`: Certificate-based authentication used to download or retrieve certificates."
+                                                "description": "Specifies the authentication method used to access the remote certificate source.\n- `NONE`: No authentication is used.\n- `BASIC`: HTTP Basic authentication using username and password. In this case, `authenticateOptions` is required.\n- `TOKEN`: Token-based authentication. This option is currently not supported.\n- `CERTIFICATE`: Certificate-based authentication used to download or retrieve certificates."
                                             },
                                             "certSource": {
                                                 "type": "string",
@@ -4407,6 +4513,61 @@
                                                         "value": {
                                                             "type": "string",
                                                             "description": "The URL for the specified component. For `cert_key_password`, this is the key password value."
+                                                        }
+                                                    }
+                                                }
+                                            },
+                                            "authenticateOptions": {
+                                                "type": "object",
+                                                "description": "Authentication options for credential-based access. Required when `authenticationType` is `BASIC`.",
+                                                "properties": {
+                                                    "username": {
+                                                        "type": "string",
+                                                        "example": "rfid",
+                                                        "description": "Username used for HTTP Basic authentication."
+                                                    },
+                                                    "password": {
+                                                        "type": "string",
+                                                        "example": "rfid",
+                                                        "description": "Password used for HTTP Basic authentication."
+                                                    }
+                                                }
+                                            },
+                                            "pfxPassword": {
+                                                "type": "string",
+                                                "example": "pass@123",
+                                                "description": "Password for the PFX (PKCS#12) bundle when a PFX certificate is provided. This field is currently not supported for RFD40/90."
+                                            },
+                                            "headerParams": {
+                                                "type": "array",
+                                                "description": "A list of key-value pairs representing HTTP header parameters. This field is currently not supported.",
+                                                "items": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "key": {
+                                                            "type": "string",
+                                                            "description": "The key for the HTTP header parameter."
+                                                        },
+                                                        "value": {
+                                                            "type": "string",
+                                                            "description": "The value associated with the HTTP header parameter."
+                                                        }
+                                                    }
+                                                }
+                                            },
+                                            "queryParams": {
+                                                "type": "array",
+                                                "description": "A list of key-value pairs representing query parameters. This field is currently not supported.",
+                                                "items": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "key": {
+                                                            "type": "string",
+                                                            "description": "The key for the query parameter."
+                                                        },
+                                                        "value": {
+                                                            "type": "string",
+                                                            "description": "The value associated with the query parameter."
                                                         }
                                                     }
                                                 }
@@ -4726,7 +4887,6 @@
                                             "id": "d98c7f20315ac"
                                         },
                                         "type": "object",
-                                        "description": "Identifies the certificate to be deleted from the device.",
                                         "properties": {
                                             "name": {
                                                 "type": "string",
@@ -5347,6 +5507,44 @@
                                                                             "type": "string",
                                                                             "example": "test.soti.com",
                                                                             "description": "Domain name for the IPv4 configuration."
+                                                                        }
+                                                                    }
+                                                                },
+                                                                "ipv6Configuration": {
+                                                                    "type": "object",
+                                                                    "properties": {
+                                                                        "ipAddress": {
+                                                                            "type": "string",
+                                                                            "example": "fe80::1643:8376:b32:4a16",
+                                                                            "format": "ipv6",
+                                                                            "description": "IPv6 address of the network interface."
+                                                                        },
+                                                                        "prefix": {
+                                                                            "type": "integer",
+                                                                            "example": "64",
+                                                                            "description": "Prefix length for the IPv6 configuration."
+                                                                        },
+                                                                        "gateway": {
+                                                                            "type": "string",
+                                                                            "example": "2a02:1234:420a:100b::99",
+                                                                            "format": "ipv6",
+                                                                            "description": "Gateway address for the IPv6 configuration."
+                                                                        },
+                                                                        "enableAuto": {
+                                                                            "type": "boolean",
+                                                                            "example": true,
+                                                                            "description": "Indicates if auto-configuration is enabled for IPv6."
+                                                                        },
+                                                                        "dnsServer": {
+                                                                            "type": "string",
+                                                                            "example": "2001:4860:4860::9999",
+                                                                            "format": "ipv6",
+                                                                            "description": "DNS server address for the IPv6 configuration."
+                                                                        },
+                                                                        "domainName": {
+                                                                            "type": "string",
+                                                                            "example": "test.soti.com",
+                                                                            "description": "Domain name for the IPv6 configuration."
                                                                         }
                                                                     }
                                                                 },
@@ -6093,8 +6291,11 @@
                                                                         "id": "jcezrdndi0i9w"
                                                                     },
                                                                     "type": "object",
-                                                                    "description": "Reference to the event configuration payload.",
                                                                     "properties": {
+                                                                        "antenna": {
+                                                                            "type": "boolean",
+                                                                            "description": "set to true to enable antenna events"
+                                                                        },
                                                                         "terminalConnection": {
                                                                             "type": "boolean",
                                                                             "description": "set to true to enable terminal connection/disconnection events"
@@ -6103,9 +6304,25 @@
                                                                             "type": "boolean",
                                                                             "description": "set to true to enable fw update events"
                                                                         },
+                                                                        "gpi": {
+                                                                            "type": "boolean",
+                                                                            "description": "set to true to enable gpi events"
+                                                                        },
                                                                         "network": {
                                                                             "type": "boolean",
                                                                             "description": "set to true to enable network events"
+                                                                        },
+                                                                        "exceptions": {
+                                                                            "type": "boolean",
+                                                                            "description": "set to true to enable exception events"
+                                                                        },
+                                                                        "ntp": {
+                                                                            "type": "boolean",
+                                                                            "description": "set to true to enable battery alerts"
+                                                                        },
+                                                                        "userApp": {
+                                                                            "type": "boolean",
+                                                                            "description": "set to true to enable user app events"
                                                                         },
                                                                         "heartbeat": {
                                                                             "type": "boolean",
@@ -6127,6 +6344,18 @@
                                                                             "type": "boolean",
                                                                             "description": "set to true to enable file download alerts"
                                                                         },
+                                                                        "cpuUsage": {
+                                                                            "type": "boolean",
+                                                                            "description": "set to true to enable cpu usage alerts"
+                                                                        },
+                                                                        "flashUsage": {
+                                                                            "type": "boolean",
+                                                                            "description": "set to true to enable flash usage alerts"
+                                                                        },
+                                                                        "ramUsage": {
+                                                                            "type": "boolean",
+                                                                            "description": "set to true to enable ram usage alerts"
+                                                                        },
                                                                         "heartbeatConfiguration": {
                                                                             "type": "object",
                                                                             "properties": {
@@ -6142,10 +6371,31 @@
                                                                                 "batteryStatus": {
                                                                                     "type": "boolean",
                                                                                     "description": "set to true to enable battery status as part of heartbeat message"
+                                                                                },
+                                                                                "userApps": {
+                                                                                    "type": "boolean",
+                                                                                    "description": "set to true to enable user app status as part of heartbeat message"
                                                                                 }
                                                                             }
+                                                                        },
+                                                                        "cpuThreshold": {
+                                                                            "type": "integer",
+                                                                            "description": "cpu usage value(%) above which alert will be triggered"
+                                                                        },
+                                                                        "ramThreshold": {
+                                                                            "type": "integer",
+                                                                            "description": "ram usage value(%) above which alert will be triggered"
+                                                                        },
+                                                                        "flashThreshold": {
+                                                                            "type": "integer",
+                                                                            "description": "flash usage value(%) above which alert will be triggered"
+                                                                        },
+                                                                        "temperatureThreshold": {
+                                                                            "type": "integer",
+                                                                            "description": "temperature treshold value above which alert will be triggered"
                                                                         }
-                                                                    }
+                                                                    },
+                                                                    "description": "Reference to the event configuration payload."
                                                                 }
                                                             },
                                                             "required": [
@@ -6469,7 +6719,6 @@
                                             "id": "uq4x24ym4hs58"
                                         },
                                         "type": "object",
-                                        "description": "Specifies the complete device configuration to be applied, including WiFi and endpoint settings.",
                                         "properties": {
                                             "applyAfterReboot": {
                                                 "type": "boolean",
@@ -6481,7 +6730,6 @@
                                                     "id": "9x3bxuxkt84ag"
                                                 },
                                                 "type": "object",
-                                                "description": "Defines the WiFi profile configuration including network credentials and security settings.",
                                                 "properties": {
                                                     "interfaceName": {
                                                         "type": "string",
@@ -6565,6 +6813,43 @@
                                                                         "type": "string",
                                                                         "example": "example.test.com",
                                                                         "description": "The domain name for the network."
+                                                                    }
+                                                                }
+                                                            },
+                                                            "ipv6Configuration": {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "ipAddress": {
+                                                                        "type": "string",
+                                                                        "example": "2a02:1234:420a:100b::99",
+                                                                        "format": "ipv6",
+                                                                        "description": "The IPv6 address to assign to the interface."
+                                                                    },
+                                                                    "prefix": {
+                                                                        "type": "integer",
+                                                                        "example": "65",
+                                                                        "description": "The IPv6 address prefix length."
+                                                                    },
+                                                                    "gateway": {
+                                                                        "type": "string",
+                                                                        "example": "192.168.1.144",
+                                                                        "format": "ipv4",
+                                                                        "description": "The IPv6 gateway address."
+                                                                    },
+                                                                    "enableAuto": {
+                                                                        "type": "boolean",
+                                                                        "description": "Specifies whether automatic IPv6 address assignment (e.g., SLAAC) is enabled."
+                                                                    },
+                                                                    "dnsServer": {
+                                                                        "type": "string",
+                                                                        "example": "2001:4860:4860::9999",
+                                                                        "format": "ipv6",
+                                                                        "description": "The IPv6 address of the DNS server."
+                                                                    },
+                                                                    "domainName": {
+                                                                        "type": "string",
+                                                                        "example": "example.com",
+                                                                        "description": "The domain name for the IPv6 network."
                                                                     }
                                                                 }
                                                             },
@@ -6816,7 +7101,6 @@
                                                     "id": "l9v7iab36nd84"
                                                 },
                                                 "type": "object",
-                                                "description": "Defines the endpoint configuration including protocol, security, and MQTT parameters.",
                                                 "properties": {
                                                     "operation": {
                                                         "type": "string",
@@ -6865,7 +7149,17 @@
                                                                 "type": "string",
                                                                 "enum": [
                                                                     "MQTT",
-                                                                    "MQTT_TLS"
+                                                                    "MQTT_WS",
+                                                                    "MQTT_WSS",
+                                                                    "MQTT_TLS",
+                                                                    "TCP",
+                                                                    "HTTP",
+                                                                    "HTTPS",
+                                                                    "WS",
+                                                                    "WSS",
+                                                                    "AWS",
+                                                                    "AZURE",
+                                                                    "HID"
                                                                 ],
                                                                 "example": "MQTT",
                                                                 "description": "Defines the communication protocol used by the endpoint."
@@ -7008,6 +7302,15 @@
                                                                         "example": "PEM",
                                                                         "description": "Specifies the format of the security certificates. Currently, only PEM is supported."
                                                                     },
+                                                                    "algorithm": {
+                                                                        "type": "string",
+                                                                        "enum": [
+                                                                            "RSA256",
+                                                                            "RSA512"
+                                                                        ],
+                                                                        "example": "RSA256",
+                                                                        "description": "Specifies the algorithm used for encryption."
+                                                                    },
                                                                     "caCertificateFile": {
                                                                         "type": "string",
                                                                         "example": "cloud-trusted-ca-certs.crt",
@@ -7026,6 +7329,7 @@
                                                                 },
                                                                 "required": [
                                                                     "format",
+                                                                    "algorithm",
                                                                     "caCertificateFile",
                                                                     "clientCert",
                                                                     "clientKey"
@@ -7037,8 +7341,11 @@
                                                                     "id": "jcezrdndi0i9w"
                                                                 },
                                                                 "type": "object",
-                                                                "description": "Reference to the event configuration schema.",
                                                                 "properties": {
+                                                                    "antenna": {
+                                                                        "type": "boolean",
+                                                                        "description": "set to true to enable antenna events"
+                                                                    },
                                                                     "terminalConnection": {
                                                                         "type": "boolean",
                                                                         "description": "set to true to enable terminal connection/disconnection events"
@@ -7047,9 +7354,25 @@
                                                                         "type": "boolean",
                                                                         "description": "set to true to enable fw update events"
                                                                     },
+                                                                    "gpi": {
+                                                                        "type": "boolean",
+                                                                        "description": "set to true to enable gpi events"
+                                                                    },
                                                                     "network": {
                                                                         "type": "boolean",
                                                                         "description": "set to true to enable network events"
+                                                                    },
+                                                                    "exceptions": {
+                                                                        "type": "boolean",
+                                                                        "description": "set to true to enable exception events"
+                                                                    },
+                                                                    "ntp": {
+                                                                        "type": "boolean",
+                                                                        "description": "set to true to enable battery alerts"
+                                                                    },
+                                                                    "userApp": {
+                                                                        "type": "boolean",
+                                                                        "description": "set to true to enable user app events"
                                                                     },
                                                                     "heartbeat": {
                                                                         "type": "boolean",
@@ -7071,6 +7394,18 @@
                                                                         "type": "boolean",
                                                                         "description": "set to true to enable file download alerts"
                                                                     },
+                                                                    "cpuUsage": {
+                                                                        "type": "boolean",
+                                                                        "description": "set to true to enable cpu usage alerts"
+                                                                    },
+                                                                    "flashUsage": {
+                                                                        "type": "boolean",
+                                                                        "description": "set to true to enable flash usage alerts"
+                                                                    },
+                                                                    "ramUsage": {
+                                                                        "type": "boolean",
+                                                                        "description": "set to true to enable ram usage alerts"
+                                                                    },
                                                                     "heartbeatConfiguration": {
                                                                         "type": "object",
                                                                         "properties": {
@@ -7086,10 +7421,31 @@
                                                                             "batteryStatus": {
                                                                                 "type": "boolean",
                                                                                 "description": "set to true to enable battery status as part of heartbeat message"
+                                                                            },
+                                                                            "userApps": {
+                                                                                "type": "boolean",
+                                                                                "description": "set to true to enable user app status as part of heartbeat message"
                                                                             }
                                                                         }
+                                                                    },
+                                                                    "cpuThreshold": {
+                                                                        "type": "integer",
+                                                                        "description": "cpu usage value(%) above which alert will be triggered"
+                                                                    },
+                                                                    "ramThreshold": {
+                                                                        "type": "integer",
+                                                                        "description": "ram usage value(%) above which alert will be triggered"
+                                                                    },
+                                                                    "flashThreshold": {
+                                                                        "type": "integer",
+                                                                        "description": "flash usage value(%) above which alert will be triggered"
+                                                                    },
+                                                                    "temperatureThreshold": {
+                                                                        "type": "integer",
+                                                                        "description": "temperature treshold value above which alert will be triggered"
                                                                     }
-                                                                }
+                                                                },
+                                                                "description": "Reference to the event configuration schema."
                                                             }
                                                         }
                                                     }
@@ -7524,7 +7880,6 @@
                                                         "id": "9x3bxuxkt84ag"
                                                     },
                                                     "type": "object",
-                                                    "description": "Defines the WiFi profile configuration including network credentials and security settings.",
                                                     "properties": {
                                                         "interfaceName": {
                                                             "type": "string",
@@ -7608,6 +7963,43 @@
                                                                             "type": "string",
                                                                             "example": "example.test.com",
                                                                             "description": "The domain name for the network."
+                                                                        }
+                                                                    }
+                                                                },
+                                                                "ipv6Configuration": {
+                                                                    "type": "object",
+                                                                    "properties": {
+                                                                        "ipAddress": {
+                                                                            "type": "string",
+                                                                            "example": "2a02:1234:420a:100b::99",
+                                                                            "format": "ipv6",
+                                                                            "description": "The IPv6 address to assign to the interface."
+                                                                        },
+                                                                        "prefix": {
+                                                                            "type": "integer",
+                                                                            "example": "65",
+                                                                            "description": "The IPv6 address prefix length."
+                                                                        },
+                                                                        "gateway": {
+                                                                            "type": "string",
+                                                                            "example": "192.168.1.144",
+                                                                            "format": "ipv4",
+                                                                            "description": "The IPv6 gateway address."
+                                                                        },
+                                                                        "enableAuto": {
+                                                                            "type": "boolean",
+                                                                            "description": "Specifies whether automatic IPv6 address assignment (e.g., SLAAC) is enabled."
+                                                                        },
+                                                                        "dnsServer": {
+                                                                            "type": "string",
+                                                                            "example": "2001:4860:4860::9999",
+                                                                            "format": "ipv6",
+                                                                            "description": "The IPv6 address of the DNS server."
+                                                                        },
+                                                                        "domainName": {
+                                                                            "type": "string",
+                                                                            "example": "example.com",
+                                                                            "description": "The domain name for the IPv6 network."
                                                                         }
                                                                     }
                                                                 },
@@ -7859,7 +8251,6 @@
                                                         "id": "l9v7iab36nd84"
                                                     },
                                                     "type": "object",
-                                                    "description": "Defines the endpoint configuration including protocol, security, and MQTT parameters.",
                                                     "properties": {
                                                         "operation": {
                                                             "type": "string",
@@ -7908,7 +8299,17 @@
                                                                     "type": "string",
                                                                     "enum": [
                                                                         "MQTT",
-                                                                        "MQTT_TLS"
+                                                                        "MQTT_WS",
+                                                                        "MQTT_WSS",
+                                                                        "MQTT_TLS",
+                                                                        "TCP",
+                                                                        "HTTP",
+                                                                        "HTTPS",
+                                                                        "WS",
+                                                                        "WSS",
+                                                                        "AWS",
+                                                                        "AZURE",
+                                                                        "HID"
                                                                     ],
                                                                     "example": "MQTT",
                                                                     "description": "Defines the communication protocol used by the endpoint."
@@ -8051,6 +8452,15 @@
                                                                             "example": "PEM",
                                                                             "description": "Specifies the format of the security certificates. Currently, only PEM is supported."
                                                                         },
+                                                                        "algorithm": {
+                                                                            "type": "string",
+                                                                            "enum": [
+                                                                                "RSA256",
+                                                                                "RSA512"
+                                                                            ],
+                                                                            "example": "RSA256",
+                                                                            "description": "Specifies the algorithm used for encryption."
+                                                                        },
                                                                         "caCertificateFile": {
                                                                             "type": "string",
                                                                             "example": "cloud-trusted-ca-certs.crt",
@@ -8069,6 +8479,7 @@
                                                                     },
                                                                     "required": [
                                                                         "format",
+                                                                        "algorithm",
                                                                         "caCertificateFile",
                                                                         "clientCert",
                                                                         "clientKey"
@@ -8080,8 +8491,11 @@
                                                                         "id": "jcezrdndi0i9w"
                                                                     },
                                                                     "type": "object",
-                                                                    "description": "Reference to the event configuration schema.",
                                                                     "properties": {
+                                                                        "antenna": {
+                                                                            "type": "boolean",
+                                                                            "description": "set to true to enable antenna events"
+                                                                        },
                                                                         "terminalConnection": {
                                                                             "type": "boolean",
                                                                             "description": "set to true to enable terminal connection/disconnection events"
@@ -8090,9 +8504,25 @@
                                                                             "type": "boolean",
                                                                             "description": "set to true to enable fw update events"
                                                                         },
+                                                                        "gpi": {
+                                                                            "type": "boolean",
+                                                                            "description": "set to true to enable gpi events"
+                                                                        },
                                                                         "network": {
                                                                             "type": "boolean",
                                                                             "description": "set to true to enable network events"
+                                                                        },
+                                                                        "exceptions": {
+                                                                            "type": "boolean",
+                                                                            "description": "set to true to enable exception events"
+                                                                        },
+                                                                        "ntp": {
+                                                                            "type": "boolean",
+                                                                            "description": "set to true to enable battery alerts"
+                                                                        },
+                                                                        "userApp": {
+                                                                            "type": "boolean",
+                                                                            "description": "set to true to enable user app events"
                                                                         },
                                                                         "heartbeat": {
                                                                             "type": "boolean",
@@ -8114,6 +8544,18 @@
                                                                             "type": "boolean",
                                                                             "description": "set to true to enable file download alerts"
                                                                         },
+                                                                        "cpuUsage": {
+                                                                            "type": "boolean",
+                                                                            "description": "set to true to enable cpu usage alerts"
+                                                                        },
+                                                                        "flashUsage": {
+                                                                            "type": "boolean",
+                                                                            "description": "set to true to enable flash usage alerts"
+                                                                        },
+                                                                        "ramUsage": {
+                                                                            "type": "boolean",
+                                                                            "description": "set to true to enable ram usage alerts"
+                                                                        },
                                                                         "heartbeatConfiguration": {
                                                                             "type": "object",
                                                                             "properties": {
@@ -8129,10 +8571,31 @@
                                                                                 "batteryStatus": {
                                                                                     "type": "boolean",
                                                                                     "description": "set to true to enable battery status as part of heartbeat message"
+                                                                                },
+                                                                                "userApps": {
+                                                                                    "type": "boolean",
+                                                                                    "description": "set to true to enable user app status as part of heartbeat message"
                                                                                 }
                                                                             }
+                                                                        },
+                                                                        "cpuThreshold": {
+                                                                            "type": "integer",
+                                                                            "description": "cpu usage value(%) above which alert will be triggered"
+                                                                        },
+                                                                        "ramThreshold": {
+                                                                            "type": "integer",
+                                                                            "description": "ram usage value(%) above which alert will be triggered"
+                                                                        },
+                                                                        "flashThreshold": {
+                                                                            "type": "integer",
+                                                                            "description": "flash usage value(%) above which alert will be triggered"
+                                                                        },
+                                                                        "temperatureThreshold": {
+                                                                            "type": "integer",
+                                                                            "description": "temperature treshold value above which alert will be triggered"
                                                                         }
-                                                                    }
+                                                                    },
+                                                                    "description": "Reference to the event configuration schema."
                                                                 }
                                                             }
                                                         }
@@ -8933,7 +9396,6 @@
                                             "id": "f9b02122e80a4"
                                         },
                                         "type": "object",
-                                        "description": "Defines the firmware update details including the source URL and authentication parameters.",
                                         "properties": {
                                             "url": {
                                                 "type": "string",
@@ -8945,10 +9407,62 @@
                                                 "type": "string",
                                                 "enum": [
                                                     "NONE",
+                                                    "BASIC",
+                                                    "TOKEN",
                                                     "CERTIFICATE"
                                                 ],
-                                                "example": "CERTIFICATE",
-                                                "description": "Specifies the type of authentication required for accessing the URL. NONE - No authentication is needed. CERTIFICATE - A valid inline certificate or preinstalled certificate is required."
+                                                "example": "BASIC",
+                                                "description": "Specifies the type of authentication required for accessing the URL. NONE - No authentication is needed. BASIC - Username and password are required. CERTIFICATE - A valid inline certificate or preinstalled certificate is required. TOKEN - Token-based authentication is required."
+                                            },
+                                            "authOptions": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "username": {
+                                                        "type": "string",
+                                                        "example": "admin",
+                                                        "description": "The username for BASIC authentication."
+                                                    },
+                                                    "password": {
+                                                        "type": "string",
+                                                        "example": "password",
+                                                        "description": "The password for BASIC authentication."
+                                                    }
+                                                },
+                                                "description": "Contains authentication options such as username and password for BASIC authentication."
+                                            },
+                                            "headerParam": {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "key": {
+                                                            "type": "string",
+                                                            "description": "The name of the HTTP header parameter."
+                                                        },
+                                                        "value": {
+                                                            "type": "string",
+                                                            "description": "The value of the HTTP header parameter."
+                                                        }
+                                                    }
+                                                },
+                                                "description": "A list of custom header parameters to include in the HTTP request."
+                                            },
+                                            "queryParam": {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "key": {
+                                                            "type": "string",
+                                                            "description": "The name of the query parameter."
+                                                        },
+                                                        "value": {
+                                                            "type": "string",
+                                                            "description": "The value of the query parameter."
+                                                        }
+                                                    }
+                                                },
+                                                "description": "A list of query parameters to include in the URL."
                                             },
                                             "verificationType": {
                                                 "type": "string",
@@ -9363,7 +9877,7 @@
                                                 "id": "vmmn2ju2w2bhp"
                                             },
                                             "type": "object",
-                                            "description": "Specifies the operating mode configuration for the RFID device, including profile settings, access operations, radio start/stop conditions, query and select pre-filter parameters, and tag metadata options.",
+                                            "description": "Represents the reader operating mode.",
                                             "properties": {
                                                 "operatingModes": {
                                                     "title": "operatingMode",
@@ -9659,7 +10173,7 @@
                                                         },
                                                         "tagMetaDataToEnable": {
                                                             "type": "object",
-                                                            "description": "Specifies which metadata fields of the tag should be reported when it is read. Each field can be enabled or disabled based on the application's requirements.\n",
+                                                            "description": "Specifies which metadata fields of the tag should be reported when it is read. Each field can be enabled or disabled based on the application's requirements. Note: For RFD4090 devices, XPC and CRC metadata fields are not supported.\n",
                                                             "properties": {
                                                                 "RSSI": {
                                                                     "type": "boolean",
@@ -9680,6 +10194,14 @@
                                                                 "PC": {
                                                                     "type": "boolean",
                                                                     "description": "Indicates whether to report the Protocol Control (PC) word.  The PC word contains information about the tag's memory structure and encoding, such as the length of the EPC.\n"
+                                                                },
+                                                                "XPC": {
+                                                                    "type": "boolean",
+                                                                    "description": "Indicates whether to report the Extended Protocol Control (XPC) word.  XPC provides additional protocol-related information for advanced tags, such as custom memory configurations.\n"
+                                                                },
+                                                                "CRC": {
+                                                                    "type": "boolean",
+                                                                    "description": "Indicates whether to report the CRC value.  CRC is used to verify the integrity of the tag's data and ensure error-free communication.\n"
                                                                 },
                                                                 "EPC": {
                                                                     "type": "boolean",
@@ -10136,7 +10658,7 @@
                                                     },
                                                     "tagMetaDataToEnable": {
                                                         "type": "object",
-                                                        "description": "Specifies which metadata fields of the tag should be reported when it is read. Each field can be enabled or disabled based on the application's requirements.\n",
+                                                        "description": "Specifies which metadata fields of the tag should be reported when it is read. Each field can be enabled or disabled based on the application's requirements. Note: For RFD4090 devices, XPC and CRC metadata fields are not supported.\n",
                                                         "properties": {
                                                             "RSSI": {
                                                                 "type": "boolean",
@@ -10157,6 +10679,14 @@
                                                             "PC": {
                                                                 "type": "boolean",
                                                                 "description": "Indicates whether to report the Protocol Control (PC) word.  The PC word contains information about the tag's memory structure and encoding, such as the length of the EPC.\n"
+                                                            },
+                                                            "XPC": {
+                                                                "type": "boolean",
+                                                                "description": "Indicates whether to report the Extended Protocol Control (XPC) word.  XPC provides additional protocol-related information for advanced tags, such as custom memory configurations.\n"
+                                                            },
+                                                            "CRC": {
+                                                                "type": "boolean",
+                                                                "description": "Indicates whether to report the CRC value.  CRC is used to verify the integrity of the tag's data and ensure error-free communication.\n"
                                                             },
                                                             "EPC": {
                                                                 "type": "boolean",
@@ -10693,6 +11223,36 @@
                                                             "reportOperation": {
                                                                 "type": "string",
                                                                 "description": "The operation type for reporting."
+                                                            },
+                                                            "reportDuration": {
+                                                                "type": "integer",
+                                                                "description": "The duration (in seconds) for the report operation."
+                                                            },
+                                                            "seenCount": {
+                                                                "type": "integer",
+                                                                "description": "The number of times the filter condition has been met."
+                                                            },
+                                                            "rssiThreshold": {
+                                                                "type": "integer",
+                                                                "description": "The RSSI (Received Signal Strength Indicator) threshold value."
+                                                            },
+                                                            "tagList": {
+                                                                "type": "object",
+                                                                "description": "A list of tags and their associated operations.",
+                                                                "properties": {
+                                                                    "operation": {
+                                                                        "type": "string",
+                                                                        "description": "The operation to be performed on the tags."
+                                                                    },
+                                                                    "tagPatterns": {
+                                                                        "type": "array",
+                                                                        "description": "A list of tag patterns to be included or excluded.",
+                                                                        "items": {
+                                                                            "type": "string",
+                                                                            "description": "A tag pattern string."
+                                                                        }
+                                                                    }
+                                                                }
                                                             }
                                                         }
                                                     }
@@ -10799,7 +11359,6 @@
                                             "id": "y5oysu0o0kuvb"
                                         },
                                         "type": "object",
-                                        "description": "Defines the post-filter configuration to apply to scanned RFID tags, including the filter operation, data endpoint type, match pattern, pattern method, and report operation.",
                                         "properties": {
                                             "operation": {
                                                 "type": "string",
@@ -10839,8 +11398,48 @@
                                                     "EXCLUDE"
                                                 ],
                                                 "description": "Specifies the filter operation to apply.  `INCLUDE`: Only tags matching the filter criteria will be reported. `EXCLUDE`: Tags matching the filter criteria will be excluded from reporting.\n"
+                                            },
+                                            "reportDuration": {
+                                                "type": "integer",
+                                                "description": "Specifies the duration (in seconds) to wait before reporting a tag again after it has already been reported.  This feature is currently not supported. The filter ensures that as long as the tag is being read by the reader, it will not be reported again until the specified duration has elapsed.\n",
+                                                "minimum": 0
+                                            },
+                                            "seenCount": {
+                                                "type": "integer",
+                                                "description": "Specifies the number of times a tag must be detected before its data is sent out.  This helps in filtering out tags that are inconsistently read. This feature is currently not supported.\n",
+                                                "minimum": 0
+                                            },
+                                            "tagList": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "operation": {
+                                                        "type": "string",
+                                                        "enum": [
+                                                            "BLACKLIST",
+                                                            "WHITELIST"
+                                                        ],
+                                                        "example": "BLACKLIST",
+                                                        "description": "Specifies whether the tag should be blacklisted or whitelisted.  `BLACKLIST`: Excludes tags matching the patterns from reporting. `WHITELIST`: Includes only tags matching the patterns for reporting. This feature is currently not supported.\n"
+                                                    },
+                                                    "tagPatterns": {
+                                                        "type": "array",
+                                                        "description": "An array of tag patterns to be used for whitelisting or blacklisting.  Multiple patterns can be provided to define the filter criteria. This feature is currently not supported.\n",
+                                                        "items": {
+                                                            "type": "string",
+                                                            "maxLength": 100
+                                                        }
+                                                    }
+                                                }
+                                            },
+                                            "rssiThreshold": {
+                                                "type": "integer",
+                                                "format": "int32",
+                                                "description": "Specifies the RSSI threshold (in dBm).  Tags with an RSSI below this threshold will be ignored by the reader.  The value must be between -88 dBm (minimum sensitivity) and -26 dBm (maximum sensitivity). This feature is currently not supported.\n",
+                                                "minimum": -88,
+                                                "maximum": -26
                                             }
-                                        }
+                                        },
+                                        "description": "Defines the post-filter configuration to apply to scanned RFID tags, including the filter operation, data endpoint type, match pattern, pattern method, and report operation."
                                     }
                                 },
                                 "required": [
@@ -10874,20 +11473,6 @@
                                             "matchPattern": "E280",
                                             "matchPatternMethod": "REGEX",
                                             "reportOperation": "EXCLUDE"
-                                        }
-                                    }
-                                },
-                                "Filter tags using suffix": {
-                                    "description": "Payload to filter tags using suffix",
-                                    "value": {
-                                        "command": "set_post_filter",
-                                        "requestId": "abc123",
-                                        "postFilterPayload": {
-                                            "operation": "ADD",
-                                            "dataEpType": "DATA_EP1",
-                                            "matchPattern": "BBBBEEEE",
-                                            "matchPatternMethod": "SUFFIX",
-                                            "reportOperation": "INCLUDE"
                                         }
                                     }
                                 }
@@ -11019,7 +11604,6 @@
                                             "id": "p5pvffwkuqqm1"
                                         },
                                         "type": "object",
-                                        "description": "Defines the control operation to be performed on the device, including the control type and the operation to start or stop.",
                                         "properties": {
                                             "controlType": {
                                                 "type": "string",
@@ -11042,7 +11626,8 @@
                                         "required": [
                                             "controlType",
                                             "operation"
-                                        ]
+                                        ],
+                                        "description": "Defines the control operation to be performed on the device, including the control type and the operation to start or stop."
                                     }
                                 }
                             },
@@ -11212,8 +11797,11 @@
                                             "id": "jcezrdndi0i9w"
                                         },
                                         "type": "object",
-                                        "description": "Specifies which device events to enable or disable and their configuration thresholds.",
                                         "properties": {
+                                            "antenna": {
+                                                "type": "boolean",
+                                                "description": "set to true to enable antenna events"
+                                            },
                                             "terminalConnection": {
                                                 "type": "boolean",
                                                 "description": "set to true to enable terminal connection/disconnection events"
@@ -11222,9 +11810,25 @@
                                                 "type": "boolean",
                                                 "description": "set to true to enable fw update events"
                                             },
+                                            "gpi": {
+                                                "type": "boolean",
+                                                "description": "set to true to enable gpi events"
+                                            },
                                             "network": {
                                                 "type": "boolean",
                                                 "description": "set to true to enable network events"
+                                            },
+                                            "exceptions": {
+                                                "type": "boolean",
+                                                "description": "set to true to enable exception events"
+                                            },
+                                            "ntp": {
+                                                "type": "boolean",
+                                                "description": "set to true to enable battery alerts"
+                                            },
+                                            "userApp": {
+                                                "type": "boolean",
+                                                "description": "set to true to enable user app events"
                                             },
                                             "heartbeat": {
                                                 "type": "boolean",
@@ -11246,6 +11850,18 @@
                                                 "type": "boolean",
                                                 "description": "set to true to enable file download alerts"
                                             },
+                                            "cpuUsage": {
+                                                "type": "boolean",
+                                                "description": "set to true to enable cpu usage alerts"
+                                            },
+                                            "flashUsage": {
+                                                "type": "boolean",
+                                                "description": "set to true to enable flash usage alerts"
+                                            },
+                                            "ramUsage": {
+                                                "type": "boolean",
+                                                "description": "set to true to enable ram usage alerts"
+                                            },
                                             "heartbeatConfiguration": {
                                                 "type": "object",
                                                 "properties": {
@@ -11261,8 +11877,28 @@
                                                     "batteryStatus": {
                                                         "type": "boolean",
                                                         "description": "set to true to enable battery status as part of heartbeat message"
+                                                    },
+                                                    "userApps": {
+                                                        "type": "boolean",
+                                                        "description": "set to true to enable user app status as part of heartbeat message"
                                                     }
                                                 }
+                                            },
+                                            "cpuThreshold": {
+                                                "type": "integer",
+                                                "description": "cpu usage value(%) above which alert will be triggered"
+                                            },
+                                            "ramThreshold": {
+                                                "type": "integer",
+                                                "description": "ram usage value(%) above which alert will be triggered"
+                                            },
+                                            "flashThreshold": {
+                                                "type": "integer",
+                                                "description": "flash usage value(%) above which alert will be triggered"
+                                            },
+                                            "temperatureThreshold": {
+                                                "type": "integer",
+                                                "description": "temperature treshold value above which alert will be triggered"
                                             }
                                         }
                                     }
@@ -11456,7 +12092,6 @@
                                                         "id": "11cnw8c73npra"
                                                     },
                                                     "type": "object",
-                                                    "description": "Inventory status event reporting the current state of the RFID inventory operation.",
                                                     "properties": {
                                                         "rfidStatus": {
                                                             "type": "string",
@@ -11482,7 +12117,6 @@
                                                         "id": "gcmvpvvellk4h"
                                                     },
                                                     "type": "object",
-                                                    "description": "Battery alert event indicating changes in battery status such as low or critical level.",
                                                     "properties": {
                                                         "status": {
                                                             "type": "string",
@@ -11789,6 +12423,7 @@
                                             "enum": [
                                                 "EVENT",
                                                 "NOTIFICATION",
+                                                "EXCEPTION",
                                                 "ALERT"
                                             ],
                                             "description": "Specifies the type of alert or message being generated, such as an event, notification, exception, or alert."
@@ -11813,7 +12448,9 @@
                                             "enum": [
                                                 "BATTERY",
                                                 "FIRMWARE_UPDATE",
+                                                "GPI_EVENT",
                                                 "NETWORK_EVENT",
+                                                "ANTENNA_EVENT",
                                                 "TEMPERATURE",
                                                 "POWER"
                                             ],
@@ -11846,7 +12483,6 @@
                                                                 "id": "21xypho3gasa6"
                                                             },
                                                             "type": "object",
-                                                            "description": "Details about the status of firmware updates, including progress and results.",
                                                             "properties": {
                                                                 "updateStatus": {
                                                                     "type": "string",
@@ -11875,7 +12511,8 @@
                                                                 "updateStatus",
                                                                 "overallProgress",
                                                                 "stage"
-                                                            ]
+                                                            ],
+                                                            "description": "Details about the status of firmware updates, including progress and results."
                                                         },
                                                         "downloadInfo": {
                                                             "title": "downloadInfo",
@@ -11883,7 +12520,6 @@
                                                                 "id": "qwygdhcgpch4h"
                                                             },
                                                             "type": "object",
-                                                            "description": "Information regarding file download events, such as source, destination, and status.",
                                                             "properties": {
                                                                 "fileType": {
                                                                     "type": "string",
@@ -11913,7 +12549,8 @@
                                                                 "fileType",
                                                                 "fileName",
                                                                 "status"
-                                                            ]
+                                                            ],
+                                                            "description": "Information regarding file download events, such as source, destination, and status."
                                                         },
                                                         "temperatueInfo": {
                                                             "title": "tempEvent",
@@ -11921,7 +12558,6 @@
                                                                 "id": "f47vu5sqfdlx9"
                                                             },
                                                             "type": "object",
-                                                            "description": "Details about temperature-related events, including thresholds and alerts.",
                                                             "properties": {
                                                                 "nge": {
                                                                     "type": "number",
@@ -11940,7 +12576,8 @@
                                                                 "nge",
                                                                 "pa",
                                                                 "ambient"
-                                                            ]
+                                                            ],
+                                                            "description": "Details about temperature-related events, including thresholds and alerts."
                                                         },
                                                         "networkInfo": {
                                                             "title": "networkEvent",
@@ -11948,7 +12585,6 @@
                                                                 "id": "tdp0o2i33nrul"
                                                             },
                                                             "type": "object",
-                                                            "description": "Data related to network events, including connectivity and performance metrics.",
                                                             "properties": {
                                                                 "networkInterface": {
                                                                     "type": "object",
@@ -12077,7 +12713,35 @@
                                                             },
                                                             "required": [
                                                                 "networkInterface"
-                                                            ]
+                                                            ],
+                                                            "description": "Data related to network events, including connectivity and performance metrics."
+                                                        },
+                                                        "exception": {
+                                                            "title": "exception",
+                                                            "x-stoplight": {
+                                                                "id": "wqxur4zxw2a0m"
+                                                            },
+                                                            "type": "object",
+                                                            "properties": {
+                                                                "type": {
+                                                                    "type": "string",
+                                                                    "enum": [
+                                                                        "RADIO",
+                                                                        "SCANNER",
+                                                                        "SYSTEM"
+                                                                    ],
+                                                                    "description": "Specifies the category of the error."
+                                                                },
+                                                                "code": {
+                                                                    "type": "integer",
+                                                                    "description": "A numeric code representing the specific error."
+                                                                },
+                                                                "message": {
+                                                                    "type": "string",
+                                                                    "description": "A detailed message describing the error."
+                                                                }
+                                                            },
+                                                            "description": "Information about exceptions or error alerts, including error codes and messages."
                                                         },
                                                         "batteryAlert": {
                                                             "title": "batteryAlert",
@@ -12085,7 +12749,6 @@
                                                                 "id": "gcmvpvvellk4h"
                                                             },
                                                             "type": "object",
-                                                            "description": "Details about battery-related alerts, such as low charge or health status.",
                                                             "properties": {
                                                                 "status": {
                                                                     "type": "string",
@@ -12115,7 +12778,8 @@
                                                                     "maximum": 100,
                                                                     "description": "The current charge level of the battery, represented as a percentage."
                                                                 }
-                                                            }
+                                                            },
+                                                            "description": "Details about battery-related alerts, such as low charge or health status."
                                                         }
                                                     }
                                                 }
@@ -12349,7 +13013,6 @@
                                         },
                                         "data": {
                                             "type": "object",
-                                            "description": "Detailed data related to the event, including tag and barcode information",
                                             "properties": {
                                                 "tagData": {
                                                     "type": "array",
@@ -12488,7 +13151,8 @@
                                                         ]
                                                     }
                                                 }
-                                            }
+                                            },
+                                            "description": "Detailed data related to the event, including tag and barcode information"
                                         }
                                     },
                                     "required": [
