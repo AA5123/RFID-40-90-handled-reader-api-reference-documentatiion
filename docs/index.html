@@ -174,7 +174,36 @@
  }
 
  function splitMarkdownTableRow(line) {
-   return line.trim().replace(/^\|/, '').replace(/\|$/, '').split('|').map(function (cell) { return cell.trim(); });
+   var row = line.trim().replace(/^\|/, '').replace(/\|$/, '');
+   var cells = [];
+   var current = '';
+   var inCode = false;
+   var escaped = false;
+   for (var i = 0; i < row.length; i++) {
+     var ch = row[i];
+     if (escaped) {
+       current += ch;
+       escaped = false;
+       continue;
+     }
+     if (ch === '\\') {
+       escaped = true;
+       continue;
+     }
+     if (ch === '`') {
+       inCode = !inCode;
+       current += ch;
+       continue;
+     }
+     if (ch === '|' && !inCode) {
+       cells.push(current.trim());
+       current = '';
+       continue;
+     }
+     current += ch;
+   }
+   cells.push(current.trim());
+   return cells;
  }
 
  function renderMarkdownTable(lines) {
@@ -1486,7 +1515,7 @@ function getSchemaEnumLine(schema) {
        '<h3 class="op-title">' + escHtml(summary) + '</h3>' +
        '<button class="pdf-btn" data-op-id="' + id + '">⬇ Download PDF</button>' +
      '</div>' +
-     '<div class="op-description md-content">' + md(desc, { headingMap: { 1: 3, 2: 3, 3: 4, 4: 5, 5: 5, 6: 5 } }) + '</div>' +
+    '<div class="op-description md-content">' + md(desc, { idPrefix: id, headingMap: { 1: 3, 2: 3, 3: 4, 4: 5, 5: 5, 6: 5 } }) + '</div>' +
      reqHtml + resHtml +
      (op['x-error-codes'] ? errorTable(op['x-error-codes']) : '') +
      '</div><hr class="op-divider">';
