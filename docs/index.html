@@ -629,7 +629,6 @@ function getSchemaEnumLine(schema) {
    y += 6;
 
    if (op.description) {
-     sectionHeading('Description');
      var descBlocks = op.description.replace(/\r\n?/g, '\n').split(/\n{2,}/);
      descBlocks.forEach(function (block) {
        var trimmed = block.trim();
