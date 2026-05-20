@@ -81,16 +81,32 @@
    return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
  }
 
+ function normalizeMarkdownHref(href) {
+   if (!href) return href;
+   var trimmed = href.trim();
+   if (/^(https?:|mailto:|tel:)/i.test(trimmed)) return trimmed;
+   if (trimmed.charAt(0) === '#') return trimmed;
+
+   // Convert local markdown references (for example alert_short.md) to in-page operation anchors.
+   var mdMatch = trimmed.match(/(^|\/)([^\/]+)\.md$/i);
+   if (mdMatch && mdMatch[2]) {
+     return '#op-' + slugify(mdMatch[2]);
+   }
+
+   return trimmed;
+ }
+
  function formatInline(text) {
    if (!text) return '';
    return text
      .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
      .replace(/`([^`]+)`/g, '<code>$1</code>')
      .replace(/\[([^\]]+)\]\(([^)]+)\)/g, function(_, text, href) {
-       var isExternal = !/^#/.test(href);
+       var normalizedHref = normalizeMarkdownHref(href);
+       var isExternal = !/^#/.test(normalizedHref);
        var attrs = isExternal ? ' target="_blank" rel="noopener"' : '';
        var linkClass = 'md-link ' + (isExternal ? 'md-link-external' : 'md-link-internal');
-       return '<a class="' + linkClass + '" href="' + escHtml(href) + '"' + attrs + '>' + escHtml(text) + '</a>';
+       return '<a class="' + linkClass + '" href="' + escHtml(normalizedHref) + '"' + attrs + '>' + escHtml(text) + '</a>';
      });
  }
 
