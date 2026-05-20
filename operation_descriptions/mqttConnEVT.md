@@ -22,7 +22,7 @@ Use this event to:
 | Communication Type | Device to Cloud |
 | Applies To | RFD40 Series, RFD90 Series |
 | Trigger Condition | Generated when the device establishes or loses endpoint connectivity |
-| Related Events | [alerts](alerts.md), [heartBeatEVT](heartBeatEVT.md), exceptionEVT |
+| Related Events | [alerts](alerts.md), [heartBeatEVT](heartBeatEVT.md)|
 | Supported API Versions | V1.0, V1.1 |
 
 ## 3. When This Event Is Published

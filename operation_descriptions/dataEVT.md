@@ -22,7 +22,7 @@ Use this event to:
 | Communication Type | Device to Cloud |
 | Applies To | RFD40 Series, RFD90 Series |
 | Trigger Condition | Generated during an active RFID inventory operation when tags are read |
-| Related Events | [heartBeatEVT](heartBeatEVT.md), exceptionEVT, [alerts](alerts.md) |
+| Related Events | [heartBeatEVT](heartBeatEVT.md), [alerts](alerts.md) |
 | Supported API Versions | V1.0, V1.1 |
 
 ## 3. When This Event Is Published
