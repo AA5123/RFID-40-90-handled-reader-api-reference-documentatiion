@@ -15,7 +15,7 @@ Use this command to:
 | Pattern Name | Wi-Fi Profile Deletion |
 | Communication Type | Bidirectional (Cloud to Device, Device to Cloud) |
 | Applies To | RFD40 Series, RFD90 Series |
-| Related Commands | [set_wifi](#op-set-wifi), [get_wifi](#op-get-wifi), [delete_certificate](#op-delete-certificate) |
+| Related Commands | [set_wifi](set_wifi.md), [get_wifi](get_wifi.md), [delete_certificate](delete_certificate.md) |
 | Required Request Fields | `command`, `requestId`, `wifiProfileInfo` |
 | Supported Identifier | essid |
 | Supported API Versions | V1.0, V1.1 |

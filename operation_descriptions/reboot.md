@@ -16,7 +16,7 @@ Use this command to:
 | Pattern Name | Device Reboot |
 | Communication Type | Bidirectional (Cloud to Device, Device to Cloud) |
 | Applies To | RFD40 Series, RFD90 Series |
-| Related Commands | [config_events](#op-config-events), [config_endpoint](#op-config-endpoint), [set_operating_mode](#op-set-operating-mode) |
+| Related Commands | [config_events](config_events.md), [config_endpoint](config_endpoint.md), [set_operating_mode](set_operating_mode.md) |
 | Required Request Fields | `command`, `requestId` |
 | Supported Operations | Warm reset of the device |
 | Supported API Versions | V1.0, V1.1 |

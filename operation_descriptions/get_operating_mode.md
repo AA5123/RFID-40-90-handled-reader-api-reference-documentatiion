@@ -16,7 +16,7 @@ This command returns:
 | Pattern Name | Operating Mode Query |
 | Communication Type | Bidirectional (Cloud to Device, Device to Cloud) |
 | Applies To | RFD40 Series, RFD90 Series |
-| Related Commands | [set_operating_mode](#op-set-operating-mode), [control_operation](#op-control-operation), [get_post_filter](#op-get-post-filter)|
+| Related Commands | [set_operating_mode](set_operating_mode.md), [control_operation](control_operation.md), [get_post_filter](get_post_filter.md) |
 | Required Request Fields | command, requestId |
 | Supported Operations | Retrieve active RFID operating mode and profile settings |
 | Supported Response Sections | operatingMode, response |

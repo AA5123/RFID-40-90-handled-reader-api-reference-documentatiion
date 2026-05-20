@@ -19,7 +19,7 @@ Use this command to:
 | Pattern Name | RFID Operation Control |
 | Communication Type | Bidirectional (Cloud to Device, Device to Cloud) |
 | Applies To | RFD40 Series, RFD90 Series |
-| Related Commands | [get_operating_mode](#op-get-operating-mode), [set_operating_mode](#op-set-operating-mode), [get_status](#op-get-status)|
+| Related Commands | [get_operating_mode](get_operating_mode.md), [set_operating_mode](set_operating_mode.md), [get_status](get_status.md) |
 | Required Request Fields | `command`, `requestId`, `ctrlOprPayload` |
 | Supported Operations | `START`, `STOP` |
 | Supported Control Types | `RFID`, `SCANNER` |

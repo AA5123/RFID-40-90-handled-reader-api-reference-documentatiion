@@ -16,7 +16,7 @@ This command returns:
 | Pattern Name | Regulatory Configuration Query |
 | Communication Type | Bidirectional (Cloud to Device, Device to Cloud) |
 | Applies To | RFD40 Series, RFD90 Series |
-| Related Commands | [get_config](#op-get-config), [get_status](#op-get-status), [get_version](#op-get-version) |
+| Related Commands | [get_config](get_config.md), [get_status](get_status.md), [get_version](get_version.md) |
 | Required Request Fields | command, requestId |
 | Supported Operations | Retrieve active regulatory region settings |
 | Supported Response Sections | currentRegion, response |

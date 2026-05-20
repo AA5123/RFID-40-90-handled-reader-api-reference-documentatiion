@@ -17,7 +17,7 @@ This command returns:
 | Pattern Name | Installed Certificate Query |
 | Communication Type | Bidirectional (Cloud to Device, Device to Cloud) |
 | Applies To | RFD40 Series, RFD90 Series |
-| Related Commands |[install_certificate](#op-install-certificate), [delete_certificate](#op-delete-certificate), [config_endpoint](#op-config-endpoint)|
+| Related Commands | [install_certificate](install_certificate.md), [delete_certificate](delete_certificate.md), [config_endpoint](config_endpoint.md) |
 | Required Request Fields | command, requestId |
 | Supported Operations | Retrieve installed certificate inventory details |
 | Supported Response Sections | installedCerts, response |

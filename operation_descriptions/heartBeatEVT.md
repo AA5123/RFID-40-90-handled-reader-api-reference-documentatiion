@@ -22,7 +22,7 @@ Use this event to:
 | Communication Type | Device to Cloud |
 | Applies To | RFD40 Series, RFD90 Series |
 | Trigger Condition | Generated at the configured heartbeat interval while the device is active |
-| Related Events |[dataEVT](#op-data-evt), [alerts](#op-alerts), [exceptionEVT](#op-exception-evt) |
+| Related Events | [dataEVT](dataEVT.md), [alerts](alerts.md), exceptionEVT |
 | Supported API Versions | V1.0, V1.1 |
 
 ## 3. When This Event Is Published

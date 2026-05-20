@@ -17,7 +17,7 @@ Use this command to:
 | Pattern Name | Certificate Installation |
 | Communication Type | Bidirectional (Cloud to Device, Device to Cloud) |
 | Applies To | RFD40 Series, RFD90 Series |
-| Related Commands | [delete_certificate](#op-delete-certificate), [get_installed_certificate](#op-get-installed-certificate), [config_endpoint](#op-config-endpoint) |
+| Related Commands | [delete_certificate](delete_certificate.md), [get_installed_certificate](get_installed_certificate.md), [config_endpoint](config_endpoint.md) |
 | Required Request Fields | `command`, `requestId`, `certDetails` |
 | Supported Certificate Types | `client`, `server`, `mqtt`, `wifi`, `filestore`  |
 | Supported Authentication Types | `NONE`, `CERTIFICATE` |

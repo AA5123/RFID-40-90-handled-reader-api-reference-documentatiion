@@ -22,7 +22,7 @@ The `set_operating_mode` command updates RFID operating behavior on the RFD40/RF
 | Pattern Name | Operating Mode Configuration |
 | Communication Type | Bidirectional (Cloud to Device, Device to Cloud) |
 | Applies To | RFD40 Series, RFD90 Series |
-| Related Commands | get_operating_mode, control_operation, set_post_filter |
+| Related Commands | [get_operating_mode](get_operating_mode.md), [control_operation](control_operation.md), [set_post_filter](set_post_filter.md) |
 | Required Request Fields | `command`, `requestId`, `operatingMode` |
 | Supported Operations | Configure operating profile, query/select behavior, radio triggers, access operations, and metadata reporting |
 | Supported Access Operations | READ, WRITE, ACCESS, LOCK, KILL |

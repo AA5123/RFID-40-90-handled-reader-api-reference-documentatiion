@@ -17,7 +17,7 @@ This command returns:
 | Pattern Name | Device Identity and Firmware Retrieval |
 | Communication Type | Bidirectional (Cloud to Device, Device to Cloud) |
 | Applies To | RFD40 Series, RFD90 Series |
-| Related Commands | [get_config](#op-get-config), [get_status](#op-get-status), [set_os](#op-set-os) |
+| Related Commands | [get_config](get_config.md), [get_status](get_status.md), [set_os](set_os.md) |
 | Required Request Fields | command, requestId |
 | Supported Operations | Read reader identity and version details |
 | Supported Response Sections | readerVersion, response |

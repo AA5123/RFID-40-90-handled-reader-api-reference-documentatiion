@@ -18,7 +18,7 @@ No additional payload fields are required beyond `command` and `requestId`.
 | Pattern Name | Ethernet Configuration Query |
 | Communication Type | Bidirectional (Cloud to Device, Device to Cloud) |
 | Applies To | RFD40 Series, RFD90 Series |
-| Related Commands |  [get_wifi](#op-get-wifi), [get_config](#op-get-config), [set_config](#op-set-config) |
+| Related Commands | [get_wifi](get_wifi.md), [get_config](get_config.md), [set_config](set_config.md) |
 | Required Request Fields | command, requestId |
 | Supported Operations | Retrieve Ethernet network configuration and interface status |
 | Supported Response Sections | ethConfig, response |

@@ -22,7 +22,7 @@ Use this command to:
 | Pattern Name | Wi-Fi Configuration |
 | Communication Type | Bidirectional (Cloud to Device, Device to Cloud) |
 | Applies To | RFD40 Series, RFD90 Series |
-| Related Commands | [get_wifi](#op-get-wifi), [delete_wifi_profile](#op-delete-wifi-profile), [set_config](#op-set-config), [install_certificate](#op-install-certificate) |
+| Related Commands | [get_wifi](get_wifi.md), [delete_wifi_profile](delete_wifi_profile.md), [set_config](set_config.md), [install_certificate](install_certificate.md) |
 | Required Request Fields | `command`, `requestId`, `wifiConfig` |
 | Supported Operations | `CREATE`, `MODIFY` |
 | Supported Security Types | WPA2Personal, WPA3Personal, WPA2Enterprise, WPA3Enterprise |

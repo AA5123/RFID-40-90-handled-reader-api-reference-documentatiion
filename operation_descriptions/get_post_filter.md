@@ -16,7 +16,7 @@ This command returns:
 | Pattern Name | Post-Filter Configuration Query |
 | Communication Type | Bidirectional (Cloud to Device, Device to Cloud) |
 | Applies To | RFD40 Series, RFD90 Series |
-| Related Commands |[set_post_filter](#op-set-post-filter), [get_operating_mode](#op-get-operating-mode), [control_operation](#op-control-operation) |
+| Related Commands | [set_post_filter](set_post_filter.md), [get_operating_mode](get_operating_mode.md), [control_operation](control_operation.md) |
 | Required Request Fields | command, requestId |
 | Supported Operations | Retrieve active post-filter configuration |
 | Supported Response Sections | postFilterPayload, response |

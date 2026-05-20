@@ -18,7 +18,7 @@ No additional payload fields are required for retrieving all active endpoints. T
 | Pattern Name | Endpoint Configuration Query |
 | Communication Type | Bidirectional (Cloud to Device, Device to Cloud) |
 | Applies To | RFD40 Series, RFD90 Series |
-| Related Commands | config_endpoint, get_config |
+| Related Commands | [config_endpoint](config_endpoint.md), [get_config](get_config.md) |
 | Required Request Fields | command, requestId |
 | Supported Operations | Retrieve active and saved endpoint configuration details |
 | Supported Response Sections | endpointResponse, response |

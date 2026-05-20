@@ -18,7 +18,7 @@ No additional payload fields are required beyond `command` and `requestId`.
 | Pattern Name | Complete Device Configuration Retrieval |
 | Communication Type | Bidirectional (Cloud to Device, Device to Cloud) |
 | Applies To | RFD40 Series, RFD90 Series |
-| Related Commands |[get_version](#op-get-version), [get_status](#op-get-status), [get_current_region](#op-get-current-region), [set_config](#op-set-config) |
+| Related Commands | [get_version](get_version.md), [get_status](get_status.md), [get_current_region](get_current_region.md), [set_config](set_config.md) |
 | Required Request Fields | command, requestId |
 | Supported Operations | Retrieve complete device configuration snapshot |
 | Supported Response Sections | currentConfig, response |

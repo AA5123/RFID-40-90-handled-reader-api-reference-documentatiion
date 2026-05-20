@@ -22,7 +22,7 @@ Use this command to:
 | Pattern Name | Firmware Update |
 | Communication Type | Bidirectional (Cloud to Device, Device to Cloud) |
 | Applies To | RFD40 Series, RFD90 Series |
-| Related Commands | [get_version](#op-get-version), [reboot](#op-reboot), [install_certificate](#op-install-certificate) |
+| Related Commands | [get_version](get_version.md), [reboot](reboot.md), [install_certificate](install_certificate.md) |
 | Required Request Fields | `command`, `requestId`, `OSUpdateDetails` |
 | Supported Operations | Start firmware update using URL, authentication, and verification settings |
 | Supported Authentication Types | `NONE`, `CERTIFICATE` |

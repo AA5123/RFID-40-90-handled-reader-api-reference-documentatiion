@@ -22,7 +22,7 @@ Use this command to:
 | Pattern Name | Event Configuration |
 | Communication Type | Bidirectional (Cloud to Device, Device to Cloud) |
 | Applies To | RFD40 Series, RFD90 Series |
-| Related Commands | [config_endpoint](#op-config-endpoint), [reboot](#op-reboot), [get_status](#op-get-status), [set_config](#op-set-config)|
+| Related Commands | [config_endpoint](config_endpoint.md), [reboot](reboot.md), [get_status](get_status.md), [set_config](set_config.md) |
 | Required Request Fields | `command`, `requestId`, `eventConfiguration` |
 | Supported Operations | Enable and disable events; configure heartbeat and threshold parameters |
 | Supported Event Flags | `antenna`, `terminalConnection`, `firmwareUpdate`, `gpi`, `network`, `exceptions`, `ntp`, `userApp`, `heartbeat`, `power`, `battery`, `temperature`, `fileDownload`, `cpuUsage`, `flashUsage`, `ramUsage` |
