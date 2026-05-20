@@ -509,12 +509,13 @@ function getSchemaEnumLine(schema) {
 
    function sectionHeading(title) {
      checkPageBreak(12);
-     doc.setFillColor(navy[0], navy[1], navy[2]);
-     doc.rect(margin, y, contentW, 8, 'F');
      doc.setFont('helvetica', 'bold');
      doc.setFontSize(9);
-     doc.setTextColor(white[0], white[1], white[2]);
-     doc.text(title, margin + 4, y + 5.5);
+     doc.setTextColor(navy[0], navy[1], navy[2]);
+     doc.text(title, margin, y + 5.5);
+     doc.setDrawColor(borderGray[0], borderGray[1], borderGray[2]);
+     doc.setLineWidth(0.4);
+     doc.line(margin, y + 7.5, pageW - margin, y + 7.5);
      y += 10;
    }
 
