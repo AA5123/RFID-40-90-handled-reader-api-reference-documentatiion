@@ -8,6 +8,98 @@
 <link href="https://fonts.googleapis.com/css?family=Inter:400,600,700,900&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="css/custom-api.css?v=20260508-1" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
+<style>
+#main {
+ padding-right: calc(var(--sp-5) + 64px);
+}
+
+#font-scale-panel {
+ position: fixed;
+ top: 50%;
+ right: 8px;
+ transform: translateY(-50%);
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ gap: 6px;
+ background: var(--color-bg);
+ border: 1px solid var(--color-border);
+ border-radius: 14px;
+ padding: 8px 6px;
+ box-shadow: var(--shadow-md);
+ z-index: 24;
+ cursor: grab;
+ user-select: none;
+ touch-action: none;
+ transition: left 0.18s ease, top 0.18s ease, box-shadow 0.18s ease;
+}
+
+#font-scale-panel.dragging {
+ cursor: grabbing;
+ box-shadow: 0 10px 24px rgba(0, 0, 0, 0.2);
+ transition: none;
+}
+
+#font-scale-panel button {
+ width: 32px;
+ height: 32px;
+ border: 1px solid var(--color-border);
+ border-radius: var(--radius-sm);
+ background: var(--color-bg);
+ cursor: pointer;
+ font-size: var(--text-md);
+ color: var(--color-text);
+ display: flex;
+ align-items: center;
+ justify-content: center;
+}
+
+#font-scale-reset {
+ width: 44px;
+ height: 28px;
+ font-size: 11px;
+ font-weight: 700;
+ letter-spacing: 0.02em;
+}
+
+#font-scale-value {
+ width: 44px;
+ min-height: 28px;
+ border: 1px dashed var(--color-border);
+ border-radius: var(--radius-sm);
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ font-weight: 700;
+ color: var(--color-text);
+ background: var(--color-surface);
+}
+
+body.font-widget-dragging {
+ user-select: none;
+}
+
+@media (max-width: 768px) {
+ #main {
+  padding-right: var(--sp-4);
+ }
+
+ #font-scale-panel {
+  padding: 7px 5px;
+  gap: 5px;
+ }
+
+ #font-scale-panel button {
+  width: 30px;
+  height: 30px;
+ }
+
+ #font-scale-value,
+ #font-scale-reset {
+  width: 42px;
+ }
+}
+</style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
@@ -46,10 +138,9 @@
 </main>
 
 <div id="font-scale-panel">
-<span id="font-scale-label">Font</span>
-<button id="font-scale-down" title="Decrease font size">&minus;</button>
-<span id="font-scale-value">100%</span>
 <button id="font-scale-up" title="Increase font size">+</button>
+<span id="font-scale-value" title="Drag this widget to move it">100%</span>
+<button id="font-scale-down" title="Decrease font size">&minus;</button>
 <button id="font-scale-reset" title="Reset to default">Reset</button>
 </div>
 
@@ -1956,8 +2047,10 @@ function getSchemaEnumLine(schema) {
 
  var BASE_FONT_PX = 15;
  var STEP = 0.05, MIN = 0.5, MAX = 2.0, KEY = 'mqtt-font-scale';
+ var WIDGET_POS_KEY = 'mqtt-font-widget-pos-v1';
  var saved = parseFloat(localStorage.getItem(KEY));
  var scale = (saved >= MIN && saved <= MAX) ? saved : 1;
+ var fontPanel = document.getElementById('font-scale-panel');
  var display = document.getElementById('font-scale-value');
  function applyScale() {
    scale = Math.round(scale * 100) / 100;
@@ -1969,6 +2062,135 @@ function getSchemaEnumLine(schema) {
  document.getElementById('font-scale-up').addEventListener('click', function () { if (scale < MAX) { scale += STEP; applyScale(); } });
  document.getElementById('font-scale-down').addEventListener('click', function () { if (scale > MIN) { scale -= STEP; applyScale(); } });
  document.getElementById('font-scale-reset').addEventListener('click', function () { scale = 1; applyScale(); });
+
+ function getPanelRect() {
+   if (!fontPanel) return { width: 0, height: 0 };
+   var rect = fontPanel.getBoundingClientRect();
+   return {
+     width: rect.width || fontPanel.offsetWidth || 0,
+     height: rect.height || fontPanel.offsetHeight || 0
+   };
+ }
+
+ function clampPanelPosition(position) {
+   var panelRect = getPanelRect();
+   var margin = 8;
+   var maxLeft = Math.max(margin, window.innerWidth - panelRect.width - margin);
+   var maxTop = Math.max(margin, window.innerHeight - panelRect.height - margin);
+   return {
+     left: Math.min(maxLeft, Math.max(margin, position.left)),
+     top: Math.min(maxTop, Math.max(margin, position.top))
+   };
+ }
+
+ function getDefaultPanelPosition() {
+   var panelRect = getPanelRect();
+   return clampPanelPosition({
+     left: window.innerWidth - panelRect.width - 8,
+     top: Math.round((window.innerHeight - panelRect.height) / 2)
+   });
+ }
+
+ function getCurrentPanelPosition() {
+   if (!fontPanel) return { left: 8, top: 8 };
+   return {
+     left: parseFloat(fontPanel.style.left) || fontPanel.getBoundingClientRect().left,
+     top: parseFloat(fontPanel.style.top) || fontPanel.getBoundingClientRect().top
+   };
+ }
+
+ function setPanelPosition(position, useTransition) {
+   if (!fontPanel) return;
+   var next = clampPanelPosition(position);
+   fontPanel.style.transition = useTransition ? 'left 0.18s ease, top 0.18s ease, box-shadow 0.18s ease' : 'none';
+   fontPanel.style.left = next.left + 'px';
+   fontPanel.style.top = next.top + 'px';
+   fontPanel.style.right = 'auto';
+   fontPanel.style.transform = 'none';
+ }
+
+ function loadSavedPanelPosition() {
+   try {
+     var savedPos = localStorage.getItem(WIDGET_POS_KEY);
+     if (!savedPos) return null;
+     var parsed = JSON.parse(savedPos);
+     if (!parsed || typeof parsed.left !== 'number' || typeof parsed.top !== 'number') return null;
+     return parsed;
+   } catch (e) {
+     return null;
+   }
+ }
+
+ function savePanelPosition(position) {
+   try {
+     localStorage.setItem(WIDGET_POS_KEY, JSON.stringify(position));
+   } catch (e) {}
+ }
+
+ function snapPanelToNearestEdge(position) {
+   var panelRect = getPanelRect();
+   var margin = 8;
+   var centerX = position.left + panelRect.width / 2;
+   var snapLeft = centerX >= window.innerWidth / 2
+     ? window.innerWidth - panelRect.width - margin
+     : margin;
+   return clampPanelPosition({ left: snapLeft, top: position.top });
+ }
+
+ (function wireFontWidgetDrag() {
+   if (!fontPanel) return;
+   var initialPos = loadSavedPanelPosition() || getDefaultPanelPosition();
+   setPanelPosition(initialPos, false);
+
+   var pointerState = null;
+
+   fontPanel.addEventListener('pointerdown', function (event) {
+     if (event.button !== 0) return;
+     if (event.target.closest('button')) return;
+     var current = getCurrentPanelPosition();
+     pointerState = {
+       id: event.pointerId,
+       deltaX: event.clientX - current.left,
+       deltaY: event.clientY - current.top,
+       moved: false
+     };
+     fontPanel.setPointerCapture(event.pointerId);
+   });
+
+   fontPanel.addEventListener('pointermove', function (event) {
+     if (!pointerState || event.pointerId !== pointerState.id) return;
+     var next = clampPanelPosition({
+       left: event.clientX - pointerState.deltaX,
+       top: event.clientY - pointerState.deltaY
+     });
+     pointerState.moved = true;
+     document.body.classList.add('font-widget-dragging');
+     fontPanel.classList.add('dragging');
+     setPanelPosition(next, false);
+   });
+
+   function endDrag(event) {
+     if (!pointerState || event.pointerId !== pointerState.id) return;
+     try { fontPanel.releasePointerCapture(pointerState.id); } catch (e) {}
+     var current = getCurrentPanelPosition();
+     var snapped = snapPanelToNearestEdge(current);
+     setPanelPosition(snapped, true);
+     savePanelPosition(snapped);
+     pointerState = null;
+     fontPanel.classList.remove('dragging');
+     document.body.classList.remove('font-widget-dragging');
+   }
+
+   fontPanel.addEventListener('pointerup', endDrag);
+   fontPanel.addEventListener('pointercancel', endDrag);
+
+   window.addEventListener('resize', function () {
+     var current = loadSavedPanelPosition() || getCurrentPanelPosition();
+     var clamped = clampPanelPosition(current);
+     setPanelPosition(clamped, true);
+     savePanelPosition(clamped);
+   });
+ })();
 })();
 </script>
 </body>
