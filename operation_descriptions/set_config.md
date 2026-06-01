@@ -22,7 +22,7 @@ Use this command to:
 | Pattern Name | Device Configuration Management |
 | Communication Type | Bidirectional (Cloud to Device, Device to Cloud) |
 | Applies To | RFD40 Series, RFD90 Series |
-| Related Commands | [get_config](get_config.md), [set_wifi](set_wifi.md), [config_endpoint](config_endpoint.md), [config_events](config_events.md) |
+| Related Commands | [set_wifi](set_wifi.md), [config_endpoint](config_endpoint.md), [config_events](config_events.md) |
 | Required Request Fields | `command`, `requestId`, `configData` |
 | Supported Operations | `CREATE` and `MODIFY` Wi-Fi profiles; `add`, `update`, and `delete` endpoint configuration; apply after reboot |
 | Supported Endpoint Types | `MGMT`, `MGMT_EVT`, `CTRL`, `DATA1`, `DATA2`, `SOTI`, `MDM` |

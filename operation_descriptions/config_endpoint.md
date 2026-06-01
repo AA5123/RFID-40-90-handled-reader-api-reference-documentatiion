@@ -9,7 +9,7 @@
 |Pattern Name                |Endpoint Configuration Management                             |
 |Communication Type          |Bidirectional (Cloud to Device, Device to Cloud)              |
 |Applies To                  |RFD40 Series, RFD90 Series                                    |
-|Related Commands            | [get_endpoint_config](get_endpoint_config.md), [config_events](config_events.md), [set_config](set_config.md), [reboot](reboot.md) |
+|Related Commands            | [get_endpoint_config](get_endpoint_config.md), [config_events](config_events.md), [reboot](reboot.md) |
 |Required Request Fields     |`command`, `requestId`, `epConfig`                            |
 |Supported Operations        |`add`, `update`, `delete`                                     |
 |Supported Endpoint Types    |`MGMT`, `MGMT_EVT`, `CTRL`, `DATA1`, `DATA2`, `SOTI`, `MDM`   |

@@ -17,7 +17,7 @@ This command returns:
 | Pattern Name | Device Status Retrieval |
 | Communication Type | Bidirectional (Cloud to Device, Device to Cloud) |
 | Applies To | RFD40 Series, RFD90 Series |
-| Related Commands | [get_version](get_version.md), [get_current_region](get_current_region.md), [get_config](get_config.md) |
+| Related Commands | [get_version](get_version.md), [get_current_region](get_current_region.md) |
 | Required Request Fields | command, requestId |
 | Supported Operations | Status retrieval |
 | Supported Response Sections | deviceStatus, response |

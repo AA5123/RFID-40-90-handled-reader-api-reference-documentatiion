@@ -22,7 +22,7 @@ Use this event to:
 | Communication Type | Device to Cloud |
 | Applies To | RFD40 Series, RFD90 Series |
 | Trigger Condition | Generated when a device condition transitions state or crosses a monitored threshold |
-| Related Events | [alert_short](alert_short.md), [heartBeatEVT](heartBeatEVT.md) |
+| Related Events | [heartBeatEVT](heartBeatEVT.md) |
 | Supported API Versions | V1.0, V1.1 |
 
 ## 3. When This Event Is Published

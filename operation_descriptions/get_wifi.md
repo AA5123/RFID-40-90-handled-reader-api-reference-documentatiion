@@ -16,7 +16,7 @@ This command returns:
 | Pattern Name | Wi-Fi Configuration Retrieval |
 | Communication Type | Bidirectional (Cloud to Device, Device to Cloud) |
 | Applies To | RFD40 Series, RFD90 Series |
-| Related Commands | [set_wifi](set_wifi.md), [delete_wifi_profile](delete_wifi_profile.md), [get_eth](get_eth.md), [get_config](get_config.md) |
+| Related Commands | [set_wifi](set_wifi.md), [delete_wifi_profile](delete_wifi_profile.md), [get_eth](get_eth.md) |
 | Required Request Fields | command, requestId |
 | Supported Operations | Retrieve Wi-Fi interface and profile configuration details |
 | Supported Response Sections | wifiProfiles, response |

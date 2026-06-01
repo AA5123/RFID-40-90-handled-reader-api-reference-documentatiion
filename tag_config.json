@@ -5,7 +5,6 @@
             "Network Configuration",
             "MQTT Endpoint Configuration",
             "Certificate Management",
-            "Device Configuration",     
             "System Operations"
         ],
         "Control": [
@@ -70,7 +69,6 @@
             "install_certificate",
             "delete_certificate"
         ],
-        "Device Configuration": [],
         "System Operations": [
             "set_os",
             "reboot"
