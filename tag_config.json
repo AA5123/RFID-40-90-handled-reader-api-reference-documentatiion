@@ -27,8 +27,6 @@
         "get_status": "Device Status",
         "get_version": "Device Status",
         "get_current_region": "Device Status",
-        "get_config": "Device Configuration",
-        "set_config": "Device Configuration",
         "delete_wifi_profile": "Network Configuration",
         "get_eth": "Network Configuration",
         "get_wifi": "Network Configuration",
@@ -48,7 +46,6 @@
         "config_events": "Event Configuration",
         "heartBeatEVT": "Device Health",
         "alerts": "Alerts",
-        "alert_short": "Alerts",
         "mqttConnEVT": "MQTT Connectivity",
         "dataEVT": "Tag Data Event"
     },
@@ -73,10 +70,7 @@
             "install_certificate",
             "delete_certificate"
         ],
-        "Device Configuration": [
-            "get_config",
-            "set_config"
-        ],
+        "Device Configuration": [],
         "System Operations": [
             "set_os",
             "reboot"
@@ -99,7 +93,6 @@
             "heartBeatEVT"
         ],
         "Alerts": [
-            "alert_short",
             "alerts"
         ],
         "MQTT Connectivity": [

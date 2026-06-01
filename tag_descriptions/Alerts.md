@@ -3,7 +3,6 @@ Alerts provide automatic notifications when the device crosses important thresho
 
 | Event | Description |
 |---|---|
-| [alert_short](#op-alert-short) | Compact alert summary with human-readable message descriptions |
 | [alerts](#op-alerts) | Full alert details including battery, temperature, power, network, firmware conditions |
 
 
