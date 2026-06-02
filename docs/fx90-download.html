@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>FX90 YAML Download</title>
+  <style>
+    :root {
+      --bg: #f4f7fb;
+      --card: #ffffff;
+      --text: #112233;
+      --muted: #4b6073;
+      --action: #0f6ab4;
+      --action-hover: #0a4e87;
+      --border: #d8e3ef;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: radial-gradient(circle at top, #ffffff 0%, var(--bg) 62%);
+      color: var(--text);
+      padding: 24px;
+    }
+
+    .card {
+      width: min(560px, 100%);
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 28px;
+      box-shadow: 0 12px 28px rgba(16, 36, 56, 0.08);
+      text-align: center;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: 1.5rem;
+    }
+
+    p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .actions {
+      margin-top: 22px;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .button {
+      display: inline-block;
+      text-decoration: none;
+      background: var(--action);
+      color: #fff;
+      border-radius: 10px;
+      padding: 11px 16px;
+      font-weight: 600;
+    }
+
+    .button:hover {
+      background: var(--action-hover);
+    }
+
+    .link {
+      display: inline-block;
+      padding: 11px 16px;
+      color: var(--action);
+      text-decoration: none;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-weight: 600;
+      background: #fff;
+    }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <h1>Download FX90 YAML</h1>
+    <p>Use the button below to download the latest FX90 API schema file.</p>
+    <div class="actions">
+      <a class="button" href="FX90.yaml" download>Download FX90.yaml</a>
+      <a class="link" href="index.html">Back to API Docs</a>
+    </div>
+  </main>
+</body>
+</html>
