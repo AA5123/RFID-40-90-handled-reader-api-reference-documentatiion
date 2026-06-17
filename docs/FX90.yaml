@@ -1157,6 +1157,40 @@ paths:
                           - tagFocus
                           - tagProtect
                           - tagQuieting
+                  ble:
+                    type: object
+                    description: BLE scanner runtime status. Present only when BLE is supported and status is available.
+                    properties:
+                      scanState:
+                        type: string
+                        description: Current state of the BLE scanner.
+                        enum:
+                          - running
+                          - stopped
+                      scanStartTime:
+                        type: string
+                        format: date-time
+                        description: ISO 8601 timestamp when the BLE scan was last started.
+                        example: '2026-05-21T13:46:16.955Z'
+                      beaconCounts:
+                        type: object
+                        description: Counts of BLE beacons detected since the last scan start.
+                        properties:
+                          total:
+                            type: integer
+                            description: Total number of beacons detected.
+                          iBeacon:
+                            type: integer
+                            description: Number of iBeacon advertisements detected.
+                          altBeacon:
+                            type: integer
+                            description: Number of AltBeacon advertisements detected.
+                          eddystone:
+                            type: integer
+                            description: Number of Eddystone advertisements detected.
+                          generic:
+                            type: integer
+                            description: Number of generic (unclassified) BLE advertisements detected.
               example:
                 antennas:
                   '1': disconnected
@@ -1208,6 +1242,15 @@ paths:
                 impinjGen2X:
                   active: true
                   feature: tagFocus
+                ble:
+                  scanState: running
+                  scanStartTime: '2026-05-21T13:46:16.955Z'
+                  beaconCounts:
+                    altBeacon: 33
+                    eddystone: 0
+                    generic: 0
+                    iBeacon: 75
+                    total: 108
   
       
       security:
@@ -1228,516 +1271,874 @@ paths:
                 type: object
                 properties:
                   GPIO-LED:
+                    description: >-
+                      GPIO and LED trigger mapping configuration. Returns "NOT_CONFIGURED"
+                      when no GPIO-LED configuration has been applied.
+                    oneOf:
+                      - type: string
+                        description: Returned as "NOT_CONFIGURED" when GPIO-LED config has not been set.
+                        example: NOT_CONFIGURED
+                  xml:
                     type: string
+                    description: >-
+                      RFID reader operational XML profile (the "Cloud Connect" RFID profile).
+                      Only returned on supported reader models (e.g. STARFISH/FX series).
                   READER-GATEWAY:
                     type: object
+                    description: >-
+                      Reader Gateway cloud connectivity configuration, including endpoint
+                      connections, batching, retention, and management event settings.
                     properties:
                       batching:
-                        type: array
-                        items:
-                          type: object
-                          properties:
-                            maxPayloadSizePerReport:
-                              type: number
-                            reportingInterval:
-                              type: number
+                        description: >-
+                          Global batching configuration for data events. Returned as an array
+                          (one entry per data endpoint connection) or a single object applied
+                          to all connections.
+                        oneOf:
+                          - type: object
+                            description: Single batching config applied to all data endpoints.
+                            properties:
+                              maxPayloadSizePerReport:
+                                type: number
+                                description: Maximum payload size per batch report in bytes (0 - 256000). -1 to disable.
+                              reportingInterval:
+                                type: number
+                                description: Batch reporting interval in milliseconds (0 - 86400000). -1 to disable.
+                          - type: array
+                            description: Per-endpoint batching config (one entry per data endpoint connection).
+                            items:
+                              type: object
+                              properties:
+                                maxPayloadSizePerReport:
+                                  type: number
+                                  description: Maximum payload size per batch report in bytes (0 - 256000). -1 to disable.
+                                reportingInterval:
+                                  type: number
+                                  description: Batch reporting interval in milliseconds (0 - 86400000). -1 to disable.
                       endpointConfig:
                         type: object
+                        description: >-
+                          Cloud connectivity endpoint configuration for control, data, and management planes.
                         properties:
                           control:
                             type: object
+                            description: Control plane endpoint configuration (command/response channel).
                             properties:
                               commandResponse:
                                 type: object
+                                description: Control plane command and response MQTT connection configuration.
                                 properties:
-                                  enableLocalRest:
-                                    type: boolean
+
                                   connections:
                                     type: array
+                                    description: List of control plane cloud connections.
                                     items:
                                       type: object
                                       properties:
                                         description:
                                           type: string
+                                          description: Human-readable description of this connection.
                                         name:
                                           type: string
+                                          description: Unique name identifier for this connection.
+                                        type:
+                                          type: string
+                                          description: >-
+                                            Connection type. Supported values: mqtt, mqtt-GCP,
+                                            mqtt-AWS, mqtt-Azure, httpPost, WEBSOCKET,
+                                            tcpip-server, keyboard-emulation.
                                         options:
                                           type: object
+                                          description: Connection-specific options.
                                           properties:
                                             additional:
                                               type: object
+                                              description: Additional MQTT connection parameters.
                                               properties:
                                                 cleanSession:
                                                   type: boolean
+                                                  description: >-
+                                                    If true, broker discards previous session state
+                                                    on connect (MQTT clean session flag).
                                                 clientId:
                                                   type: string
+                                                  description: MQTT client identifier used when connecting to the broker.
                                                 debug:
                                                   type: boolean
+                                                  description: Enable verbose MQTT debug logging.
                                                 keepAlive:
                                                   type: number
+                                                  description: >-
+                                                    MQTT keep-alive interval in seconds. The reader
+                                                    sends a PINGREQ if no message is sent within this interval.
                                                 qos:
                                                   type: number
+                                                  description: MQTT Quality of Service level (0 = at most once, 1 = at least once).
                                                 reconnectDelay:
                                                   type: number
+                                                  description: Initial delay in seconds before attempting to reconnect after disconnect.
                                                 reconnectDelayMax:
                                                   type: number
+                                                  description: Maximum delay in seconds between reconnect attempts (exponential backoff cap).
                                             enableSecurity:
                                               type: boolean
+                                              description: When true, TLS/SSL is used for the connection.
                                             endpoint:
                                               type: object
+                                              description: Remote broker or server endpoint details.
                                               properties:
                                                 hostName:
                                                   type: string
+                                                  description: Hostname or IP address of the MQTT broker or cloud endpoint.
                                                 port:
                                                   type: number
+                                                  description: TCP port number of the MQTT broker or cloud endpoint.
                                                 protocol:
                                                   type: string
+                                                  description: >-
+                                                    Transport protocol. Common values: tcp, ssl, ws (WebSocket),
+                                                    wss (WebSocket Secure).
                                             publishTopic:
                                               type: array
+                                              description: MQTT topic(s) the reader publishes responses to.
                                               items:
                                                 type: string
                                             security:
                                               type: object
+                                              description: TLS/SSL certificate and key configuration.
                                               properties:
                                                 CACertificateFileLocation:
                                                   type: string
+                                                  description: Absolute path to the CA (Certificate Authority) certificate file on the reader.
                                                 installedCertificateName:
                                                   type: string
+                                                  description: Name of a pre-installed certificate stored on the reader.
                                                 installedCertificateType:
                                                   type: string
+                                                  description: Type of the pre-installed certificate (e.g. "server", "client").
                                                 keyAlgorithm:
                                                   type: string
+                                                  description: JWT signing algorithm for GCP connections (e.g. RS256, ES256).
                                                 keyFormat:
                                                   type: string
+                                                  description: Key file format (e.g. PEM).
                                                 privateKeyFileLocation:
                                                   type: string
+                                                  description: Absolute path to the private key file on the reader.
                                                 publicKeyFileLocation:
                                                   type: string
+                                                  description: Absolute path to the public key or client certificate file on the reader.
                                                 verifyHostName:
                                                   type: boolean
+                                                  description: When true, the broker's hostname is verified against its TLS certificate CN/SAN.
                                                 verifyPeer:
                                                   type: boolean
+                                                  description: When true, the server's TLS certificate is validated against the CA certificate.
                                             subscribeTopic:
                                               type: array
+                                              description: MQTT topic(s) the reader subscribes to for incoming commands.
                                               items:
                                                 type: string
-                                        type:
-                                          type: string
                           data:
                             type: object
+                            description: Data plane endpoint configuration (tag read event publishing channel).
                             properties:
                               batching:
                                 type: object
+                                description: Global batching settings applied across all data endpoint connections.
                                 properties:
                                   maxPayloadSizePerReport:
                                     type: number
+                                    description: Maximum payload size per batch report in bytes (0 - 256000). -1 to disable.
                                   reportingInterval:
                                     type: number
+                                    description: Batch reporting interval in milliseconds (0 - 86400000). -1 to disable.
                               event:
                                 type: object
+                                description: Data event endpoint (publishes tag read events to cloud connections).
                                 properties:
                                   connections:
                                     type: array
+                                    description: List of data plane cloud connections for publishing tag read events.
                                     items:
                                       type: object
                                       properties:
                                         additionalOptions:
                                           type: object
+                                          description: Per-connection data delivery options (batching, retention, data acknowledgement).
                                           properties:
                                             batching:
                                               type: object
+                                              description: Per-connection batching configuration overriding global batching for this connection.
                                               properties:
                                                 maxPayloadSizePerReport:
                                                   type: number
+                                                  description: Maximum payload size per batch report in bytes (0 - 256000). -1 to disable.
                                                 reportingInterval:
                                                   type: number
+                                                  description: Batch reporting interval in milliseconds (0 - 86400000). -1 to disable.
                                             retention:
                                               type: object
+                                              description: Per-connection event retention configuration when the connection is offline.
                                               properties:
                                                 maxEventRetentionTimeInMin:
                                                   type: number
+                                                  description: >-
+                                                    Maximum time in minutes to retain events when offline (0 - 10080).
+                                                    0 or -1 retains events indefinitely until maxNumEvents is reached.
                                                 maxNumEvents:
                                                   type: number
+                                                  description: Maximum number of events to buffer when offline (0 - 150000).
                                                 throttle:
                                                   type: number
+                                                  description: >-
+                                                    Rate limit in events/sec for replaying retained events after reconnect (0 - 1000).
+                                                    0 means no throttling.
+                                            dataAck:
+                                              type: object
+                                              description: >-
+                                                Data acknowledgement configuration. When enabled, the reader waits
+                                                for an ACK from the cloud before marking events as delivered.
+                                              properties:
+                                                enable:
+                                                  type: boolean
+                                                  description: Enable data acknowledgement for this connection.
+                                                responseTopic:
+                                                  type: string
+                                                  description: MQTT topic on which the cloud sends acknowledgement messages back to the reader.
+                                                correlationFieldName:
+                                                  type: string
+                                                  description: >-
+                                                    Name of the field in the event payload used to correlate ACK responses.
+                                                    Defaults to "correlationId".
                                         description:
                                           type: string
+                                          description: Human-readable description of this connection.
                                         name:
                                           type: string
+                                          description: Unique name identifier for this connection. Must be unique across all data connections.
+                                        type:
+                                          type: string
+                                          description: >-
+                                            Connection type. Supported values: mqtt, mqtt-GCP,
+                                            mqtt-AWS, mqtt-Azure, httpPost, WEBSOCKET,
+                                            tcpip-server, keyboard-emulation.
                                         options:
                                           type: object
+                                          description: Connection-specific options.
                                           properties:
                                             additional:
                                               type: object
+                                              description: Additional MQTT connection parameters.
                                               properties:
                                                 cleanSession:
                                                   type: boolean
+                                                  description: >-
+                                                    If true, broker discards previous session state
+                                                    on connect (MQTT clean session flag).
                                                 clientId:
                                                   type: string
+                                                  description: MQTT client identifier used when connecting to the broker.
                                                 debug:
                                                   type: boolean
+                                                  description: Enable verbose MQTT debug logging.
                                                 keepAlive:
                                                   type: number
+                                                  description: >-
+                                                    MQTT keep-alive interval in seconds. The reader
+                                                    sends a PINGREQ if no message is sent within this interval.
                                                 qos:
                                                   type: number
+                                                  description: MQTT Quality of Service level (0 = at most once, 1 = at least once).
                                                 reconnectDelay:
                                                   type: number
+                                                  description: Initial delay in seconds before attempting to reconnect after disconnect.
                                                 reconnectDelayMax:
                                                   type: number
+                                                  description: Maximum delay in seconds between reconnect attempts (exponential backoff cap).
                                             enableSecurity:
                                               type: boolean
+                                              description: When true, TLS/SSL is used for the connection.
                                             endpoint:
                                               type: object
+                                              description: Remote broker or server endpoint details.
                                               properties:
                                                 hostName:
                                                   type: string
+                                                  description: Hostname or IP address of the MQTT broker or cloud endpoint.
                                                 port:
                                                   type: number
+                                                  description: TCP port number of the MQTT broker or cloud endpoint.
                                                 protocol:
                                                   type: string
+                                                  description: >-
+                                                    Transport protocol. Common values: tcp, ssl, ws (WebSocket),
+                                                    wss (WebSocket Secure).
                                             publishTopic:
                                               type: array
+                                              description: MQTT topic(s) the reader publishes tag read events to.
                                               items:
                                                 type: string
                                             security:
                                               type: object
+                                              description: TLS/SSL certificate and key configuration.
                                               properties:
                                                 CACertificateFileLocation:
                                                   type: string
+                                                  description: Absolute path to the CA certificate file on the reader.
                                                 installedCertificateName:
                                                   type: string
+                                                  description: Name of a pre-installed certificate stored on the reader.
                                                 installedCertificateType:
                                                   type: string
+                                                  description: Type of the pre-installed certificate (e.g. "server", "client").
                                                 keyAlgorithm:
                                                   type: string
+                                                  description: JWT signing algorithm for GCP connections (e.g. RS256, ES256).
                                                 keyFormat:
                                                   type: string
+                                                  description: Key file format (e.g. PEM).
                                                 privateKeyFileLocation:
                                                   type: string
+                                                  description: Absolute path to the private key file on the reader.
                                                 publicKeyFileLocation:
                                                   type: string
+                                                  description: Absolute path to the public key or client certificate file on the reader.
                                                 verifyHostName:
                                                   type: boolean
+                                                  description: When true, the broker's hostname is verified against its TLS certificate CN/SAN.
                                                 verifyPeer:
                                                   type: boolean
+                                                  description: When true, the server's TLS certificate is validated against the CA certificate.
                                             subscribeTopic:
                                               type: array
+                                              description: MQTT topic(s) the reader subscribes to (typically unused for data connections).
                                               items:
                                                 type: string
-                                        type:
-                                          type: string
                               retention:
                                 type: object
+                                description: Global event retention settings applied across all data endpoint connections when offline.
                                 properties:
                                   maxEventRetentionTimeInMin:
                                     type: number
+                                    description: >-
+                                      Maximum time in minutes to retain events when offline (0 - 10080).
+                                      0 or -1 retains events indefinitely until maxNumEvents is reached.
                                   maxNumEvents:
                                     type: number
+                                    description: Maximum number of events to buffer when offline (0 - 150000).
                                   throttle:
                                     type: number
+                                    description: Rate limit in events/sec for replaying retained events after reconnect (0 - 1000).
                           management:
                             type: object
+                            description: Management plane endpoint configuration (async management events and command/response channel).
                             properties:
                               commandResponse:
                                 type: object
+                                description: Management plane command and response MQTT connection configuration.
                                 properties:
-                                  enableLocalRest:
-                                    type: boolean
                                   connections:
                                     type: array
+                                    description: List of management plane cloud connections for command/response.
                                     items:
                                       type: object
                                       properties:
                                         description:
                                           type: string
+                                          description: Human-readable description of this connection.
                                         name:
                                           type: string
+                                          description: Unique name identifier for this connection.
+                                        type:
+                                          type: string
+                                          description: >-
+                                            Connection type. Supported values: mqtt, mqtt-GCP,
+                                            mqtt-AWS, mqtt-Azure, httpPost, WEBSOCKET,
+                                            tcpip-server, keyboard-emulation.
                                         options:
                                           type: object
+                                          description: Connection-specific options.
                                           properties:
                                             additional:
                                               type: object
+                                              description: Additional MQTT connection parameters.
                                               properties:
                                                 cleanSession:
                                                   type: boolean
+                                                  description: >-
+                                                    If true, broker discards previous session state
+                                                    on connect (MQTT clean session flag).
                                                 clientId:
                                                   type: string
+                                                  description: MQTT client identifier used when connecting to the broker.
                                                 debug:
                                                   type: boolean
+                                                  description: Enable verbose MQTT debug logging.
                                                 keepAlive:
                                                   type: number
+                                                  description: >-
+                                                    MQTT keep-alive interval in seconds. The reader
+                                                    sends a PINGREQ if no message is sent within this interval.
                                                 qos:
                                                   type: number
+                                                  description: MQTT Quality of Service level (0 = at most once, 1 = at least once).
                                                 reconnectDelay:
                                                   type: number
+                                                  description: Initial delay in seconds before attempting to reconnect after disconnect.
                                                 reconnectDelayMax:
                                                   type: number
+                                                  description: Maximum delay in seconds between reconnect attempts (exponential backoff cap).
                                             enableSecurity:
                                               type: boolean
+                                              description: When true, TLS/SSL is used for the connection.
                                             endpoint:
                                               type: object
+                                              description: Remote broker or server endpoint details.
                                               properties:
                                                 hostName:
                                                   type: string
+                                                  description: Hostname or IP address of the MQTT broker or cloud endpoint.
                                                 port:
                                                   type: number
+                                                  description: TCP port number of the MQTT broker or cloud endpoint.
                                                 protocol:
                                                   type: string
+                                                  description: >-
+                                                    Transport protocol. Common values: tcp, ssl, ws (WebSocket),
+                                                    wss (WebSocket Secure).
                                             publishTopic:
                                               type: array
+                                              description: MQTT topic(s) the reader publishes management responses to.
                                               items:
                                                 type: string
                                             security:
                                               type: object
+                                              description: TLS/SSL certificate and key configuration.
                                               properties:
                                                 CACertificateFileLocation:
                                                   type: string
+                                                  description: Absolute path to the CA certificate file on the reader.
                                                 installedCertificateName:
                                                   type: string
+                                                  description: Name of a pre-installed certificate stored on the reader.
                                                 installedCertificateType:
                                                   type: string
+                                                  description: Type of the pre-installed certificate (e.g. "server", "client").
                                                 keyAlgorithm:
                                                   type: string
+                                                  description: JWT signing algorithm for GCP connections (e.g. RS256, ES256).
                                                 keyFormat:
                                                   type: string
+                                                  description: Key file format (e.g. PEM).
                                                 privateKeyFileLocation:
                                                   type: string
+                                                  description: Absolute path to the private key file on the reader.
                                                 publicKeyFileLocation:
                                                   type: string
+                                                  description: Absolute path to the public key or client certificate file on the reader.
                                                 verifyHostName:
                                                   type: boolean
+                                                  description: When true, the broker's hostname is verified against its TLS certificate CN/SAN.
                                                 verifyPeer:
                                                   type: boolean
+                                                  description: When true, the server's TLS certificate is validated against the CA certificate.
                                             subscribeTopic:
                                               type: array
+                                              description: MQTT topic(s) the reader subscribes to for incoming management commands.
                                               items:
                                                 type: string
-                                        type:
-                                          type: string
                               event:
                                 type: object
+                                description: Management async event endpoint (publishes heartbeat, errors, and warnings to the cloud).
                                 properties:
                                   connections:
                                     type: array
+                                    description: List of management event cloud connections.
                                     items:
                                       type: object
                                       properties:
                                         additionalOptions:
                                           type: object
+                                          description: Per-connection delivery options for management events.
                                           properties:
                                             retention:
                                               type: object
+                                              description: Per-connection event retention configuration when the connection is offline.
                                               properties:
                                                 maxEventRetentionTimeInMin:
                                                   type: number
+                                                  description: >-
+                                                    Maximum time in minutes to retain management events when offline (0 - 10080).
+                                                    0 or -1 retains events indefinitely until maxNumEvents is reached.
                                                 maxNumEvents:
                                                   type: number
+                                                  description: Maximum number of management events to buffer when offline (0 - 150000).
                                                 throttle:
                                                   type: number
+                                                  description: Rate limit in events/sec for replaying retained management events after reconnect (0 - 1000).
+                                            dataAck:
+                                              type: object
+                                              description: >-
+                                                Data acknowledgement configuration for management events. When enabled,
+                                                the reader waits for an ACK before marking management events as delivered.
+                                              properties:
+                                                enable:
+                                                  type: boolean
+                                                  description: Enable data acknowledgement for this management event connection.
+                                                responseTopic:
+                                                  type: string
+                                                  description: MQTT topic on which the cloud sends acknowledgement messages back to the reader.
+                                                correlationFieldName:
+                                                  type: string
+                                                  description: >-
+                                                    Name of the field in the event payload used to correlate ACK responses.
+                                                    Defaults to "correlationId".
                                         description:
                                           type: string
+                                          description: Human-readable description of this connection.
                                         name:
                                           type: string
+                                          description: Unique name identifier for this management event connection.
+                                        type:
+                                          type: string
+                                          description: >-
+                                            Connection type. Supported values: mqtt, mqtt-GCP,
+                                            mqtt-AWS, mqtt-Azure, httpPost, WEBSOCKET,
+                                            tcpip-server, keyboard-emulation.
                                         options:
                                           type: object
+                                          description: Connection-specific options.
                                           properties:
                                             additional:
                                               type: object
+                                              description: Additional MQTT connection parameters.
                                               properties:
                                                 cleanSession:
                                                   type: boolean
+                                                  description: >-
+                                                    If true, broker discards previous session state
+                                                    on connect (MQTT clean session flag).
                                                 clientId:
                                                   type: string
+                                                  description: MQTT client identifier used when connecting to the broker.
                                                 debug:
                                                   type: boolean
+                                                  description: Enable verbose MQTT debug logging.
                                                 keepAlive:
                                                   type: number
+                                                  description: >-
+                                                    MQTT keep-alive interval in seconds. The reader
+                                                    sends a PINGREQ if no message is sent within this interval.
                                                 qos:
                                                   type: number
+                                                  description: MQTT Quality of Service level (0 = at most once, 1 = at least once).
                                                 reconnectDelay:
                                                   type: number
+                                                  description: Initial delay in seconds before attempting to reconnect after disconnect.
                                                 reconnectDelayMax:
                                                   type: number
+                                                  description: Maximum delay in seconds between reconnect attempts (exponential backoff cap).
                                             enableSecurity:
                                               type: boolean
+                                              description: When true, TLS/SSL is used for the connection.
                                             endpoint:
                                               type: object
+                                              description: Remote broker or server endpoint details.
                                               properties:
                                                 hostName:
                                                   type: string
+                                                  description: Hostname or IP address of the MQTT broker or cloud endpoint.
                                                 port:
                                                   type: number
+                                                  description: TCP port number of the MQTT broker or cloud endpoint.
                                                 protocol:
                                                   type: string
+                                                  description: >-
+                                                    Transport protocol. Common values: tcp, ssl, ws (WebSocket),
+                                                    wss (WebSocket Secure).
                                             publishTopic:
                                               type: array
+                                              description: MQTT topic(s) the reader publishes management events to.
                                               items:
                                                 type: string
                                             security:
                                               type: object
+                                              description: TLS/SSL certificate and key configuration.
                                               properties:
                                                 CACertificateFileLocation:
                                                   type: string
+                                                  description: Absolute path to the CA certificate file on the reader.
                                                 installedCertificateName:
                                                   type: string
+                                                  description: Name of a pre-installed certificate stored on the reader.
                                                 installedCertificateType:
                                                   type: string
+                                                  description: Type of the pre-installed certificate (e.g. "server", "client").
                                                 keyAlgorithm:
                                                   type: string
+                                                  description: JWT signing algorithm for GCP connections (e.g. RS256, ES256).
                                                 keyFormat:
                                                   type: string
+                                                  description: Key file format (e.g. PEM).
                                                 privateKeyFileLocation:
                                                   type: string
+                                                  description: Absolute path to the private key file on the reader.
                                                 publicKeyFileLocation:
                                                   type: string
+                                                  description: Absolute path to the public key or client certificate file on the reader.
                                                 verifyHostName:
                                                   type: boolean
+                                                  description: When true, the broker's hostname is verified against its TLS certificate CN/SAN.
                                                 verifyPeer:
                                                   type: boolean
+                                                  description: When true, the server's TLS certificate is validated against the CA certificate.
                                             subscribeTopic:
                                               type: array
+                                              description: MQTT topic(s) the reader subscribes to (typically unused for management event connections).
                                               items:
                                                 type: string
-                                        type:
-                                          type: string
                       managementEventConfig:
                         type: object
+                        description: >-
+                          Asynchronous management event configuration, including heartbeat,
+                          error reporting, warning reporting, GPI events, and user app events.
                         properties:
                           errors:
                             type: object
+                            description: Error event reporting configuration per subsystem.
                             properties:
                               antenna:
                                 type: boolean
+                                description: Enable antenna error reporting (e.g. antenna disconnected).
                               cpu:
                                 type: object
+                                description: CPU error threshold reporting configuration.
                                 properties:
                                   reportIntervalInSec:
                                     type: number
+                                    description: Minimum interval in seconds between CPU error reports.
                                   threshold:
                                     type: number
+                                    description: CPU usage percentage (0-100) above which an error is reported.
                               database:
                                 type: boolean
+                                description: Enable database error reporting.
                               flash:
                                 type: object
+                                description: Flash storage error threshold reporting configuration.
                                 properties:
                                   reportIntervalInSec:
                                     type: number
+                                    description: Minimum interval in seconds between flash error reports.
                                   threshold:
                                     type: number
+                                    description: Flash usage percentage (0-100) above which an error is reported.
                               ntp:
                                 type: boolean
+                                description: Enable NTP synchronization error reporting.
                               radio:
                                 type: boolean
+                                description: Enable radio (RFID engine) error reporting.
                               radio_control:
                                 type: boolean
+                                description: Enable radio control module error reporting.
                               ram:
                                 type: object
+                                description: RAM error threshold reporting configuration.
                                 properties:
                                   reportIntervalInSec:
                                     type: number
+                                    description: Minimum interval in seconds between RAM error reports.
                                   threshold:
                                     type: number
+                                    description: RAM usage percentage (0-100) above which an error is reported.
                               reader_gateway:
                                 type: boolean
+                                description: Enable reader gateway (cloud agent) error reporting.
                               userApp:
                                 type: object
+                                description: User application error threshold reporting configuration.
                                 properties:
                                   reportIntervalInSec:
                                     type: number
+                                    description: Minimum interval in seconds between user app error reports.
                                   threshold:
                                     type: number
+                                    description: Resource usage percentage (0-100) above which a user app error is reported.
                           gpiEvents:
                             type: boolean
+                            description: Enable publishing of GPI (General Purpose Input) state change events to the management channel.
                           gpoEvents:
                             type: boolean
+                            description: Enable publishing of GPO (General Purpose Output) state change events to the management channel.
                           heartbeat:
                             type: object
+                            description: Heartbeat event configuration. The reader publishes periodic status heartbeats to the management channel.
                             properties:
                               fields:
                                 type: object
+                                description: >-
+                                  Selects which telemetry fields to include in each heartbeat event,
+                                  grouped by subsystem.
                                 properties:
                                   radio_control:
                                     type: array
+                                    description: >-
+                                      Radio control telemetry fields to include in the heartbeat.
+                                      Example values: ANTENNAS, RADIO_ACTIVITY, RADIO_CONNECTION,
+                                      CPU, RAM, UPTIME, NUM_ERRORS, NUM_WARNINGS, NUM_TAG_READS,
+                                      NUM_TAG_READS_PER_ANTENNA, NUM_DATA_MESSAGES_TXED,
+                                      NUM_RADIO_PACKETS_RXED.
                                     items:
                                       type: string
                                   reader_gateway:
                                     type: array
+                                    description: >-
+                                      Reader gateway (cloud agent) telemetry fields to include in the heartbeat.
+                                      Example values: NUM_DATA_MESSAGES_RXED, NUM_MANAGEMENT_EVENTS_TXED,
+                                      NUM_DATA_MESSAGES_TXED, NUM_DATA_MESSAGES_RETAINED,
+                                      NUM_DATA_MESSAGES_DROPPED, CPU, RAM, UPTIME, NUM_ERRORS,
+                                      NUM_WARNINGS, INTERFACE_CONNECTION_STATUS, NOLOCKQ_DEPTH.
                                     items:
                                       type: string
                                   system:
                                     type: array
+                                    description: >-
+                                      System-level telemetry fields to include in the heartbeat.
+                                      Example values: CPU, FLASH, NTP, RAM, SYSTEMTIME, TEMPERATURE,
+                                      UPTIME, GPO, GPI, POWER_NEGOTIATION, POWER_SOURCE,
+                                      MAC_ADDRESS, HOSTNAME.
                                     items:
                                       type: string
                                   userDefined:
                                     type: object
+                                    description: >-
+                                      User-defined key-value pairs to include in every heartbeat event.
+                                      Arbitrary JSON object; use to attach static metadata such as
+                                      site name, location, or asset tag.
                                     properties: {}
                                   userapps:
                                     type: array
+                                    description: >-
+                                      User application telemetry fields to include in the heartbeat.
+                                      Example values: STATUS, CPU, RAM, UPTIME,
+                                      NUM_DATA_MESSAGES_RXED, NUM_DATA_MESSAGES_TXED,
+                                      INCOMING_DATA_BUFFER_PERCENTAGE_REMAINING,
+                                      OUTGOING_DATA_BUFFER_PERCENTAGE_REMAINING.
                                     items:
                                       type: string
                               interval:
                                 type: number
+                                description: Heartbeat publish interval in seconds. Set to 0 to disable heartbeat.
                           userappEvents:
                             type: boolean
+                            description: Enable publishing of user application lifecycle events (start, stop, crash) to the management channel.
                           warnings:
                             type: object
+                            description: Warning event reporting configuration per subsystem.
                             properties:
                               cpu:
                                 type: object
+                                description: CPU warning threshold reporting configuration.
                                 properties:
                                   reportIntervalInSec:
                                     type: number
+                                    description: Minimum interval in seconds between CPU warning reports.
                                   threshold:
                                     type: number
+                                    description: CPU usage percentage (0-100) above which a warning is reported.
                               database:
                                 type: boolean
+                                description: Enable database warning reporting.
                               flash:
                                 type: object
+                                description: Flash storage warning threshold reporting configuration.
                                 properties:
                                   reportIntervalInSec:
                                     type: number
+                                    description: Minimum interval in seconds between flash warning reports.
                                   threshold:
                                     type: number
+                                    description: Flash usage percentage (0-100) above which a warning is reported.
                               ntp:
                                 type: boolean
+                                description: Enable NTP synchronization warning reporting.
                               radio_api:
                                 type: boolean
+                                description: Enable radio API warning reporting.
                               radio_control:
                                 type: boolean
+                                description: Enable radio control module warning reporting.
                               ram:
                                 type: object
+                                description: RAM warning threshold reporting configuration.
                                 properties:
                                   reportIntervalInSec:
                                     type: number
+                                    description: Minimum interval in seconds between RAM warning reports.
                                   threshold:
                                     type: number
+                                    description: RAM usage percentage (0-100) above which a warning is reported.
                               reader_gateway:
                                 type: boolean
+                                description: Enable reader gateway (cloud agent) warning reporting.
                               temperature:
                                 type: object
+                                description: Temperature warning thresholds. A warning is reported when either threshold is exceeded.
                                 properties:
                                   ambient:
                                     type: number
+                                    description: Ambient temperature threshold in degrees Celsius above which a warning is reported.
                                   pa:
                                     type: number
+                                    description: Power amplifier temperature threshold in degrees Celsius above which a warning is reported.
                               userApp:
                                 type: object
+                                description: User application warning threshold reporting configuration.
                                 properties:
                                   reportIntervalInSec:
                                     type: number
+                                    description: Minimum interval in seconds between user app warning reports.
                                   threshold:
                                     type: number
+                                    description: Resource usage percentage (0-100) above which a user app warning is reported.
                       retention:
-                        type: array
-                        items:
-                          type: object
-                          properties:
-                            maxEventRetentionTimeInMin:
-                              type: number
-                            maxNumEvents:
-                              type: number
-                            throttle:
-                              type: number
+                        description: >-
+                          Global retention configuration for data events on connection loss.
+                          Returned as an array (one entry per data endpoint connection) or a
+                          single object applied to all connections.
+                        oneOf:
+                          - type: object
+                            description: Single retention config applied to all data endpoints.
+                            properties:
+                              maxEventRetentionTimeInMin:
+                                type: number
+                                description: >-
+                                  Maximum time in minutes to retain events when offline (0 - 10080).
+                                  0 or -1 retains events indefinitely until maxNumEvents is reached.
+                              maxNumEvents:
+                                type: number
+                                description: Maximum number of events to buffer when offline (0 - 150000).
+                              throttle:
+                                type: number
+                                description: Rate limit in events/sec for replaying retained events after reconnect (0 - 1000).
+                          - type: array
+                            description: Per-endpoint retention config (one entry per data endpoint connection).
+                            items:
+                              type: object
+                              properties:
+                                maxEventRetentionTimeInMin:
+                                  type: number
+                                  description: >-
+                                    Maximum time in minutes to retain events when offline (0 - 10080).
+                                    0 or -1 retains events indefinitely until maxNumEvents is reached.
+                                maxNumEvents:
+                                  type: number
+                                  description: Maximum number of events to buffer when offline (0 - 150000).
+                                throttle:
+                                  type: number
+                                  description: Rate limit in events/sec for replaying retained events after reconnect (0 - 1000).
               example:
                 GPIO-LED: NOT_CONFIGURED
                 READER-GATEWAY:
@@ -1745,9 +2146,6 @@ paths:
                     - maxPayloadSizePerReport: 0
                       reportingInterval: 0
                   endpointConfig:
-                    control:
-                      commandResponse:
-                        enableLocalRest: true
                     data:
                       batching:
                         maxPayloadSizePerReport: 0
@@ -1773,8 +2171,6 @@ paths:
                         maxNumEvents: 0
                         throttle: 1
                     management:
-                      commandResponse:
-                        enableLocalRest: true
                       event:
                         connections:
                           - additionalOptions:
@@ -1925,87 +2321,192 @@ paths:
                   properties:
                     endpointConfig:
                       type: object
-                      description: Endpoint connections configuration. Only the data endpoint is configurable via this API.
+                      description: >-
+                        Endpoint connections configuration. Only the data endpoint
+                        (endpointConfig.data) is configurable via this API.
+                        Use PUT /cloud/cloudConfig (set_importCloudConfig) to configure
+                        control and management plane endpoints.
                       properties:
                         data:
                           type: object
+                          description: Data plane endpoint configuration (tag read event publishing channel).
                           properties:
                             event:
                               type: object
+                              description: Data event endpoint. Defines the cloud connections that receive tag read events.
                               properties:
                                 connections:
                                   type: array
+                                  description: >-
+                                    List of data plane cloud connections for publishing tag read events.
+                                    Send an empty array ([]) to clear all data connections.
+                                    Connection names must be unique; duplicate names are rejected.
                                   items:
                                     type: object
                                     properties:
                                       additionalOptions:
                                         type: object
+                                        description: Per-connection data delivery options (batching, retention, data acknowledgement).
                                         properties:
                                           batching:
-                                            type: ["object", "null"]
+                                            description: >-
+                                              Per-connection batching configuration. Set to null to use global
+                                              batching settings. When provided as an object, overrides global
+                                              batching for this connection only.
+                                            oneOf:
+                                              - type: "null"
+                                                description: Use global batching settings for this connection.
+                                              - type: object
+                                                description: Per-connection batching overriding global settings.
+                                                properties:
+                                                  maxPayloadSizePerReport:
+                                                    type: integer
+                                                    description: Maximum payload size per batch report in bytes (0 - 256000). -1 to disable.
+                                                    minimum: 0
+                                                    maximum: 256000
+                                                    example: 65536
+                                                  reportingInterval:
+                                                    type: integer
+                                                    description: Batch reporting interval in milliseconds (0 - 86400000). -1 to disable.
+                                                    minimum: 0
+                                                    maximum: 86400000
+                                                    example: 1000
                                             example: null
                                           retention:
                                             type: object
+                                            description: Per-connection event retention configuration when the connection is offline.
                                             properties:
                                               maxEventRetentionTimeInMin:
-                                                type: number
+                                                type: integer
+                                                description: >-
+                                                  Maximum time in minutes to retain events when offline (0 - 10080).
+                                                  0 or -1 retains events indefinitely until maxNumEvents is reached.
+                                                minimum: 0
+                                                maximum: 10080
                                                 example: 500
                                               maxNumEvents:
-                                                type: number
+                                                type: integer
+                                                description: Maximum number of events to buffer when offline (0 - 150000).
+                                                minimum: 0
+                                                maximum: 150000
                                                 example: 150000
                                               throttle:
-                                                type: number
+                                                type: integer
+                                                description: >-
+                                                  Rate limit in events/sec for replaying retained events after reconnect (0 - 1000).
+                                                  0 means no throttling.
+                                                minimum: 0
+                                                maximum: 1000
                                                 example: 500
+                                          dataAck:
+                                            type: object
+                                            description: >-
+                                              Data acknowledgement configuration. When enabled, the reader waits
+                                              for an ACK from the cloud before marking events as delivered.
+                                              Supported on MQTT-based connections only.
+                                            properties:
+                                              enable:
+                                                type: boolean
+                                                description: Enable data acknowledgement for this connection.
+                                                example: true
+                                              responseTopic:
+                                                type: string
+                                                description: MQTT topic on which the cloud sends acknowledgement messages back to the reader.
+                                                example: /devices/reader1/ack
+                                              correlationFieldName:
+                                                type: string
+                                                description: >-
+                                                  Name of the field in the event payload used to correlate ACK responses.
+                                                  Defaults to "correlationId".
+                                                example: correlationId
                                       description:
                                         type: string
+                                        description: Human-readable description of this connection.
                                         example: MQTT_TEST
                                       name:
                                         type: string
+                                        description: >-
+                                          Unique name identifier for this connection. Must be unique across all
+                                          data endpoint connections; duplicate names are rejected.
                                         example: MQTT_TEST
                                       options:
                                         type: object
+                                        description: Connection-specific options. Content varies by connection type.
                                         properties:
                                           additional:
                                             type: object
+                                            description: Additional MQTT connection parameters (applicable to MQTT-based connections).
                                             properties:
                                               cleanSession:
                                                 type: boolean
+                                                description: >-
+                                                  If true, broker discards previous session state on connect
+                                                  (MQTT clean session flag).
                                                 example: true
                                               clientId:
                                                 type: string
+                                                description: MQTT client identifier used when connecting to the broker.
                                                 example: EV1
                                               debug:
                                                 type: boolean
+                                                description: Enable verbose MQTT debug logging.
                                                 example: false
                                               keepAlive:
                                                 type: number
+                                                description: >-
+                                                  MQTT keep-alive interval in seconds. The reader sends a PINGREQ
+                                                  if no message is sent within this interval.
                                                 example: 60
                                               qos:
                                                 type: number
+                                                description: MQTT Quality of Service level (0 = at most once, 1 = at least once).
                                                 example: 0
                                               reconnectDelay:
                                                 type: number
+                                                description: Initial delay in seconds before attempting to reconnect after disconnect.
                                                 example: 1
                                               reconnectDelayMax:
                                                 type: number
+                                                description: Maximum delay in seconds between reconnect attempts (exponential backoff cap).
                                                 example: 5
                                           enableSecurity:
                                             type: boolean
+                                            description: When true, TLS/SSL is used for the connection.
                                             example: false
                                           endpoint:
                                             type: object
+                                            description: Remote broker or server endpoint details (applicable to MQTT-based connections).
                                             properties:
                                               hostName:
                                                 type: string
+                                                description: Hostname or IP address of the MQTT broker or cloud endpoint.
                                                 example: 10.117.229.9
                                               port:
                                                 type: number
+                                                description: TCP port number of the MQTT broker or cloud endpoint.
                                                 example: 1883
                                               protocol:
                                                 type: string
+                                                description: >-
+                                                  Transport protocol. Common values: tcp, ssl, ws (WebSocket),
+                                                  wss (WebSocket Secure).
                                                 example: tcp
+                                          URL:
+                                            type: string
+                                            description: >-
+                                              HTTP POST endpoint URL. Required for httpPost connection type.
+                                              Tag read events are POSTed as JSON to this URL.
+                                            example: https://webhook.site/your-uuid
+                                          tcpipport:
+                                            type: string
+                                            description: >-
+                                              TCP port on which the reader listens as a TCP server.
+                                              Required for tcpip-server connection type. Clients connect
+                                              to this port to receive tag read events.
+                                            example: "8081"
                                           publishTopic:
                                             type: array
+                                            description: MQTT topic(s) the reader publishes tag read events to.
                                             items:
                                               type: string
                                               example: tagevents_r2c_longrun
@@ -2013,34 +2514,68 @@ paths:
                                               - tagevents_r2c_longrun
                                           security:
                                             type: object
+                                            description: TLS/SSL certificate and key configuration.
                                             properties:
                                               CACertificateFileLocation:
                                                 type: string
+                                                description: Absolute path to the CA certificate file on the reader.
                                                 example: /home/root/broker.emqx.io-ca.crt
                                               installedCertificateName:
                                                 type: string
+                                                description: Name of a pre-installed certificate stored on the reader.
                                                 example: Server
                                               installedCertificateType:
                                                 type: string
+                                                description: Type of the pre-installed certificate (e.g. "server", "client").
                                                 example: server
                                               keyAlgorithm:
                                                 type: string
+                                                description: JWT signing algorithm for GCP connections (e.g. RS256, ES256).
                                                 example: RS256
                                               keyFormat:
                                                 type: string
+                                                description: Key file format (e.g. PEM).
                                                 example: PEM
+                                              privateKeyFileLocation:
+                                                type: string
+                                                description: Absolute path to the private key file on the reader.
+                                                example: /data/client-pvt.key
+                                              publicKeyFileLocation:
+                                                type: string
+                                                description: Absolute path to the public key or client certificate file on the reader.
+                                                example: /data/client-pub.crt
                                               verifyHostName:
                                                 type: boolean
+                                                description: When true, the broker's hostname is verified against its TLS certificate CN/SAN.
                                                 example: false
                                               verifyPeer:
                                                 type: boolean
+                                                description: When true, the server's TLS certificate is validated against the CA certificate.
+                                                example: false
+                                              authenticationType:
+                                                type: string
+                                                description: >-
+                                                  HTTP authentication type for httpPost connections.
+                                                  Supported values: NONE, BASIC, BEARER.
+                                                example: NONE
+                                              verifyHost:
+                                                type: boolean
+                                                description: >-
+                                                  For httpPost connections, when true, the server hostname is verified
+                                                  against its TLS certificate. Equivalent to verifyHostName for MQTT.
                                                 example: false
                                           subscribeTopic:
                                             type: array
+                                            description: MQTT topic(s) the reader subscribes to (typically unused for data connections).
                                             items: {}
                                             example: []
                                       type:
                                         type: string
+                                        description: >-
+                                          Connection type. Supported values: mqtt, mqtt-GCP, mqtt-AWS,
+                                          mqtt-Azure, httpPost, WEBSOCKET, tcpip-server, keyboard-emulation.
+                                          Only one WEBSOCKET, tcpip-server, or keyboard-emulation connection
+                                          is allowed at a time.
                                         example: mqtt
                                   example:
                                     - additionalOptions:
@@ -2536,68 +3071,101 @@ paths:
               properties:
                 endpointConfig:
                   type: object
+                  description: >-
+                    Cloud endpoint configuration to import. Selectively merges the provided
+                    sub-sections (control.commandResponse, management.commandResponse,
+                    management.event, data.event) into the reader's existing configuration.
+                    Only the sections provided are updated; omitted sections are left unchanged.
                   properties:
                     control:
                       type: object
+                      description: >-
+                        Control plane endpoint configuration. Replaces the existing
+                        control.commandResponse configuration when provided.
                       properties:
                         commandResponse:
                           type: object
+                          description: Control plane command and response MQTT connection configuration.
                           properties:
                             connections:
                               type: array
+                              description: List of control plane cloud connections for command/response.
                               items:
                                 type: object
                                 properties:
                                   description:
                                     type: string
+                                    description: Human-readable description of this connection.
                                     example: MQTT_TEST
                                   name:
                                     type: string
+                                    description: Unique name identifier for this connection.
                                     example: MQTT_TEST
                                   options:
                                     type: object
+                                    description: Connection-specific options.
                                     properties:
                                       additional:
                                         type: object
+                                        description: Additional MQTT connection parameters.
                                         properties:
                                           cleanSession:
                                             type: boolean
+                                            description: >-
+                                              If true, broker discards previous session state
+                                              on connect (MQTT clean session flag).
                                             example: true
                                           clientId:
                                             type: string
+                                            description: MQTT client identifier used when connecting to the broker.
                                             example: FX9600FCC017
                                           debug:
                                             type: boolean
+                                            description: Enable verbose MQTT debug logging.
                                             example: false
                                           keepAlive:
                                             type: number
+                                            description: >-
+                                              MQTT keep-alive interval in seconds. The reader sends a PINGREQ
+                                              if no message is sent within this interval.
                                             example: 60
                                           qos:
                                             type: number
+                                            description: MQTT Quality of Service level (0 = at most once, 1 = at least once).
                                             example: 0
                                           reconnectDelay:
                                             type: number
+                                            description: Initial delay in seconds before attempting to reconnect after disconnect.
                                             example: 1
                                           reconnectDelayMax:
                                             type: number
+                                            description: Maximum delay in seconds between reconnect attempts (exponential backoff cap).
                                             example: 5
                                       enableSecurity:
                                         type: boolean
+                                        description: When true, TLS/SSL is used for the connection.
                                         example: false
                                       endpoint:
                                         type: object
+                                        description: Remote broker or server endpoint details.
                                         properties:
                                           hostName:
                                             type: string
+                                            description: Hostname or IP address of the MQTT broker or cloud endpoint.
                                             example: broker.emqx.io
                                           port:
                                             type: number
+                                            description: TCP port number of the MQTT broker or cloud endpoint.
                                             example: 1883
                                           protocol:
                                             type: string
+                                            description: >-
+                                              Transport protocol. Common values: tcp, ssl, ws (WebSocket),
+                                              wss (WebSocket Secure).
                                             example: tcp
                                       publishTopic:
                                         type: array
+                                        description: MQTT topic(s) the reader publishes control responses to.
                                         items:
                                           type: string
                                           example: FX9600FCC017/rsp
@@ -2605,30 +3173,47 @@ paths:
                                           - FX9600FCC017/rsp
                                       security:
                                         type: object
+                                        description: TLS/SSL certificate and key configuration.
                                         properties:
                                           CACertificateFileLocation:
                                             type: string
+                                            description: Absolute path to the CA certificate file on the reader.
                                             example: /home/root/broker.emqx.io-ca.crt
                                           installedCertificateName:
                                             type: string
+                                            description: Name of a pre-installed certificate stored on the reader.
                                             example: Server
                                           installedCertificateType:
                                             type: string
+                                            description: Type of the pre-installed certificate (e.g. "server", "client").
                                             example: server
                                           keyAlgorithm:
                                             type: string
+                                            description: JWT signing algorithm for GCP connections (e.g. RS256, ES256).
                                             example: RS256
                                           keyFormat:
                                             type: string
+                                            description: Key file format (e.g. PEM).
                                             example: PEM
+                                          privateKeyFileLocation:
+                                            type: string
+                                            description: Absolute path to the private key file on the reader.
+                                            example: /data/client-pvt.key
+                                          publicKeyFileLocation:
+                                            type: string
+                                            description: Absolute path to the public key or client certificate file on the reader.
+                                            example: /data/client-pub.crt
                                           verifyHostName:
                                             type: boolean
+                                            description: When true, the broker's hostname is verified against its TLS certificate CN/SAN.
                                             example: false
                                           verifyPeer:
                                             type: boolean
+                                            description: When true, the server's TLS certificate is validated against the CA certificate.
                                             example: false
                                       subscribeTopic:
                                         type: array
+                                        description: MQTT topic(s) the reader subscribes to for incoming control commands.
                                         items:
                                           type: string
                                           example: FX9600FCC017/cmd
@@ -2636,6 +3221,9 @@ paths:
                                           - FX9600FCC017/cmd
                                   type:
                                     type: string
+                                    description: >-
+                                      Connection type. Supported values: mqtt, mqtt-GCP, mqtt-AWS,
+                                      mqtt-Azure, httpPost, WEBSOCKET, tcpip-server, keyboard-emulation.
                                     example: mqtt
                               example:
                                 - description: MQTT_TEST
@@ -2667,88 +3255,172 @@ paths:
                                     subscribeTopic:
                                       - FX9600FCC017/cmd
                                   type: mqtt
-                            enableLocalRest:
-                              type: boolean
-                              example: true
                     data:
                       type: object
+                      description: >-
+                        Data plane endpoint configuration. Replaces the existing
+                        data.event configuration when provided.
                       properties:
                         event:
                           type: object
+                          description: Data event endpoint. Defines the cloud connections that receive tag read events.
                           properties:
                             connections:
                               type: array
+                              description: >-
+                                List of data plane cloud connections for publishing tag read events.
+                                Send an empty array ([]) to clear all data connections.
                               items:
                                 type: object
                                 properties:
                                   additionalOptions:
                                     type: object
+                                    description: Per-connection data delivery options (batching, retention, data acknowledgement).
                                     properties:
                                       batching:
-                                        type: ["object", "null"]
+                                        description: >-
+                                          Per-connection batching configuration. Set to null to use global
+                                          batching settings. When provided as an object, overrides global
+                                          batching for this connection only.
+                                        oneOf:
+                                          - type: "null"
+                                            description: Use global batching settings for this connection.
+                                          - type: object
+                                            description: Per-connection batching overriding global settings.
+                                            properties:
+                                              maxPayloadSizePerReport:
+                                                type: integer
+                                                description: Maximum payload size per batch report in bytes (0 - 256000). -1 to disable.
+                                                minimum: 0
+                                                maximum: 256000
+                                                example: 65536
+                                              reportingInterval:
+                                                type: integer
+                                                description: Batch reporting interval in milliseconds (0 - 86400000). -1 to disable.
+                                                minimum: 0
+                                                maximum: 86400000
+                                                example: 1000
                                         example: null
                                       retention:
                                         type: object
+                                        description: Per-connection event retention configuration when the connection is offline.
                                         properties:
                                           maxEventRetentionTimeInMin:
-                                            type: number
+                                            type: integer
+                                            description: >-
+                                              Maximum time in minutes to retain events when offline (0 - 10080).
+                                              0 or -1 retains events indefinitely until maxNumEvents is reached.
+                                            minimum: 0
+                                            maximum: 10080
                                             example: 500
                                           maxNumEvents:
-                                            type: number
+                                            type: integer
+                                            description: Maximum number of events to buffer when offline (0 - 150000).
+                                            minimum: 0
+                                            maximum: 150000
                                             example: 150000
                                           throttle:
-                                            type: number
+                                            type: integer
+                                            description: >-
+                                              Rate limit in events/sec for replaying retained events after reconnect (0 - 1000).
+                                              0 means no throttling.
+                                            minimum: 0
+                                            maximum: 1000
                                             example: 500
+                                      dataAck:
+                                        type: object
+                                        description: >-
+                                          Data acknowledgement configuration. When enabled, the reader waits
+                                          for an ACK from the cloud before marking events as delivered.
+                                          Supported on MQTT-based connections only.
+                                        properties:
+                                          enable:
+                                            type: boolean
+                                            description: Enable data acknowledgement for this connection.
+                                            example: true
+                                          responseTopic:
+                                            type: string
+                                            description: MQTT topic on which the cloud sends acknowledgement messages back to the reader.
+                                            example: /devices/reader1/ack
+                                          correlationFieldName:
+                                            type: string
+                                            description: >-
+                                              Name of the field in the event payload used to correlate ACK responses.
+                                              Defaults to "correlationId".
+                                            example: correlationId
                                   description:
                                     type: string
+                                    description: Human-readable description of this connection.
                                     example: MQTT_TEST
                                   name:
                                     type: string
+                                    description: Unique name identifier for this connection.
                                     example: MQTT_TEST
                                   options:
                                     type: object
+                                    description: Connection-specific options.
                                     properties:
                                       additional:
                                         type: object
+                                        description: Additional MQTT connection parameters.
                                         properties:
                                           cleanSession:
                                             type: boolean
+                                            description: >-
+                                              If true, broker discards previous session state
+                                              on connect (MQTT clean session flag).
                                             example: true
                                           clientId:
                                             type: string
+                                            description: MQTT client identifier used when connecting to the broker.
                                             example: FX9600FCC017
                                           debug:
                                             type: boolean
+                                            description: Enable verbose MQTT debug logging.
                                             example: false
                                           keepAlive:
                                             type: number
+                                            description: >-
+                                              MQTT keep-alive interval in seconds. The reader sends a PINGREQ
+                                              if no message is sent within this interval.
                                             example: 60
                                           qos:
                                             type: number
+                                            description: MQTT Quality of Service level (0 = at most once, 1 = at least once).
                                             example: 0
                                           reconnectDelay:
                                             type: number
+                                            description: Initial delay in seconds before attempting to reconnect after disconnect.
                                             example: 1
                                           reconnectDelayMax:
                                             type: number
+                                            description: Maximum delay in seconds between reconnect attempts (exponential backoff cap).
                                             example: 5
                                       enableSecurity:
                                         type: boolean
+                                        description: When true, TLS/SSL is used for the connection.
                                         example: false
                                       endpoint:
                                         type: object
+                                        description: Remote broker or server endpoint details.
                                         properties:
                                           hostName:
                                             type: string
+                                            description: Hostname or IP address of the MQTT broker or cloud endpoint.
                                             example: broker.emqx.io
                                           port:
                                             type: number
+                                            description: TCP port number of the MQTT broker or cloud endpoint.
                                             example: 1883
                                           protocol:
                                             type: string
+                                            description: >-
+                                              Transport protocol. Common values: tcp, ssl, ws (WebSocket),
+                                              wss (WebSocket Secure).
                                             example: tcp
                                       publishTopic:
                                         type: array
+                                        description: MQTT topic(s) the reader publishes tag read events to.
                                         items:
                                           type: string
                                           example: FX9600FCC017/tevents
@@ -2756,34 +3428,54 @@ paths:
                                           - FX9600FCC017/tevents
                                       security:
                                         type: object
+                                        description: TLS/SSL certificate and key configuration.
                                         properties:
                                           CACertificateFileLocation:
                                             type: string
+                                            description: Absolute path to the CA certificate file on the reader.
                                             example: /home/root/broker.emqx.io-ca.crt
                                           installedCertificateName:
                                             type: string
+                                            description: Name of a pre-installed certificate stored on the reader.
                                             example: Server
                                           installedCertificateType:
                                             type: string
+                                            description: Type of the pre-installed certificate (e.g. "server", "client").
                                             example: server
                                           keyAlgorithm:
                                             type: string
+                                            description: JWT signing algorithm for GCP connections (e.g. RS256, ES256).
                                             example: RS256
                                           keyFormat:
                                             type: string
+                                            description: Key file format (e.g. PEM).
                                             example: PEM
+                                          privateKeyFileLocation:
+                                            type: string
+                                            description: Absolute path to the private key file on the reader.
+                                            example: /data/client-pvt.key
+                                          publicKeyFileLocation:
+                                            type: string
+                                            description: Absolute path to the public key or client certificate file on the reader.
+                                            example: /data/client-pub.crt
                                           verifyHostName:
                                             type: boolean
+                                            description: When true, the broker's hostname is verified against its TLS certificate CN/SAN.
                                             example: false
                                           verifyPeer:
                                             type: boolean
+                                            description: When true, the server's TLS certificate is validated against the CA certificate.
                                             example: false
                                       subscribeTopic:
                                         type: array
+                                        description: MQTT topic(s) the reader subscribes to (typically unused for data connections).
                                         items: {}
                                         example: []
                                   type:
                                     type: string
+                                    description: >-
+                                      Connection type. Supported values: mqtt, mqtt-GCP, mqtt-AWS,
+                                      mqtt-Azure, httpPost, WEBSOCKET, tcpip-server, keyboard-emulation.
                                     example: mqtt
                               example:
                                 - additionalOptions:
@@ -2822,65 +3514,95 @@ paths:
                                   type: mqtt
                     management:
                       type: object
+                      description: >-
+                        Management plane endpoint configuration. Replaces the existing
+                        management.commandResponse and/or management.event configuration
+                        when provided. Only keys present in the payload are updated.
+                        Valid keys: commandResponse, event.
                       properties:
                         commandResponse:
                           type: object
+                          description: Management plane command and response MQTT connection configuration.
                           properties:
                             connections:
                               type: array
+                              description: List of management plane cloud connections for command/response.
                               items:
                                 type: object
                                 properties:
                                   description:
                                     type: string
+                                    description: Human-readable description of this connection.
                                     example: MQTT_TEST
                                   name:
                                     type: string
+                                    description: Unique name identifier for this connection.
                                     example: MQTT_TEST
                                   options:
                                     type: object
+                                    description: Connection-specific options.
                                     properties:
                                       additional:
                                         type: object
+                                        description: Additional MQTT connection parameters.
                                         properties:
                                           cleanSession:
                                             type: boolean
+                                            description: >-
+                                              If true, broker discards previous session state
+                                              on connect (MQTT clean session flag).
                                             example: true
                                           clientId:
                                             type: string
+                                            description: MQTT client identifier used when connecting to the broker.
                                             example: FX9600FCC017
                                           debug:
                                             type: boolean
+                                            description: Enable verbose MQTT debug logging.
                                             example: false
                                           keepAlive:
                                             type: number
+                                            description: >-
+                                              MQTT keep-alive interval in seconds. The reader sends a PINGREQ
+                                              if no message is sent within this interval.
                                             example: 60
                                           qos:
                                             type: number
+                                            description: MQTT Quality of Service level (0 = at most once, 1 = at least once).
                                             example: 0
                                           reconnectDelay:
                                             type: number
+                                            description: Initial delay in seconds before attempting to reconnect after disconnect.
                                             example: 1
                                           reconnectDelayMax:
                                             type: number
+                                            description: Maximum delay in seconds between reconnect attempts (exponential backoff cap).
                                             example: 5
                                       enableSecurity:
                                         type: boolean
+                                        description: When true, TLS/SSL is used for the connection.
                                         example: false
                                       endpoint:
                                         type: object
+                                        description: Remote broker or server endpoint details.
                                         properties:
                                           hostName:
                                             type: string
+                                            description: Hostname or IP address of the MQTT broker or cloud endpoint.
                                             example: broker.emqx.io
                                           port:
                                             type: number
+                                            description: TCP port number of the MQTT broker or cloud endpoint.
                                             example: 1883
                                           protocol:
                                             type: string
+                                            description: >-
+                                              Transport protocol. Common values: tcp, ssl, ws (WebSocket),
+                                              wss (WebSocket Secure).
                                             example: tcp
                                       publishTopic:
                                         type: array
+                                        description: MQTT topic(s) the reader publishes management responses to.
                                         items:
                                           type: string
                                           example: FX9600FCC017/rsp
@@ -2888,30 +3610,47 @@ paths:
                                           - FX9600FCC017/rsp
                                       security:
                                         type: object
+                                        description: TLS/SSL certificate and key configuration.
                                         properties:
                                           CACertificateFileLocation:
                                             type: string
+                                            description: Absolute path to the CA certificate file on the reader.
                                             example: /home/root/broker.emqx.io-ca.crt
                                           installedCertificateName:
                                             type: string
+                                            description: Name of a pre-installed certificate stored on the reader.
                                             example: Server
                                           installedCertificateType:
                                             type: string
+                                            description: Type of the pre-installed certificate (e.g. "server", "client").
                                             example: server
                                           keyAlgorithm:
                                             type: string
+                                            description: JWT signing algorithm for GCP connections (e.g. RS256, ES256).
                                             example: RS256
                                           keyFormat:
                                             type: string
+                                            description: Key file format (e.g. PEM).
                                             example: PEM
+                                          privateKeyFileLocation:
+                                            type: string
+                                            description: Absolute path to the private key file on the reader.
+                                            example: /data/client-pvt.key
+                                          publicKeyFileLocation:
+                                            type: string
+                                            description: Absolute path to the public key or client certificate file on the reader.
+                                            example: /data/client-pub.crt
                                           verifyHostName:
                                             type: boolean
+                                            description: When true, the broker's hostname is verified against its TLS certificate CN/SAN.
                                             example: false
                                           verifyPeer:
                                             type: boolean
+                                            description: When true, the server's TLS certificate is validated against the CA certificate.
                                             example: false
                                       subscribeTopic:
                                         type: array
+                                        description: MQTT topic(s) the reader subscribes to for incoming management commands.
                                         items:
                                           type: string
                                           example: FX9600FCC017/cmd
@@ -2919,6 +3658,9 @@ paths:
                                           - FX9600FCC017/cmd
                                   type:
                                     type: string
+                                    description: >-
+                                      Connection type. Supported values: mqtt, mqtt-GCP, mqtt-AWS,
+                                      mqtt-Azure, httpPost, WEBSOCKET, tcpip-server, keyboard-emulation.
                                     example: mqtt
                               example:
                                 - description: MQTT_TEST
@@ -2950,67 +3692,91 @@ paths:
                                     subscribeTopic:
                                       - FX9600FCC017/cmd
                                   type: mqtt
-                            enableLocalRest:
-                              type: boolean
-                              example: true
                         event:
                           type: object
+                          description: Management async event endpoint (publishes heartbeat, errors, and warnings).
                           properties:
                             connections:
                               type: array
+                              description: >-
+                                List of management event cloud connections. Replaces the existing
+                                management.event configuration when provided.
                               items:
                                 type: object
                                 properties:
                                   description:
                                     type: string
+                                    description: Human-readable description of this connection.
                                     example: MQTT_TEST
                                   name:
                                     type: string
+                                    description: Unique name identifier for this management event connection.
                                     example: MQTT_TEST
                                   options:
                                     type: object
+                                    description: Connection-specific options.
                                     properties:
                                       additional:
                                         type: object
+                                        description: Additional MQTT connection parameters.
                                         properties:
                                           cleanSession:
                                             type: boolean
+                                            description: >-
+                                              If true, broker discards previous session state
+                                              on connect (MQTT clean session flag).
                                             example: true
                                           clientId:
                                             type: string
+                                            description: MQTT client identifier used when connecting to the broker.
                                             example: FX9600FCC017
                                           debug:
                                             type: boolean
+                                            description: Enable verbose MQTT debug logging.
                                             example: false
                                           keepAlive:
                                             type: number
+                                            description: >-
+                                              MQTT keep-alive interval in seconds. The reader sends a PINGREQ
+                                              if no message is sent within this interval.
                                             example: 60
                                           qos:
                                             type: number
+                                            description: MQTT Quality of Service level (0 = at most once, 1 = at least once).
                                             example: 0
                                           reconnectDelay:
                                             type: number
+                                            description: Initial delay in seconds before attempting to reconnect after disconnect.
                                             example: 1
                                           reconnectDelayMax:
                                             type: number
+                                            description: Maximum delay in seconds between reconnect attempts (exponential backoff cap).
                                             example: 5
                                       enableSecurity:
                                         type: boolean
+                                        description: When true, TLS/SSL is used for the connection.
                                         example: false
                                       endpoint:
                                         type: object
+                                        description: Remote broker or server endpoint details.
                                         properties:
                                           hostName:
                                             type: string
+                                            description: Hostname or IP address of the MQTT broker or cloud endpoint.
                                             example: broker.emqx.io
                                           port:
                                             type: number
+                                            description: TCP port number of the MQTT broker or cloud endpoint.
                                             example: 1883
                                           protocol:
                                             type: string
+                                            description: >-
+                                              Transport protocol. Common values: tcp, ssl, ws (WebSocket),
+                                              wss (WebSocket Secure).
                                             example: tcp
                                       publishTopic:
                                         type: array
+                                        description: MQTT topic(s) the reader publishes management events to.
                                         items:
                                           type: string
                                           example: FX9600FCC017/mevents
@@ -3018,34 +3784,54 @@ paths:
                                           - FX9600FCC017/mevents
                                       security:
                                         type: object
+                                        description: TLS/SSL certificate and key configuration.
                                         properties:
                                           CACertificateFileLocation:
                                             type: string
+                                            description: Absolute path to the CA certificate file on the reader.
                                             example: /home/root/broker.emqx.io-ca.crt
                                           installedCertificateName:
                                             type: string
+                                            description: Name of a pre-installed certificate stored on the reader.
                                             example: Server
                                           installedCertificateType:
                                             type: string
+                                            description: Type of the pre-installed certificate (e.g. "server", "client").
                                             example: server
                                           keyAlgorithm:
                                             type: string
+                                            description: JWT signing algorithm for GCP connections (e.g. RS256, ES256).
                                             example: RS256
                                           keyFormat:
                                             type: string
+                                            description: Key file format (e.g. PEM).
                                             example: PEM
+                                          privateKeyFileLocation:
+                                            type: string
+                                            description: Absolute path to the private key file on the reader.
+                                            example: /data/client-pvt.key
+                                          publicKeyFileLocation:
+                                            type: string
+                                            description: Absolute path to the public key or client certificate file on the reader.
+                                            example: /data/client-pub.crt
                                           verifyHostName:
                                             type: boolean
+                                            description: When true, the broker's hostname is verified against its TLS certificate CN/SAN.
                                             example: false
                                           verifyPeer:
                                             type: boolean
+                                            description: When true, the server's TLS certificate is validated against the CA certificate.
                                             example: false
                                       subscribeTopic:
                                         type: array
+                                        description: MQTT topic(s) the reader subscribes to (typically unused for management event connections).
                                         items: {}
                                         example: []
                                   type:
                                     type: string
+                                    description: >-
+                                      Connection type. Supported values: mqtt, mqtt-GCP, mqtt-AWS,
+                                      mqtt-Azure, httpPost, WEBSOCKET, tcpip-server, keyboard-emulation.
                                     example: mqtt
                               example:
                                 - description: MQTT_TEST
@@ -3104,7 +3890,6 @@ paths:
                               subscribeTopic:
                                 - FX9600FCC017/cmd
                             type: mqtt
-                        enableLocalRest: true
                     data:
                       event:
                         connections:
@@ -3174,7 +3959,6 @@ paths:
                               subscribeTopic:
                                 - FX9600FCC017/cmd
                             type: mqtt
-                        enableLocalRest: true
                       event:
                         connections:
                           - description: MQTT_TEST
@@ -4112,6 +4896,9 @@ paths:
                       example: zebra
                 authenticationType:
                   type: string
+                  enum:
+                    - NONE
+                    - BASIC
                   example: BASIC
                 name:
                   type: string
@@ -4223,134 +5010,342 @@ paths:
                 properties:
                   hostName:
                     type: string
+                    example: FXR90C5F1AB
                   networkInterface:
                     type: object
+                    description: Map of network interface names to their configuration and status.
                     properties:
-                      bnep0:
-                        type: object
-                        properties:
-                          Status:
-                            type: string
-                          deviceDiscoverableName:
-                            type: string
-                          dhcpEndAddress:
-                            type: string
-                          dhcpStartAddress:
-                            type: string
-                          ipAddress:
-                            type: string
-                          isDiscoverable:
-                            type: boolean
-                          isEnabled:
-                            type: boolean
-                          isPairable:
-                            type: boolean
-                          macAddress:
-                            type: string
-                          passKey:
-                            type: string
-                          subnetMask:
-                            type: string
-                          usePassKey:
-                            type: boolean
                       eth0:
                         type: object
+                        description: Ethernet interface.
                         properties:
                           IPV4:
                             type: object
                             properties:
                               dhcp:
                                 type: boolean
-                              dnsAddress:
-                                type: string
-                              domainName:
-                                type: string
-                              gatewayAddress:
-                                type: string
+                                description: Whether DHCP is enabled for IPv4 on this interface.
                               ipAddress:
                                 type: string
+                                description: IPv4 address assigned to this interface.
+                              gatewayAddress:
+                                type: string
+                                description: IPv4 gateway address for this interface.
                               subnetMask:
                                 type: string
+                                description: Subnet mask for the assigned IPv4 address.
+                              dnsAddress:
+                                type: string
+                                description: IPv4 DNS server address for this interface.
+                              domainName:
+                                type: string
+                                description: Domain name associated with this interface.
                           IPV6:
                             type: object
                             properties:
                               dhcp:
                                 type: boolean
-                              dnsAddress:
-                                type: string
-                              domainName:
-                                type: string
-                              gatewayAddress:
-                                type: string
+                                description: Whether DHCP is enabled for IPv6 on this interface.
                               ipAddress:
                                 type: string
+                                description: IPv6 address assigned to this interface.
+                              gatewayAddress:
+                                type: string
+                                description: IPv6 gateway address for this interface.
+                              prefix:
+                                type: string
+                                description: IPv6 prefix for the assigned address.
+                              dnsAddress:
+                                type: string
+                                description: IPv6 DNS server address for this interface.
+                              domainName:
+                                type: string
+                                description: Domain name associated with this interface.
+                          security:
+                            type: object
+                            description: Ethernet security configuration.
+                            properties:
+                              securityType:
+                                type: string
+                                description: Security protocol in use.
+                                enum:
+                                  - 802_1xEAP
+                                example: 802_1xEAP
+                              authentication:
+                                type: string
+                                description: EAP authentication method (TLS, TTLS, PEAP).
+                                example: TLS
+                              innerAuthentication:
+                                type: string
+                                description: Inner EAP authentication method (for TTLS/PEAP with TLS or MSCHAPv2).
+                                example: MSCHAPv2
+                              username:
+                                type: string
+                                description: Username for TTLS/PEAP with MSCHAPv2.
+                              password:
+                                type: string
+                                description: Password for TTLS/PEAP with MSCHAPv2.
+                              certificate:
+                                type: string
+                                description: Client certificate name used for TLS-based authentication.
                           Status:
                             type: string
+                            description: Connection status.
+                            example: connected/disconnected
                           isEnabled:
                             type: boolean
+                            description: Whether the interface is enabled.
+                            example: true/false
                           macAddress:
                             type: string
+                            description: MAC address of the interface.
+                            example: C8:1C:FE:C5:F1:AB
                       mlan0:
                         type: object
+                        description: WiFi station interface.
                         properties:
                           IPV4:
                             type: object
                             properties:
                               dhcp:
                                 type: boolean
-                              dnsAddress:
-                                type: string
-                              domainName:
-                                type: string
-                              gatewayAddress:
-                                type: string
+                                description: Whether DHCP is enabled for IPv4 on this interface.
                               ipAddress:
                                 type: string
+                                description: IPv4 address assigned to this interface.
+                              gatewayAddress:
+                                type: string
+                                description: IPv4 gateway address for this interface.
                               subnetMask:
                                 type: string
+                                description: Subnet mask for the assigned IPv4 address.
+                              dnsAddress:
+                                type: string
+                                description: IPv4 DNS server address for this interface.
+                              domainName:
+                                type: string
+                                description: Domain name associated with this interface.
                           IPV6:
                             type: object
                             properties:
                               dhcp:
                                 type: boolean
-                              dnsAddress:
-                                type: string
-                              domainName:
-                                type: string
-                              gatewayAddress:
-                                type: string
+                                description: Whether DHCP is enabled for IPv6 on this interface.
                               ipAddress:
                                 type: string
-                          Status:
-                            type: string
+                                description: IPv6 address assigned to this interface.
+                              gatewayAddress:
+                                type: string
+                                description: IPv6 gateway address for this interface.
+                              prefix:
+                                type: string
+                                description: IPv6 prefix for the assigned address.
+                              dnsAddress:
+                                type: string
+                                description: IPv6 DNS server address for this interface.
+                              domainName:
+                                type: string
+                                description: Domain name associated with this interface.
                           accesspoint:
                             type: object
+                            description: Connected WiFi access point details.
                             properties:
-                              autoConn:
-                                type: boolean
                               essid:
                                 type: string
+                                description: SSID of the connected access point.
+                              autoConn:
+                                type: boolean
+                                description: Whether auto-connect is enabled for this access point.
                               status:
                                 type: string
-                          isEnabled:
-                            type: boolean
-                          macAddress:
-                            type: string
-                      wan0:
-                        type: object
-                        properties:
+                                description: Connection status.
+                                example: connected/disconnected
+                              security:
+                                type: object
+                                description: WiFi security configuration (present only when security is enabled).
+                                properties:
+                                  securityType:
+                                    type: string
+                                    description: Security protocol in use.
+                                    enum:
+                                      - WPA2Personal
+                                      - WPA2Enterprise
+                                      - WPA3Personal
+                                      - WPA3Enterprise
+                                    example: WPA2Personal
+                                  WPA2Personal:
+                                    type: object
+                                    description: WPA2 Personal (PSK) configuration.
+                                    properties:
+                                      password:
+                                        type: string
+                                        description: Pre-shared key / passphrase.
+                                  WPA3Personal:
+                                    type: object
+                                    description: WPA3 Personal (SAE) configuration.
+                                    properties:
+                                      password:
+                                        type: string
+                                        description: Pre-shared key / passphrase.
+                                  WPA2Enterprise:
+                                    type: object
+                                    description: WPA2 Enterprise configuration.
+                                    properties:
+                                      authentication:
+                                        type: string
+                                        description: EAP authentication method (TLS, TTLS, PEAP).
+                                        example: TLS
+                                      innerAuthentication:
+                                        type: string
+                                        description: Inner EAP authentication method (for TTLS/PEAP with TLS or MSCHAPv2).
+                                        example: MSCHAPv2
+                                      username:
+                                        type: string
+                                        description: Username for TTLS/PEAP with MSCHAPv2.
+                                      password:
+                                        type: string
+                                        description: Password for TTLS/PEAP with MSCHAPv2.
+                                      certificate:
+                                        type: string
+                                        description: Client certificate name for TLS-based methods.
+                                  WPA3Enterprise:
+                                    type: object
+                                    description: WPA3 Enterprise configuration.
+                                    properties:
+                                      authentication:
+                                        type: string
+                                        description: EAP authentication method (TLS, TTLS, PEAP).
+                                        example: TLS
+                                      innerAuthentication:
+                                        type: string
+                                        description: Inner EAP authentication method (for TTLS/PEAP with TLS or MSCHAPv2).
+                                        example: MSCHAPv2
+                                      username:
+                                        type: string
+                                        description: Username for TTLS/PEAP with MSCHAPv2.
+                                      password:
+                                        type: string
+                                        description: Password for TTLS/PEAP with MSCHAPv2.
+                                      certificate:
+                                        type: string
+                                        description: Client certificate name for TLS-based methods.
                           Status:
                             type: string
-                          activeSim:
-                            type: string
+                            description: Connection status of the WiFi station interface.
+                            example: connected
                           isEnabled:
                             type: boolean
+                            description: Whether the WiFi station interface is enabled.
+                          macAddress:
+                            type: string
+                            description: MAC address of the WiFi interface.
+                            example: 48:A4:93:BF:A9:50
+                      bnep0:
+                        type: object
+                        description: Bluetooth PAN interface.
+                        properties:
+                          ipAddress:
+                            type: string
+                            description: IP address assigned to the Bluetooth PAN interface.
+                          subnetMask:
+                            type: string
+                            description: Subnet mask for the Bluetooth PAN interface.
+                          dhcpStartAddress:
+                            type: string
+                            description: Start of the DHCP address range served to connected Bluetooth clients.
+                          dhcpEndAddress:
+                            type: string
+                            description: End of the DHCP address range served to connected Bluetooth clients.
+                          deviceDiscoverableName:
+                            type: string
+                            description: Bluetooth device name broadcast during discovery.
+                          isDiscoverable:
+                            type: boolean
+                            description: Whether the device is visible to other Bluetooth devices.
+                          isPairable:
+                            type: boolean
+                            description: Whether the device accepts new Bluetooth pairing requests.
+                          passKey:
+                            type: string
+                            description: PIN/passkey required for Bluetooth pairing (when usePassKey is true).
+                          usePassKey:
+                            type: boolean
+                            description: Whether a passkey is required for Bluetooth pairing.
+                          Status:
+                            type: string
+                            description: Current status of the Bluetooth PAN interface (e.g. active, inactive).
+                          isEnabled:
+                            type: boolean
+                            description: Whether the Bluetooth PAN interface is enabled.
+                          macAddress:
+                            type: string
+                            description: MAC address of the Bluetooth interface.
+                      wan0:
+                        type: object
+                        description: WAN / cellular interface.
+                        properties:
+                          activeSim:
+                            type: string
+                            description: The active SIM slot.
+                            enum:
+                              - psim
+                              - esim
                           psim:
                             type: object
+                            description: Physical SIM configuration and status.
                             properties:
+                              apn:
+                                type: string
+                                description: Access Point Name.
+                              preferredNetworkType:
+                                type: string
+                                example: AUTO
+                              enableIPv6:
+                                type: boolean
+                              enablePin:
+                                type: boolean
+                              enableRoaming:
+                                type: boolean
                               currentDataClass:
                                 type: string
+                                example: LTE
+                              highestAvailableDataClass:
+                                type: string
+                                example: LTE
                               currentServiceProvider:
+                                type: string
+                              registerState:
+                                type: string
+                                example: Home
+                              packetServiceState:
+                                type: string
+                                example: Attached
+                              internetAccess:
+                                type: boolean
+                              simState:
+                                type: string
+                                example: Initialized
+                              signalBar:
+                                type: number
+                              rssi:
+                                type: string
+                                example: '-82.7dBm'
+                              rsrp:
+                                type: string
+                                example: '-103.7dBm'
+                              rsrq:
+                                type: string
+                                example: '-5.5dB'
+                              snr:
+                                type: string
+                                example: 0.0dB
+                          esim:
+                            type: object
+                            description: Embedded SIM configuration and status (same structure as psim).
+                            properties:
+                              apn:
+                                type: string
+                              preferredNetworkType:
                                 type: string
                               enableIPv6:
                                 type: boolean
@@ -4358,44 +5353,79 @@ paths:
                                 type: boolean
                               enableRoaming:
                                 type: boolean
+                              currentDataClass:
+                                type: string
                               highestAvailableDataClass:
+                                type: string
+                              currentServiceProvider:
+                                type: string
+                              registerState:
+                                type: string
+                              packetServiceState:
                                 type: string
                               internetAccess:
                                 type: boolean
-                              packetServiceState:
+                              simState:
                                 type: string
-                              preferredNetworkType:
-                                type: string
-                              registerState:
+                              signalBar:
+                                type: number
+                              rssi:
                                 type: string
                               rsrp:
                                 type: string
                               rsrq:
                                 type: string
-                              rssi:
-                                type: string
-                              signalBar:
-                                type: number
-                              simState:
-                                type: string
                               snr:
                                 type: string
+                          Status:
+                            type: string
+                            example: online
+                          isEnabled:
+                            type: boolean
+                          macAddress:
+                            type: string
+                      uap0:
+                        type: object
+                        description: WiFi Hotspot (Access Point) interface.
+                        properties:
+                          ssid:
+                            type: string
+                            description: Hotspot SSID name.
+                            example: FXR90Hotspot
+                          ssidPassword:
+                            type: string
+                            description: Hotspot password.
+                          isHidden:
+                            type: boolean
+                            description: Whether the SSID is hidden from broadcast.
+                          securityType:
+                            type: string
+                            description: Security protocol used by the hotspot.
+                            enum:
+                              - WPA2Personal
+                              - WPA3Personal
+                          Clients:
+                            type: array
+                            description: List of devices currently connected to the hotspot.
+                            items:
+                              type: object
+                              properties:
+                                hostName:
+                                  type: string
+                                IP:
+                                  type: string
+                                MAC:
+                                  type: string
+                          Status:
+                            type: string
+                            example: active
+                          isEnabled:
+                            type: boolean
+                          macAddress:
+                            type: string
               example:
                 hostName: FXR90C5F1AB
                 networkInterface:
-                  bnep0:
-                    Status: active
-                    deviceDiscoverableName: FXR90C5F1AB
-                    dhcpEndAddress: 192.168.0.10
-                    dhcpStartAddress: 192.168.0.2
-                    ipAddress: 192.168.241.171
-                    isDiscoverable: true
-                    isEnabled: true
-                    isPairable: true
-                    macAddress: 48:A4:93:BF:A9:52
-                    passKey: '1234'
-                    subnetMask: 255.255.0.0
-                    usePassKey: true
                   eth0:
                     IPV4:
                       dhcp: true
@@ -4410,6 +5440,7 @@ paths:
                       domainName: zlab.com
                       gatewayAddress: fe80::f6ee:31ff:fe0c:5a1f
                       ipAddress: fd6c:10:233:45:eab:f51f:957e:f729
+                      prefix: 64
                     Status: connected
                     isEnabled: true
                     macAddress: C8:1C:FE:C5:F1:AB
@@ -4427,13 +5458,29 @@ paths:
                       domainName: FXR90C5F1AB
                       gatewayAddress: fe80::c206:c3ff:febe:ee3c
                       ipAddress: fe80::3626:9125:eda5:36d7
+                      prefix: 64
                     Status: connected
                     accesspoint:
                       autoConn: false
                       essid: GLaDOS
                       status: connected
+                      security:
+                        securityType: WPA2Personal
                     isEnabled: true
                     macAddress: 48:A4:93:BF:A9:50
+                  bnep0:
+                    Status: active
+                    deviceDiscoverableName: FXR90C5F1AB
+                    dhcpEndAddress: 192.168.0.10
+                    dhcpStartAddress: 192.168.0.2
+                    ipAddress: 192.168.241.171
+                    isDiscoverable: true
+                    isEnabled: true
+                    isPairable: true
+                    macAddress: 48:A4:93:BF:A9:52
+                    passKey: '1234'
+                    subnetMask: 255.255.0.0
+                    usePassKey: true
                   wan0:
                     Status: online
                     activeSim: psim
@@ -4455,40 +5502,410 @@ paths:
                       signalBar: 1
                       simState: Initialized
                       snr: 0.0dB
+                  uap0:
+                    ssid: FXR90Hotspot
+                    ssidPassword: 'MyP@ssword'
+                    isHidden: false
+                    securityType: WPA3Personal
+                    Status: active
+                    isEnabled: true
+                    macAddress: 48:A4:93:BF:A9:53
+                    Clients:
+                      - hostName: my-laptop
+                        IP: 192.168.43.2
+                        MAC: AA:BB:CC:DD:EE:FF
       security:
         - bearerAuth: []
     put:
       tags:
         - Network
       summary: Updates reader network configuration
-      description: MQTT API :-  set_network <br> Updates the reader network configuration settings
+      description: >
+        MQTT API :-  set_network <br> Updates the reader network configuration settings.
+        Only one interface key (`eth0`, `mlan0`, `bnep0`, `wan0`, or `uap0`) may be present per request.
       operationId: updateNetwork
       requestBody:
         content:
           application/json:
             schema:
               type: object
+              description: Exactly one interface key must be provided.
               properties:
                 eth0:
                   type: object
+                  description: Ethernet interface configuration.
                   properties:
                     IPV4:
+                      type: object
+                      description: IPv4 settings.Use dhcp:true for DHCP, or supply all static fields when dhcp:false.
+                      properties:
+                        dhcp:
+                          type: boolean
+                          description: Enable/disable DHCP for IPv4 on this interface.
+                          example: true
+                        ipAddress:
+                          type: string
+                          description: Static IPv4 address (required if dhcp is false).
+                          example: 10.233.46.47
+                        gatewayAddress:
+                          type: string
+                          description: IPv4 gateway address (required if dhcp is false).
+                          example: 10.233.46.2
+                        subnetMask:
+                          type: string
+                          description: IPv4 subnet mask (required if dhcp is false).
+                          example: 255.255.255.0
+                        dnsAddress:
+                          type: string
+                          description: IPv4 DNS address (required if dhcp is false).
+                          example: 10.233.1.200
+                        domainName:
+                          type: string
+                          description: IPv4 domain name (required if dhcp is false).
+                          example: zlab.com
+                    IPV6:
+                      type: object
+                      description: IPv6 settings. Use dhcp:true for DHCP, or supply all static fields when dhcp:false.
+                      properties:
+                        dhcp:
+                          type: boolean
+                          description: Enable/disable DHCP for IPv6 on this interface.
+                        ipAddress:
+                          type: string
+                          description: Static IPv6 address (required if dhcp is false).
+                        gatewayAddress:
+                          type: string
+                          description: IPv6 gateway address (required if dhcp is false).
+                        prefix:
+                          type: string
+                          description: IPv6 prefix (required if dhcp is false).
+                        dnsAddress:
+                          type: string
+                          description: IPv6 DNS address (required if dhcp is false).
+                        domainName:
+                          type: string
+                          description: IPv6 domain name (required if dhcp is false).
+                    security:
+                      type: object
+                      description: >
+                        Ethernet security configuration. 
+                        Include the appropriate security configuration to enable security: `802_1xEAP` for 802.1X authentication.
+                        If the `security` configuration is omitted, security is disabled and all other security-related fields are ignored.
+                      properties:
+                        802_1xEAP:
+                          type: object
+                          description: 802.1X EAP security configuration (when securityType is 802_1xEAP).
+                          properties:
+                            authentication:
+                              type: string
+                              description: "EAP authentication method: TLS, TTLS, or PEAP."
+                              enum:
+                                - TLS
+                                - TTLS
+                                - PEAP
+                              example: TLS
+                            innerAuthentication:
+                              type: string
+                              description: "Inner authentication method (for TTLS/PEAP): TLS or MSCHAPv2."
+                              enum:
+                                - TLS
+                                - MSCHAPv2
+                              example: MSCHAPv2
+                            username:
+                              type: string
+                              description: Username (for TTLS/PEAP with MSCHAPv2).
+                            password:
+                              type: string
+                              description: Password (for TTLS/PEAP with MSCHAPv2).
+                            certificate:
+                              type: string
+                              description: Client certificate name (for TLS-based methods).
+                    enable:
+                      type: boolean
+                      description: Enable/disable the ethernet interface.
+                      example: true
+                mlan0:
+                  type: object
+                  description: WiFi station interface configuration.
+                  properties:
+                    IPV4:
+                      type: object
+                      description: IPv4 settings. Use dhcp:true for DHCP, or supply all static fields when dhcp:false.
+                      properties:
+                        dhcp:
+                          type: boolean
+                          description: Enable/disable DHCP for IPv4 on this interface.
+                        ipAddress:
+                          type: string
+                          description: Static IPv4 address (required if dhcp is false).
+                        gatewayAddress:
+                          type: string
+                          description: IPv4 gateway address (required if dhcp is false).
+                        subnetMask:
+                          type: string
+                          description: IPv4 subnet mask (required if dhcp is false).
+                        dnsAddress:
+                          type: string
+                          description: IPv4 DNS address (required if dhcp is false).
+                        domainName:
+                          type: string
+                          description: IPv4 domain name (required if dhcp is false).
+                    IPV6:
                       type: object
                       properties:
                         dhcp:
                           type: boolean
+                          description: Enable/disable DHCP for IPv6 on this interface.
+                        ipAddress:
+                          type: string
+                          description: Static IPv6 address (required if dhcp is false).
+                        gatewayAddress:
+                          type: string
+                          description: IPv6 gateway address (required if dhcp is false).
+                        prefix:
+                          type: string
+                          description: IPv6 prefix (required if dhcp is false).
+                        dnsAddress:
+                          type: string
+                          description: IPv6 DNS address (required if dhcp is false).
+                        domainName:
+                          type: string
+                          description: IPv6 domain name (required if dhcp is false).
+                    accesspoint:
+                      type: object
+                      required:
+                        - essid
+                        - connect
+                      properties:
+                        essid:
+                          type: string
+                          description: SSID of the WiFi network to connect to.
+                          example: MyWiFiNetwork
+                        connect:
+                          type: boolean
+                          description: Whether to immediately connect to this access point.
                           example: true
+                        autoConn:
+                          type: boolean
+                          description: Whether to automatically reconnect on subsequent boots.
+                          example: true
+                        security:
+                          type: object
+                          description: >
+                            WiFi security configuration.Include the appropriate security configuration to enable security.
+                            Include exactly ONE of the following: `WPA2Personal` or `WPA2Enterprise`.
+                            If the security configuration is omitted, security is disabled and all other security-related fields are ignored.
+                          properties:
+                            WPA2Personal:
+                              type: object
+                              description: WPA2 Personal (PSK) security options.
+                              properties:
+                                password:
+                                  type: string
+                                  description: Pre-shared key / passphrase.
+                                  example: 'MyP@ssword'
+                            WPA3Personal:
+                              type: object
+                              description: WPA3 Personal (SAE) security options.
+                              properties:
+                                password:
+                                  type: string
+                                  description: Pre-shared key / passphrase.
+                                  example: 'MyP@ssword'
+                            WPA2Enterprise:
+                              type: object
+                              description: WPA2 Enterprise security options.
+                              properties:
+                                authentication:
+                                  type: string
+                                  description: "EAP authentication method: TLS, TTLS, or PEAP."
+                                  enum:
+                                    - TLS
+                                    - TTLS
+                                    - PEAP
+                                  example: TLS
+                                innerAuthentication:
+                                  type: string
+                                  description: "Inner authentication method (for TTLS/PEAP): TLS or MSCHAPv2."
+                                  enum:
+                                    - TLS
+                                    - MSCHAPv2
+                                  example: MSCHAPv2
+                                username:
+                                  type: string
+                                  description: Username (for TTLS/PEAP with MSCHAPv2).
+                                password:
+                                  type: string
+                                  description: Password (for TTLS/PEAP with MSCHAPv2).
+                                certificate:
+                                  type: string
+                                  description: Client certificate name (for TLS-based methods).
+                            WPA3Enterprise:
+                              type: object
+                              description: WPA3 Enterprise security options.
+                              properties:
+                                authentication:
+                                  type: string
+                                  description: "EAP authentication method: TLS, TTLS, or PEAP."
+                                  enum:
+                                    - TLS
+                                    - TTLS
+                                    - PEAP
+                                  example: TLS
+                                innerAuthentication:
+                                  type: string
+                                  description: "Inner authentication method (for TTLS/PEAP): TLS or MSCHAPv2."
+                                  enum:
+                                    - TLS
+                                    - MSCHAPv2
+                                  example: MSCHAPv2
+                                username:
+                                  type: string
+                                  description: Username (for TTLS/PEAP with MSCHAPv2).
+                                password:
+                                  type: string
+                                  description: Password (for TTLS/PEAP with MSCHAPv2).
+                                certificate:
+                                  type: string
+                                  description: Client certificate name (for TLS-based methods).
+                        enable:
+                          type: boolean
+                          description: Enable/disable the WiFi station interface.
+                          example: true
+                bnep0:
+                  type: object
+                  description: Bluetooth PAN interface configuration.
+                  required:
+                    - dhcpStartAddress
+                    - dhcpEndAddress
+                    - discoverable
+                    - pairable
+                    - passKey
+                    - usePassKey
+                    - enable
+                  properties:
+                    dhcpStartAddress:
+                      type: string
+                      description: Start of the DHCP address range served to connected Bluetooth clients.
+                      example: 192.168.0.2
+                    dhcpEndAddress:
+                      type: string
+                      description: End of the DHCP address range served to connected Bluetooth clients.
+                      example: 192.168.0.10
+                    discoverable:
+                      type: boolean
+                      description: Enable/disable Bluetooth discoverable mode.
+                      example: true
+                    pairable:
+                      type: boolean
+                      description: Enable/disable Bluetooth pairable mode (accepting new pairing requests).
+                      example: true
+                    passKey:
+                      type: string
+                      description: Bluetooth pairing passkey.
+                      example: '1234'
+                    usePassKey:
+                      type: boolean
+                      description: Enable/disable the use of a Bluetooth pairing passkey.
+                      example: false
+                    enable:
+                      type: boolean
+                      description: Enable/disable the Bluetooth interface.
+                      example: true
+                wan0:
+                  type: object
+                  description: WAN / cellular interface configuration.
+                  required:
+                    - activeSim
+                    - enable
+                  properties:
+                    activeSim:
+                      type: string
+                      description: Active SIM slot to configure.
+                      enum:
+                        - psim
+                        - esim
+                      example: psim
+                    psim:
+                      type: object
+                      description: Physical SIM settings. Required when `activeSim` is `psim`.
+                      properties:
+                        apn:
+                          type: string
+                          description: Access Point Name.
+                          example: internet
+                        preferredNetworkType:
+                          type: string
+                          description: Preferred cellular network type.
+                          example: AUTO
+                        enableIPv6:
+                          type: boolean
+                          description: Enable/disable IPv6.
+                          example: true
+                    esim:
+                      type: object
+                      description: Embedded SIM settings. Required when `activeSim` is `esim`.
+                      properties:
+                        apn:
+                          type: string
+                          description: Access Point Name.
+                        preferredNetworkType:
+                          type: string
+                          description: Preferred cellular network type.
+                        enableIPv6:
+                          type: boolean
+                          description: Enable/disable IPv6.
+                    enable:
+                      type: boolean
+                      example: true
+                uap0:
+                  type: object
+                  description: WiFi Hotspot (Access Point) interface configuration.
+                  required:
+                    - ssid
+                    - ssidPassword
+                    - isHidden
+                    - securityType
+                    - enable
+                  properties:
+                    ssid:
+                      type: string
+                      description: Hotspot SSID name.
+                      example: FXR90Hotspot
+                    ssidPassword:
+                      type: string
+                      description: Hotspot password.
+                      example: 'MyP@ssword'
+                    isHidden:
+                      type: boolean
+                      description: Set to true to hide the SSID from broadcast.
+                      example: false
+                    securityType:
+                      type: string
+                      description: Security protocol for the hotspot.
+                      enum:
+                        - WPA2Personal
+                        - WPA3Personal
+                      example: WPA3Personal
+                    countryCode:
+                      type: string
+                      description: Two-letter ISO 3166-1 country code for regulatory compliance.
+                      example: US
                     enable:
                       type: boolean
                       example: true
             examples:
-              set_Network_dhcp:
+              set_Network_ethernet_dhcp:
+                summary: Ethernet — DHCP
                 value:
                   eth0:
                     IPV4:
                       dhcp: true
+                    IPV6:
+                      dhcp: true
                     enable: true
-              set_Network_static:
+              set_Network_ethernet_static:
+                summary: Ethernet — static IP
                 value:
                   eth0:
                     IPV4:
@@ -4498,8 +5915,191 @@ paths:
                       gatewayAddress: 10.233.46.2
                       ipAddress: 10.233.46.47
                       subnetMask: 255.255.255.0
+                    IPV6:
+                      dhcp: false
+                      dnsAddress: 2001:4860:4860::9999
+                      domainName: example.ee.com
+                      gatewayAddress: fe80::1643:8376:b32:4a16
+                      ipAddress: 2001:db8:1:0:8731:2eb1:cd28:f0cd
+                      prefix: 64
                     enable: true
+              set_Network_ethernet_static_8021x_tls:
+                summary: Ethernet — 802.1X (TLS).Similarly applicable for TTLS/TLS, PEAP/TTLS, TTLS/MSCHAPV2, PEAP/MSCHAPV2.  
+                value:
+                  eth0:
+                    IPV4:
+                      dhcp: false
+                      dnsAddress: 10.233.1.200
+                      domainName: zlab.com
+                      gatewayAddress: 10.233.46.2
+                      ipAddress: 10.233.46.47
+                      subnetMask: 255.255.255.0
+                    IPV6:
+                      dhcp: false
+                      dnsAddress: 2001:4860:4860::9999
+                      domainName: example.ee.com
+                      gatewayAddress: fe80::1643:8376:b32:4a16
+                      ipAddress: 2001:db8:1:0:8731:2eb1:cd28:f0cd
+                      prefix: 64
+                    enable: true
+                    security:
+                      802_1xEAP:
+                        authentication: TLS
+                        certificate: my-client-cert
+              set_Network_ethernet_dhcp_8021x_tls:
+                summary: Ethernet — 802.1X (TLS)
+                value:
+                  eth0:
+                    security:
+                      802_1xEAP:
+                        authentication: TLS
+                        certificate: my-client-cert
+                    enable: true
+              set_Network_ethernet_dhcp_8021x_ttls_mschapv2:
+                summary: Ethernet — 802.1X (TTLS/MSCHAPv2)
+                value:
+                  eth0:
+                    security:
+                      802_1xEAP:
+                        authentication: TTLS
+                        innerAuthentication: MSCHAPv2
+                        username: john.doe
+                        password: secret
+                    enable: true
+              set_Network_ethernet_dhcp_8021x_peap_mschapv2:
+                summary: Ethernet — 802.1X (PEAP/MSCHAPv2)
+                value:
+                  eth0:
+                    security:
+                      802_1xEAP:
+                        authentication: PEAP
+                        innerAuthentication: MSCHAPv2
+                        username: john.doe
+                        password: secret
+                    enable: true
+              set_Network_wifi_static:
+                summary: WiFi — static IP .Similarly applicable for WPA3Personal, WPA2Enterprise, WPA3Enterprise 
+                value:
+                  mlan0:
+                    IPV4:
+                      dhcp: false
+                      dnsAddress: 10.233.1.200
+                      domainName: zlab.com
+                      gatewayAddress: 10.233.46.2
+                      ipAddress: 10.233.46.47
+                      subnetMask: 255.255.255.0
+                    IPV6:
+                      dhcp: false
+                      dnsAddress: 2001:4860:4860::9999
+                      domainName: example.ee.com
+                      gatewayAddress: fe80::1643:8376:b32:4a16
+                      ipAddress: 2001:db8:1:0:8731:2eb1:cd28:f0cd
+                      prefix: 64
+                    enable: true
+                    accesspoint:
+                      autoConn: true
+                      connect: true
+                      essid: Redmi Note 12 5G
+                      security:
+                        WPA2Personal:
+                          password: '12345678'
+              set_Network_wifi_dhcp:
+                summary: WiFi — WPA3 Personal.Similarly applicable for WPA2Personal,WPA2Enterprise, WPA3Enterprise, 
+                value:
+                  mlan0:
+                    accesspoint:
+                      autoConn: true
+                      connect: true
+                      essid: Redmi Note 12 5G
+                      security:
+                        WPA3Personal:
+                          password: '12345678'
+                    enable: true
+              set_Network_wifi_security_wpa2_personal:
+                summary: WiFi — WPA2 Personal
+                value:
+                  mlan0:
+                    accesspoint:
+                      autoConn: true
+                      connect: true
+                      essid: Redmi Note 12 5G
+                      security:
+                        WPA2Personal:
+                          password: '12345678'
+                    enable: true
+              set_Network_wifi_wpa2_enterprise_tls:
+                summary: WiFi — WPA2 Enterprise (TLS).Similary applicable for WPA3 Enterprise(WPA3Enterprise)
+                value:
+                  mlan0:
+                    accesspoint:
+                      essid: CorpNetwork
+                      connect: true
+                      autoConn: true
+                      security:
+                        WPA2Enterprise:
+                          authentication: TLS
+                          certificate: my-client-cert
+                    enable: true
+              set_Network_wifi_wpa3_enterprise_ttls_mschapv2:
+                summary: WiFi — WPA3 Enterprise (TTLS/MSCHAPv2).similarly applicable for WPA2 Enterprise (WPA2Enterprise)
+                value:
+                  mlan0:
+                    accesspoint:
+                      essid: CorpNetwork
+                      connect: true
+                      autoConn: true
+                      security:
+                        WPA3Enterprise:
+                          authentication: TTLS
+                          innerAuthentication: MSCHAPv2
+                          username: john.doe
+                          password: secret
+                    enable: true
+              set_Network_wifi_wpa2_enterprise_peap_tls:
+                summary: WiFi — WPA2 Enterprise (PEAP/TLS).Similarly applicable for WPA3 Enterprise(WPA3Enterprise)
+                value:
+                  mlan0:
+                    accesspoint:
+                      essid: CorpNetwork
+                      connect: true
+                      autoConn: true
+                      security:
+                        WPA2Enterprise:
+                          authentication: PEAP
+                          innerAuthentication: TLS
+                          certificate: my-client-cert
+                    enable: true
+              set_Network_wifi_wpa2_enterprise_ttls_tls:
+                summary: WiFi — WPA2 Enterprise (TTLS/TLS).Similarly applicable for WPA3 Enterprise(WPA3Enterprise)
+                value:
+                  mlan0:
+                    accesspoint:
+                      essid: CorpNetwork
+                      connect: true
+                      autoConn: true
+                      security:
+                        WPA2Enterprise:
+                          authentication: TTLS
+                          innerAuthentication: TLS
+                          certificate: my-client-cert
+                    enable: true 
+              set_Network_wifi_wpa3_enterprise_peap_mschapv2:
+                summary: WiFi — WPA3 Enterprise (PEAP/MSCHAPv2).Similarly applicable for WPA2 Enterprise(WPA2Enterprise)
+                value:
+                  mlan0:
+                    accesspoint:
+                      essid: CorpNetwork
+                      connect: true
+                      autoConn: true
+                      security:
+                        WPA3Enterprise:
+                          authentication: PEAP
+                          innerAuthentication: MSCHAPv2
+                          username: john.doe
+                          password: secret
+                    enable: true  
               set_Network_bluetooth:
+                summary: Bluetooth PAN
                 value:
                   bnep0:
                     dhcpEndAddress: 192.168.0.10
@@ -4510,33 +6110,23 @@ paths:
                     usePassKey: false
                     enable: true
               set_Network_wan:
+                summary: WAN — cellular (psim)
                 value:
                   wan0:
                     enable: true
                     activeSim: psim
                     psim:
-                      apn: 'false'
-                      preferredNetworkType: 'AUTO'
+                      apn: internet
+                      preferredNetworkType: AUTO
                       enableIPv6: true
-              set_Network_wifi:
-                value:
-                  mlan0:
-                    accesspoint:
-                      autoConn: true
-                      connect: true
-                      essid: Redmi Note 12 5G
-                      security:
-                        enable: true
-                        WPA2Personal:
-                          password: '12345678'
-                    enable: true
               set_Network_hotspot:
+                summary: WiFi Hotspot (uap0)
                 value:
                   uap0:
-                    ssid: "FXR90Hotspot"
-                    ssidPassword: "12345678"
-                    countryCode: "US"
-                    securityType: "WPA3Personal"
+                    ssid: FXR90Hotspot
+                    ssidPassword: MyP@ssword
+                    countryCode: US
+                    securityType: WPA3Personal
                     isHidden: false
                     enable: true
       responses:
@@ -4909,6 +6499,9 @@ paths:
               properties:
                 authenticationType:
                   type: string
+                  enum:
+                    - NONE
+                    - BASIC
                   example: NONE
                 options:
                   type: object
@@ -4979,6 +6572,9 @@ paths:
                       example: labuser
                 authenticationType:
                   type: string
+                  enum:
+                    - NONE
+                    - BASIC
                   example: BASIC
                 filename:
                   type: string
@@ -5323,15 +6919,6 @@ paths:
                         type: boolean
                         description: Whether FastID is enabled.
                         example: true
-                      tidSelector:
-                        type: string
-                        description: TID word selector mask, if one was configured.
-                        enum:
-                          - 'TID[0]'
-                          - 'TID[1]'
-                          - 'TID[2]'
-                          - 'TID[3]'
-                        example: 'TID[0]'
                     required:
                       - enabled
                   tagProtect:
