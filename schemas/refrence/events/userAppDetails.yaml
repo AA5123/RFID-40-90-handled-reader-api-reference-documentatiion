@@ -8,6 +8,7 @@ properties:
     description: List of applications used by the user.
     items:
       type: object
+      description: Resource usage and status details for a single user application.
       properties:
         name:
           type: string

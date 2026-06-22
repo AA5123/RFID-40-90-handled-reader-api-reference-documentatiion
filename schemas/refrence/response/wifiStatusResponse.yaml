@@ -6,27 +6,36 @@ description: Contains the current WiFi connection status and interface details.
 properties:
   wifiStatus:
     type: object
+    description: Current WiFi connection status including IP address, gateway, and interface details.
     properties:
       hostName:
         type: string
         example: RDD90F004
+        description: Hostname of the device on the WiFi network.
       ipAddress:
         type: string
         example: 192.168.0.1
+        description: IP address assigned to the WiFi interface.
       gatewayAddress:
         type: string
         example: 192.168.1.1
+        description: Gateway address for the WiFi network.
       subnetMask:
         type: string
         example: 255.255.255.0
+        description: Subnet mask for the WiFi network.
       dnsAddress:
         type: string
         example: 8.8.8.8
+        description: DNS server address used by the WiFi interface.
       dhcp:
         type: boolean
+        description: Indicates whether DHCP is enabled for the WiFi interface.
       macAddress:
         type: string
         example: '84:24:8D:F0:F4:B5'
+        description: MAC address of the WiFi interface.
       ssid:
         type: string
         example: ZWireless
+        description: SSID (network name) of the currently connected access point.

@@ -30,6 +30,12 @@
       "$ref": "../../refrence/response/response.yaml"
     }
   },
+  "required": [
+    "command",
+    "requestId",
+    "apiVersion",
+    "response"
+  ],
   "examples": [
     {
       "command": "get_post_filter",

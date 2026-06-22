@@ -1,5 +1,5 @@
 {
-  "title": "get_installed_certificate",
+  "title": "get_installed_certificates",
   "x-stoplight": {
     "id": "2sjnogoidh0ik"
   },
@@ -98,5 +98,11 @@
     "response": {
       "$ref": "../../refrence/response/response.yaml"
     }
-  }
+  },
+  "required": [
+    "command",
+    "requestId",
+    "apiVersion",
+    "response"
+  ]
 }

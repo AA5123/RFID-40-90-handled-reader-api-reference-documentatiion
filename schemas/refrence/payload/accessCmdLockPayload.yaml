@@ -10,6 +10,7 @@ examples:
 properties:
   config:
     type: object
+    description: Lock operation parameters specifying the password, memory bank, and lock actions.
     required:
       - actions
     properties:

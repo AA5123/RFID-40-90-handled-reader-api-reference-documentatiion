@@ -41,6 +41,7 @@
   "required": [
     "command",
     "requestId",
-    "apiVersion"
+    "apiVersion",
+    "response"
   ]
 }

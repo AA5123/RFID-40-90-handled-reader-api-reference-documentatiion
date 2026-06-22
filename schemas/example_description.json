@@ -87,7 +87,9 @@
         "Filestore certificate with certificate authentication": "Payload to install filestore CA certificate",
         "MQTT certificates without authentication": "Payload to install MQTT client certificates without authentication via HTTP",
         "WiFi certificates without authentication": "Payload to install WiFi certificates without authentication via HTTP",
-        "WiFi CA certificate using direct content": "Installing WiFi CA certificate, where certificate content is provided as part of API"
+        "WiFi CA certificate using direct content": "Installing WiFi CA certificate, where certificate content is provided as part of API",
+        "Server certificate": "Payload to install server certificates with authentication",
+        "MQTT CA certificate install": "Installing MQTT CA certificate, where certificate content is provided as part of API"
     },
     "get_wifi": {
         "WPA2 Personal connection": "Response with WiFi connected to WPA2 Personal network",
@@ -114,12 +116,14 @@
         "Ethernet config info": "Response with ethernet interface configuration details",
         "Ethernet interface disabled": "Response when ethernet interface is disabled on the device"
     },
-    "alerts": {
+    "alert": {
         "Battery alert": "Alert indicating battery status such as low or critical battery level",
         "Power alert": "Alert indicating power events.",
         "Network alert for ethernet": "Alert indicating network events when ethernet connected",
         "Network alert for WiFi": "Alert indicating network events when WiFi connected",
-        "Firmware update alert": "Alert related to firmware update events such as status and progress"
+        "Firmware update alert": "Alert indicating firmware update started",
+        "File download alert": "Alert indicating file download status",
+        "File saved alert": "Alert indicating file save status"
     },
     "alert_short": {
         "Firmware download success": "Alert indicating successful firmware download",
@@ -131,5 +135,14 @@
         "WiFi client certificate install success": "Notification indicating successful WiFi client certificate installation",
         "Filestore client key download fail": "Notification indicating failure in filestore client key download"
 
+    },
+    "epConnection": {
+        "Connected event": "Event indicating the device has established a connection",
+        "Disconnected event": "Event indicating the device has lost the connection"
+    },
+    "Data Events": {
+        "Tag data event": "Tag data published in batches(max 40 tags per batch)",
+        "Tag data with additional details": "Tag data event including EPC, TID, channel, peak RSSI, phase, seen count, MAC, and hostname",
+        "Tag events for access operations": "Tag data events that include results of specified access operations such as read/write to memory banks"
     }
 }

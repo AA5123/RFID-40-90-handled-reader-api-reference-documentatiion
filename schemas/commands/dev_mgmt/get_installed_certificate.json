@@ -5,12 +5,17 @@
   },
   "description": "This API is used to get installed certificates. ",
   "type": "object",
-  "examples": [],
+  "examples": [
+    {
+      "command": "get_installed_certificates",
+      "requestId": "abc123"
+    }
+  ],
   "properties": {
     "command": {
       "type": "string",
       "example": "get_installed_certificates",
-      "description": "Command issued to get install certificate"
+      "description": "Command issued to get installed certificates."
     },
     "requestId": {
       "type": "string",

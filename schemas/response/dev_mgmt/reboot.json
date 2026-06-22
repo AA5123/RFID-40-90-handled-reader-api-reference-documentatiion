@@ -7,7 +7,7 @@
   "examples": [
      {
        "command": "reboot",
-       "requestId": "18996",
+       "requestId": "123abc",
        "apiVersion": "V1.1",
        "response": {
            "code": 1,

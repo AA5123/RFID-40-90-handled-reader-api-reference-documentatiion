@@ -6,27 +6,34 @@ description: Contains the ethernet interface configuration and connection status
 examples: []
 items:
   type: object
+  description: Ethernet interface data including configuration, link status, and security details.
   properties:
     InterfaceDetails:
       type: object
+      description: Details about the ethernet network interface, including its configuration and status.
       properties:
         interfaceName:
           type: string
           example: eth0
+          description: Name of the network interface.
         status:
           type: string
           example: enabled
+          description: Status of the network interface.
           enum:
-            - enabled
-            - disabled
+            - Enabled
+            - Disabled
         hostName:
           type: string
           example: RFD40AB03
+          description: Hostname assigned to the device.
         macAddress:
           type: string
           example: E0-D0-45-3D-38-1D
+          description: MAC address of the network interface.
         linkStatus:
           type: object
+          description: Current link status and speed of the ethernet connection.
           properties:
             status:
               type: string
@@ -34,49 +41,62 @@ items:
                 - Connected
                 - Disconnected
               example: Connected
+              description: Current status of the network link.
             linkSpeed:
               type: string
               example: 100Mbps
+              description: Speed of the network link.
         ipv4Configuration:
           type: object
+          description: IPv4 network configuration for the interface.
           properties:
             ipAddress:
               type: string
               example: 192.168.1.81
               format: ipv4
+              description: IPv4 address assigned to the interface.
             subnetMask:
               type: string
               example: 255.255.255.0
               format: ipv4
+              description: Subnet mask for the IPv4 configuration.
             gateway:
               type: string
               example: 192.168.1.144
               format: ipv4
+              description: Default gateway address for the IPv4 configuration.
             dhcpStatus:
               type: string
               enum:
                 - enabled
                 - disabled
               example: enabled
+              description: Indicates if DHCP is enabled for IPv4 address assignment.
             dnsServer:
               type: string
               format: ipv4
               example: 192.168.1.78
+              description: DNS server address for the IPv4 configuration.
             domainName:
               type: string
               example: test.soti.com
+              description: Domain name for the IPv4 configuration.
         security:
           type: object
+          description: Security configuration for the ethernet interface.
           properties:
             securityStatus:
               type: boolean
               example: true
+              description: Indicates if 802.1X security is enabled on the interface.
             EAP802_1X:
               type: object
+              description: 802.1X EAP security parameters for authenticated network access.
               properties:
                 authentication:
                   type: string
                   example: tls
+                  description: EAP authentication method used for 802.1X security.
                   enum:
                     - LEAP
                     - PEAP
@@ -88,6 +108,8 @@ items:
                 innerAuthentication:
                   type: string
                   example: none
+                  description: Inner authentication method used within the outer EAP tunnel.
                 certificate:
                   type: string
                   example: client45
+                  description: Certificate name used for EAP-TLS authentication.

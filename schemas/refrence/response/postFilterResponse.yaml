@@ -9,16 +9,27 @@ properties:
     description: A list of post-filter configurations.
     items:
       type: object
+      description: A single post-filter rule configuration entry.
       properties:
         dataEpType:
           type: string
           description: The type of data endpoint.
+          enum:
+            - DATA_EP1
+            - DATA_EP2
         matchPattern:
           type: string
           description: The pattern to match during filtering.
         matchPatternMethod:
           type: string
           description: The method used to apply the match pattern.
+          enum:
+            - PREFIX
+            - SUFFIX  
+            - REGEX
         reportOperation:
           type: string
           description: The operation type for reporting.
+          enum:
+            - INCLUDE
+            - EXCLUDE

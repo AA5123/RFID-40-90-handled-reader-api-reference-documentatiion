@@ -6,6 +6,7 @@ description: Defines the alert configuration thresholds for device monitoring ev
 properties:
   cpuUsage:
     type: object
+    description: Configuration for CPU usage alerts, including the threshold and enabled status.
     properties:
       treshold:
         type: number
@@ -23,6 +24,7 @@ properties:
       - status
   ramUsage:
     type: object
+    description: Configuration for RAM usage alerts, including the threshold and enabled status.
     properties:
       treshold:
         type: number
@@ -40,6 +42,7 @@ properties:
       - status
   flashUsage:
     type: object
+    description: Configuration for flash storage usage alerts, including the threshold and enabled status.
     properties:
       treshold:
         type: number
@@ -57,6 +60,7 @@ properties:
       - status
   temperature:
     type: object
+    description: Configuration for temperature alerts, including the threshold and enabled status.
     properties:
       treshold:
         type: number

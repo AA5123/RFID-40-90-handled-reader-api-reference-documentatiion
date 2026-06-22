@@ -9,3 +9,5 @@ properties:
     type: string
     example: JioFi
     description: SSID of the wifi profile to be deleted
+required:
+  - essid

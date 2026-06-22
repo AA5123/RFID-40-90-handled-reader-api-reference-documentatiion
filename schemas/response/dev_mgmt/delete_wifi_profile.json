@@ -12,13 +12,18 @@
     },
     "requestId": {
       "type": "string",
-      "default": 1235,
+      "default": "123abc",
       "description": "The unique identifier of the original request."
     },
     "response": {
       "$ref": "../../refrence/response/response.yaml"
     }
   },
+  "required": [
+    "command",
+    "requestId",
+    "response"
+  ],
   "examples": [
     {
       "command": "delete_wifi_profile",

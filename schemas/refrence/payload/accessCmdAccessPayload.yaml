@@ -8,6 +8,7 @@ examples:
 properties:
   config:
     type: object
+    description: Access operation parameters containing the access password for tag operations.
     properties:
       password:
         type: string

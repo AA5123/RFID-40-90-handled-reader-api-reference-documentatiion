@@ -9,6 +9,7 @@ properties:
     description: A list of installed certificates with their details.
     items:
       type: object
+      description: Details of a single installed certificate.
       properties:
         name:
           type: string
@@ -21,8 +22,8 @@ properties:
           enum:
             - client
             - server
-            - ' mqtt'
-            - ' wifi'
+            - mqtt
+            - wifi
             - filestore
         installTime:
           type: string
@@ -46,7 +47,7 @@ properties:
         serial:
           type: string
           description: The serial number of the certificate.
-          example: '410835777'
+          example: 'ed:83:dd:4a:47:dd:07:98'
         subjectName:
           type: string
           description: The name of the subject to whom the certificate belongs.
@@ -54,16 +55,15 @@ properties:
         validFrom:
           type: string
           description: The start date from which the certificate is valid.
-          example: '2022-07-01'
-          format: date
+          example: '2024-07-01T07:00:00Z'
+          format: date-time
         validTill:
           type: string
           description: The end date until which the certificate is valid.
-          example: '2023-07-01'
-          format: date
+          example: '2034-02-28T15:18:47Z'
+          format: date-time
       required:
         - type
-        - installTime
         - issuerName
         - subjectName
         - validFrom

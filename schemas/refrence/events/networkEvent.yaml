@@ -14,8 +14,9 @@ properties:
         description: List of Ethernet interface statuses.
         items:
           type: object
+          description: Status details for a single Ethernet interface.
           properties:
-            interface:
+            interfaceName:
               type: string
               description: Name of the Ethernet interface.
               example: eth0
@@ -45,7 +46,7 @@ properties:
               description: IPv6 address assigned to the Ethernet interface.
               example: 'fe80::f299:9d51:864c:cff'
           required:
-            - interface
+            - interfaceName
             - status
             - linkStatus
             - linkSpeed
@@ -56,8 +57,9 @@ properties:
         description: List of WiFi interface statuses.
         items:
           type: object
+          description: Status details for a single WiFi interface.
           properties:
-            interface:
+            interfaceName:
               type: string
               description: Name of the WiFi interface.
               example: wlan0
@@ -80,7 +82,7 @@ properties:
               description: IPv6 address assigned to the WiFi interface.
               example: 'fe80::f299:9d51:86c:cff14'
           required:
-            - interface
+            - interfaceName
             - status
             - ssid
             - ipV4Address

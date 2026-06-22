@@ -30,6 +30,7 @@ properties:
     description: set to true to enable file download alerts
   heartbeatConfiguration:
     type: object
+    description: Configuration for heartbeat event reporting, including interval and status inclusions.
     properties:
       interval:
         type: integer

@@ -6,35 +6,40 @@
   "type": "object",
   "examples": [
     {
-      "command": "get_status",
-      "requestId": "abc123",
-      "apiVersion": "V1.1",
-      "deviceStatus": {
-        "powerSource": "USB",
-        "radioActivity": "INACTIVE",
-        "radioConnection": "CONNECTED",
-        "systemTime": "2024-02-26T13:45:53.728Z",
-        "temperature": 32,
-        "ntp": {
-          "offset": 0,
-          "reach": 0
-        },
-        "terminalConnection": {
-          "status": "CONNECTED",
-          "type": "USB"
-        },
-        "batteryStatus": {
-          "capacity": 6400,
-          "stateOfHealth": "GOOD",
-          "chargePercentage": 100,
-          "chargeStatus": 1
-        }
-      },
-      "response": {
-        "code": 0,
-        "description": "Success"
-      }
+  "command": "get_status",
+  "requestId": "abcd123",
+  "apiVersion": "V1.21",
+  "deviceStatus": {
+    "powerSource": "USB",
+    "radioActivity": "INACTIVE",
+    "radioConnection": "DISCONNECTED",
+    "systemTime": "2026-06-15T09:26:00.443Z",
+    "ntp": {
+      "offset": 0,
+      "reach": 0
+    },
+    "terminalConnection": {
+      "status": "CONNECTED",
+      "type": "USB"
+    },
+    "batteryStatus": {
+      "mfgDate": "22DEC2024",
+      "cycleCount": 8,
+      "fullChargeCapacity": 5739,
+      "temperature": 24,
+      "designCapacity": 6400,
+      "batteryType": "LI-ION",
+      "capacity": 2467,
+      "stateOfHealth": "GOOD",
+      "chargePercentage": 46,
+      "chargeStatus": 1
     }
+  },
+  "response": {
+    "code": 0,
+    "description": "Success"
+  }
+}
   ],
   "properties": {
     "command": {
@@ -50,10 +55,11 @@
     "apiVersion": {
       "type": "string",
       "enum": [
-        "V1.0",
-        "V1.1"
+        "V1.1",
+        "V1.2",
+        "V1.21"
       ],
-      "example": "V1.1"
+      "example": "V1.21"
     },
     "deviceStatus": {
       "$ref": "../../refrence/response/deviceStatusResponse.yaml"

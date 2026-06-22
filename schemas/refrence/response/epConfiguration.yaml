@@ -7,6 +7,7 @@ examples: []
 properties:
   configuration:
     type: object
+    description: The endpoint configuration parameters including connection, protocol, and security settings.
     properties:
       epType:
         type: string
@@ -57,59 +58,78 @@ properties:
         example: ZEBRA
       mqttParams:
         type: object
+        description: MQTT-specific connection parameters including keep-alive, session, and topic configuration.
         properties:
           keepAlive:
             type: integer
             maximum: 65535
             example: 300
+            description: Keep-alive interval in seconds for the MQTT connection.
           cleanSession:
             type: boolean
             default: true
+            description: Indicates whether to start a clean MQTT session.
           reconnectDelayMin:
             type: number
+            description: Minimum delay in seconds before attempting to reconnect.
           reconnectDelayMax:
             type: number
+            description: Maximum delay in seconds before attempting to reconnect.
           clientId:
             type: string
             example: zebra-rfd40-01
+            description: Unique client identifier for the MQTT connection.
           userName:
             type: string
+            description: Username for authenticating the MQTT connection.
           password:
             type: string
+            description: Password for authenticating the MQTT connection.
           publishTopics:
             type: array
+            description: List of topics to which messages will be published.
             items:
               type: object
+              description: A publish topic entry with its QoS and retain settings.
               properties:
                 topic:
                   type: string
                   example: SOTICONNECT/clients/resp/RFD400124FA
+                  description: The MQTT topic string to publish to.
                 qos:
                   type: number
                   example: 1
+                  description: Quality of Service level for the published message.
                 retain:
                   type: boolean
+                  description: Whether the broker should retain the last message on this topic.
               required:
                 - topic
                 - qos
                 - retain
           subscribeTopics:
             type: array
+            description: List of topics to which the client will subscribe.
             items:
               type: object
+              description: A subscribe topic entry with its QoS and retain settings.
               properties:
                 topic:
                   type: string
+                  description: The MQTT topic string to subscribe to.
                 qos:
                   type: number
+                  description: Quality of Service level for the subscription.
                 retain:
                   type: boolean
+                  description: Whether the broker should retain the last message on this topic.
               required:
                 - topic
                 - qos
                 - retain
       securityParams:
         type: object
+        description: TLS/SSL security parameters for the endpoint connection.
         properties:
           format:
             type: string
@@ -117,24 +137,28 @@ properties:
               - PEM
               - PFX
             example: PEM
+            description: The certificate file format.
           algorithm:
             type: string
             enum:
               - RSA256
               - RSA512
             example: RSA256
+            description: The encryption algorithm used for the certificate.
           caCertificateFile:
             type: string
             example: cloud-trusted-ca-certs.crt
+            description: The CA certificate file used for peer verification.
           publicKey:
             type: string
             example: server.key
+            description: The public key file for the TLS connection.
           privateKey:
             type: string
             example: server.key
+            description: The private key file for the TLS connection.
         required:
           - format
-          - algorithm
           - caCertificateFile
           - publicKey
           - privateKey

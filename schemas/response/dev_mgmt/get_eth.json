@@ -9,11 +9,11 @@
   "command": "get_eth",
   "requestId": "abc123",
   "apiVersion": "V1.1",
-  "ethconfig": {
-    "InterfaceDetails": {
+  "ethConfig": {
+    "interfaceDetails": {
       "interfaceName": "eth0",
       "status": "Enabled",
-      "hostName": "RFD40-211545201D0020",
+      "hostname": "RFD40-211545201D0020",
       "macAddress": "AC:3F:A4:00:2C:89",
       "linkStatus": {
         "status": "Connected",
@@ -67,9 +67,15 @@
       "example": "V1.1",
       "enum": [
         "V1.0",
-        "V1.1"
+        "V1.1",
+        "V1.21"
       ]
     },
+    "required": [
+      "command",
+      "requestId",
+      "apiVersion"
+    ],
     "ethConfig": {
       "$ref": "../../refrence/response/ethResponseSoti.yaml"
     },

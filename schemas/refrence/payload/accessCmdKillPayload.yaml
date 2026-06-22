@@ -8,6 +8,7 @@ examples:
 properties:
   config:
     type: object
+    description: Kill operation parameters containing the password required to permanently disable the tag.
     required:
       - password
     properties:
@@ -15,6 +16,6 @@ properties:
         type: string
         description: |-
           Password Field (see EPC Gen2 Spec)
-          Must be a hex string with 8 hex characters. 
+          Must be a hex string with 8 hex characters.
 required:
   - config

@@ -9,6 +9,7 @@ properties:
       - properties:
           ntp:
             type: object
+            description: NTP synchronization details included in the alert.
             properties:
               offset:
                 type: number
@@ -22,6 +23,7 @@ properties:
             type: number
           userApp:
             type: object
+            description: User application details included in the alert.
             properties:
               appName:
                 type: string
@@ -29,6 +31,7 @@ properties:
                 type: string
           temperature:
             type: object
+            description: Temperature readings included in the alert.
             properties:
               nge:
                 type: number
@@ -39,3 +42,4 @@ properties:
               ambient:
                 type: number
     type: object
+    description: Alert event data payload containing device diagnostic readings.

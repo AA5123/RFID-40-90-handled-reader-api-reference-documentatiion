@@ -30,6 +30,7 @@ properties:
     type: boolean
   heartConfiguration:
     type: object
+    description: Configuration for heartbeat event reporting, including interval and status inclusions.
     properties:
       interval:
         type: number
@@ -55,6 +56,7 @@ properties:
       - userApps
   exceptionConfiguration:
     type: object
+    description: Configuration for exception event reporting, specifying which exception types are enabled.
     properties:
       radio:
         type: boolean

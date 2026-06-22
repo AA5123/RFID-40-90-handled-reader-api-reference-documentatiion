@@ -3,6 +3,7 @@ anyOf:
   - properties:
       inventoryStatus:
         type: object
+        description: Current inventory scanning status and tag count.
         properties:
           status:
             type: string
@@ -15,6 +16,7 @@ anyOf:
             type: integer
       scanStatus:
         type: object
+        description: Current scan status and total scan count.
         properties:
           status:
             type: string
@@ -27,6 +29,7 @@ anyOf:
             example: 120
       batteryStatus:
         type: object
+        description: Current battery health, charge level, and charging status.
         properties:
           health:
             type: string
@@ -40,6 +43,7 @@ anyOf:
         type: array
         items:
           type: object
+          description: Resource usage and status details for a single user application.
           properties:
             appName:
               type: string

@@ -6,9 +6,11 @@ description: Antenna events reporting status changes for device antennas.
 examples: []
 items:
   type: object
+  description: Antenna event data for a single antenna port.
   properties:
     antenna:
       type: object
+      description: Status and port details for the antenna.
       properties:
         status:
           type: string

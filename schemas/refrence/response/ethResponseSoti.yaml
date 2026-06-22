@@ -5,6 +5,7 @@ type: object
 properties:
   interfaceDetails:
     type: object
+    description: Details about the ethernet network interface, including its configuration and status.
     properties:
       interfaceName:
         type: string
@@ -14,8 +15,8 @@ properties:
         type: string
         example: enabled
         enum:
-          - enabled
-          - disabled
+          - Enabled
+          - Disabled
         description: Status of the network interface.
       hostname:
         type: string
@@ -27,6 +28,7 @@ properties:
         description: MAC address of the network interface.
       linkStatus:
         type: object
+        description: Current link status and speed of the ethernet connection.
         properties:
           status:
             type: string
@@ -44,6 +46,7 @@ properties:
           - linkSpeed
       ipv4Configuration:
         type: object
+        description: IPv4 network configuration for the interface.
         properties:
           ipAddress:
             type: string
@@ -62,10 +65,7 @@ properties:
             description: Gateway address for the IPv4 configuration.
           enableDhcp:
             type: boolean
-            enum:
-              - enabled
-              - disabled
-            example: enabled
+            example: true
             description: Indicates if DHCP is enabled for IPv4 configuration.
           dnsServer:
             type: string
@@ -78,6 +78,7 @@ properties:
             description: Domain name for the IPv4 configuration.
       security:
         type: object
+        description: Security configuration for the ethernet interface.
         properties:
           securityStatus:
             type: boolean
@@ -85,6 +86,7 @@ properties:
             description: Indicates if security features are enabled.
           EAP802_1X:
             type: object
+            description: 802.1X EAP security parameters for authenticated network access.
             properties:
               authentication:
                 type: string
@@ -104,7 +106,7 @@ properties:
                 example: EAP-MS-CHAPv2
                 enum:
                   - EAP-MS-CHAPv2
-                  - ' EAP-TLS'
+                  - EAP-TLS
                   - EAP-GTC
                 description: Inner authentication method for 802.1X security.
               certificate:
@@ -114,6 +116,4 @@ properties:
     required:
       - interfaceName
       - status
-      - hostname
-      - macAddress
 description: Detailed schema for Ethernet configuration.

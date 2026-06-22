@@ -5,6 +5,7 @@ description: |-
 examples: []
 items:
   type: object
+  description: A single tag access operation entry with its type and configuration.
   properties:
     operationType:
       type: string
@@ -23,6 +24,7 @@ items:
         - `KILL`: Permanently disables the tag using the kill password.
     config:
       type: object
+      description: Configuration parameters for the access operation, specific to the operation type.
       properties:
         memoryBank:
           type: string

@@ -9,10 +9,10 @@ examples:
       advancedConfigurations:
         transmitPower: 27
         linkProfile: string
-        session: S0
+        session: SESSION_0
         dynamicPower: true
       accessOperations:
-        - type: READ
+        - operationType: READ
           config:
             memoryBank: EPC
             offset: 0
@@ -20,7 +20,6 @@ examples:
       radioStartConditions:
         trigger: PRESSED
         startDelay: 3
-        periodicDuration: 0
         repeat: true
       radioStopConditions:
         trigger: PRESSED
@@ -28,28 +27,24 @@ examples:
         stopTimeout: 0
         inventoryCount: 0
       query:
-        tagPopulation: 0
-        sel: ALL
-        session: S0
-        target: A
+        session: SESSION_0
+        inventoryState: STATE_AB
+        slFlag: ASSERTED
+        tagPopulation: 30
       select:
-        - target: SL
-          action: ASSERTSL_DEASSERTSL
-          membank: EPC
+        - enable: true
+          target: SESSION_SL
+          action: INV_A_NOT_INV_B_OR_ASRT_SL_NOT_DSRT_SL
+          memoryBank: EPC
           offset: 0
           length: 0
-          mask: string
-          truncate: 0
-          delayAfterSelects: 0
+          tagPattern: string
       tagMetaDataToEnable:
         RSSI: true
         PHASE: true
-        SEEN_COUNT: true
-        ANTENNA: true
+        SEENCOUNT: true
         CHANNEL: true
         PC: true
-        XPC: true
-        CRC: true
         EPC: true
         TID: true
         USER: true
@@ -60,10 +55,10 @@ examples:
       advancedConfigurations:
         transmitPower: 27
         linkProfile: string
-        session: S0
+        session: SESSION_0
         dynamicPower: true
       accessOperations:
-        - type: READ
+        - operationType: READ
           config:
             memoryBank: EPC
             offset: 0
@@ -71,7 +66,6 @@ examples:
       radioStartConditions:
         trigger: PRESSED
         startDelay: 3
-        periodicDuration: 0
         repeat: true
       radioStopConditions:
         trigger: PRESSED
@@ -80,27 +74,23 @@ examples:
         inventoryCount: 0
       query:
         tagPopulation: 0
-        sel: ALL
-        session: S0
-        target: A
+        slFlag: ALL
+        session: SESSION_0
+        inventoryState: STATE_A
       select:
-        - target: SL
-          action: ASSERTSL_DEASSERTSL
-          membank: EPC
+        - enable: true
+          target: SESSION_SL
+          action: INV_A_NOT_INV_B_OR_ASRT_SL_NOT_DSRT_SL
+          memoryBank: EPC
           offset: 0
           length: 0
-          mask: string
-          truncate: 0
-          delayAfterSelects: 0
+          tagPattern: string
       tagMetaDataToEnable:
         RSSI: true
         PHASE: true
-        SEEN_COUNT: true
-        ANTENNA: true
+        SEENCOUNT: true
         CHANNEL: true
         PC: true
-        XPC: true
-        CRC: true
         EPC: true
         TID: true
         USER: true
@@ -142,7 +132,9 @@ properties:
         properties:
           transmitPower:
             type: number
-            example: 27
+            example: 270
+            minimum: 0
+            maximum: 300
           linkProfile:
             type: string
             enum:

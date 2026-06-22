@@ -5,37 +5,46 @@
   },
   "type": "object",
   "examples": [
-    { 
-  "command": "get_wifi", 
-  "requestId": "abc123", 
-  "apiVersion": "V1.1", 
-  "wifiConfig": { 
-    "interfaceDetails": { 
-      "interfaceName": "wlan0", 
-      "status": "Enabled", 
-      "hostname": "RFD40-22326520100477", 
-      "macAddress": "48:A4:93:BD:4A:FC", 
-      "accessPoint": { 
-        "essid": "IOT_TESTAP", 
-        "status": "Connected", 
-        "securityType": "WPA2Personal",
-        "isPreferred": true,
-        "autoConn": true
-      }, 
-      "ipv4Configuration": { 
-        "ipAddress": "192.168.0.104", 
-        "subnetMask": "255.255.255.0", 
-        "gateway": "192.168.0.1", 
-        "enableDhcp": true, 
-        "dnsServer": "1.0.168.192", 
-        "domainName": "zebra.com" 
-      } 
-    } 
-  }, 
-  "response": { 
-    "code": 0, 
-    "description": "Success" 
-  } 
+    {
+  "command": "get_wifi",
+  "requestId": "abc123",
+  "apiVersion": "V1.1",
+  "wifiProfiles": {
+    "wifiConfig": [
+      {
+        "interfaceDetails": {
+          "interfaceName": "wlan0",
+          "status": "",
+          "hostname": "RFD40-211545201D0034",
+          "macAddress": "AC:3F:A4:00:2B:15",
+          "accessPoint": {
+            "essid": "IOT_TESTAP",
+            "status": "CONNECTED",
+            "securityType": "WPA2Personal",
+            "isPreferred": false,
+            "autoConn": false
+          },
+          "ipv4Configuration": {
+            "ipAddress": "192.168.0.110",
+            "subnetMask": "255.255.255.0",
+            "gateway": "192.168.0.1",
+            "enableDhcp": true,
+            "dnsServer": "192.168.0.1",
+            "domainName": "zebra.com"
+          },
+          "securityDetails": {
+            "WPA2Personal": {
+              "password": "XXXXXXXX"
+            }
+          }
+        }
+      }
+    ]
+  },
+  "response": {
+    "code": 0,
+    "description": "Success"
+  }
 },
     {
       "command": "get_wifi",
@@ -147,22 +156,22 @@
       }
     },
     {
-      "command": "get_wifi",
-      "requestId": "abc005",
-      "apiVersion": "V1.1",
-      "wifiConfig": {
-        "interfaceDetails": {
-          "interfaceName": "wlan0",
-          "status": "DISABLED",
-          "hostname": "RFD40-22326520100477",
-          "macAddress": "E0-D0-45-3D-38-3F"
-        }
-      },
-      "response": {
-        "code": 7,
-        "description": "Interface is not available"
-      }
+  "command": "get_wifi",
+  "requestId": "abc123",
+  "apiVersion": "V1.1",
+  "wifiConfig": {
+    "interfaceDetails": {
+      "interfaceName": "wlan0",
+      "status": "Disabled",
+      "hostname": "RFD40-211545201D0034",
+      "macAddress": "78:B8:D6:27:41:B9"
     }
+  },
+  "response": {
+    "code": 0,
+    "description": "Success"
+  }
+}
   ],
   "properties": {
     "command": {

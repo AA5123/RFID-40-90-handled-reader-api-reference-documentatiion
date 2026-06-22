@@ -20,91 +20,178 @@
       "example": "V1.1",
       "description": "The version of the API being used for the request."
     },
-    "epDetails": {
+    "endpointResponse": {
       "$ref": "../../refrence/response/endpointResponse.yaml"
     },
     "response": {
       "$ref": "../../refrence/response/response.yaml"
     }
   },
+  "required": [
+    "command",
+    "requestId",
+    "apiVersion",
+    "response"
+  ],
   "examples": [
-    {
-      "command": "get_endpoint_config",
-      "requestId": "abc123",
-      "apiVersion": "V1.1",
-      "endpointResponse": {
-      "activeEndpoints": {
-        "epConfig": [
+   {
+  "command": "get_endpoint_config",
+  "requestId": "abc123",
+  "apiVersion": "V1.1",
+  "endpointResponse": {
+    "activeEndpoints": {
+      "epConfig": [
         {
           "configuration": {
-          "endpointName": "mgmt3",
-          "epType": "MGMT",
-          "protocol": "MQTT",
-          "activate": true,
-          "url": "10.231.145.104",
-          "verificationType": "VERIFY_NONE",
-          "port": 1883,
-          "qosCommon": 0,
-          "tenantId": "zebra",
-          "mqttParams": {
-            "keepAlive": 96,
-            "cleanSession": false,
-            "reconnectDelayMin": 5,
-            "reconnectDelayMax": 512,
-            "username": "mqttuser",
-            "password": "xxxxxx",
-            "publishTopics": [
-            {
-              "topic": "MGMT/clients/resp",
-              "qos": 0,
-              "retain": false
+            "endpointName": "mdm_ep2",
+            "epType": "MDM",
+            "protocol": "MQTT",
+            "activate": true,
+            "url": "17L11-DS3362",
+            "verificationType": "VERIFY_NONE",
+            "port": 1883,
+            "qosCommon": 0,
+            "tenantId": "zebra",
+            "mqttParams": {
+              "keepAlive": 96,
+              "cleanSession": false,
+              "reconnectDelayMin": 5,
+              "reconnectDelayMax": 512,
+              "clientId": "",
+              "username": "mqttuser",
+              "password": "xxxxxx",
+              "publishTopics": [
+                {
+                  "topic": "MDM/clients/resp",
+                  "qos": 0,
+                  "retain": false
+                },
+                {
+                  "topic": "MDM/clients/event",
+                  "qos": 0,
+                  "retain": false
+                },
+                {
+                  "topic": "MDM/clients/rfid",
+                  "qos": 0,
+                  "retain": true
+                }
+              ],
+              "subscribeTopics": [
+                {
+                  "topic": "MDM/clients/cmnd",
+                  "qos": 0,
+                  "retain": false
+                }
+              ]
             },
-            {
-              "topic": "MGMT/clients/rfid",
-              "qos": 0,
-              "retain": true
+            "securityParams": {
+              "format": "PEM",
+              "algorithm": "",
+              "caCertificateFile": "",
+              "clientCert": "",
+              "clientKey": ""
+            },
+            "eventConfiguration": {
+              "antenna": false,
+              "terminalConnection": false,
+              "firmwareUpdate": true,
+              "gpi": false,
+              "network": true,
+              "exceptions": false,
+              "ntp": true,
+              "userApp": false,
+              "heartbeat": false,
+              "power": true,
+              "battery": true,
+              "temperature": false,
+              "fileDownload": true,
+              "cpuUsage": false,
+              "flashUsage": false,
+              "ramUsage": false,
+              "cpuThreshold": 0,
+              "ramThreshold": 0,
+              "flashThreshold": 0,
+              "temperatureThreshold": 0
             }
-            ],
-            "subscribeTopics": [
-            {
-              "topic": "MGMT/clients/cmnd",
-              "qos": 0,
-              "retain": false
-            }
-            ]
-          },
-          "securityParams": {
-            "format": "PEM"
-          },
-          "eventConfiguration": {
-            "terminalConnection": false,
-            "firmwareUpdate": true,
-            "network": true,
-            "ntp": true,
-            "heartbeat": false,
-            "power": true,
-            "battery": true,
-            "fileDownload": true
           }
+        },
+        {
+          "configuration": {
+            "endpointName": "data1_ep",
+            "epType": "DATA1",
+            "protocol": "MQTT",
+            "activate": true,
+            "url": "17L11-DS3362",
+            "verificationType": "VERIFY_NONE",
+            "port": 1883,
+            "qosCommon": 0,
+            "tenantId": "zebra",
+            "mqttParams": {
+              "keepAlive": 96,
+              "cleanSession": false,
+              "reconnectDelayMin": 5,
+              "reconnectDelayMax": 512,
+              "clientId": "",
+              "username": "mqttuser",
+              "password": "xxxxxx",
+              "publishTopics": [
+                {
+                  "topic": "DATA/clients/data1event",
+                  "qos": 0,
+                  "retain": false
+                }
+              ],
+              "subscribeTopics": []
+            },
+            "securityParams": {
+              "format": "PEM",
+              "algorithm": "",
+              "caCertificateFile": "",
+              "clientCert": "",
+              "clientKey": ""
+            },
+            "eventConfiguration": {
+              "antenna": false,
+              "terminalConnection": false,
+              "firmwareUpdate": true,
+              "gpi": false,
+              "network": true,
+              "exceptions": false,
+              "ntp": true,
+              "userApp": false,
+              "heartbeat": false,
+              "power": true,
+              "battery": true,
+              "temperature": false,
+              "fileDownload": true,
+              "cpuUsage": false,
+              "flashUsage": false,
+              "ramUsage": false,
+              "cpuThreshold": 0,
+              "ramThreshold": 0,
+              "flashThreshold": 0,
+              "temperatureThreshold": 0
+            }
           }
         }
-        ]
-      },
-      "savedEndpoints": {
-        "epNames": [
-        "ctrlEP",
-        "ctrl",
-        "gmdm",
-        "dataEP",
-        "mgmt3"
-        ]
-      }
-      },
-      "response": {
-      "code": 0,
-      "description": "Success"
-      }
+      ]
     },
+    "savedEndpoints": {
+      "epNames": [
+        "mdm_ep",
+        "mdm_ep2",
+        "ctrl_ep",
+        "data1_ep",
+        "mgmt_ep"
+      ]
+    }
+  },
+  "response": {
+    "code": 0,
+    "description": "Success"
+  }
+},
     {
       "command": "get_endpoint_config",
       "requestId": "abc123",
@@ -159,15 +246,27 @@
             "format": "PEM"
           },
           "eventConfiguration": {
-            "terminalConnection": false,
-            "firmwareUpdate": true,
-            "network": true,
-            "ntp": true,
-            "heartbeat": false,
-            "power": true,
-            "battery": true,
-            "fileDownload": true
-          }
+              "antenna": false,
+              "terminalConnection": false,
+              "firmwareUpdate": true,
+              "gpi": false,
+              "network": true,
+              "exceptions": false,
+              "ntp": true,
+              "userApp": false,
+              "heartbeat": false,
+              "power": true,
+              "battery": true,
+              "temperature": false,
+              "fileDownload": true,
+              "cpuUsage": false,
+              "flashUsage": false,
+              "ramUsage": false,
+              "cpuThreshold": 0,
+              "ramThreshold": 0,
+              "flashThreshold": 0,
+              "temperatureThreshold": 0
+            }
           }
         }
         ]

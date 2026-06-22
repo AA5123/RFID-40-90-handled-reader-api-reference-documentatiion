@@ -62,11 +62,11 @@ properties:
   channel:
     type: number
     description: '"CHANNEL” will report the channel (in MHz) the reader was using when the tag was inventoried. This value will only be reported if each individual tag read is reported (in other words, if reportFilter duration is set to 0). Otherwise, it will not be reported.'
-    example: 911.75
+    example: 9216
   eventNum:
     type: number
     description: Event Number
-    example: 1
+    example: 13
   format:
     type: string
     description: The format of idHex is EPC
@@ -74,7 +74,7 @@ properties:
   peakRssi:
     type: number
     description: '“RSSI” will report the rssi (in dbm) of the inventoried tag. If the tag is only reported occasionally (see set_tag_filter), this tag will be the peak rssi since the last reported read.'
-    example: -39
+    example: -59
   phase:
     type: number
     description: '"PHASE” will report the phase (in degrees) of the inventoried tag. This value will only be reported if each individual tag read is reported (in other words, if reportFilter duration is set to 0). Otherwise, it will not be reported.'
@@ -82,14 +82,14 @@ properties:
   seenCount:
     type: number
     description: '“SEEN_COUNT” will report the number of times the tag has been inventoried since the previous report. This value will always be 1 if each individual tag read is reported (in other words, if reportFilter duration is set to 0).'
-    example: 1
+    example: 256
   XPC:
     type: string
     description: '"XPC" will report the XPC bits of the inventoried tag, if present, as a hex string.'
   accessResults:
     type: array
     description: |
-      accessResults contains an array of strings, with each element in the array containing the result of the access operation specified in the operating mode. For read operations, the string contains the data read from the tag and for write operations, it contains "SUCCESS" for successfull operations or an error message.
+      accessResults contains an array of strings, with each element in the array containing the result of the access operation specified in the operating mode. For read operations, the string contains the data read from the tag and for write operations, it contains "SUCCESS" for successful operations or an error message.
     items:
       type: string
       example: SUCCESS
@@ -110,4 +110,3 @@ properties:
     type: string
 required:
   - eventNum
-  - format

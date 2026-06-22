@@ -4,7 +4,7 @@
     "id": "d2649azhemdh6"
   },
   "type": "object",
-  "description": "Using config_endpoint user can add/delete/modify the end point configuration",
+  "description": "Using config_endpoint user can add/delete/update the end point configuration",
   "examples": [
    {
   "command": "config_endpoint",

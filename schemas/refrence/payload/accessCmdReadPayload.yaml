@@ -4,6 +4,7 @@ description: Defines the read command payload used to read data from a specific 
 properties:
   config:
     type: object
+    description: Read operation parameters specifying the target memory bank, offset, and length.
     properties:
       memoryBank:
         type: string

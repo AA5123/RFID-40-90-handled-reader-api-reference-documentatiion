@@ -16,6 +16,7 @@ properties:
     description: Specifies the class of the device (e.g., handheld, fixed-reader, etc.).
   deviceCapablity:
     type: object
+    description: Hardware capability details of the device.
     required:
       - rtcSupported
       - keypadSupported
@@ -46,6 +47,7 @@ properties:
         description: Lists the supported power sources for the device.
   iotcCapablity:
     type: object
+    description: IoTC software capability details, including supported endpoints and features.
     properties:
       asyncManagementEventsSupported:
         type: boolean
@@ -68,6 +70,7 @@ properties:
         type: array
         items:
           type: object
+          description: Capability details for a specific endpoint type.
           properties:
             batchingSupported:
               type: boolean
@@ -128,6 +131,7 @@ properties:
       - maxDataEndpoints
   scannerCapablity:
     type: object
+    description: Scanner hardware capability details of the device.
     properties:
       scannerType:
         type: string
@@ -137,6 +141,7 @@ properties:
         description: Specifies the scan engine used in the device.
   radioCapablity:
     type: object
+    description: RFID radio capability details including filtering, locationing, and antenna support.
     properties:
       rssiFilterSupported:
         type: boolean
@@ -165,13 +170,14 @@ properties:
         description: Lists the supported tag data formats.
       antennaCapablity:
         type: object
+        description: Antenna capability details including supported ports and types.
         properties:
           antenna:
             type: array
             items:
               type: object
+              description: Capability details for a single antenna port.
               properties:
-                port:
                   type: number
                   maximum: 8
                   minimum: 1
@@ -192,6 +198,7 @@ properties:
       - supportedTagDataFormat
   uifCapablity:
     type: object
+    description: User interface capability details including beeper and LED support.
     properties:
       beepersSupported:
         type: boolean
@@ -209,6 +216,7 @@ properties:
       - beepersSupported
   generalIoCapablity:
     type: object
+    description: General I/O capability details including the number of supported GPIs and GPOs.
     properties:
       maxNumOfGPIs:
         type: integer
@@ -220,6 +228,7 @@ properties:
         description: Specifies the maximum number of General Purpose Outputs (GPOs).
   daAppsCapablity:
     type: object
+    description: DA (Device Agent) application capability details including supported package formats and language bindings.
     properties:
       daAppPackageFormat:
         type: array
@@ -238,11 +247,13 @@ properties:
         description: Lists the supported language bindings for DA Apps.
   networkCapablity:
     type: object
+    description: Network interface capability details for the device.
     properties:
       interfaceDetails:
         type: array
         items:
           type: object
+          description: Capability details for a single network interface type.
           properties:
             type:
               type: string
@@ -274,6 +285,7 @@ properties:
               description: Lists the supported IP assignment methods.
   bluetoothCapablity:
     type: object
+    description: Bluetooth capability details including supported profiles.
     properties:
       supportedProfiles:
         type: array
@@ -286,6 +298,7 @@ properties:
         description: Lists the supported Bluetooth profiles.
   llrpCapablity:
     type: object
+    description: LLRP (Low Level Reader Protocol) capability details.
     properties:
       llrpVersion:
         type: string

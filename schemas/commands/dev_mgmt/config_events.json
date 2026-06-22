@@ -10,54 +10,32 @@
       "command": "config_events",
       "requestId": "abc123",
       "eventConfiguration": {
-        "antenna": true,
         "terminalConnection": true,
         "firmwareUpdate": true,
-        "gpi": true,
         "network": true,
-        "exceptions": true,
-        "ntp": true,
-        "userApp": true,
         "heartbeat": true,
         "power": true,
         "battery": true,
         "temperature": true,
         "fileDownload": true,
-        "cpuUsage": true,
-        "flashUsage": true,
-        "ramUsage": true,
         "heartbeatConfiguration": {
           "interval": 100,
           "inventoryStatus": true,
-          "batteryStatus": true,
-          "userApps": true
-        },
-        "cpuThreshold": 80,
-        "ramThreshold": 80,
-        "flashThreshold": 80,
-        "temperatureThreshold": 55
+          "batteryStatus": true
+        }
       }
     },
     {
       "command": "config_events",
       "requestId": "abc123",
       "eventConfiguration": {
-        "antenna": false,
         "terminalConnection": true,
         "firmwareUpdate": true,
-        "gpi": false,
         "network": true,
-        "exceptions": false,
-        "ntp": false,
-        "userApp": false,
         "heartbeat": false,
         "power": true,
         "battery": true,
-        "temperature": true,
-        "fileDownload": true,
-        "cpuUsage": false,
-        "flashUsage": false,
-        "ramUsage": false
+        "fileDownload": true
       }
     }
   ],

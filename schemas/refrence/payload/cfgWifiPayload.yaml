@@ -20,11 +20,10 @@ properties:
     description: The operation to be performed on the Wi-Fi configuration. It can either create a new configuration or modify an existing one.
   accessPoint:
     type: object
+    description: Access point connection settings including credentials, security type, and IP configuration.
     required:
-      - connect
       - isPreferred
       - essid
-      - enableSecurity
     properties:
       connect:
         type: boolean
@@ -44,6 +43,7 @@ properties:
         description: Indicates whether security is enabled for this access point.
       ipv4Configuration:
         type: object
+        description: IPv4 network configuration for the WiFi interface.
         properties:
           ipAddress:
             type: string
@@ -74,10 +74,11 @@ properties:
             description: The domain name for the network.
       security:
         type: object
+        description: Security type and credential details for the access point.
         properties:
           securityType:
             type: string
-            example: WPA2personal
+            example: WPA2Personal
             enum:
               - WPA2Personal
               - WPA3Personal
@@ -86,18 +87,20 @@ properties:
             description: The security type for the access point, specifying the authentication and encryption method.
           securityDetails:
             type: object
+            description: Security credentials specific to the chosen security type.
             properties:
               WPA2Personal:
                 type: object
+                description: WPA2-Personal security credentials.
                 properties:
                   password:
                     type: string
-                    example: test@123
-                    description: The password for WPA2-Personal authentication.
+                    description: The password for WPA3-Personal authentication.
                 required:
                   - password
               WPA3Personal:
                 type: object
+                description: WPA3-Personal security credentials.
                 properties:
                   password:
                     type: string
@@ -142,9 +145,10 @@ properties:
                     description: The passphrase for WPA2-Enterprise.
                   certificate:
                     type: array
-                    example: ap1wpa2e
+                    example: [{"key":"ca_cert","value":"wifi_ca_cert"}]
                     items:
                       type: object
+                      description: A certificate key-value entry used for enterprise authentication.
                       maxProperties: 4
                       properties:
                         key:
@@ -206,9 +210,10 @@ properties:
                     description: The passphrase for WPA3-Enterprise.
                   certificate:
                     type: array
-                    example: ap1wpa2e
+                    example: [{"key":"ca_cert","value":"wifi_ca_cert"}]
                     items:
                       type: object
+                      description: A certificate key-value entry used for WPA3-Enterprise authentication.
                       maxProperties: 4
                       properties:
                         key:
@@ -234,19 +239,9 @@ properties:
                     description: The encryption protocol for WPA3-Enterprise.
                 required:
                   - authentication
-              OWEPublic:
-                type: object
-                properties:
-                  authentication:
-                    type: string
-                    description: Authentication protocol for OWE-Public.
-                required:
-                  - authentication
         required:
           - securityType
           - securityDetails
 required:
-  - interfaceName
-  - enableInterface
   - operation
   - accessPoint

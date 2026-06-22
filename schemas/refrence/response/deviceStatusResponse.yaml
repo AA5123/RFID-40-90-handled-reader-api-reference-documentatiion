@@ -31,7 +31,7 @@ properties:
     type: string
     description: The hostname of the device on the network.
     example: RFD40-212735201D0053.local
-  'systemTime ':
+  systemTime:
     type: string
     description: The system time of the device in ISO 8601 format.
     example: '2022-07-01T03:01:31.464Z'
@@ -76,8 +76,8 @@ properties:
     properties:
       mfgDate:
         type: string
-        description: The battery manufacture date.
-        example: '2024-01-15'
+        description: The battery manufacture date in DDMMMYYYY format.
+        example: '22DEC2024'
       cycleCount:
         type: integer
         description: The number of completed battery charge cycles.
@@ -126,6 +126,5 @@ required:
   - powerSource
   - radioActivity
   - radioConnection
-  - hostname
   - systemTime
-  - temperature
+

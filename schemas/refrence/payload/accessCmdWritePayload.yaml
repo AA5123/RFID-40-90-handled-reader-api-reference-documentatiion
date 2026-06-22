@@ -11,10 +11,8 @@ examples:
 properties:
   config:
     type: object
+    description: Write operation parameters specifying the target memory bank, offset, data, and length.
     required:
-      - memoryBank
-      - offset
-      - data
     properties:
       memoryBank:
         type: string

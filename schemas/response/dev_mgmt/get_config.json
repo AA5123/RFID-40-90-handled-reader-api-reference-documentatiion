@@ -173,8 +173,7 @@
               ]
             },
             "securityParams": {
-              "format": "PEM",
-              "algorithm": "ToDo"
+              "format": "PEM"
             },
             "eventConfiguration": {
               "terminalConnection": true,

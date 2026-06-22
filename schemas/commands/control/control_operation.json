@@ -22,6 +22,10 @@
       "$ref": "../../refrence/payload/ctrlOprPayload.yaml"
     }
   },
+  "required": [
+    "command",
+    "requestId"
+  ],
   "examples": [
     {
       "command": "control_operation",

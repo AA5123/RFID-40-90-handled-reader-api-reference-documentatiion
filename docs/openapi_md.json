@@ -149,10 +149,11 @@
                                         "apiVersion": {
                                             "type": "string",
                                             "enum": [
-                                                "V1.0",
-                                                "V1.1"
+                                                "V1.1",
+                                                "V1.2",
+                                                "V1.21"
                                             ],
-                                            "example": "V1.1"
+                                            "example": "V1.21"
                                         },
                                         "deviceStatus": {
                                             "title": "deviceStatus",
@@ -196,7 +197,7 @@
                                                     "description": "The hostname of the device on the network.",
                                                     "example": "RFD40-212735201D0053.local"
                                                 },
-                                                "systemTime ": {
+                                                "systemTime": {
                                                     "type": "string",
                                                     "description": "The system time of the device in ISO 8601 format.",
                                                     "example": "2022-07-01T03:01:31.464Z",
@@ -253,8 +254,8 @@
                                                     "properties": {
                                                         "mfgDate": {
                                                             "type": "string",
-                                                            "description": "The battery manufacture date.",
-                                                            "example": "2024-01-15"
+                                                            "description": "The battery manufacture date in DDMMMYYYY format.",
+                                                            "example": "22DEC2024"
                                                         },
                                                         "cycleCount": {
                                                             "type": "integer",
@@ -313,9 +314,7 @@
                                                 "powerSource",
                                                 "radioActivity",
                                                 "radioConnection",
-                                                "hostname",
-                                                "systemTime",
-                                                "temperature"
+                                                "systemTime"
                                             ]
                                         },
                                         "response": {
@@ -357,14 +356,13 @@
                                         "description": "Response with current device status including battery and connection details",
                                         "value": {
                                             "command": "get_status",
-                                            "requestId": "abc123",
-                                            "apiVersion": "V1.1",
+                                            "requestId": "abcd123",
+                                            "apiVersion": "V1.21",
                                             "deviceStatus": {
                                                 "powerSource": "USB",
                                                 "radioActivity": "INACTIVE",
-                                                "radioConnection": "CONNECTED",
-                                                "systemTime": "2024-02-26T13:45:53.728Z",
-                                                "temperature": 32,
+                                                "radioConnection": "DISCONNECTED",
+                                                "systemTime": "2026-06-15T09:26:00.443Z",
                                                 "ntp": {
                                                     "offset": 0,
                                                     "reach": 0
@@ -374,9 +372,15 @@
                                                     "type": "USB"
                                                 },
                                                 "batteryStatus": {
-                                                    "capacity": 6400,
+                                                    "mfgDate": "22DEC2024",
+                                                    "cycleCount": 8,
+                                                    "fullChargeCapacity": 5739,
+                                                    "temperature": 24,
+                                                    "designCapacity": 6400,
+                                                    "batteryType": "LI-ION",
+                                                    "capacity": 2467,
                                                     "stateOfHealth": "GOOD",
-                                                    "chargePercentage": 100,
+                                                    "chargePercentage": 46,
                                                     "chargeStatus": 1
                                                 }
                                             },
@@ -464,7 +468,8 @@
                                             "type": "string",
                                             "enum": [
                                                 "V1.1",
-                                                "V1.0"
+                                                "V1.2",
+                                                "V1.21"
                                             ],
                                             "example": "V1.1"
                                         },
@@ -534,7 +539,9 @@
                                                             "type": "string",
                                                             "example": "V1.1",
                                                             "enum": [
-                                                                "V1.1"
+                                                                "V1.1",
+                                                                "V1.2",
+                                                                "V1.21"
                                                             ],
                                                             "description": "The version of the IoT Connector (IoTC) software."
                                                         }
@@ -563,7 +570,7 @@
                                                     "example": 0,
                                                     "description": "Command response status code. See x-error-codes for code meanings.",
                                                     "minimum": 0,
-                                                    "maximum": 30
+                                                    "maximum": 33
                                                 },
                                                 "description": {
                                                     "type": "string",
@@ -589,19 +596,19 @@
                                         "description": "Response with device serial, model, SKU and firmware version details",
                                         "value": {
                                             "command": "get_version",
-                                            "requestId": "abcd123",
-                                            "apiVersion": "V1.1",
+                                            "requestId": "abc123",
+                                            "apiVersion": "V1.21",
                                             "readerVersion": {
-                                                "firmwareVersion": "SAAFKS00-006-R02",
+                                                "firmwareVersion": "PAAFKS00-013-N05",
                                                 "model": "RFD40",
-                                                "serialNumber": "23053520102096",
+                                                "serialNumber": "211545201D0034",
                                                 "sku": "RFD4031-G10B700-US",
                                                 "companyName": "Zebra Technologies",
                                                 "manufacturerName": "Zebra Technologies",
                                                 "detailedVersions": {
                                                     "scannerFirmware": "PAAEOC20-003-R01",
-                                                    "radioFirmware": "2.0.42.0",
-                                                    "iotcVersion": "V1.1"
+                                                    "radioFirmware": "2.0.53.0",
+                                                    "iotcVersion": "V1.21"
                                                 }
                                             },
                                             "response": {
@@ -693,7 +700,7 @@
                                                     "type": "array",
                                                     "items": {
                                                         "type": "string",
-                                                        "example": "\"915250,915750\""
+                                                        "example": "915250"
                                                     },
                                                     "description": "List of channel frequencies available in the region, represented as strings."
                                                 },
@@ -708,12 +715,12 @@
                                                 },
                                                 "maxTxPowerSupported": {
                                                     "type": "number",
-                                                    "example": 29.2,
+                                                    "example": 30,
                                                     "description": "The maximum transmission power supported in the region, measured in dBm."
                                                 },
                                                 "minTxPowerSupported": {
                                                     "type": "number",
-                                                    "example": "10.0",
+                                                    "example": 0,
                                                     "description": "The minimum transmission power supported in the region, measured in dBm."
                                                 },
                                                 "regulatoryStandard": {
@@ -776,60 +783,60 @@
                                             "currentRegion": {
                                                 "frequencyHopping": true,
                                                 "channelData": [
-                                                    "91575",
-                                                    "91525",
-                                                    "90325",
-                                                    "92675",
-                                                    "92625",
-                                                    "90425",
-                                                    "92725",
-                                                    "92025",
-                                                    "91925",
-                                                    "90925",
-                                                    "91875",
-                                                    "91775",
-                                                    "90525",
-                                                    "90475",
-                                                    "92525",
-                                                    "92175",
-                                                    "91475",
-                                                    "90675",
-                                                    "91375",
-                                                    "92225",
-                                                    "91125",
-                                                    "91175",
-                                                    "90375",
-                                                    "90875",
-                                                    "90575",
-                                                    "91225",
-                                                    "90625",
-                                                    "91725",
-                                                    "91425",
-                                                    "90725",
-                                                    "91825",
-                                                    "91625",
-                                                    "91025",
-                                                    "91075",
-                                                    "90775",
-                                                    "92475",
-                                                    "90975",
-                                                    "91975",
-                                                    "91675",
-                                                    "91325",
-                                                    "92375",
-                                                    "90825",
-                                                    "92575",
-                                                    "91275",
-                                                    "92425",
-                                                    "92125",
-                                                    "92075",
-                                                    "92275",
-                                                    "90275",
-                                                    "92325"
+                                                    "915750",
+                                                    "915250",
+                                                    "903250",
+                                                    "926750",
+                                                    "926250",
+                                                    "904250",
+                                                    "927250",
+                                                    "920250",
+                                                    "919250",
+                                                    "909250",
+                                                    "918750",
+                                                    "917750",
+                                                    "905250",
+                                                    "904750",
+                                                    "925250",
+                                                    "921750",
+                                                    "914750",
+                                                    "906750",
+                                                    "913750",
+                                                    "922250",
+                                                    "911250",
+                                                    "911750",
+                                                    "903750",
+                                                    "908750",
+                                                    "905750",
+                                                    "912250",
+                                                    "906250",
+                                                    "917250",
+                                                    "914250",
+                                                    "907250",
+                                                    "918250",
+                                                    "916250",
+                                                    "910250",
+                                                    "910750",
+                                                    "907750",
+                                                    "924750",
+                                                    "909750",
+                                                    "919750",
+                                                    "916750",
+                                                    "913250",
+                                                    "923750",
+                                                    "908250",
+                                                    "925750",
+                                                    "912750",
+                                                    "924250",
+                                                    "921250",
+                                                    "920750",
+                                                    "922750",
+                                                    "902750",
+                                                    "923250"
                                                 ],
                                                 "country": "United States",
                                                 "lbtEnabled": false,
-                                                "maxTxPowerSupported": 300,
+                                                "maxTxPowerSupported": 30,
                                                 "minTxPowerSupported": 0,
                                                 "regulatoryStandard": "FCC"
                                             },
@@ -918,9 +925,15 @@
                                             "example": "V1.1",
                                             "enum": [
                                                 "V1.0",
-                                                "V1.1"
+                                                "V1.1",
+                                                "V1.21"
                                             ]
                                         },
+                                        "required": [
+                                            "command",
+                                            "requestId",
+                                            "apiVersion"
+                                        ],
                                         "ethConfig": {
                                             "title": "ethConfig",
                                             "x-stoplight": {
@@ -930,6 +943,7 @@
                                             "properties": {
                                                 "interfaceDetails": {
                                                     "type": "object",
+                                                    "description": "Details about the ethernet network interface, including its configuration and status.",
                                                     "properties": {
                                                         "interfaceName": {
                                                             "type": "string",
@@ -940,8 +954,8 @@
                                                             "type": "string",
                                                             "example": "enabled",
                                                             "enum": [
-                                                                "enabled",
-                                                                "disabled"
+                                                                "Enabled",
+                                                                "Disabled"
                                                             ],
                                                             "description": "Status of the network interface."
                                                         },
@@ -957,6 +971,7 @@
                                                         },
                                                         "linkStatus": {
                                                             "type": "object",
+                                                            "description": "Current link status and speed of the ethernet connection.",
                                                             "properties": {
                                                                 "status": {
                                                                     "type": "string",
@@ -980,6 +995,7 @@
                                                         },
                                                         "ipv4Configuration": {
                                                             "type": "object",
+                                                            "description": "IPv4 network configuration for the interface.",
                                                             "properties": {
                                                                 "ipAddress": {
                                                                     "type": "string",
@@ -1001,11 +1017,7 @@
                                                                 },
                                                                 "enableDhcp": {
                                                                     "type": "boolean",
-                                                                    "enum": [
-                                                                        "enabled",
-                                                                        "disabled"
-                                                                    ],
-                                                                    "example": "enabled",
+                                                                    "example": true,
                                                                     "description": "Indicates if DHCP is enabled for IPv4 configuration."
                                                                 },
                                                                 "dnsServer": {
@@ -1023,6 +1035,7 @@
                                                         },
                                                         "security": {
                                                             "type": "object",
+                                                            "description": "Security configuration for the ethernet interface.",
                                                             "properties": {
                                                                 "securityStatus": {
                                                                     "type": "boolean",
@@ -1031,6 +1044,7 @@
                                                                 },
                                                                 "EAP802_1X": {
                                                                     "type": "object",
+                                                                    "description": "802.1X EAP security parameters for authenticated network access.",
                                                                     "properties": {
                                                                         "authentication": {
                                                                             "type": "string",
@@ -1052,7 +1066,7 @@
                                                                             "example": "EAP-MS-CHAPv2",
                                                                             "enum": [
                                                                                 "EAP-MS-CHAPv2",
-                                                                                " EAP-TLS",
+                                                                                "EAP-TLS",
                                                                                 "EAP-GTC"
                                                                             ],
                                                                             "description": "Inner authentication method for 802.1X security."
@@ -1069,9 +1083,7 @@
                                                     },
                                                     "required": [
                                                         "interfaceName",
-                                                        "status",
-                                                        "hostname",
-                                                        "macAddress"
+                                                        "status"
                                                     ]
                                                 }
                                             },
@@ -1112,11 +1124,11 @@
                                             "command": "get_eth",
                                             "requestId": "abc123",
                                             "apiVersion": "V1.1",
-                                            "ethconfig": {
-                                                "InterfaceDetails": {
+                                            "ethConfig": {
+                                                "interfaceDetails": {
                                                     "interfaceName": "eth0",
                                                     "status": "Enabled",
-                                                    "hostName": "RFD40-211545201D0020",
+                                                    "hostname": "RFD40-211545201D0020",
                                                     "macAddress": "AC:3F:A4:00:2C:89",
                                                     "linkStatus": {
                                                         "status": "Connected",
@@ -1258,6 +1270,7 @@
                                                         "properties": {
                                                             "interfaceDetails": {
                                                                 "type": "object",
+                                                                "description": "Details about the WiFi network interface, including connection status and configuration.",
                                                                 "properties": {
                                                                     "interfaceName": {
                                                                         "type": "string",
@@ -1268,10 +1281,11 @@
                                                                         "type": "string",
                                                                         "description": "The status of the network interface, either \"ENABLED\" or \"DISABLED\".",
                                                                         "enum": [
-                                                                            "ENABLED",
+                                                                            "CONNECTED",
+                                                                            "DISCONNECTED",
                                                                             "DISABLED"
                                                                         ],
-                                                                        "example": "ENABLED"
+                                                                        "example": "CONNECTED"
                                                                     },
                                                                     "hostname": {
                                                                         "type": "string",
@@ -1285,6 +1299,7 @@
                                                                     },
                                                                     "accessPoint": {
                                                                         "type": "object",
+                                                                        "description": "Information about the connected or configured access point.",
                                                                         "properties": {
                                                                             "essid": {
                                                                                 "type": "string",
@@ -1304,14 +1319,12 @@
                                                                                 "type": "string",
                                                                                 "description": "The security type used by the access point.",
                                                                                 "enum": [
-                                                                                    "WPA2personal",
+                                                                                    "WPA2Personal",
                                                                                     "WPA3Personal",
                                                                                     "WPA2Enterprise",
-                                                                                    "WPA3Enterprise",
-                                                                                    "OWEPublic",
-                                                                                    "Open"
+                                                                                    "WPA3Enterprise"
                                                                                 ],
-                                                                                "example": "OWEPublic"
+                                                                                "example": "WPA2Personal"
                                                                             },
                                                                             "isPreferred": {
                                                                                 "type": "boolean",
@@ -1331,6 +1344,7 @@
                                                                     },
                                                                     "ipv4Configuration": {
                                                                         "type": "object",
+                                                                        "description": "IPv4 network configuration for the WiFi interface.",
                                                                         "properties": {
                                                                             "ipAddress": {
                                                                                 "type": "string",
@@ -1353,7 +1367,7 @@
                                                                             "enableDhcp": {
                                                                                 "type": "boolean",
                                                                                 "description": "Indicates if DHCP is enabled for IPv4 configuration.",
-                                                                                "example": "enabled"
+                                                                                "example": true
                                                                             },
                                                                             "dnsServer": {
                                                                                 "type": "string",
@@ -1370,6 +1384,7 @@
                                                                     },
                                                                     "ipv6Configuration": {
                                                                         "type": "object",
+                                                                        "description": "IPv6 network configuration for the WiFi interface.",
                                                                         "properties": {
                                                                             "ipAddress": {
                                                                                 "type": "string",
@@ -1391,11 +1406,7 @@
                                                                             "enableAuto": {
                                                                                 "type": "boolean",
                                                                                 "description": "Specifies if automatic IPv6 configuration is enabled.",
-                                                                                "enum": [
-                                                                                    "enabled",
-                                                                                    "disabled"
-                                                                                ],
-                                                                                "example": "enabled"
+                                                                                "example": true
                                                                             },
                                                                             "dnsServer": {
                                                                                 "type": "string",
@@ -1412,9 +1423,11 @@
                                                                     },
                                                                     "securityDetails": {
                                                                         "type": "object",
+                                                                        "description": "Security credentials and protocol details for the WiFi connection.",
                                                                         "properties": {
                                                                             "WPA2Personal": {
                                                                                 "type": "object",
+                                                                                "description": "WPA2-Personal security credentials.",
                                                                                 "properties": {
                                                                                     "password": {
                                                                                         "type": "string",
@@ -1426,6 +1439,7 @@
                                                                             },
                                                                             "WPA3Personal": {
                                                                                 "type": "object",
+                                                                                "description": "WPA3-Personal security credentials.",
                                                                                 "properties": {
                                                                                     "password": {
                                                                                         "type": "string",
@@ -1437,6 +1451,7 @@
                                                                             },
                                                                             "WPA2Enterprise": {
                                                                                 "type": "object",
+                                                                                "description": "WPA2-Enterprise security configuration with authentication and certificate parameters.",
                                                                                 "properties": {
                                                                                     "authentication": {
                                                                                         "type": "string",
@@ -1482,9 +1497,9 @@
                                                                                     "certificate": {
                                                                                         "type": "array",
                                                                                         "description": "The certificates used for WPA2-Enterprise.",
-                                                                                        "example": "ap1wpa2e",
                                                                                         "items": {
                                                                                             "type": "object",
+                                                                                            "description": "A certificate key-value entry for WPA2-Enterprise.",
                                                                                             "maxProperties": 4,
                                                                                             "properties": {
                                                                                                 "key": {
@@ -1516,6 +1531,7 @@
                                                                             },
                                                                             "WPA3Enterprise": {
                                                                                 "type": "object",
+                                                                                "description": "WPA3-Enterprise security configuration with authentication and certificate parameters.",
                                                                                 "properties": {
                                                                                     "authentication": {
                                                                                         "type": "string",
@@ -1561,9 +1577,9 @@
                                                                                     "certificate": {
                                                                                         "type": "array",
                                                                                         "description": "The certificates used for WPA3-Enterprise.",
-                                                                                        "example": "ap1wpa2e",
                                                                                         "items": {
                                                                                             "type": "object",
+                                                                                            "description": "A certificate key-value entry for WPA3-Enterprise.",
                                                                                             "maxProperties": 4,
                                                                                             "properties": {
                                                                                                 "key": {
@@ -1593,17 +1609,7 @@
                                                                                             "WPA3_Enterprise_GCMP_256_SHA256",
                                                                                             "WPA3_Enterprise_GCMP_256_SUITEB_192"
                                                                                         ],
-                                                                                        "example": "WPA3_Enterprise_CCMP_256",
-                                                                                        "maxLength": 3
-                                                                                    }
-                                                                                }
-                                                                            },
-                                                                            "OWEPublic": {
-                                                                                "type": "object",
-                                                                                "properties": {
-                                                                                    "authentication": {
-                                                                                        "type": "string",
-                                                                                        "description": "The authentication method for OWE-Public access."
+                                                                                        "example": "WPA3_Enterprise_CCMP_256"
                                                                                     }
                                                                                 }
                                                                             }
@@ -1612,7 +1618,6 @@
                                                                 },
                                                                 "required": [
                                                                     "interfaceName",
-                                                                    "status",
                                                                     "hostname",
                                                                     "macAddress"
                                                                 ]
@@ -1663,28 +1668,37 @@
                                             "command": "get_wifi",
                                             "requestId": "abc123",
                                             "apiVersion": "V1.1",
-                                            "wifiConfig": {
-                                                "interfaceDetails": {
-                                                    "interfaceName": "wlan0",
-                                                    "status": "Enabled",
-                                                    "hostname": "RFD40-22326520100477",
-                                                    "macAddress": "48:A4:93:BD:4A:FC",
-                                                    "accessPoint": {
-                                                        "essid": "IOT_TESTAP",
-                                                        "status": "Connected",
-                                                        "securityType": "WPA2Personal",
-                                                        "isPreferred": true,
-                                                        "autoConn": true
-                                                    },
-                                                    "ipv4Configuration": {
-                                                        "ipAddress": "192.168.0.104",
-                                                        "subnetMask": "255.255.255.0",
-                                                        "gateway": "192.168.0.1",
-                                                        "enableDhcp": true,
-                                                        "dnsServer": "1.0.168.192",
-                                                        "domainName": "zebra.com"
+                                            "wifiProfiles": {
+                                                "wifiConfig": [
+                                                    {
+                                                        "interfaceDetails": {
+                                                            "interfaceName": "wlan0",
+                                                            "status": "",
+                                                            "hostname": "RFD40-211545201D0034",
+                                                            "macAddress": "AC:3F:A4:00:2B:15",
+                                                            "accessPoint": {
+                                                                "essid": "IOT_TESTAP",
+                                                                "status": "CONNECTED",
+                                                                "securityType": "WPA2Personal",
+                                                                "isPreferred": false,
+                                                                "autoConn": false
+                                                            },
+                                                            "ipv4Configuration": {
+                                                                "ipAddress": "192.168.0.110",
+                                                                "subnetMask": "255.255.255.0",
+                                                                "gateway": "192.168.0.1",
+                                                                "enableDhcp": true,
+                                                                "dnsServer": "192.168.0.1",
+                                                                "domainName": "zebra.com"
+                                                            },
+                                                            "securityDetails": {
+                                                                "WPA2Personal": {
+                                                                    "password": "XXXXXXXX"
+                                                                }
+                                                            }
+                                                        }
                                                     }
-                                                }
+                                                ]
                                             },
                                             "response": {
                                                 "code": 0,
@@ -1811,19 +1825,19 @@
                                         "description": "Response when WiFi interface is disabled on the device",
                                         "value": {
                                             "command": "get_wifi",
-                                            "requestId": "abc005",
+                                            "requestId": "abc123",
                                             "apiVersion": "V1.1",
                                             "wifiConfig": {
                                                 "interfaceDetails": {
                                                     "interfaceName": "wlan0",
-                                                    "status": "DISABLED",
-                                                    "hostname": "RFD40-22326520100477",
-                                                    "macAddress": "E0-D0-45-3D-38-3F"
+                                                    "status": "Disabled",
+                                                    "hostname": "RFD40-211545201D0034",
+                                                    "macAddress": "78:B8:D6:27:41:B9"
                                                 }
                                             },
                                             "response": {
-                                                "code": 7,
-                                                "description": "Interface is not available"
+                                                "code": 0,
+                                                "description": "Success"
                                             }
                                         }
                                     }
@@ -1901,11 +1915,10 @@
                                             },
                                             "accessPoint": {
                                                 "type": "object",
+                                                "description": "Access point connection settings including credentials, security type, and IP configuration.",
                                                 "required": [
-                                                    "connect",
                                                     "isPreferred",
-                                                    "essid",
-                                                    "enableSecurity"
+                                                    "essid"
                                                 ],
                                                 "properties": {
                                                     "connect": {
@@ -1931,6 +1944,7 @@
                                                     },
                                                     "ipv4Configuration": {
                                                         "type": "object",
+                                                        "description": "IPv4 network configuration for the WiFi interface.",
                                                         "properties": {
                                                             "ipAddress": {
                                                                 "type": "string",
@@ -1969,10 +1983,11 @@
                                                     },
                                                     "security": {
                                                         "type": "object",
+                                                        "description": "Security type and credential details for the access point.",
                                                         "properties": {
                                                             "securityType": {
                                                                 "type": "string",
-                                                                "example": "WPA2personal",
+                                                                "example": "WPA2Personal",
                                                                 "enum": [
                                                                     "WPA2Personal",
                                                                     "WPA3Personal",
@@ -1983,14 +1998,15 @@
                                                             },
                                                             "securityDetails": {
                                                                 "type": "object",
+                                                                "description": "Security credentials specific to the chosen security type.",
                                                                 "properties": {
                                                                     "WPA2Personal": {
                                                                         "type": "object",
+                                                                        "description": "WPA2-Personal security credentials.",
                                                                         "properties": {
                                                                             "password": {
                                                                                 "type": "string",
-                                                                                "example": "test@123",
-                                                                                "description": "The password for WPA2-Personal authentication."
+                                                                                "description": "The password for WPA3-Personal authentication."
                                                                             }
                                                                         },
                                                                         "required": [
@@ -1999,6 +2015,7 @@
                                                                     },
                                                                     "WPA3Personal": {
                                                                         "type": "object",
+                                                                        "description": "WPA3-Personal security credentials.",
                                                                         "properties": {
                                                                             "password": {
                                                                                 "type": "string",
@@ -2055,9 +2072,15 @@
                                                                             },
                                                                             "certificate": {
                                                                                 "type": "array",
-                                                                                "example": "ap1wpa2e",
+                                                                                "example": [
+                                                                                    {
+                                                                                        "key": "ca_cert",
+                                                                                        "value": "wifi_ca_cert"
+                                                                                    }
+                                                                                ],
                                                                                 "items": {
                                                                                     "type": "object",
+                                                                                    "description": "A certificate key-value entry used for enterprise authentication.",
                                                                                     "maxProperties": 4,
                                                                                     "properties": {
                                                                                         "key": {
@@ -2138,9 +2161,15 @@
                                                                             },
                                                                             "certificate": {
                                                                                 "type": "array",
-                                                                                "example": "ap1wpa2e",
+                                                                                "example": [
+                                                                                    {
+                                                                                        "key": "ca_cert",
+                                                                                        "value": "wifi_ca_cert"
+                                                                                    }
+                                                                                ],
                                                                                 "items": {
                                                                                     "type": "object",
+                                                                                    "description": "A certificate key-value entry used for WPA3-Enterprise authentication.",
                                                                                     "maxProperties": 4,
                                                                                     "properties": {
                                                                                         "key": {
@@ -2176,18 +2205,6 @@
                                                                         "required": [
                                                                             "authentication"
                                                                         ]
-                                                                    },
-                                                                    "OWEPublic": {
-                                                                        "type": "object",
-                                                                        "properties": {
-                                                                            "authentication": {
-                                                                                "type": "string",
-                                                                                "description": "Authentication protocol for OWE-Public."
-                                                                            }
-                                                                        },
-                                                                        "required": [
-                                                                            "authentication"
-                                                                        ]
                                                                     }
                                                                 }
                                                             }
@@ -2201,8 +2218,6 @@
                                             }
                                         },
                                         "required": [
-                                            "interfaceName",
-                                            "enableInterface",
                                             "operation",
                                             "accessPoint"
                                         ]
@@ -2584,7 +2599,8 @@
                                     "required": [
                                         "command",
                                         "requestId",
-                                        "apiVersion"
+                                        "apiVersion",
+                                        "response"
                                     ]
                                 },
                                 "examples": {
@@ -2700,7 +2716,10 @@
                                                 "example": "JioFi",
                                                 "description": "SSID of the wifi profile to be deleted"
                                             }
-                                        }
+                                        },
+                                        "required": [
+                                            "essid"
+                                        ]
                                     }
                                 },
                                 "required": [
@@ -2738,7 +2757,7 @@
                                         },
                                         "requestId": {
                                             "type": "string",
-                                            "default": 1235,
+                                            "default": "123abc",
                                             "description": "The unique identifier of the original request."
                                         },
                                         "response": {
@@ -2767,7 +2786,12 @@
                                                 "description"
                                             ]
                                         }
-                                    }
+                                    },
+                                    "required": [
+                                        "command",
+                                        "requestId",
+                                        "response"
+                                    ]
                                 },
                                 "examples": {
                                     "Successful deletion": {
@@ -2938,7 +2962,7 @@
                                             "example": "V1.1",
                                             "description": "The version of the API being used for the request."
                                         },
-                                        "epDetails": {
+                                        "endpointResponse": {
                                             "title": "endpointResponse",
                                             "x-stoplight": {
                                                 "id": "u0em8h8xb0dul"
@@ -2967,6 +2991,7 @@
                                                                 "properties": {
                                                                     "configuration": {
                                                                         "type": "object",
+                                                                        "description": "The endpoint configuration parameters including connection, protocol, and security settings.",
                                                                         "properties": {
                                                                             "endpointName": {
                                                                                 "type": "string",
@@ -2979,10 +3004,11 @@
                                                                                 "enum": [
                                                                                     "MGMT",
                                                                                     "MGMT_EVT",
-                                                                                    "CONTROL",
-                                                                                    "DATA",
-                                                                                    "COMMON",
-                                                                                    "SOTI"
+                                                                                    "CTRL",
+                                                                                    "DATA1",
+                                                                                    "DATA2",
+                                                                                    "SOTI",
+                                                                                    "MDM"
                                                                                 ],
                                                                                 "description": "The type of endpoint, specifying its functionality (e.g., Management, Control, etc.)."
                                                                             },
@@ -2990,20 +3016,10 @@
                                                                                 "type": "string",
                                                                                 "enum": [
                                                                                     "MQTT",
-                                                                                    "MQTTWS",
-                                                                                    "MQT-TLS",
-                                                                                    "MQTT-WSS",
-                                                                                    "TCPIP",
-                                                                                    "WS",
-                                                                                    "WSS",
-                                                                                    "HID",
-                                                                                    "HTTPS",
-                                                                                    "HTTP",
-                                                                                    "AWS",
-                                                                                    "AZURE"
+                                                                                    "MQT-TLS"
                                                                                 ],
                                                                                 "example": "MQTT",
-                                                                                "description": "The communication protocol used by the endpoint, such as MQTT or HTTP."
+                                                                                "description": "The communication protocol used by the endpoint, such as MQTT for no authentication or MQT-TLS for TLS authentication."
                                                                             },
                                                                             "activate": {
                                                                                 "type": "boolean",
@@ -3043,6 +3059,7 @@
                                                                             },
                                                                             "mqttParams": {
                                                                                 "type": "object",
+                                                                                "description": "MQTT-specific connection parameters including keep-alive, session, and topic configuration.",
                                                                                 "properties": {
                                                                                     "keepAlive": {
                                                                                         "type": "integer",
@@ -3080,12 +3097,8 @@
                                                                                         "type": "array",
                                                                                         "items": {
                                                                                             "type": "object",
+                                                                                            "description": "A publish topic entry with its QoS and retain settings.",
                                                                                             "properties": {
-                                                                                                "topic": {
-                                                                                                    "type": "string",
-                                                                                                    "example": "SOTICONNECT/clients/resp/RFD400124FA",
-                                                                                                    "description": "The topic to publish messages to."
-                                                                                                },
                                                                                                 "qos": {
                                                                                                     "type": "integer",
                                                                                                     "example": 1,
@@ -3097,7 +3110,6 @@
                                                                                                 }
                                                                                             },
                                                                                             "required": [
-                                                                                                "topic",
                                                                                                 "qos",
                                                                                                 "retain"
                                                                                             ]
@@ -3108,11 +3120,8 @@
                                                                                         "type": "array",
                                                                                         "items": {
                                                                                             "type": "object",
+                                                                                            "description": "A subscribe topic entry with its QoS and retain settings.",
                                                                                             "properties": {
-                                                                                                "topic": {
-                                                                                                    "type": "string",
-                                                                                                    "description": "The topic to which the client will subscribe."
-                                                                                                },
                                                                                                 "qos": {
                                                                                                     "type": "integer",
                                                                                                     "description": "The QoS level for the subscription."
@@ -3123,7 +3132,6 @@
                                                                                                 }
                                                                                             },
                                                                                             "required": [
-                                                                                                "topic",
                                                                                                 "qos",
                                                                                                 "retain"
                                                                                             ]
@@ -3134,6 +3142,7 @@
                                                                             },
                                                                             "securityParams": {
                                                                                 "type": "object",
+                                                                                "description": "Security parameters for the endpoint connection.",
                                                                                 "properties": {
                                                                                     "format": {
                                                                                         "type": "string",
@@ -3170,13 +3179,8 @@
                                                                                     }
                                                                                 },
                                                                                 "required": [
-                                                                                    "format",
-                                                                                    "algorithm",
-                                                                                    "caCertificateFile",
-                                                                                    "clientCert",
-                                                                                    "clientKey"
-                                                                                ],
-                                                                                "description": "Security parameters for the endpoint connection."
+                                                                                    "format"
+                                                                                ]
                                                                             },
                                                                             "eventConfiguration": {
                                                                                 "title": "eventConfiguration",
@@ -3220,6 +3224,7 @@
                                                                                     },
                                                                                     "heartbeatConfiguration": {
                                                                                         "type": "object",
+                                                                                        "description": "Configuration for heartbeat event reporting, including interval and status inclusions.",
                                                                                         "properties": {
                                                                                             "interval": {
                                                                                                 "type": "integer",
@@ -3298,7 +3303,13 @@
                                                 "description"
                                             ]
                                         }
-                                    }
+                                    },
+                                    "required": [
+                                        "command",
+                                        "requestId",
+                                        "apiVersion",
+                                        "response"
+                                    ]
                                 },
                                 "examples": {
                                     "Active endpoint config": {
@@ -3312,11 +3323,11 @@
                                                     "epConfig": [
                                                         {
                                                             "configuration": {
-                                                                "endpointName": "mgmt3",
-                                                                "epType": "MGMT",
+                                                                "endpointName": "mdm_ep2",
+                                                                "epType": "MDM",
                                                                 "protocol": "MQTT",
                                                                 "activate": true,
-                                                                "url": "10.231.145.104",
+                                                                "url": "17L11-DS3362",
                                                                 "verificationType": "VERIFY_NONE",
                                                                 "port": 1883,
                                                                 "qosCommon": 0,
@@ -3326,40 +3337,121 @@
                                                                     "cleanSession": false,
                                                                     "reconnectDelayMin": 5,
                                                                     "reconnectDelayMax": 512,
+                                                                    "clientId": "",
                                                                     "username": "mqttuser",
                                                                     "password": "xxxxxx",
                                                                     "publishTopics": [
                                                                         {
-                                                                            "topic": "MGMT/clients/resp",
+                                                                            "topic": "MDM/clients/resp",
                                                                             "qos": 0,
                                                                             "retain": false
                                                                         },
                                                                         {
-                                                                            "topic": "MGMT/clients/rfid",
+                                                                            "topic": "MDM/clients/event",
+                                                                            "qos": 0,
+                                                                            "retain": false
+                                                                        },
+                                                                        {
+                                                                            "topic": "MDM/clients/rfid",
                                                                             "qos": 0,
                                                                             "retain": true
                                                                         }
                                                                     ],
                                                                     "subscribeTopics": [
                                                                         {
-                                                                            "topic": "MGMT/clients/cmnd",
+                                                                            "topic": "MDM/clients/cmnd",
                                                                             "qos": 0,
                                                                             "retain": false
                                                                         }
                                                                     ]
                                                                 },
                                                                 "securityParams": {
-                                                                    "format": "PEM"
+                                                                    "format": "PEM",
+                                                                    "algorithm": "",
+                                                                    "caCertificateFile": "",
+                                                                    "clientCert": "",
+                                                                    "clientKey": ""
                                                                 },
                                                                 "eventConfiguration": {
+                                                                    "antenna": false,
                                                                     "terminalConnection": false,
                                                                     "firmwareUpdate": true,
+                                                                    "gpi": false,
                                                                     "network": true,
+                                                                    "exceptions": false,
                                                                     "ntp": true,
+                                                                    "userApp": false,
                                                                     "heartbeat": false,
                                                                     "power": true,
                                                                     "battery": true,
-                                                                    "fileDownload": true
+                                                                    "temperature": false,
+                                                                    "fileDownload": true,
+                                                                    "cpuUsage": false,
+                                                                    "flashUsage": false,
+                                                                    "ramUsage": false,
+                                                                    "cpuThreshold": 0,
+                                                                    "ramThreshold": 0,
+                                                                    "flashThreshold": 0,
+                                                                    "temperatureThreshold": 0
+                                                                }
+                                                            }
+                                                        },
+                                                        {
+                                                            "configuration": {
+                                                                "endpointName": "data1_ep",
+                                                                "epType": "DATA1",
+                                                                "protocol": "MQTT",
+                                                                "activate": true,
+                                                                "url": "17L11-DS3362",
+                                                                "verificationType": "VERIFY_NONE",
+                                                                "port": 1883,
+                                                                "qosCommon": 0,
+                                                                "tenantId": "zebra",
+                                                                "mqttParams": {
+                                                                    "keepAlive": 96,
+                                                                    "cleanSession": false,
+                                                                    "reconnectDelayMin": 5,
+                                                                    "reconnectDelayMax": 512,
+                                                                    "clientId": "",
+                                                                    "username": "mqttuser",
+                                                                    "password": "xxxxxx",
+                                                                    "publishTopics": [
+                                                                        {
+                                                                            "topic": "DATA/clients/data1event",
+                                                                            "qos": 0,
+                                                                            "retain": false
+                                                                        }
+                                                                    ],
+                                                                    "subscribeTopics": []
+                                                                },
+                                                                "securityParams": {
+                                                                    "format": "PEM",
+                                                                    "algorithm": "",
+                                                                    "caCertificateFile": "",
+                                                                    "clientCert": "",
+                                                                    "clientKey": ""
+                                                                },
+                                                                "eventConfiguration": {
+                                                                    "antenna": false,
+                                                                    "terminalConnection": false,
+                                                                    "firmwareUpdate": true,
+                                                                    "gpi": false,
+                                                                    "network": true,
+                                                                    "exceptions": false,
+                                                                    "ntp": true,
+                                                                    "userApp": false,
+                                                                    "heartbeat": false,
+                                                                    "power": true,
+                                                                    "battery": true,
+                                                                    "temperature": false,
+                                                                    "fileDownload": true,
+                                                                    "cpuUsage": false,
+                                                                    "flashUsage": false,
+                                                                    "ramUsage": false,
+                                                                    "cpuThreshold": 0,
+                                                                    "ramThreshold": 0,
+                                                                    "flashThreshold": 0,
+                                                                    "temperatureThreshold": 0
                                                                 }
                                                             }
                                                         }
@@ -3367,11 +3459,11 @@
                                                 },
                                                 "savedEndpoints": {
                                                     "epNames": [
-                                                        "ctrlEP",
-                                                        "ctrl",
-                                                        "gmdm",
-                                                        "dataEP",
-                                                        "mgmt3"
+                                                        "mdm_ep",
+                                                        "mdm_ep2",
+                                                        "ctrl_ep",
+                                                        "data1_ep",
+                                                        "mgmt_ep"
                                                     ]
                                                 }
                                             },
@@ -3437,14 +3529,26 @@
                                                                     "format": "PEM"
                                                                 },
                                                                 "eventConfiguration": {
+                                                                    "antenna": false,
                                                                     "terminalConnection": false,
                                                                     "firmwareUpdate": true,
+                                                                    "gpi": false,
                                                                     "network": true,
+                                                                    "exceptions": false,
                                                                     "ntp": true,
+                                                                    "userApp": false,
                                                                     "heartbeat": false,
                                                                     "power": true,
                                                                     "battery": true,
-                                                                    "fileDownload": true
+                                                                    "temperature": false,
+                                                                    "fileDownload": true,
+                                                                    "cpuUsage": false,
+                                                                    "flashUsage": false,
+                                                                    "ramUsage": false,
+                                                                    "cpuThreshold": 0,
+                                                                    "ramThreshold": 0,
+                                                                    "flashThreshold": 0,
+                                                                    "temperatureThreshold": 0
                                                                 }
                                                             }
                                                         }
@@ -3530,6 +3634,7 @@
                                             },
                                             "configuration": {
                                                 "type": "object",
+                                                "description": "The endpoint configuration parameters including connection, protocol, and security settings.",
                                                 "required": [
                                                     "endpointName",
                                                     "epType",
@@ -3608,6 +3713,7 @@
                                                     },
                                                     "mqttParams": {
                                                         "type": "object",
+                                                        "description": "MQTT-specific connection parameters including keep-alive, session, and topic configuration.",
                                                         "properties": {
                                                             "keepAlive": {
                                                                 "type": "integer",
@@ -3645,11 +3751,12 @@
                                                                 "type": "array",
                                                                 "items": {
                                                                     "type": "object",
+                                                                    "description": "A publish topic entry with its QoS and retain settings. Supports up to 3 publish topics.",
                                                                     "properties": {
                                                                         "topic": {
                                                                             "type": "string",
-                                                                            "example": "SOTICONNECT/clients/resp/RFD400124FA",
-                                                                            "description": "Specifies the topic to publish messages to. Supports up to 3 publish topics."
+                                                                            "example": "zebra/rfd40/01/data",
+                                                                            "description": "Specifies the MQTT topic to which messages will be published."
                                                                         },
                                                                         "qos": {
                                                                             "type": "integer",
@@ -3672,10 +3779,12 @@
                                                                 "type": "array",
                                                                 "items": {
                                                                     "type": "object",
+                                                                    "description": "A subscribe topic entry with its QoS and retain settings. Supports up to 1 subscribe topic.",
                                                                     "properties": {
                                                                         "topic": {
                                                                             "type": "string",
-                                                                            "description": "Specifies the topic to subscribe to. Supports up to 1 subscribe topic."
+                                                                            "example": "zebra/rfd40/01/data",
+                                                                            "description": "Specifies the MQTT topic to which messages will be subscribed."
                                                                         },
                                                                         "qos": {
                                                                             "type": "integer",
@@ -3773,6 +3882,7 @@
                                                             },
                                                             "heartbeatConfiguration": {
                                                                 "type": "object",
+                                                                "description": "Configuration for heartbeat event reporting, including interval and status inclusions.",
                                                                 "properties": {
                                                                     "interval": {
                                                                         "type": "integer",
@@ -4169,7 +4279,13 @@
                                                 "description"
                                             ]
                                         }
-                                    }
+                                    },
+                                    "required": [
+                                        "command",
+                                        "requestId",
+                                        "apiVersion",
+                                        "response"
+                                    ]
                                 },
                                 "examples": {
                                     "example1": {
@@ -4251,7 +4367,7 @@
                                     "command": {
                                         "type": "string",
                                         "example": "get_installed_certificates",
-                                        "description": "Command issued to get install certificate"
+                                        "description": "Command issued to get installed certificates."
                                     },
                                     "requestId": {
                                         "type": "string",
@@ -4263,6 +4379,14 @@
                                     "command",
                                     "requestId"
                                 ]
+                            },
+                            "examples": {
+                                "example1": {
+                                    "value": {
+                                        "command": "get_installed_certificates",
+                                        "requestId": "abc123"
+                                    }
+                                }
                             }
                         }
                     }
@@ -4305,6 +4429,7 @@
                                                     "description": "A list of installed certificates with their details.",
                                                     "items": {
                                                         "type": "object",
+                                                        "description": "Details of a single installed certificate.",
                                                         "properties": {
                                                             "name": {
                                                                 "type": "string",
@@ -4318,8 +4443,8 @@
                                                                 "enum": [
                                                                     "client",
                                                                     "server",
-                                                                    " mqtt",
-                                                                    " wifi",
+                                                                    "mqtt",
+                                                                    "wifi",
                                                                     "filestore"
                                                                 ]
                                                             },
@@ -4350,7 +4475,7 @@
                                                             "serial": {
                                                                 "type": "string",
                                                                 "description": "The serial number of the certificate.",
-                                                                "example": "410835777"
+                                                                "example": "ed:83:dd:4a:47:dd:07:98"
                                                             },
                                                             "subjectName": {
                                                                 "type": "string",
@@ -4360,19 +4485,18 @@
                                                             "validFrom": {
                                                                 "type": "string",
                                                                 "description": "The start date from which the certificate is valid.",
-                                                                "example": "2022-07-01",
-                                                                "format": "date"
+                                                                "example": "2024-07-01T07:00:00Z",
+                                                                "format": "date-time"
                                                             },
                                                             "validTill": {
                                                                 "type": "string",
                                                                 "description": "The end date until which the certificate is valid.",
-                                                                "example": "2023-07-01",
-                                                                "format": "date"
+                                                                "example": "2034-02-28T15:18:47Z",
+                                                                "format": "date-time"
                                                             }
                                                         },
                                                         "required": [
                                                             "type",
-                                                            "installTime",
                                                             "issuerName",
                                                             "subjectName",
                                                             "validFrom",
@@ -4408,10 +4532,17 @@
                                                 "description"
                                             ]
                                         }
-                                    }
+                                    },
+                                    "required": [
+                                        "command",
+                                        "requestId",
+                                        "apiVersion",
+                                        "response"
+                                    ]
                                 },
                                 "examples": {
-                                    "example1": {
+                                    "Installed certificates list": {
+                                        "description": "Response with list of all installed certificates",
                                         "value": {
                                             "command": "get_installed_certificates",
                                             "requestId": "abc123",
@@ -4573,7 +4704,7 @@
                                                     "NONE",
                                                     "CERTIFICATE"
                                                 ],
-                                                "example": "BASIC",
+                                                "example": "CERTIFICATE",
                                                 "description": "Specifies the authentication method used to access the remote certificate source.\n- `NONE`: No authentication is used.\n- `CERTIFICATE`: Certificate-based authentication used to download or retrieve certificates."
                                             },
                                             "certSource": {
@@ -4590,6 +4721,7 @@
                                                 "description": "A list of key-value entries that map certificate components to downloadable URLs.",
                                                 "items": {
                                                     "type": "object",
+                                                    "description": "A key-value entry mapping a certificate component to its download URL.",
                                                     "properties": {
                                                         "key": {
                                                             "type": "string",
@@ -4765,10 +4897,43 @@
                                 "WiFi CA certificate using direct content": {
                                     "description": "Installing WiFi CA certificate, where certificate content is provided as part of API",
                                     "value": {
-                                        "requestId": "0001",
                                         "command": "install_certificate",
+                                        "requestId": "0001",
                                         "certDetails": {
                                             "type": "wifi",
+                                            "authenticationType": "NONE",
+                                            "certSource": "DIRECT",
+                                            "certificateBundle": {
+                                                "ca_cert": "-----BEGIN CERTIFICATE-----\nMIIGDTCCA/WgAwIBAgIIfRvFn+r/D1YwDQYJKoZIhvcNAQELBQAwaTELMAkGA1UE\nBhMCQ0ExEDAOBgNVBAgTB09udGFyaW8xFDASBgNVBAcTC01pc3Npc3NhdWdhMQ0w\nCwYDVQQKEwRTT1RJMQwwCgYDVQQLEwNSSUwxFTATBgNVBAMTDFNPVEktbXF0dC1j\nYTAeFw0yMzEyMDQwNDAxMDBaFw00MzEyMDQwNDAxMDBaMGkxCzAJBgNVBAYTAkNB\nMRAwDgYDVQQIEwdPbnRhcmlvMRQwEgYDVQQHEwtNaXNzaXNzYXVnYTENMAsGA1UE\nChMEU09USTEMMAoGA1UECxMDUklMMRUwEwYDVQQDEwxTT1RJLW1xdHQtY2EwggIi\nMA0GCSqGSIb3DQEBAQUAA4ICDwAwggIKAoICAQCiz2EvfiHV0w8BhbyG7Tu5A696\n4iaR1qceJHsZRbJPkRRmJZi8pCv2B1+/8RZ9aalltNE6M2Dz48NtCNDQSuSAk1ql\ntUuM8ECYNQ+mb7cr5TnJeTlSXZuhG4Qm/kQfhZ1Mk3lE4QQdTxqUZsHXpzgi/bqz\nhx073b7UEyNSssMeCCGBBk7UGui9J6ZmBgL/zJAfz/0uiukvMHnWuflMZou2FVsU\nDSujj444lS9bgAjfoOkuc1mppDkgRuLxpPe6230g/9WhIWsc2ot1N6PaHBI20laY\nToXiafv+X/sAJLjAMYIA/m0TEt8nPRCdTR8wVIRvGQNN2TApz43rpFB/VI3fXfHc\nSEMrgI4N3Bn8zdALVdVBfQFcSG5HLKdLHtWGqNXLG6VljzXY1PLGoAnrcSIT8yJ5\neshxGSmJf3zJqkb3Cmifrpe9M8N8DEGJZcpDCM/YVXw12hzml3bdGfvcvVTN07Hy\nvIE2C1z/UXUMVJXhgtTdJGb7/kDwWNP4YBQE6BumpDEMntWhHRB4WNwedhTNbAOV\ned9aeIN9BnkMg1hlThl+g4+eJFCqIiiMWFD4pWp7SDUX9Qi9X8pYHmgjGnmr2sxl\ndx5sL/UfxNZ3mAzaJcTHdR7Kusp+rhDY9J43NwicA0OaDrfKsppZ5jDmATTvW+VA\nCCPxgksdBub5zVUqnwIDAQABo4G4MIG1MA8GA1UdEwEB/wQFMAMBAf8wHQYDVR0O\nBBYEFPb9BJbwkT3qMEy88LkFsIX2ydepMIGCBgNVHSMEezB5oW2kazBpMQswCQYD\nVQQGEwJDQTEQMA4GA1UECBMHT250YXJpbzEUMBIGA1UEBxMLTWlzc2lzc2F1Z2Ex\nDTALBgNVBAoTBFNPVEkxDDAKBgNVBAsTA1JJTDEVMBMGA1UEAxMMU09USS1tcXR0\nLWNhggh9G8Wf6v8PVjANBgkqhkiG9w0BAQsFAAOCAgEAbcAml6sEG3tvU5bJZ6wQ\nC4SntndCKlLsvcWxgw5Rkv+pcbJVr2Whgqhg1+OA5s+vC6butAdI//ZiTRApxegB\nZA2k0uoxqoWWvgHzrmpSQigy2hxp/+oa3qecC6aS6fi04UwNHF++fkBx+Fkl0e8G\nHHHyAY1txu8Dc1iDWFKRxVoNB1tbQ8gJIsaLJwuiykTf5FGrwMAVlMu90ahilFdz\nj7XWxJiHedY/XHQxGWHwK3WRbC7DP/rniZQb603/oAMuwy0jNltQLMlm5FpjaUmi\nd5Mn1zx8xXg9CBokPAFvg1rk54Z2M3ZnXlVkbMsRy+5fEWS6AtGHMY3Qzt4bJkPS\ntfHRi1clydB867PR50PAykhdLkW3J0+kFnHPBkGnQdrb4ejm7QVVCWA5fpquDmFu\nuNPXQ3xCnUHkal/a/5Ch9/XsQAlHMa7LkwkOD+7GBpUsxXb+8MUBUVXx4f8YQSi6\nEFanr7xSQ2fYviEPZ22ZA4oLH28sgDITueTVytSZwKraXHrgpJ17TcvFD6U4eaBC\nZ+AAwFSXk8R1uEUPh+oBJz1eDJNrhsaJvLYoycEnqadRHiO6hXKh77LzJK7eub+X\nIfwlHEOSGB1Xh8RsRQi7xf1SDb52EczWhsYhnSs7jp3q8O3u6G6YRVTqC9PGeZ0z\nfE5gqNCequc7cftY6rCanls=\n-----END CERTIFICATE-----"
+                                            }
+                                        }
+                                    }
+                                },
+                                "Server certificate": {
+                                    "description": "Payload to install server certificates with authentication",
+                                    "value": {
+                                        "command": "install_certificate",
+                                        "requestId": "18996",
+                                        "certDetails": {
+                                            "type": "filestore",
+                                            "authenticationType": "NONE",
+                                            "url": [
+                                                {
+                                                    "key": "ca_cert",
+                                                    "value": "http://192.168.0.6/SOTI-mqtt-ca-Dec2043.pem"
+                                                }
+                                            ],
+                                            "verificationType": "NONE"
+                                        }
+                                    }
+                                },
+                                "MQTT CA certificate install": {
+                                    "description": "Installing MQTT CA certificate, where certificate content is provided as part of API",
+                                    "value": {
+                                        "command": "install_certificate",
+                                        "requestId": "18996",
+                                        "certDetails": {
+                                            "type": "mqtt",
                                             "authenticationType": "NONE",
                                             "certSource": "DIRECT",
                                             "certificateBundle": {
@@ -5360,7 +5525,7 @@
                                     "command": {
                                         "type": "string",
                                         "example": "reboot",
-                                        "description": "Command issued to reboot the reader "
+                                        "description": "Command issued to reboot the reader."
                                     },
                                     "requestId": {
                                         "type": "string",
@@ -5372,6 +5537,15 @@
                                     "command",
                                     "requestId"
                                 ]
+                            },
+                            "examples": {
+                                "Reboot device": {
+                                    "description": "Payload to perform a device reboot",
+                                    "value": {
+                                        "command": "reboot",
+                                        "requestId": "123abcd"
+                                    }
+                                }
                             }
                         }
                     }
@@ -5440,7 +5614,7 @@
                                     "example1": {
                                         "value": {
                                             "command": "reboot",
-                                            "requestId": "18996",
+                                            "requestId": "123abc",
                                             "apiVersion": "V1.1",
                                             "response": {
                                                 "code": 1,
@@ -5584,7 +5758,9 @@
                                                             "properties": {
                                                                 "transmitPower": {
                                                                     "type": "number",
-                                                                    "example": 27
+                                                                    "example": 270,
+                                                                    "minimum": 0,
+                                                                    "maximum": 300
                                                                 },
                                                                 "linkProfile": {
                                                                     "type": "string",
@@ -5622,6 +5798,7 @@
                                                             "description": "Supports read, write, lock and kill operations on tag memory banks (EPC, TID, USER, etc.). ",
                                                             "items": {
                                                                 "type": "object",
+                                                                "description": "A single tag access operation entry with its type and configuration.",
                                                                 "properties": {
                                                                     "operationType": {
                                                                         "type": "string",
@@ -5636,6 +5813,7 @@
                                                                     },
                                                                     "config": {
                                                                         "type": "object",
+                                                                        "description": "Configuration parameters for the access operation, specific to the operation type.",
                                                                         "properties": {
                                                                             "memoryBank": {
                                                                                 "type": "string",
@@ -5949,7 +6127,6 @@
                                                     "radioStartConditions": {
                                                         "trigger": "IMMEDIATE",
                                                         "startDelay": 0,
-                                                        "periodicDuration": 0,
                                                         "repeat": false
                                                     },
                                                     "radioStopConditions": {
@@ -6063,7 +6240,9 @@
                                                         "properties": {
                                                             "transmitPower": {
                                                                 "type": "number",
-                                                                "example": 27
+                                                                "example": 270,
+                                                                "minimum": 0,
+                                                                "maximum": 300
                                                             },
                                                             "linkProfile": {
                                                                 "type": "string",
@@ -6101,6 +6280,7 @@
                                                         "description": "Supports read, write, lock and kill operations on tag memory banks (EPC, TID, USER, etc.). ",
                                                         "items": {
                                                             "type": "object",
+                                                            "description": "A single tag access operation entry with its type and configuration.",
                                                             "properties": {
                                                                 "operationType": {
                                                                     "type": "string",
@@ -6115,6 +6295,7 @@
                                                                 },
                                                                 "config": {
                                                                     "type": "object",
+                                                                    "description": "Configuration parameters for the access operation, specific to the operation type.",
                                                                     "properties": {
                                                                         "memoryBank": {
                                                                             "type": "string",
@@ -6659,8 +6840,6 @@
                                                     "SEENCOUNT": true,
                                                     "CHANNEL": true,
                                                     "PC": false,
-                                                    "XPC": false,
-                                                    "CRC": true,
                                                     "EPC": true,
                                                     "TID": false,
                                                     "USER": false,
@@ -6879,10 +7058,15 @@
                                                     "description": "A list of post-filter configurations.",
                                                     "items": {
                                                         "type": "object",
+                                                        "description": "A single post-filter rule configuration entry.",
                                                         "properties": {
                                                             "dataEpType": {
                                                                 "type": "string",
-                                                                "description": "The type of data endpoint."
+                                                                "description": "The type of data endpoint.",
+                                                                "enum": [
+                                                                    "DATA_EP1",
+                                                                    "DATA_EP2"
+                                                                ]
                                                             },
                                                             "matchPattern": {
                                                                 "type": "string",
@@ -6890,11 +7074,20 @@
                                                             },
                                                             "matchPatternMethod": {
                                                                 "type": "string",
-                                                                "description": "The method used to apply the match pattern."
+                                                                "description": "The method used to apply the match pattern.",
+                                                                "enum": [
+                                                                    "PREFIX",
+                                                                    "SUFFIX",
+                                                                    "REGEX"
+                                                                ]
                                                             },
                                                             "reportOperation": {
                                                                 "type": "string",
-                                                                "description": "The operation type for reporting."
+                                                                "description": "The operation type for reporting.",
+                                                                "enum": [
+                                                                    "INCLUDE",
+                                                                    "EXCLUDE"
+                                                                ]
                                                             }
                                                         }
                                                     }
@@ -6927,7 +7120,13 @@
                                                 "description"
                                             ]
                                         }
-                                    }
+                                    },
+                                    "required": [
+                                        "command",
+                                        "requestId",
+                                        "apiVersion",
+                                        "response"
+                                    ]
                                 },
                                 "examples": {
                                     "example1": {
@@ -7250,7 +7449,11 @@
                                             "operation"
                                         ]
                                     }
-                                }
+                                },
+                                "required": [
+                                    "command",
+                                    "requestId"
+                                ]
                             },
                             "examples": {
                                 "Start inventory": {
@@ -7455,6 +7658,7 @@
                                             },
                                             "heartbeatConfiguration": {
                                                 "type": "object",
+                                                "description": "Configuration for heartbeat event reporting, including interval and status inclusions.",
                                                 "properties": {
                                                     "interval": {
                                                         "type": "integer",
@@ -7486,32 +7690,19 @@
                                         "command": "config_events",
                                         "requestId": "abc123",
                                         "eventConfiguration": {
-                                            "antenna": true,
                                             "terminalConnection": true,
                                             "firmwareUpdate": true,
-                                            "gpi": true,
                                             "network": true,
-                                            "exceptions": true,
-                                            "ntp": true,
-                                            "userApp": true,
                                             "heartbeat": true,
                                             "power": true,
                                             "battery": true,
                                             "temperature": true,
                                             "fileDownload": true,
-                                            "cpuUsage": true,
-                                            "flashUsage": true,
-                                            "ramUsage": true,
                                             "heartbeatConfiguration": {
                                                 "interval": 100,
                                                 "inventoryStatus": true,
-                                                "batteryStatus": true,
-                                                "userApps": true
-                                            },
-                                            "cpuThreshold": 80,
-                                            "ramThreshold": 80,
-                                            "flashThreshold": 80,
-                                            "temperatureThreshold": 55
+                                                "batteryStatus": true
+                                            }
                                         }
                                     }
                                 },
@@ -7521,22 +7712,13 @@
                                         "command": "config_events",
                                         "requestId": "abc123",
                                         "eventConfiguration": {
-                                            "antenna": false,
                                             "terminalConnection": true,
                                             "firmwareUpdate": true,
-                                            "gpi": false,
                                             "network": true,
-                                            "exceptions": false,
-                                            "ntp": false,
-                                            "userApp": false,
                                             "heartbeat": false,
                                             "power": true,
                                             "battery": true,
-                                            "temperature": true,
-                                            "fileDownload": true,
-                                            "cpuUsage": false,
-                                            "flashUsage": false,
-                                            "ramUsage": false
+                                            "fileDownload": true
                                         }
                                     }
                                 }
@@ -7583,7 +7765,7 @@
                                                     "example": 0,
                                                     "description": "Command response status code. See x-error-codes for code meanings.",
                                                     "minimum": 0,
-                                                    "maximum": 30
+                                                    "maximum": 33
                                                 },
                                                 "description": {
                                                     "type": "string",
@@ -7727,7 +7909,12 @@
                                             ],
                                             "description": "Additional data associated with the heartbeat event, referencing different event types."
                                         }
-                                    }
+                                    },
+                                    "required": [
+                                        "eventName",
+                                        "timestamp",
+                                        "eventNumber"
+                                    ]
                                 },
                                 "examples": {
                                     "example1": {
@@ -7947,8 +8134,9 @@
                                                                             "description": "List of Ethernet interface statuses.",
                                                                             "items": {
                                                                                 "type": "object",
+                                                                                "description": "Status details for a single Ethernet interface.",
                                                                                 "properties": {
-                                                                                    "interface": {
+                                                                                    "interfaceName": {
                                                                                         "type": "string",
                                                                                         "description": "Name of the Ethernet interface.",
                                                                                         "example": "eth0"
@@ -7987,7 +8175,7 @@
                                                                                     }
                                                                                 },
                                                                                 "required": [
-                                                                                    "interface",
+                                                                                    "interfaceName",
                                                                                     "status",
                                                                                     "linkStatus",
                                                                                     "linkSpeed",
@@ -8001,8 +8189,9 @@
                                                                             "description": "List of WiFi interface statuses.",
                                                                             "items": {
                                                                                 "type": "object",
+                                                                                "description": "Status details for a single WiFi interface.",
                                                                                 "properties": {
-                                                                                    "interface": {
+                                                                                    "interfaceName": {
                                                                                         "type": "string",
                                                                                         "description": "Name of the WiFi interface.",
                                                                                         "example": "wlan0"
@@ -8032,7 +8221,7 @@
                                                                                     }
                                                                                 },
                                                                                 "required": [
-                                                                                    "interface",
+                                                                                    "interfaceName",
                                                                                     "status",
                                                                                     "ssid",
                                                                                     "ipV4Address",
@@ -8120,7 +8309,8 @@
                                     ]
                                 },
                                 "examples": {
-                                    "example1": {
+                                    "Battery alert": {
+                                        "description": "Alert indicating battery status such as low or critical battery level",
                                         "value": {
                                             "type": "ALERT",
                                             "timestamp": "2026-04-29T12:33:34.279Z",
@@ -8136,7 +8326,8 @@
                                             }
                                         }
                                     },
-                                    "example2": {
+                                    "Power alert": {
+                                        "description": "Alert indicating power events.",
                                         "value": {
                                             "type": "ALERT",
                                             "timestamp": "2026-04-29T12:33:34.290Z",
@@ -8151,7 +8342,8 @@
                                             }
                                         }
                                     },
-                                    "example3": {
+                                    "Network alert for ethernet": {
+                                        "description": "Alert indicating network events when ethernet connected",
                                         "value": {
                                             "type": "ALERT",
                                             "timestamp": "2026-04-29T12:33:34.300Z",
@@ -8174,7 +8366,8 @@
                                             }
                                         }
                                     },
-                                    "example4": {
+                                    "Network alert for WiFi": {
+                                        "description": "Alert indicating network events when WiFi connected",
                                         "value": {
                                             "type": "ALERT",
                                             "timestamp": "2026-04-29T12:33:57.757Z",
@@ -8197,18 +8390,51 @@
                                             }
                                         }
                                     },
-                                    "example5": {
+                                    "Firmware update alert": {
+                                        "description": "Alert indicating firmware update started",
                                         "value": {
-                                            "type": "ALERT",
-                                            "timestamp": "2026-04-29T12:33:57.757Z",
-                                            "state": "SET",
+                                            "type": "NOTIFICATION",
+                                            "timestamp": "2026-06-18T11:30:50.387Z",
+                                            "state": "ONESHOT",
                                             "id": "FIRMWARE_UPDATE",
-                                            "priority": "CRITICAL",
+                                            "priority": "HIGH",
                                             "alertDetails": {
                                                 "fwUpdateStatus": {
-                                                    "updateStatus": "updating",
-                                                    "overallProgress": 20,
-                                                    "stage": "updating scanner fw"
+                                                    "updateStatus": "Starting FW update"
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "File download alert": {
+                                        "description": "Alert indicating file download status",
+                                        "value": {
+                                            "type": "NOTIFICATION",
+                                            "timestamp": "2026-06-17T10:16:34.781Z",
+                                            "state": "ONESHOT",
+                                            "id": "FILE_DOWNLOAD",
+                                            "priority": "HIGH",
+                                            "alertDetails": {
+                                                "downloadInfo": {
+                                                    "fileType": "FILE_TYPE_CERT",
+                                                    "fileName": "mqtt_ca_cert",
+                                                    "status": "DOWNLOAD SUCCESS"
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "File saved alert": {
+                                        "description": "Alert indicating file save status",
+                                        "value": {
+                                            "type": "NOTIFICATION",
+                                            "timestamp": "2026-06-17T10:16:34.793Z",
+                                            "state": "ONESHOT",
+                                            "id": "FILE_DOWNLOAD",
+                                            "priority": "HIGH",
+                                            "alertDetails": {
+                                                "downloadInfo": {
+                                                    "fileType": "FILE_TYPE_CERT",
+                                                    "fileName": "mqtt_ca_cert",
+                                                    "status": "SAVE SUCCESS"
                                                 }
                                             }
                                         }
@@ -8246,9 +8472,9 @@
                                         },
                                         "timestamp": {
                                             "type": "string",
-                                            "example": "12:17:56",
-                                            "format": "time",
-                                            "description": "The time at which the MQTT connection event occurred, formatted as HH:MM:SS."
+                                            "example": "2026-06-15T13:09:33.810Z",
+                                            "format": "date-time",
+                                            "description": "The time at which the MQTT connection event occurred, formatted as an ISO 8601 date-time string."
                                         },
                                         "deviceModel": {
                                             "type": "string",
@@ -8271,28 +8497,30 @@
                                         },
                                         "mqttVersion": {
                                             "type": "number",
-                                            "example": "3.1.1",
+                                            "example": "3.1",
                                             "description": "The version of the MQTT protocol being used for the connection."
                                         }
                                     }
                                 },
                                 "examples": {
-                                    "example1": {
+                                    "Connected event": {
+                                        "description": "Event indicating the device has established a connection",
                                         "value": {
                                             "connectionState": "CONNECTED",
-                                            "timestamp": "12:17:56",
+                                            "timestamp": "2026-06-15T13:09:33.810Z",
                                             "deviceModel": "RFD40",
-                                            "deviceSerialNo": "RFD40-24190525100354",
-                                            "apiVersion": "1.0",
-                                            "mqttVersion": "3.1.1"
+                                            "deviceSerialNo": "RFD40-211545201D0034",
+                                            "apiVersion": 1.21,
+                                            "mqttVersion": 3.0999999
                                         }
                                     },
-                                    "example2": {
+                                    "Disconnected event": {
+                                        "description": "Event indicating the device has lost the connection",
                                         "value": {
                                             "connectionState": "DISCONNECTED",
                                             "deviceModel": "RFD40",
-                                            "deviceSerialNo": "RFD40-24190525100354",
-                                            "apiVersion": 1.2,
+                                            "deviceSerialNo": "RFD40-211545201D0034",
+                                            "apiVersion": 1.21,
                                             "mqttVersion": 3.0999999
                                         }
                                     }
@@ -8385,12 +8613,12 @@
                                                             "channel": {
                                                                 "type": "number",
                                                                 "description": "\"CHANNEL” will report the channel (in MHz) the reader was using when the tag was inventoried. This value will only be reported if each individual tag read is reported (in other words, if reportFilter duration is set to 0). Otherwise, it will not be reported.",
-                                                                "example": 911.75
+                                                                "example": 9216
                                                             },
                                                             "eventNum": {
                                                                 "type": "number",
                                                                 "description": "Event Number",
-                                                                "example": 1
+                                                                "example": 13
                                                             },
                                                             "format": {
                                                                 "type": "string",
@@ -8400,7 +8628,7 @@
                                                             "peakRssi": {
                                                                 "type": "number",
                                                                 "description": "“RSSI” will report the rssi (in dbm) of the inventoried tag. If the tag is only reported occasionally (see set_tag_filter), this tag will be the peak rssi since the last reported read.",
-                                                                "example": -39
+                                                                "example": -59
                                                             },
                                                             "phase": {
                                                                 "type": "number",
@@ -8410,7 +8638,7 @@
                                                             "seenCount": {
                                                                 "type": "number",
                                                                 "description": "“SEEN_COUNT” will report the number of times the tag has been inventoried since the previous report. This value will always be 1 if each individual tag read is reported (in other words, if reportFilter duration is set to 0).",
-                                                                "example": 1
+                                                                "example": 256
                                                             },
                                                             "XPC": {
                                                                 "type": "string",
@@ -8418,7 +8646,7 @@
                                                             },
                                                             "accessResults": {
                                                                 "type": "array",
-                                                                "description": "accessResults contains an array of strings, with each element in the array containing the result of the access operation specified in the operating mode. For read operations, the string contains the data read from the tag and for write operations, it contains \"SUCCESS\" for successfull operations or an error message.\n",
+                                                                "description": "accessResults contains an array of strings, with each element in the array containing the result of the access operation specified in the operating mode. For read operations, the string contains the data read from the tag and for write operations, it contains \"SUCCESS\" for successful operations or an error message.\n",
                                                                 "items": {
                                                                     "type": "string",
                                                                     "example": "SUCCESS"
@@ -8446,8 +8674,7 @@
                                                             }
                                                         },
                                                         "required": [
-                                                            "eventNum",
-                                                            "format"
+                                                            "eventNum"
                                                         ]
                                                     }
                                                 },
@@ -8484,26 +8711,309 @@
                                     ]
                                 },
                                 "examples": {
-                                    "example1": {
+                                    "Tag data event": {
+                                        "description": "Tag data published in batches(max 40 tags per batch)",
                                         "value": {
                                             "type": "BALANCED_PERFORMANCE",
-                                            "timestamp": "2019-08-24T14:15:22Z",
+                                            "timestamp": "2026-06-16T06:03:36.894Z",
                                             "data": {
                                                 "tagData": [
                                                     {
+                                                        "EPCid": "E28011B0A506007D3DD07C0F",
+                                                        "eventNum": 41,
+                                                        "peakRssi": -73,
+                                                        "seenCount": 256
+                                                    },
+                                                    {
+                                                        "EPCid": "311100000000000000000000",
+                                                        "eventNum": 42,
+                                                        "peakRssi": -50,
+                                                        "seenCount": 256
+                                                    },
+                                                    {
+                                                        "EPCid": "11113333880600890630DBEC",
+                                                        "eventNum": 43,
+                                                        "peakRssi": -53,
+                                                        "seenCount": 256
+                                                    },
+                                                    {
+                                                        "EPCid": "000011C1A5000062F7952926",
+                                                        "eventNum": 44,
+                                                        "peakRssi": -65,
+                                                        "seenCount": 256
+                                                    },
+                                                    {
+                                                        "EPCid": "E200001B880600870630DBEB",
+                                                        "eventNum": 45,
+                                                        "peakRssi": -44,
+                                                        "seenCount": 256
+                                                    },
+                                                    {
+                                                        "EPCid": "1111333300004001B043ACB2",
+                                                        "eventNum": 46,
+                                                        "peakRssi": -36,
+                                                        "seenCount": 256
+                                                    },
+                                                    {
+                                                        "EPCid": "11113333333344445555AAAA",
+                                                        "eventNum": 47,
+                                                        "peakRssi": -32,
+                                                        "seenCount": 256
+                                                    },
+                                                    {
+                                                        "EPCid": "11113333A5000062F798E5B6",
+                                                        "eventNum": 48,
+                                                        "peakRssi": -34,
+                                                        "seenCount": 256
+                                                    },
+                                                    {
+                                                        "EPCid": "11113333333344445555AAAA",
+                                                        "eventNum": 49,
+                                                        "peakRssi": -36,
+                                                        "seenCount": 256
+                                                    },
+                                                    {
+                                                        "EPCid": "11115555222233334444A9B6",
+                                                        "eventNum": 50,
+                                                        "peakRssi": -43,
+                                                        "seenCount": 256
+                                                    },
+                                                    {
+                                                        "EPCid": "111133332222333344445555",
+                                                        "eventNum": 51,
+                                                        "peakRssi": -44,
+                                                        "seenCount": 256
+                                                    },
+                                                    {
+                                                        "EPCid": "111133332222333344445550",
+                                                        "eventNum": 52,
+                                                        "peakRssi": -43,
+                                                        "seenCount": 256
+                                                    },
+                                                    {
+                                                        "EPCid": "FFFFEEEE3435363742426666",
+                                                        "eventNum": 53,
+                                                        "peakRssi": -51,
+                                                        "seenCount": 256
+                                                    },
+                                                    {
+                                                        "EPCid": "11113333333344445555AAAA",
+                                                        "eventNum": 54,
+                                                        "peakRssi": -46,
+                                                        "seenCount": 256
+                                                    },
+                                                    {
+                                                        "EPCid": "11113333880600900630DBF1",
+                                                        "eventNum": 55,
+                                                        "peakRssi": -52,
+                                                        "seenCount": 256
+                                                    },
+                                                    {
+                                                        "EPCid": "E200001B880600840630DBE2",
+                                                        "eventNum": 56,
+                                                        "peakRssi": -57,
+                                                        "seenCount": 256
+                                                    },
+                                                    {
+                                                        "EPCid": "111133332222333344445555",
+                                                        "eventNum": 57,
+                                                        "peakRssi": -63,
+                                                        "seenCount": 256
+                                                    },
+                                                    {
+                                                        "EPCid": "111133332222333344445555",
+                                                        "eventNum": 58,
+                                                        "peakRssi": -63,
+                                                        "seenCount": 256
+                                                    },
+                                                    {
+                                                        "EPCid": "111133332222333344445555",
+                                                        "eventNum": 59,
+                                                        "peakRssi": -62,
+                                                        "seenCount": 256
+                                                    },
+                                                    {
+                                                        "EPCid": "E200001B880600870630DBEB",
+                                                        "eventNum": 60,
+                                                        "peakRssi": -44,
+                                                        "seenCount": 256
+                                                    },
+                                                    {
+                                                        "EPCid": "000011C1A5000062F7952926",
+                                                        "eventNum": 61,
+                                                        "peakRssi": -66,
+                                                        "seenCount": 256
+                                                    },
+                                                    {
+                                                        "EPCid": "11113333B22FB22FB22FB22F",
+                                                        "eventNum": 62,
+                                                        "peakRssi": -65,
+                                                        "seenCount": 256
+                                                    },
+                                                    {
+                                                        "EPCid": "AAAABBBB11112222CCCCDDDD",
+                                                        "eventNum": 63,
+                                                        "peakRssi": -60,
+                                                        "seenCount": 256
+                                                    },
+                                                    {
                                                         "EPCid": "BEDD11112222333344445555",
-                                                        "EPC": "BEDD11112222333344445555",
-                                                        "TID": "E2003412013BFD000B4E16D21D030143000D5FFBFFFFDC60",
-                                                        "USER": "12343333123456781234567812345678123456781234567812345678123456781234567812345678",
-                                                        "channel": 911.75,
-                                                        "eventNum": 1,
-                                                        "peakRssi": -39,
-                                                        "phase": 0,
-                                                        "seenCount": 1,
+                                                        "eventNum": 64,
+                                                        "peakRssi": -45,
+                                                        "seenCount": 256
+                                                    },
+                                                    {
+                                                        "EPCid": "311100000000000000000000",
+                                                        "eventNum": 65,
+                                                        "peakRssi": -51,
+                                                        "seenCount": 256
+                                                    },
+                                                    {
+                                                        "EPCid": "11113333880600890630DBEC",
+                                                        "eventNum": 66,
+                                                        "peakRssi": -53,
+                                                        "seenCount": 256
+                                                    },
+                                                    {
+                                                        "EPCid": "1111FB63AC1F3841DADA00000000CAFEDADACAFEDADACAFE00001111",
+                                                        "eventNum": 67,
+                                                        "peakRssi": -57,
+                                                        "seenCount": 256
+                                                    },
+                                                    {
+                                                        "EPCid": "E28011B0A506007D3DD07D01",
+                                                        "eventNum": 68,
+                                                        "peakRssi": -72,
+                                                        "seenCount": 256
+                                                    },
+                                                    {
+                                                        "EPCid": "E28011B0A506007D3DD07C0F",
+                                                        "eventNum": 69,
+                                                        "peakRssi": -69,
+                                                        "seenCount": 256
+                                                    },
+                                                    {
+                                                        "EPCid": "E28011B0A506007D3DD07D00",
+                                                        "eventNum": 70,
+                                                        "peakRssi": -70,
+                                                        "seenCount": 256
+                                                    },
+                                                    {
+                                                        "EPCid": "11115555222233334444A9B6",
+                                                        "eventNum": 71,
+                                                        "peakRssi": -41,
+                                                        "seenCount": 256
+                                                    },
+                                                    {
+                                                        "EPCid": "111133332222333344445550",
+                                                        "eventNum": 72,
+                                                        "peakRssi": -45,
+                                                        "seenCount": 256
+                                                    },
+                                                    {
+                                                        "EPCid": "311100000000000000000000",
+                                                        "eventNum": 73,
+                                                        "peakRssi": -65,
+                                                        "seenCount": 256
+                                                    },
+                                                    {
+                                                        "EPCid": "111133332222333344445555",
+                                                        "eventNum": 74,
+                                                        "peakRssi": -61,
+                                                        "seenCount": 256
+                                                    },
+                                                    {
+                                                        "EPCid": "A1B22222BBBB",
+                                                        "eventNum": 75,
+                                                        "peakRssi": -65,
+                                                        "seenCount": 256
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "Tag data with additional details": {
+                                        "description": "Tag data event including EPC, TID, channel, peak RSSI, phase, seen count, MAC, and hostname",
+                                        "value": {
+                                            "type": "BALANCED_PERFORMANCE",
+                                            "timestamp": "2026-06-16T06:14:26.782Z",
+                                            "data": {
+                                                "tagData": [
+                                                    {
+                                                        "EPCid": "AAAABBBB11112222CCCCDDDD",
+                                                        "EPC": "D98A3000AAAABBBB11112222CCCCDDDD",
+                                                        "TID": "E2003412012DFA000FF5D1E4031D0136000D5FFBFFFFDC60",
+                                                        "channel": 9216,
+                                                        "eventNum": 91,
+                                                        "peakRssi": -62,
+                                                        "phase": 64,
+                                                        "seenCount": 256,
+                                                        "MAC": "AC:3F:A4:00:2B:15",
+                                                        "HOSTNAME": "RFD40-211545201D0034"
+                                                    },
+                                                    {
+                                                        "EPCid": "CCCCCCCCA5050077AB3800CC",
+                                                        "EPC": "3BA23000CCCCCCCCA5050077AB3800CC",
+                                                        "TID": "E28011B02000A0CC59C003BD000000000000",
+                                                        "channel": 9472,
+                                                        "eventNum": 92,
+                                                        "peakRssi": -76,
+                                                        "phase": -171,
+                                                        "seenCount": 256,
+                                                        "MAC": "AC:3F:A4:00:2B:15",
+                                                        "HOSTNAME": "RFD40-211545201D0034"
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "Tag events for access operations": {
+                                        "description": "Tag data events that include results of specified access operations such as read/write to memory banks",
+                                        "value": {
+                                            "type": "BALANCED_PERFORMANCE",
+                                            "timestamp": "2026-06-16T06:17:41.088Z",
+                                            "data": {
+                                                "tagData": [
+                                                    {
+                                                        "EPCid": "11115555222233334444A9B6",
+                                                        "EPC": "111155552222",
+                                                        "TID": "E28011C1200009B6BCB50317000000000A00",
+                                                        "RESERVED": "1111000011110000809024593A7B3000",
+                                                        "eventNum": 6,
+                                                        "peakRssi": -29,
+                                                        "seenCount": 256,
                                                         "accessResults": [
-                                                            "READ-EPC-SUCCESS",
-                                                            "READ-TID-SUCCESS",
-                                                            "WRITE-USER-No Response from Tag"
+                                                            "READ-EPC-Success",
+                                                            "READ-TID-Success",
+                                                            "READ-RESERVED-Success"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "EPCid": "11115555222233334444A9B6",
+                                                        "EPC": "111155552222",
+                                                        "TID": "E28011C1200009B6BCB50317000000000A00",
+                                                        "RESERVED": "1111000011110000809024593A7B3000",
+                                                        "eventNum": 7,
+                                                        "peakRssi": -37,
+                                                        "seenCount": 256,
+                                                        "accessResults": [
+                                                            "READ-EPC-Success",
+                                                            "READ-TID-Success",
+                                                            "READ-RESERVED-Success"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "EPCid": "11115555222233334444A9B6",
+                                                        "EPC": "111155552222",
+                                                        "TID": "E28011C1200009B6BCB50317000000000A00",
+                                                        "RESERVED": "1111000011110000809024593A7B3000",
+                                                        "eventNum": 8,
+                                                        "peakRssi": -31,
+                                                        "seenCount": 256,
+                                                        "accessResults": [
+                                                            "READ-EPC-Success",
+                                                            "READ-TID-Success",
+                                                            "READ-RESERVED-Success"
                                                         ]
                                                     }
                                                 ]

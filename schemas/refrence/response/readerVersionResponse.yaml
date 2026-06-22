@@ -53,6 +53,8 @@ properties:
         example: V1.1
         enum:
           - V1.1
+          - V1.2
+          - V1.21
         description: The version of the IoT Connector (IoTC) software.
 required:
   - firmwareVersion

@@ -276,8 +276,6 @@
             "SEENCOUNT": true,
             "CHANNEL": true,
             "PC": false,
-            "XPC": false,
-            "CRC": true,
             "EPC": true,
             "TID": false,
             "USER": false,

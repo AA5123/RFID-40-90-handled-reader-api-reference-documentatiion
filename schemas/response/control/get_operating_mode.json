@@ -63,7 +63,6 @@
           "radioStartConditions": {
             "trigger": "IMMEDIATE",
             "startDelay": 0,
-            "periodicDuration": 0,
             "repeat": false
           },
           "radioStopConditions": {

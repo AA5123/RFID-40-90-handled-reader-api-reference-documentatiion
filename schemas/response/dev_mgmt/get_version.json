@@ -7,26 +7,26 @@
   "examples": [
     {
       "command": "get_version",
-      "requestId": "abcd123",
-      "apiVersion": "V1.1",
+      "requestId": "abc123",
+      "apiVersion": "V1.21",
       "readerVersion": {
-        "firmwareVersion": "SAAFKS00-006-R02",
+        "firmwareVersion": "PAAFKS00-013-N05",
         "model": "RFD40",
-        "serialNumber": "23053520102096",
+        "serialNumber": "211545201D0034",
         "sku": "RFD4031-G10B700-US",
         "companyName": "Zebra Technologies",
         "manufacturerName": "Zebra Technologies",
         "detailedVersions": {
           "scannerFirmware": "PAAEOC20-003-R01",
-          "radioFirmware": "2.0.42.0",
-          "iotcVersion": "V1.1"
+          "radioFirmware": "2.0.53.0",
+          "iotcVersion": "V1.21"
         }
       },
       "response": {
         "code": 0,
         "description": "Success"
       }
-    }
+  }
   ],
   "description": "command to get the reader version details",
   "properties": {
@@ -44,7 +44,8 @@
       "type": "string",
       "enum": [
         "V1.1",
-        "V1.0"
+        "V1.2",
+        "V1.21"
       ],
       "example": "V1.1"
     },

@@ -7,6 +7,7 @@ examples: []
 properties:
   interfaceDetails:
     type: object
+    description: Details about the WiFi network interface, including connection status and configuration.
     properties:
       interfaceName:
         type: string
@@ -16,9 +17,10 @@ properties:
         type: string
         description: The status of the network interface, either "ENABLED" or "DISABLED".
         enum:
-          - ENABLED
+          - CONNECTED
+          - DISCONNECTED
           - DISABLED
-        example: ENABLED
+        example: CONNECTED
       hostname:
         type: string
         description: The hostname of the device.
@@ -29,6 +31,7 @@ properties:
         example: E0-D0-45-3D-38-1D
       accessPoint:
         type: object
+        description: Information about the connected or configured access point.
         properties:
           essid:
             type: string
@@ -45,13 +48,11 @@ properties:
             type: string
             description: The security type used by the access point.
             enum:
-              - WPA2personal
+              - WPA2Personal
               - WPA3Personal
               - WPA2Enterprise
               - WPA3Enterprise
-              - OWEPublic
-              - Open
-            example: OWEPublic
+            example: WPA2Personal
           isPreferred:
             type: boolean
             description: Indicates whether this access point is preferred for connection.
@@ -65,6 +66,7 @@ properties:
           - isPreferred
       ipv4Configuration:
         type: object
+        description: IPv4 network configuration for the WiFi interface.
         properties:
           ipAddress:
             type: string
@@ -84,7 +86,7 @@ properties:
           enableDhcp:
             type: boolean
             description: Indicates if DHCP is enabled for IPv4 configuration.
-            example: enabled
+            example: true
           dnsServer:
             type: string
             format: ipv4
@@ -96,6 +98,7 @@ properties:
             example: test.soti.com
       ipv6Configuration:
         type: object
+        description: IPv6 network configuration for the WiFi interface.
         properties:
           ipAddress:
             type: string
@@ -114,10 +117,7 @@ properties:
           enableAuto:
             type: boolean
             description: Specifies if automatic IPv6 configuration is enabled.
-            enum:
-              - enabled
-              - disabled
-            example: enabled
+            example: true
           dnsServer:
             type: string
             format: ipv6
@@ -129,9 +129,11 @@ properties:
             example: test.soti.com
       securityDetails:
         type: object
+        description: Security credentials and protocol details for the WiFi connection.
         properties:
           WPA2Personal:
             type: object
+            description: WPA2-Personal security credentials.
             properties:
               password:
                 type: string
@@ -140,6 +142,7 @@ properties:
                 format: password
           WPA3Personal:
             type: object
+            description: WPA3-Personal security credentials.
             properties:
               password:
                 type: string
@@ -148,6 +151,7 @@ properties:
                 format: password
           WPA2Enterprise:
             type: object
+            description: WPA2-Enterprise security configuration with authentication and certificate parameters.
             properties:
               authentication:
                 type: string
@@ -185,9 +189,9 @@ properties:
               certificate:
                 type: array
                 description: The certificates used for WPA2-Enterprise.
-                example: ap1wpa2e
                 items:
                   type: object
+                  description: A certificate key-value entry for WPA2-Enterprise.
                   maxProperties: 4
                   properties:
                     key:
@@ -209,6 +213,7 @@ properties:
                 example: WPA2_Enterprise_CCMP
           WPA3Enterprise:
             type: object
+            description: WPA3-Enterprise security configuration with authentication and certificate parameters.
             properties:
               authentication:
                 type: string
@@ -246,9 +251,9 @@ properties:
               certificate:
                 type: array
                 description: The certificates used for WPA3-Enterprise.
-                example: ap1wpa2e
                 items:
                   type: object
+                  description: A certificate key-value entry for WPA3-Enterprise.
                   maxProperties: 4
                   properties:
                     key:
@@ -272,15 +277,7 @@ properties:
                   - WPA3_Enterprise_GCMP_256_SHA256
                   - WPA3_Enterprise_GCMP_256_SUITEB_192
                 example: WPA3_Enterprise_CCMP_256
-                maxLength: 3
-          OWEPublic:
-            type: object
-            properties:
-              authentication:
-                type: string
-                description: The authentication method for OWE-Public access.
     required:
       - interfaceName
-      - status
       - hostname
       - macAddress

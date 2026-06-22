@@ -15,6 +15,7 @@ properties:
     description: Specifies the type of operation to perform, either adding, deleting, or updating a configuration.
   configuration:
     type: object
+    description: The endpoint configuration parameters including connection, protocol, and security settings.
     required:
       - endpointName
       - epType
@@ -80,6 +81,7 @@ properties:
         description: Identifies the tenantID associated with the configuration.
       mqttParams:
         type: object
+        description: MQTT-specific connection parameters including keep-alive, session, and topic configuration.
         properties:
           keepAlive:
             type: integer
@@ -110,11 +112,12 @@ properties:
             type: array
             items:
               type: object
+              description: A publish topic entry with its QoS and retain settings. Supports up to 3 publish topics.
               properties:
                 topic:
                   type: string
-                  example: SOTICONNECT/clients/resp/RFD400124FA
-                  description: Specifies the topic to publish messages to. Supports up to 3 publish topics.
+                  example: zebra/rfd40/01/data
+                  description: Specifies the MQTT topic to which messages will be published.
                 qos:
                   type: integer
                   example: 1
@@ -130,10 +133,12 @@ properties:
             type: array
             items:
               type: object
+              description: A subscribe topic entry with its QoS and retain settings. Supports up to 1 subscribe topic.
               properties:
                 topic:
                   type: string
-                  description: Specifies the topic to subscribe to. Supports up to 1 subscribe topic.
+                  example: zebra/rfd40/01/data
+                  description: Specifies the MQTT topic to which messages will be subscribed.
                 qos:
                   type: integer
                   description: Defines the QoS level for subscribing to messages.
