@@ -128,9 +128,9 @@
     },
     "timestamp": {
       "type": "string",
-      "format": "time",
-      "example": "22:54:25",
-      "description": "Indicates the time at which the alert was generated, formatted as a time string."
+      "format": "date-time",
+      "example": "2026-06-17T10:16:34.793Z",
+      "description": "Indicates the time at which the alert was generated, formatted as a date-time string."
     },
     "state": {
       "type": "string",
@@ -145,6 +145,7 @@
       "type": "string",
       "enum": [
         "BATTERY",
+        "FILE_DOWNLOAD",
         "FIRMWARE_UPDATE",
         "NETWORK_EVENT",
         "TEMPERATURE",

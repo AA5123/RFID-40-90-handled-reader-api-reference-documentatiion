@@ -18,7 +18,7 @@ properties:
   inventoryState:
     type: string
     description: >
-      Target field (see EPC Gen2 Spec). Specifies the inventory state of tags to be selected. 
+      Inventory state field (see EPC Gen2 Spec). Specifies the inventory state of tags to be selected. 
       'STATE_A' and 'STATE_B' represent the two possible states of a tag's inventory flag. 
       'STATE_AB' flips between states to optimize tag selection during inventory rounds.
     enum:
@@ -28,7 +28,7 @@ properties:
   slFlag:
     type: string
     description: >
-      Sel field (see EPC Gen2 Spec). Indicates the SL (Select) flag used to filter tags. 
+      SL (Select) flag field (see EPC Gen2 Spec). Indicates the SL (Select) flag used to filter tags. 
       'ALL' selects all tags regardless of SL flag state. 
       'ASSERTED' selects only tags with an asserted SL flag, while 'DEASSERTED' selects tags with a deasserted SL flag.
     enum:

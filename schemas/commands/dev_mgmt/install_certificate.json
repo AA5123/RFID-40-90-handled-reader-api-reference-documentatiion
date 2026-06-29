@@ -43,7 +43,7 @@
         "url": [
           {
             "key": "ca_cert",
-            "value": "http://192.168.0.107:8080/filestore_ca_cert.pem"
+            "value": "https://192.168.0.107:8080/filestore_ca_cert.pem"
           }
         ],
         "verificationType": "VERIFY_HOST_PEER"

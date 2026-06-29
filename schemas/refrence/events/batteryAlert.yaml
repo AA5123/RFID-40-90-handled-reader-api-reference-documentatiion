@@ -17,13 +17,15 @@ properties:
   stateOfHealth:
     type: string
     enum:
-      - LOW
-      - FULL
+      - GOOD
       - CRITICAL
-      - HIGH
-      - CHARGING
+      - MODERATE
     description: The overall health of the battery, which reflects its long-term capacity and performance.
   chargePercentage:
     type: integer
     maximum: 100
     description: The current charge level of the battery, represented as a percentage.
+required:
+  - status
+  - stateOfHealth
+  - chargePercentage

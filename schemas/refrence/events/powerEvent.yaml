@@ -29,5 +29,4 @@ properties:
     description: Indicates the current power mode of the device.
 required:
   - powerSource
-  - lldp
   - powerMode

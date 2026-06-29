@@ -49,9 +49,7 @@ properties:
             - interfaceName
             - status
             - linkStatus
-            - linkSpeed
             - ipV4Address
-            - ipV6Address
       wifiStatus:
         type: array
         description: List of WiFi interface statuses.
@@ -86,7 +84,6 @@ properties:
             - status
             - ssid
             - ipV4Address
-            - ipV6Address
   btRemoteDevice:
     type: object
     description: Details of connected Bluetooth remote devices.

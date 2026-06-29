@@ -34,11 +34,13 @@ properties:
       VERIFY_HOST_PEER - Verify both the host and peer certificates.
   caCertificateFileContent:
     type: string
-    example: '-----BEGIN CERTIFICATE-----\\r\\nPUdg=\\r\\n-----END CERTIFICATE-----'
-    description: The content of the CA certificate in PEM format, required for certificate-based authentication.
+    example: '-----BEGIN CERTIFICATE-----\nMIIDPTCCAiWgAwIBAgIUHtj1WDceNR9Nf+vZBB1Ne7sFmHkwDQYJKoZIhvcNAQEL\nBQAwLjEPMA0GA1UEAwwGVGVzdENBMQ4wDAYDVQQKDAVaZWJyYTELMAkGA1UEBhMC\nVVMwHhcNMjYwNTExMTMxNDQ3WhcNMzYwNTA4MTMxNDQ3WjAuMQ8wDQYDVQQDDAZU\nZXN0Q0ExDjAMBgNVBAoMBVplYnJhMQswCQYDVQQGEwJVUzCCASIwDQYJKoZIhvcN\nAQEBBQADggEPADCCAQoCggEBANR8E/mxoQ5uTPW/muWnGoWDM7+YH5lIJiCM/n92\ndMLIQ+TVgb9mcOz80VnpgkQqomhbZaIG4CtnBufyIJvNKid+mgrrFh18HtMnE78d\nlGoPC4M469Rm+0oEN9GkUHgtgF2N4Qt9bYomySux3yyPlFuUOC+uaYRCCn3Hm8ko\nXE/a7XWdXeJkpIB0Mzzf7MoNq14AfX431RKgvpMgAqZTnDWtm4TVnK9Hq0t64tP7\naKIAJV2avJd87dF8x+K80kLBErDnKtuNFpXN7KoC7BBwdTzbG8VWYNUZeG8eCqBh\neL9MY5Ik7POmR0AM/TxRBLAXyoZHSPdEpEoaQZjSzJ7IHv0CAwEAAaNTMFEwHQYD\nVR0OBBYEFJHms5XPEyFYnVcf2++X9N8UlkahMB8GA1UdIwQYMBaAFJHms5XPEyFY\nnVcf2++X9N8UlkahMA8GA1UdEwEB/wQFMAMBAf8wDQYJKoZIhvcNAQELBQADggEB\nAL4HEEMhuQ9sQLFE9wiGw4BIILxnX30FbphWM8/xpHKuYNsH/NOWpjulG+ZAxe8n\n+QUhaU9hruBEajT7mYjKvZ9NtUumcAmAh3s29KD4NpjwglqUYfKQpzT4QxkcMXuW\nzCmqlAqGVzK3ve/Fuurgdbk3kApOZTTyqFw629dmmRhoP+2sdCYMAukyf348/4Gl\nY6ZtwwAJygC4/WCfWg/7XaeQ+6kqKtY6ijSJFfCNwEPPY7CW3XAqP+kZ0e2taL5a\nrvm5UUPRMGCs20JOucntSF8uPOICNWUEr3DbqAJ4jXKhSHdsG6fNDyJIOzX1zn0j\nVqh5mX6k2PZe0eylcukyu/s=\n-----END CERTIFICATE-----'
+    description: |-
+      Optional inline certificate content used only for remote firmware download authentication.
+      - If applicable and this field is empty, the device uses an already installed filestore certificate for authentication.
   caCertificateFile:
     type: string
-    example: /apps/ca.crt
+    example: /apps/ca_cert.pem
     description: The file path to the CA certificate, required for certificate-based authentication.
 required:
   - url

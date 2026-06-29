@@ -1,5 +1,5 @@
 {
-  "title": "setWifiResponse",
+  "title": "rebootResponse",
   "x-stoplight": {
     "id": "vdmaqk96eai0f"
   },
@@ -7,7 +7,7 @@
   "examples": [
      {
        "command": "reboot",
-       "requestId": "123abc",
+       "requestId": "123abcd",
        "apiVersion": "V1.1",
        "response": {
            "code": 1,

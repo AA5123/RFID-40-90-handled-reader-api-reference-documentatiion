@@ -199,6 +199,14 @@ properties:
             type: boolean
             description: |
               Indicates whether to report the Protocol Control (PC) word.  The PC word contains information about the tag's memory structure and encoding, such as the length of the EPC.
+          XPC:
+            type: boolean
+            description: |
+              Indicates whether to report the Extended Protocol Control (XPC) word.  XPC provides additional protocol-related information for advanced tags, such as custom memory configurations.
+          CRC:
+            type: boolean
+            description: |
+              Indicates whether to report the CRC value.  CRC is used to verify the integrity of the tag's data and ensure error-free communication.
           EPC:
             type: boolean
             description: |

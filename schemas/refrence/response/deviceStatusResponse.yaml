@@ -35,7 +35,7 @@ properties:
     type: string
     description: The system time of the device in ISO 8601 format.
     example: '2022-07-01T03:01:31.464Z'
-    format: time
+    format: date-time
   temperature:
     type: integer
     description: The current temperature of the device in degrees Celsius.
@@ -97,7 +97,7 @@ properties:
       batteryType:
         type: string
         description: The battery chemistry/type.
-        example: Li-ion
+        example: LI-ION
       capacity:
         type: integer
         description: The battery capacity remaining in mAh.

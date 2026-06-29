@@ -89,7 +89,8 @@
       "type": "string",
       "enum": [
         "V1.0",
-        "V1.1"
+        "V1.1",
+        "V1.21"
       ]
     },
     "installedCerts": {

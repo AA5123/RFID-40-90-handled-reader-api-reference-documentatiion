@@ -19,7 +19,8 @@
       "type": "string",
       "enum": [
         "V1.0",
-        "V1.1"
+        "V1.1",
+        "V1.21"
       ]
     },
     "response": {
@@ -35,7 +36,25 @@
            "code": 1,
             "description": "Command payload is accepted"
         }
-     }
+     },
+     {
+        "command": "install_certificate",
+        "requestId": "abc456",
+        "apiVersion": "V1.1",
+        "response": {
+          "code": 29,
+          "description": "Url missing for HTTP source"
+        }
+      },
+      {
+        "command": "install_certificate",
+        "requestId": "18996",
+        "apiVersion": "V1.1",
+        "response": {
+          "code": 30,
+          "description": "Certificate content missing for direct source"
+        }
+      }
   ],
   "required": [
     "command",

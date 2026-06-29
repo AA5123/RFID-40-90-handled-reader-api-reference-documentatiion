@@ -1,5 +1,5 @@
 {
-  "title": "cfgAlertResponse",
+  "title": "config_endpoint_response",
   "x-stoplight": {
     "id": "kw9xt7g73rjbc"
   },
@@ -31,7 +31,8 @@
       "example": "V1.1",
       "enum": [
         "V1.0",
-        "V1.1"
+        "V1.1",
+        "V1.21"
       ]
     },
     "response": {

@@ -174,9 +174,6 @@ properties:
             description: Specifies the file containing the client private key.
         required:
           - format
-          - caCertificateFile
-          - clientCert
-          - clientKey
       eventConfiguration:
         $ref: ./cfgEventPayload.yaml
         description: Reference to the event configuration schema.

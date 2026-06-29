@@ -91,6 +91,11 @@
         "Server certificate": "Payload to install server certificates with authentication",
         "MQTT CA certificate install": "Installing MQTT CA certificate, where certificate content is provided as part of API"
     },
+    "installCertificate": {
+        "Install certificate payload accepted": "Install certificate response indicating the command payload is accepted",
+        "Url missing for HTTP source": "Error response when URL is missing for HTTP source",
+        "Certificate content missing for direct source": "Error response when certificate content is missing for direct source"
+    },
     "get_wifi": {
         "WPA2 Personal connection": "Response with WiFi connected to WPA2 Personal network",
         "WPA2 Enterprise connection": "Response with WiFi connected to WPA2 Enterprise network with certificates", 
@@ -119,8 +124,8 @@
     "alert": {
         "Battery alert": "Alert indicating battery status such as low or critical battery level",
         "Power alert": "Alert indicating power events.",
-        "Network alert for ethernet": "Alert indicating network events when ethernet connected",
         "Network alert for WiFi": "Alert indicating network events when WiFi connected",
+        "Network alert for ethernet": "Alert indicating network events when ethernet connected",
         "Firmware update alert": "Alert indicating firmware update started",
         "File download alert": "Alert indicating file download status",
         "File saved alert": "Alert indicating file save status"

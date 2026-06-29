@@ -69,7 +69,7 @@ properties:
     example: 13
   format:
     type: string
-    description: The format of idHex is EPC
+    description: The format of the tag data is EPCid
     example: epc
   peakRssi:
     type: number

@@ -71,16 +71,17 @@
         "V1.21"
       ]
     },
-    "required": [
-      "command",
-      "requestId",
-      "apiVersion"
-    ],
     "ethConfig": {
       "$ref": "../../refrence/response/ethResponseSoti.yaml"
     },
     "response": {
       "$ref": "../../refrence/response/response.yaml"
     }
-  }
+  },
+  "required": [
+    "command",
+    "requestId",
+    "apiVersion",
+    "response"
+  ]
 }

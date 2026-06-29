@@ -38,8 +38,12 @@ properties:
           type: string
           description: The algorithm used for the public key.
           enum:
-            - RSA256
-            - RSA512
+            - RSA
+            - RSAMD5
+            - RSA_SHA_1
+            - RSA_SHA_256"
+            - RSA_SHA_384"
+            - RSA_SHA_512"
         publicKey:
           type: string
           description: The public key of the certificate in string format.

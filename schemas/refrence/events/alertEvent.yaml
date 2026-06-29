@@ -38,7 +38,7 @@ properties:
                 description: NGE radio temperature
               pa:
                 type: number
-                description: 'Power amp emperature '
+                description: 'Power amp temperature '
               ambient:
                 type: number
     type: object

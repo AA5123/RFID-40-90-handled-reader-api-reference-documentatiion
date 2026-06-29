@@ -45,5 +45,9 @@
     "certificateInfo": {
       "$ref": "../../refrence/payload/delCertPayload.yaml"
     }
-  }
+  },
+  "required": [
+    "command",
+    "requestId"
+  ]
 }

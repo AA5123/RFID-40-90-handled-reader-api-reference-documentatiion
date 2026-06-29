@@ -10,12 +10,15 @@ properties:
   downloadInfo:
     $ref: ../events/fileDownload.yaml
     description: 'Information regarding file download events, such as source, destination, and status.'
-  temperatueInfo:
+  temperatureInfo:
     $ref: ../events/tempEvent.yaml
     description: 'Details about temperature-related events, including thresholds and alerts.'
   networkInfo:
     $ref: ../events/networkEvent.yaml
     description: 'Data related to network events, including connectivity and performance metrics.'
+  powerEvent:
+    $ref: ../events/powerEvent.yaml
+    description: 'Information about power-related events, such as power loss or restoration.'
   batteryAlert:
     $ref: ../events/batteryAlert.yaml
     description: 'Details about battery-related alerts, such as low charge or health status.'

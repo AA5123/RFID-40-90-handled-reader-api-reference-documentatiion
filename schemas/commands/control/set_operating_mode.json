@@ -65,19 +65,19 @@
                 "offset": 2,
                 "length": 2,
                 "data": "FFFFEEEE",
-                "password": "0000"
+                "password": "00000000"
               }
             },
             {
               "operationType": "ACCESS",
               "config": {
-                "password": "0000"
+                "password": "00000000"
               }
             },
             {
               "operationType": "LOCK",
               "config": {
-                "password": "0000",
+                "password": "00000000",
                 "lockMemBank": "TID",
                 "lockAction": "UNLOCK"
               }
@@ -166,19 +166,19 @@
                 "offset": 2,
                 "length": 2,
                 "data": "FFFFEEEE",
-                "password": "0000"
+                "password": "00000000"
               }
             },
             {
               "operationType": "ACCESS",
               "config": {
-                "password": "0000"
+                "password": "00000000"
               }
             },
             {
               "operationType": "LOCK",
               "config": {
-                "password": "0000",
+                "password": "00000000",
                 "lockMemBank": "EPC",
                 "lockAction": "UNLOCK"
               }

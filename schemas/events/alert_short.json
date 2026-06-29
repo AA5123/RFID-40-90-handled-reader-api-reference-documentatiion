@@ -7,7 +7,7 @@
   "examples": [
     {
       "id": "FIRMWARE_DOWNLOAD_SUCCESS",
-      "timestamp": "22:54:25",
+      "timestamp": "2026-04-17T05:09:13.808Z",
       "type": "ALERT",
       "priority": "LOW",
       "messageID": "ZEBRA_RFID_HH_ALERTS",
@@ -15,7 +15,7 @@
     },
     {
       "id": "BATTERY_CRITICAL_SET",
-      "timestamp": "14:30:15",
+      "timestamp": "2026-04-17T05:09:13.808Z",
       "type": "ALERT",
       "priority": "CRITICAL",
       "messageID": "ZEBRA_RFID_HH_ALERTS",
@@ -23,7 +23,7 @@
     },
     {
       "id": "WIFI_CONFIG_FAIL",
-      "timestamp": "09:15:42",
+      "timestamp": "2026-04-17T05:09:13.808Z",
       "type": "NOTIFICATION",
       "priority": "HIGH",
       "messageID": "ZEBRA_RFID_HH_ALERTS",
@@ -140,7 +140,8 @@
     },
     "timestamp": {
       "type": "string",
-      "format": "time",
+      "format": "date-time",
+      "example": "2026-03-13T08:02:59.207Z",
       "description": "The time when the alert was generated, formatted as a string."
     },
     "type": {

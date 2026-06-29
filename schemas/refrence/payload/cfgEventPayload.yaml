@@ -4,15 +4,30 @@ x-stoplight:
 type: object
 description: Specifies which device events to enable or disable and their configuration thresholds.
 properties:
+  antenna:
+    type: boolean
+    description: set to true to enable antenna events
   terminalConnection:
     type: boolean
     description: set to true to enable terminal connection/disconnection events
   firmwareUpdate:
     type: boolean
     description: set to true to enable fw update events
+  gpi:
+    type: boolean
+    description: set to true to enable gpi events
   network:
     type: boolean
     description: set to true to enable network events
+  exceptions:
+    type: boolean
+    description: set to true to enable exception events
+  ntp:
+    type: boolean
+    description: set to true to enable battery alerts
+  userApp:
+    type: boolean
+    description: set to true to enable user app events
   heartbeat:
     type: boolean
     description: set to true to enable heart beat
@@ -28,9 +43,17 @@ properties:
   fileDownload:
     type: boolean
     description: set to true to enable file download alerts
+  cpuUsage:
+    type: boolean
+    description: set to true to enable cpu usage alerts
+  flashUsage:
+    type: boolean
+    description: set to true to enable flash usage alerts
+  ramUsage:
+    type: boolean
+    description: set to true to enable ram usage alerts
   heartbeatConfiguration:
     type: object
-    description: Configuration for heartbeat event reporting, including interval and status inclusions.
     properties:
       interval:
         type: integer
@@ -42,3 +65,18 @@ properties:
       batteryStatus:
         type: boolean
         description: set to true to enable battery status as part of heartbeat message
+      userApps:
+        type: boolean
+        description: set to true to enable user app status as part of heartbeat message
+  cpuThreshold:
+    type: integer
+    description: cpu usage value(%) above which alert will be triggered
+  ramThreshold:
+    type: integer
+    description: ram usage value(%) above which alert will be triggered
+  flashThreshold:
+    type: integer
+    description: flash usage value(%) above which alert will be triggered
+  temperatureThreshold:
+    type: integer
+    description: temperature treshold value above which alert will be triggered

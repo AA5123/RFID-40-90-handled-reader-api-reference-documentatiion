@@ -95,7 +95,7 @@ properties:
                 properties:
                   password:
                     type: string
-                    description: The password for WPA3-Personal authentication.
+                    description: The password for WPA2-Personal authentication.
                 required:
                   - password
               WPA3Personal:
