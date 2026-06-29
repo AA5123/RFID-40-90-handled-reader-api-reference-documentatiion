@@ -201,7 +201,7 @@
                                                     "type": "string",
                                                     "description": "The system time of the device in ISO 8601 format.",
                                                     "example": "2022-07-01T03:01:31.464Z",
-                                                    "format": "time"
+                                                    "format": "date-time"
                                                 },
                                                 "temperature": {
                                                     "type": "integer",
@@ -280,7 +280,7 @@
                                                         "batteryType": {
                                                             "type": "string",
                                                             "description": "The battery chemistry/type.",
-                                                            "example": "Li-ion"
+                                                            "example": "LI-ION"
                                                         },
                                                         "capacity": {
                                                             "type": "integer",
@@ -929,11 +929,6 @@
                                                 "V1.21"
                                             ]
                                         },
-                                        "required": [
-                                            "command",
-                                            "requestId",
-                                            "apiVersion"
-                                        ],
                                         "ethConfig": {
                                             "title": "ethConfig",
                                             "x-stoplight": {
@@ -1115,7 +1110,13 @@
                                                 "description"
                                             ]
                                         }
-                                    }
+                                    },
+                                    "required": [
+                                        "command",
+                                        "requestId",
+                                        "apiVersion",
+                                        "response"
+                                    ]
                                 },
                                 "examples": {
                                     "Ethernet config info": {
@@ -2006,7 +2007,7 @@
                                                                         "properties": {
                                                                             "password": {
                                                                                 "type": "string",
-                                                                                "description": "The password for WPA3-Personal authentication."
+                                                                                "description": "The password for WPA2-Personal authentication."
                                                                             }
                                                                         },
                                                                         "required": [
@@ -3190,6 +3191,10 @@
                                                                                 "type": "object",
                                                                                 "description": "Reference to the event configuration payload.",
                                                                                 "properties": {
+                                                                                    "antenna": {
+                                                                                        "type": "boolean",
+                                                                                        "description": "set to true to enable antenna events"
+                                                                                    },
                                                                                     "terminalConnection": {
                                                                                         "type": "boolean",
                                                                                         "description": "set to true to enable terminal connection/disconnection events"
@@ -3198,9 +3203,25 @@
                                                                                         "type": "boolean",
                                                                                         "description": "set to true to enable fw update events"
                                                                                     },
+                                                                                    "gpi": {
+                                                                                        "type": "boolean",
+                                                                                        "description": "set to true to enable gpi events"
+                                                                                    },
                                                                                     "network": {
                                                                                         "type": "boolean",
                                                                                         "description": "set to true to enable network events"
+                                                                                    },
+                                                                                    "exceptions": {
+                                                                                        "type": "boolean",
+                                                                                        "description": "set to true to enable exception events"
+                                                                                    },
+                                                                                    "ntp": {
+                                                                                        "type": "boolean",
+                                                                                        "description": "set to true to enable battery alerts"
+                                                                                    },
+                                                                                    "userApp": {
+                                                                                        "type": "boolean",
+                                                                                        "description": "set to true to enable user app events"
                                                                                     },
                                                                                     "heartbeat": {
                                                                                         "type": "boolean",
@@ -3222,9 +3243,20 @@
                                                                                         "type": "boolean",
                                                                                         "description": "set to true to enable file download alerts"
                                                                                     },
+                                                                                    "cpuUsage": {
+                                                                                        "type": "boolean",
+                                                                                        "description": "set to true to enable cpu usage alerts"
+                                                                                    },
+                                                                                    "flashUsage": {
+                                                                                        "type": "boolean",
+                                                                                        "description": "set to true to enable flash usage alerts"
+                                                                                    },
+                                                                                    "ramUsage": {
+                                                                                        "type": "boolean",
+                                                                                        "description": "set to true to enable ram usage alerts"
+                                                                                    },
                                                                                     "heartbeatConfiguration": {
                                                                                         "type": "object",
-                                                                                        "description": "Configuration for heartbeat event reporting, including interval and status inclusions.",
                                                                                         "properties": {
                                                                                             "interval": {
                                                                                                 "type": "integer",
@@ -3238,8 +3270,28 @@
                                                                                             "batteryStatus": {
                                                                                                 "type": "boolean",
                                                                                                 "description": "set to true to enable battery status as part of heartbeat message"
+                                                                                            },
+                                                                                            "userApps": {
+                                                                                                "type": "boolean",
+                                                                                                "description": "set to true to enable user app status as part of heartbeat message"
                                                                                             }
                                                                                         }
+                                                                                    },
+                                                                                    "cpuThreshold": {
+                                                                                        "type": "integer",
+                                                                                        "description": "cpu usage value(%) above which alert will be triggered"
+                                                                                    },
+                                                                                    "ramThreshold": {
+                                                                                        "type": "integer",
+                                                                                        "description": "ram usage value(%) above which alert will be triggered"
+                                                                                    },
+                                                                                    "flashThreshold": {
+                                                                                        "type": "integer",
+                                                                                        "description": "flash usage value(%) above which alert will be triggered"
+                                                                                    },
+                                                                                    "temperatureThreshold": {
+                                                                                        "type": "integer",
+                                                                                        "description": "temperature treshold value above which alert will be triggered"
                                                                                     }
                                                                                 }
                                                                             }
@@ -3834,10 +3886,7 @@
                                                             }
                                                         },
                                                         "required": [
-                                                            "format",
-                                                            "caCertificateFile",
-                                                            "clientCert",
-                                                            "clientKey"
+                                                            "format"
                                                         ]
                                                     },
                                                     "eventConfiguration": {
@@ -3848,6 +3897,10 @@
                                                         "type": "object",
                                                         "description": "Reference to the event configuration schema.",
                                                         "properties": {
+                                                            "antenna": {
+                                                                "type": "boolean",
+                                                                "description": "set to true to enable antenna events"
+                                                            },
                                                             "terminalConnection": {
                                                                 "type": "boolean",
                                                                 "description": "set to true to enable terminal connection/disconnection events"
@@ -3856,9 +3909,25 @@
                                                                 "type": "boolean",
                                                                 "description": "set to true to enable fw update events"
                                                             },
+                                                            "gpi": {
+                                                                "type": "boolean",
+                                                                "description": "set to true to enable gpi events"
+                                                            },
                                                             "network": {
                                                                 "type": "boolean",
                                                                 "description": "set to true to enable network events"
+                                                            },
+                                                            "exceptions": {
+                                                                "type": "boolean",
+                                                                "description": "set to true to enable exception events"
+                                                            },
+                                                            "ntp": {
+                                                                "type": "boolean",
+                                                                "description": "set to true to enable battery alerts"
+                                                            },
+                                                            "userApp": {
+                                                                "type": "boolean",
+                                                                "description": "set to true to enable user app events"
                                                             },
                                                             "heartbeat": {
                                                                 "type": "boolean",
@@ -3880,9 +3949,20 @@
                                                                 "type": "boolean",
                                                                 "description": "set to true to enable file download alerts"
                                                             },
+                                                            "cpuUsage": {
+                                                                "type": "boolean",
+                                                                "description": "set to true to enable cpu usage alerts"
+                                                            },
+                                                            "flashUsage": {
+                                                                "type": "boolean",
+                                                                "description": "set to true to enable flash usage alerts"
+                                                            },
+                                                            "ramUsage": {
+                                                                "type": "boolean",
+                                                                "description": "set to true to enable ram usage alerts"
+                                                            },
                                                             "heartbeatConfiguration": {
                                                                 "type": "object",
-                                                                "description": "Configuration for heartbeat event reporting, including interval and status inclusions.",
                                                                 "properties": {
                                                                     "interval": {
                                                                         "type": "integer",
@@ -3896,8 +3976,28 @@
                                                                     "batteryStatus": {
                                                                         "type": "boolean",
                                                                         "description": "set to true to enable battery status as part of heartbeat message"
+                                                                    },
+                                                                    "userApps": {
+                                                                        "type": "boolean",
+                                                                        "description": "set to true to enable user app status as part of heartbeat message"
                                                                     }
                                                                 }
+                                                            },
+                                                            "cpuThreshold": {
+                                                                "type": "integer",
+                                                                "description": "cpu usage value(%) above which alert will be triggered"
+                                                            },
+                                                            "ramThreshold": {
+                                                                "type": "integer",
+                                                                "description": "ram usage value(%) above which alert will be triggered"
+                                                            },
+                                                            "flashThreshold": {
+                                                                "type": "integer",
+                                                                "description": "flash usage value(%) above which alert will be triggered"
+                                                            },
+                                                            "temperatureThreshold": {
+                                                                "type": "integer",
+                                                                "description": "temperature treshold value above which alert will be triggered"
                                                             }
                                                         }
                                                     }
@@ -4250,7 +4350,8 @@
                                             "example": "V1.1",
                                             "enum": [
                                                 "V1.0",
-                                                "V1.1"
+                                                "V1.1",
+                                                "V1.21"
                                             ]
                                         },
                                         "response": {
@@ -4413,7 +4514,8 @@
                                             "type": "string",
                                             "enum": [
                                                 "V1.0",
-                                                "V1.1"
+                                                "V1.1",
+                                                "V1.21"
                                             ]
                                         },
                                         "installedCerts": {
@@ -4463,8 +4565,12 @@
                                                                 "type": "string",
                                                                 "description": "The algorithm used for the public key.",
                                                                 "enum": [
-                                                                    "RSA256",
-                                                                    "RSA512"
+                                                                    "RSA",
+                                                                    "RSAMD5",
+                                                                    "RSA_SHA_1",
+                                                                    "RSA_SHA_256\"",
+                                                                    "RSA_SHA_384\"",
+                                                                    "RSA_SHA_512\""
                                                                 ]
                                                             },
                                                             "publicKey": {
@@ -4832,7 +4938,7 @@
                                             "url": [
                                                 {
                                                     "key": "ca_cert",
-                                                    "value": "http://192.168.0.107:8080/filestore_ca_cert.pem"
+                                                    "value": "https://192.168.0.107:8080/filestore_ca_cert.pem"
                                                 }
                                             ],
                                             "verificationType": "VERIFY_HOST_PEER"
@@ -4968,7 +5074,8 @@
                                             "type": "string",
                                             "enum": [
                                                 "V1.0",
-                                                "V1.1"
+                                                "V1.1",
+                                                "V1.21"
                                             ]
                                         },
                                         "response": {
@@ -5006,7 +5113,8 @@
                                     ]
                                 },
                                 "examples": {
-                                    "example1": {
+                                    "Install certificate payload accepted": {
+                                        "description": "Install certificate response indicating the command payload is accepted",
                                         "value": {
                                             "command": "install_certificate",
                                             "requestId": "18996",
@@ -5014,6 +5122,30 @@
                                             "response": {
                                                 "code": 1,
                                                 "description": "Command payload is accepted"
+                                            }
+                                        }
+                                    },
+                                    "Url missing for HTTP source": {
+                                        "description": "Error response when URL is missing for HTTP source",
+                                        "value": {
+                                            "command": "install_certificate",
+                                            "requestId": "abc456",
+                                            "apiVersion": "V1.1",
+                                            "response": {
+                                                "code": 29,
+                                                "description": "Url missing for HTTP source"
+                                            }
+                                        }
+                                    },
+                                    "Certificate content missing for direct source": {
+                                        "description": "Error response when certificate content is missing for direct source",
+                                        "value": {
+                                            "command": "install_certificate",
+                                            "requestId": "18996",
+                                            "apiVersion": "V1.1",
+                                            "response": {
+                                                "code": 30,
+                                                "description": "Certificate content missing for direct source"
                                             }
                                         }
                                     }
@@ -5115,7 +5247,11 @@
                                             "type"
                                         ]
                                     }
-                                }
+                                },
+                                "required": [
+                                    "command",
+                                    "requestId"
+                                ]
                             },
                             "examples": {
                                 "Delete wifi ca cert": {
@@ -5317,12 +5453,12 @@
                                             },
                                             "caCertificateFileContent": {
                                                 "type": "string",
-                                                "example": "-----BEGIN CERTIFICATE-----\\\\r\\\\nPUdg=\\\\r\\\\n-----END CERTIFICATE-----",
-                                                "description": "The content of the CA certificate in PEM format, required for certificate-based authentication."
+                                                "example": "-----BEGIN CERTIFICATE-----\\nMIIDPTCCAiWgAwIBAgIUHtj1WDceNR9Nf+vZBB1Ne7sFmHkwDQYJKoZIhvcNAQEL\\nBQAwLjEPMA0GA1UEAwwGVGVzdENBMQ4wDAYDVQQKDAVaZWJyYTELMAkGA1UEBhMC\\nVVMwHhcNMjYwNTExMTMxNDQ3WhcNMzYwNTA4MTMxNDQ3WjAuMQ8wDQYDVQQDDAZU\\nZXN0Q0ExDjAMBgNVBAoMBVplYnJhMQswCQYDVQQGEwJVUzCCASIwDQYJKoZIhvcN\\nAQEBBQADggEPADCCAQoCggEBANR8E/mxoQ5uTPW/muWnGoWDM7+YH5lIJiCM/n92\\ndMLIQ+TVgb9mcOz80VnpgkQqomhbZaIG4CtnBufyIJvNKid+mgrrFh18HtMnE78d\\nlGoPC4M469Rm+0oEN9GkUHgtgF2N4Qt9bYomySux3yyPlFuUOC+uaYRCCn3Hm8ko\\nXE/a7XWdXeJkpIB0Mzzf7MoNq14AfX431RKgvpMgAqZTnDWtm4TVnK9Hq0t64tP7\\naKIAJV2avJd87dF8x+K80kLBErDnKtuNFpXN7KoC7BBwdTzbG8VWYNUZeG8eCqBh\\neL9MY5Ik7POmR0AM/TxRBLAXyoZHSPdEpEoaQZjSzJ7IHv0CAwEAAaNTMFEwHQYD\\nVR0OBBYEFJHms5XPEyFYnVcf2++X9N8UlkahMB8GA1UdIwQYMBaAFJHms5XPEyFY\\nnVcf2++X9N8UlkahMA8GA1UdEwEB/wQFMAMBAf8wDQYJKoZIhvcNAQELBQADggEB\\nAL4HEEMhuQ9sQLFE9wiGw4BIILxnX30FbphWM8/xpHKuYNsH/NOWpjulG+ZAxe8n\\n+QUhaU9hruBEajT7mYjKvZ9NtUumcAmAh3s29KD4NpjwglqUYfKQpzT4QxkcMXuW\\nzCmqlAqGVzK3ve/Fuurgdbk3kApOZTTyqFw629dmmRhoP+2sdCYMAukyf348/4Gl\\nY6ZtwwAJygC4/WCfWg/7XaeQ+6kqKtY6ijSJFfCNwEPPY7CW3XAqP+kZ0e2taL5a\\nrvm5UUPRMGCs20JOucntSF8uPOICNWUEr3DbqAJ4jXKhSHdsG6fNDyJIOzX1zn0j\\nVqh5mX6k2PZe0eylcukyu/s=\\n-----END CERTIFICATE-----",
+                                                "description": "Optional inline certificate content used only for remote firmware download authentication.\n- If applicable and this field is empty, the device uses an already installed filestore certificate for authentication."
                                             },
                                             "caCertificateFile": {
                                                 "type": "string",
-                                                "example": "/apps/ca.crt",
+                                                "example": "/apps/ca_cert.pem",
                                                 "description": "The file path to the CA certificate, required for certificate-based authentication."
                                             }
                                         },
@@ -5344,8 +5480,9 @@
                                         "command": "set_os",
                                         "requestId": "abc123",
                                         "OSUpdateDetails": {
-                                            "url": "https://192.168.29.39:8000/Build-3.10.27/Firmware",
-                                            "authenticationType": "NONE"
+                                            "url": "http://192.168.29.39:8000/Build-3.10.27/Firmware/PAAFKS00-012-R00E0.DAT",
+                                            "authenticationType": "NONE",
+                                            "verificationType": "NONE"
                                         }
                                     }
                                 },
@@ -5370,8 +5507,8 @@
                                         "OSUpdateDetails": {
                                             "url": "https://fwserver.example.com/firmware/PAAFKS00-012-R02E0.DAT",
                                             "authenticationType": "CERTIFICATE",
-                                            "verificationType": "VERIFY_PEER",
-                                            "caCertificateFileContent": "-----BEGIN CERTIFICATE-----\r\nMIID...base64...\r\n-----END CERTIFICATE-----"
+                                            "verificationType": "VERIFY_HOST_PEER",
+                                            "caCertificateFileContent": "-----BEGIN CERTIFICATE-----\nMIIGDTCCA/WgAwIBAgIIfRvFn+r/D1YwDQYJKoZIhvcNAQELBQAwaTELMAkGA1UE\nBhMCQ0ExEDAOBgNVBAgTB09udGFyaW8xFDASBgNVBAcTC01pc3Npc3NhdWdhMQ0w\nCwYDVQQKEwRTT1RJMQwwCgYDVQQLEwNSSUwxFTATBgNVBAMTDFNPVEktbXF0dC1j\nYTAeFw0yMzEyMDQwNDAxMDBaFw00MzEyMDQwNDAxMDBaMGkxCzAJBgNVBAYTAkNB\nMRAwDgYDVQQIEwdPbnRhcmlvMRQwEgYDVQQHEwtNaXNzaXNzYXVnYTENMAsGA1UE\nChMEU09USTEMMAoGA1UECxMDUklMMRUwEwYDVQQDEwxTT1RJLW1xdHQtY2EwggIi\nMA0GCSqGSIb3DQEBAQUAA4ICDwAwggIKAoICAQCiz2EvfiHV0w8BhbyG7Tu5A696\n4iaR1qceJHsZRbJPkRRmJZi8pCv2B1+/8RZ9aalltNE6M2Dz48NtCNDQSuSAk1ql\ntUuM8ECYNQ+mb7cr5TnJeTlSXZuhG4Qm/kQfhZ1Mk3lE4QQdTxqUZsHXpzgi/bqz\nhx073b7UEyNSssMeCCGBBk7UGui9J6ZmBgL/zJAfz/0uiukvMHnWuflMZou2FVsU\nDSujj444lS9bgAjfoOkuc1mppDkgRuLxpPe6230g/9WhIWsc2ot1N6PaHBI20laY\nToXiafv+X/sAJLjAMYIA/m0TEt8nPRCdTR8wVIRvGQNN2TApz43rpFB/VI3fXfHc\nSEMrgI4N3Bn8zdALVdVBfQFcSG5HLKdLHtWGqNXLG6VljzXY1PLGoAnrcSIT8yJ5\neshxGSmJf3zJqkb3Cmifrpe9M8N8DEGJZcpDCM/YVXw12hzml3bdGfvcvVTN07Hy\nvIE2C1z/UXUMVJXhgtTdJGb7/kDwWNP4YBQE6BumpDEMntWhHRB4WNwedhTNbAOV\ned9aeIN9BnkMg1hlThl+g4+eJFCqIiiMWFD4pWp7SDUX9Qi9X8pYHmgjGnmr2sxl\ndx5sL/UfxNZ3mAzaJcTHdR7Kusp+rhDY9J43NwicA0OaDrfKsppZ5jDmATTvW+VA\nCCPxgksdBub5zVUqnwIDAQABo4G4MIG1MA8GA1UdEwEB/wQFMAMBAf8wHQYDVR0O\nBBYEFPb9BJbwkT3qMEy88LkFsIX2ydepMIGCBgNVHSMEezB5oW2kazBpMQswCQYD\nVQQGEwJDQTEQMA4GA1UECBMHT250YXJpbzEUMBIGA1UEBxMLTWlzc2lzc2F1Z2Ex\nDTALBgNVBAoTBFNPVEkxDDAKBgNVBAsTA1JJTDEVMBMGA1UEAxMMU09USS1tcXR0\nLWNhggh9G8Wf6v8PVjANBgkqhkiG9w0BAQsFAAOCAgEAbcAml6sEG3tvU5bJZ6wQ\nC4SntndCKlLsvcWxgw5Rkv+pcbJVr2Whgqhg1+OA5s+vC6butAdI//ZiTRApxegB\nZA2k0uoxqoWWvgHzrmpSQigy2hxp/+oa3qecC6aS6fi04UwNHF++fkBx+Fkl0e8G\nHHHyAY1txu8Dc1iDWFKRxVoNB1tbQ8gJIsaLJwuiykTf5FGrwMAVlMu90ahilFdz\nj7XWxJiHedY/XHQxGWHwK3WRbC7DP/rniZQb603/oAMuwy0jNltQLMlm5FpjaUmi\nd5Mn1zx8xXg9CBokPAFvg1rk54Z2M3ZnXlVkbMsRy+5fEWS6AtGHMY3Qzt4bJkPS\ntfHRi1clydB867PR50PAykhdLkW3J0+kFnHPBkGnQdrb4ejm7QVVCWA5fpquDmFu\nuNPXQ3xCnUHkal/a/5Ch9/XsQAlHMa7LkwkOD+7GBpUsxXb+8MUBUVXx4f8YQSi6\nEFanr7xSQ2fYviEPZ22ZA4oLH28sgDITueTVytSZwKraXHrgpJ17TcvFD6U4eaBC\nZ+AAwFSXk8R1uEUPh+oBJz1eDJNrhsaJvLYoycEnqadRHiO6hXKh77LzJK7eub+X\nIfwlHEOSGB1Xh8RsRQi7xf1SDb52EczWhsYhnSs7jp3q8O3u6G6YRVTqC9PGeZ0z\nfE5gqNCequc7cftY6rCanls=\n-----END CERTIFICATE-----"
                                         }
                                     }
                                 }
@@ -5401,7 +5538,8 @@
                                             "type": "string",
                                             "enum": [
                                                 "V1.0",
-                                                "V1.1"
+                                                "V1.1",
+                                                "V1.21"
                                             ],
                                             "example": "V1.1"
                                         },
@@ -5442,7 +5580,7 @@
                                     "example1": {
                                         "value": {
                                             "command": "set_os",
-                                            "requestId": "18996",
+                                            "requestId": "abc1234",
                                             "apiVersion": "V1.1",
                                             "response": {
                                                 "code": 1,
@@ -5614,7 +5752,7 @@
                                     "example1": {
                                         "value": {
                                             "command": "reboot",
-                                            "requestId": "123abc",
+                                            "requestId": "123abcd",
                                             "apiVersion": "V1.1",
                                             "response": {
                                                 "code": 1,
@@ -5938,7 +6076,7 @@
                                                                 },
                                                                 "inventoryState": {
                                                                     "type": "string",
-                                                                    "description": "Target field (see EPC Gen2 Spec). Specifies the inventory state of tags to be selected.  'STATE_A' and 'STATE_B' represent the two possible states of a tag's inventory flag.  'STATE_AB' flips between states to optimize tag selection during inventory rounds.\n",
+                                                                    "description": "Inventory state field (see EPC Gen2 Spec). Specifies the inventory state of tags to be selected.  'STATE_A' and 'STATE_B' represent the two possible states of a tag's inventory flag.  'STATE_AB' flips between states to optimize tag selection during inventory rounds.\n",
                                                                     "enum": [
                                                                         "STATE_A",
                                                                         "STATE_B",
@@ -5947,7 +6085,7 @@
                                                                 },
                                                                 "slFlag": {
                                                                     "type": "string",
-                                                                    "description": "Sel field (see EPC Gen2 Spec). Indicates the SL (Select) flag used to filter tags.  'ALL' selects all tags regardless of SL flag state.  'ASSERTED' selects only tags with an asserted SL flag, while 'DEASSERTED' selects tags with a deasserted SL flag.\n",
+                                                                    "description": "SL (Select) flag field (see EPC Gen2 Spec). Indicates the SL (Select) flag used to filter tags.  'ALL' selects all tags regardless of SL flag state.  'ASSERTED' selects only tags with an asserted SL flag, while 'DEASSERTED' selects tags with a deasserted SL flag.\n",
                                                                     "enum": [
                                                                         "ALL",
                                                                         "ASSERTED",
@@ -6054,6 +6192,14 @@
                                                                 "PC": {
                                                                     "type": "boolean",
                                                                     "description": "Indicates whether to report the Protocol Control (PC) word.  The PC word contains information about the tag's memory structure and encoding, such as the length of the EPC.\n"
+                                                                },
+                                                                "XPC": {
+                                                                    "type": "boolean",
+                                                                    "description": "Indicates whether to report the Extended Protocol Control (XPC) word.  XPC provides additional protocol-related information for advanced tags, such as custom memory configurations.\n"
+                                                                },
+                                                                "CRC": {
+                                                                    "type": "boolean",
+                                                                    "description": "Indicates whether to report the CRC value.  CRC is used to verify the integrity of the tag's data and ensure error-free communication.\n"
                                                                 },
                                                                 "EPC": {
                                                                     "type": "boolean",
@@ -6420,7 +6566,7 @@
                                                             },
                                                             "inventoryState": {
                                                                 "type": "string",
-                                                                "description": "Target field (see EPC Gen2 Spec). Specifies the inventory state of tags to be selected.  'STATE_A' and 'STATE_B' represent the two possible states of a tag's inventory flag.  'STATE_AB' flips between states to optimize tag selection during inventory rounds.\n",
+                                                                "description": "Inventory state field (see EPC Gen2 Spec). Specifies the inventory state of tags to be selected.  'STATE_A' and 'STATE_B' represent the two possible states of a tag's inventory flag.  'STATE_AB' flips between states to optimize tag selection during inventory rounds.\n",
                                                                 "enum": [
                                                                     "STATE_A",
                                                                     "STATE_B",
@@ -6429,7 +6575,7 @@
                                                             },
                                                             "slFlag": {
                                                                 "type": "string",
-                                                                "description": "Sel field (see EPC Gen2 Spec). Indicates the SL (Select) flag used to filter tags.  'ALL' selects all tags regardless of SL flag state.  'ASSERTED' selects only tags with an asserted SL flag, while 'DEASSERTED' selects tags with a deasserted SL flag.\n",
+                                                                "description": "SL (Select) flag field (see EPC Gen2 Spec). Indicates the SL (Select) flag used to filter tags.  'ALL' selects all tags regardless of SL flag state.  'ASSERTED' selects only tags with an asserted SL flag, while 'DEASSERTED' selects tags with a deasserted SL flag.\n",
                                                                 "enum": [
                                                                     "ALL",
                                                                     "ASSERTED",
@@ -6537,6 +6683,14 @@
                                                                 "type": "boolean",
                                                                 "description": "Indicates whether to report the Protocol Control (PC) word.  The PC word contains information about the tag's memory structure and encoding, such as the length of the EPC.\n"
                                                             },
+                                                            "XPC": {
+                                                                "type": "boolean",
+                                                                "description": "Indicates whether to report the Extended Protocol Control (XPC) word.  XPC provides additional protocol-related information for advanced tags, such as custom memory configurations.\n"
+                                                            },
+                                                            "CRC": {
+                                                                "type": "boolean",
+                                                                "description": "Indicates whether to report the CRC value.  CRC is used to verify the integrity of the tag's data and ensure error-free communication.\n"
+                                                            },
                                                             "EPC": {
                                                                 "type": "boolean",
                                                                 "description": "Indicates whether to report the EPC.  EPC is the unique identifier stored in the tag's memory, typically used for item identification.\n"
@@ -6608,19 +6762,19 @@
                                                             "offset": 2,
                                                             "length": 2,
                                                             "data": "FFFFEEEE",
-                                                            "password": "0000"
+                                                            "password": "00000000"
                                                         }
                                                     },
                                                     {
                                                         "operationType": "ACCESS",
                                                         "config": {
-                                                            "password": "0000"
+                                                            "password": "00000000"
                                                         }
                                                     },
                                                     {
                                                         "operationType": "LOCK",
                                                         "config": {
-                                                            "password": "0000",
+                                                            "password": "00000000",
                                                             "lockMemBank": "TID",
                                                             "lockAction": "UNLOCK"
                                                         }
@@ -6715,19 +6869,19 @@
                                                             "offset": 2,
                                                             "length": 2,
                                                             "data": "FFFFEEEE",
-                                                            "password": "0000"
+                                                            "password": "00000000"
                                                         }
                                                     },
                                                     {
                                                         "operationType": "ACCESS",
                                                         "config": {
-                                                            "password": "0000"
+                                                            "password": "00000000"
                                                         }
                                                     },
                                                     {
                                                         "operationType": "LOCK",
                                                         "config": {
-                                                            "password": "0000",
+                                                            "password": "00000000",
                                                             "lockMemBank": "EPC",
                                                             "lockAction": "UNLOCK"
                                                         }
@@ -7624,6 +7778,10 @@
                                         "type": "object",
                                         "description": "Specifies which device events to enable or disable and their configuration thresholds.",
                                         "properties": {
+                                            "antenna": {
+                                                "type": "boolean",
+                                                "description": "set to true to enable antenna events"
+                                            },
                                             "terminalConnection": {
                                                 "type": "boolean",
                                                 "description": "set to true to enable terminal connection/disconnection events"
@@ -7632,9 +7790,25 @@
                                                 "type": "boolean",
                                                 "description": "set to true to enable fw update events"
                                             },
+                                            "gpi": {
+                                                "type": "boolean",
+                                                "description": "set to true to enable gpi events"
+                                            },
                                             "network": {
                                                 "type": "boolean",
                                                 "description": "set to true to enable network events"
+                                            },
+                                            "exceptions": {
+                                                "type": "boolean",
+                                                "description": "set to true to enable exception events"
+                                            },
+                                            "ntp": {
+                                                "type": "boolean",
+                                                "description": "set to true to enable battery alerts"
+                                            },
+                                            "userApp": {
+                                                "type": "boolean",
+                                                "description": "set to true to enable user app events"
                                             },
                                             "heartbeat": {
                                                 "type": "boolean",
@@ -7656,9 +7830,20 @@
                                                 "type": "boolean",
                                                 "description": "set to true to enable file download alerts"
                                             },
+                                            "cpuUsage": {
+                                                "type": "boolean",
+                                                "description": "set to true to enable cpu usage alerts"
+                                            },
+                                            "flashUsage": {
+                                                "type": "boolean",
+                                                "description": "set to true to enable flash usage alerts"
+                                            },
+                                            "ramUsage": {
+                                                "type": "boolean",
+                                                "description": "set to true to enable ram usage alerts"
+                                            },
                                             "heartbeatConfiguration": {
                                                 "type": "object",
-                                                "description": "Configuration for heartbeat event reporting, including interval and status inclusions.",
                                                 "properties": {
                                                     "interval": {
                                                         "type": "integer",
@@ -7672,8 +7857,28 @@
                                                     "batteryStatus": {
                                                         "type": "boolean",
                                                         "description": "set to true to enable battery status as part of heartbeat message"
+                                                    },
+                                                    "userApps": {
+                                                        "type": "boolean",
+                                                        "description": "set to true to enable user app status as part of heartbeat message"
                                                     }
                                                 }
+                                            },
+                                            "cpuThreshold": {
+                                                "type": "integer",
+                                                "description": "cpu usage value(%) above which alert will be triggered"
+                                            },
+                                            "ramThreshold": {
+                                                "type": "integer",
+                                                "description": "ram usage value(%) above which alert will be triggered"
+                                            },
+                                            "flashThreshold": {
+                                                "type": "integer",
+                                                "description": "flash usage value(%) above which alert will be triggered"
+                                            },
+                                            "temperatureThreshold": {
+                                                "type": "integer",
+                                                "description": "temperature treshold value above which alert will be triggered"
                                             }
                                         }
                                     }
@@ -7891,11 +8096,9 @@
                                                         "stateOfHealth": {
                                                             "type": "string",
                                                             "enum": [
-                                                                "LOW",
-                                                                "FULL",
+                                                                "GOOD",
                                                                 "CRITICAL",
-                                                                "HIGH",
-                                                                "CHARGING"
+                                                                "MODERATE"
                                                             ],
                                                             "description": "The overall health of the battery, which reflects its long-term capacity and performance."
                                                         },
@@ -7904,7 +8107,12 @@
                                                             "maximum": 100,
                                                             "description": "The current charge level of the battery, represented as a percentage."
                                                         }
-                                                    }
+                                                    },
+                                                    "required": [
+                                                        "status",
+                                                        "stateOfHealth",
+                                                        "chargePercentage"
+                                                    ]
                                                 }
                                             ],
                                             "description": "Additional data associated with the heartbeat event, referencing different event types."
@@ -7969,9 +8177,9 @@
                                         },
                                         "timestamp": {
                                             "type": "string",
-                                            "format": "time",
-                                            "example": "22:54:25",
-                                            "description": "Indicates the time at which the alert was generated, formatted as a time string."
+                                            "format": "date-time",
+                                            "example": "2026-06-17T10:16:34.793Z",
+                                            "description": "Indicates the time at which the alert was generated, formatted as a date-time string."
                                         },
                                         "state": {
                                             "type": "string",
@@ -7986,6 +8194,7 @@
                                             "type": "string",
                                             "enum": [
                                                 "BATTERY",
+                                                "FILE_DOWNLOAD",
                                                 "FIRMWARE_UPDATE",
                                                 "NETWORK_EVENT",
                                                 "TEMPERATURE",
@@ -8026,13 +8235,13 @@
                                                                 "updateStatus": {
                                                                     "type": "string",
                                                                     "enum": [
-                                                                        "started",
+                                                                        "Starting FW update",
+                                                                        "FW update success",
                                                                         "updating",
-                                                                        "successfull",
                                                                         "failed",
-                                                                        "skipped"
+                                                                        "skipping"
                                                                     ],
-                                                                    "example": "in progress",
+                                                                    "example": "FW update success",
                                                                     "description": "Current status of the firmware update process."
                                                                 },
                                                                 "overallProgress": {
@@ -8047,9 +8256,7 @@
                                                                 }
                                                             },
                                                             "required": [
-                                                                "updateStatus",
-                                                                "overallProgress",
-                                                                "stage"
+                                                                "updateStatus"
                                                             ]
                                                         },
                                                         "downloadInfo": {
@@ -8090,7 +8297,7 @@
                                                                 "status"
                                                             ]
                                                         },
-                                                        "temperatueInfo": {
+                                                        "temperatureInfo": {
                                                             "title": "tempEvent",
                                                             "x-stoplight": {
                                                                 "id": "f47vu5sqfdlx9"
@@ -8178,9 +8385,7 @@
                                                                                     "interfaceName",
                                                                                     "status",
                                                                                     "linkStatus",
-                                                                                    "linkSpeed",
-                                                                                    "ipV4Address",
-                                                                                    "ipV6Address"
+                                                                                    "ipV4Address"
                                                                                 ]
                                                                             }
                                                                         },
@@ -8224,8 +8429,7 @@
                                                                                     "interfaceName",
                                                                                     "status",
                                                                                     "ssid",
-                                                                                    "ipV4Address",
-                                                                                    "ipV6Address"
+                                                                                    "ipV4Address"
                                                                                 ]
                                                                             }
                                                                         }
@@ -8256,6 +8460,49 @@
                                                                 "networkInterface"
                                                             ]
                                                         },
+                                                        "powerEvent": {
+                                                            "title": "powerEvent",
+                                                            "x-stoplight": {
+                                                                "id": "zo9rfssxbwg10"
+                                                            },
+                                                            "type": "object",
+                                                            "description": "Information about power-related events, such as power loss or restoration.",
+                                                            "properties": {
+                                                                "powerSource": {
+                                                                    "type": "string",
+                                                                    "enum": [
+                                                                        "DC",
+                                                                        "POE",
+                                                                        "POE+",
+                                                                        "BATTERY",
+                                                                        "CRADLE"
+                                                                    ],
+                                                                    "description": "Specifies the source of power for the device."
+                                                                },
+                                                                "lldp": {
+                                                                    "type": "string",
+                                                                    "enum": [
+                                                                        "success",
+                                                                        "failed",
+                                                                        "negotiating"
+                                                                    ],
+                                                                    "description": "Represents the status of Link Layer Discovery Protocol (LLDP) negotiation."
+                                                                },
+                                                                "powerMode": {
+                                                                    "type": "string",
+                                                                    "enum": [
+                                                                        "ACTIVE",
+                                                                        "LOWPOWER"
+                                                                    ],
+                                                                    "example": "LOWPOWER",
+                                                                    "description": "Indicates the current power mode of the device."
+                                                                }
+                                                            },
+                                                            "required": [
+                                                                "powerSource",
+                                                                "powerMode"
+                                                            ]
+                                                        },
                                                         "batteryAlert": {
                                                             "title": "batteryAlert",
                                                             "x-stoplight": {
@@ -8279,11 +8526,9 @@
                                                                 "stateOfHealth": {
                                                                     "type": "string",
                                                                     "enum": [
-                                                                        "LOW",
-                                                                        "FULL",
+                                                                        "GOOD",
                                                                         "CRITICAL",
-                                                                        "HIGH",
-                                                                        "CHARGING"
+                                                                        "MODERATE"
                                                                     ],
                                                                     "description": "The overall health of the battery, which reflects its long-term capacity and performance."
                                                                 },
@@ -8292,7 +8537,12 @@
                                                                     "maximum": 100,
                                                                     "description": "The current charge level of the battery, represented as a percentage."
                                                                 }
-                                                            }
+                                                            },
+                                                            "required": [
+                                                                "status",
+                                                                "stateOfHealth",
+                                                                "chargePercentage"
+                                                            ]
                                                         }
                                                     }
                                                 }
@@ -8342,8 +8592,8 @@
                                             }
                                         }
                                     },
-                                    "Network alert for ethernet": {
-                                        "description": "Alert indicating network events when ethernet connected",
+                                    "Network alert for WiFi": {
+                                        "description": "Alert indicating network events when WiFi connected",
                                         "value": {
                                             "type": "ALERT",
                                             "timestamp": "2026-04-29T12:33:34.300Z",
@@ -8366,8 +8616,8 @@
                                             }
                                         }
                                     },
-                                    "Network alert for WiFi": {
-                                        "description": "Alert indicating network events when WiFi connected",
+                                    "Network alert for ethernet": {
+                                        "description": "Alert indicating network events when ethernet connected",
                                         "value": {
                                             "type": "ALERT",
                                             "timestamp": "2026-04-29T12:33:57.757Z",
@@ -8622,7 +8872,7 @@
                                                             },
                                                             "format": {
                                                                 "type": "string",
-                                                                "description": "The format of idHex is EPC",
+                                                                "description": "The format of the tag data is EPCid",
                                                                 "example": "epc"
                                                             },
                                                             "peakRssi": {
