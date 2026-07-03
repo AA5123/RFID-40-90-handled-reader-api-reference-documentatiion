@@ -483,7 +483,7 @@
                                             "properties": {
                                                 "firmwareVersion": {
                                                     "type": "string",
-                                                    "example": "SAAFKS00-006-R02",
+                                                    "example": "PAAFKS00-006-R02",
                                                     "description": "The firmware version of the reader."
                                                 },
                                                 "model": {
@@ -570,7 +570,7 @@
                                                     "example": 0,
                                                     "description": "Command response status code. See x-error-codes for code meanings.",
                                                     "minimum": 0,
-                                                    "maximum": 33
+                                                    "maximum": 101
                                                 },
                                                 "description": {
                                                     "type": "string",
@@ -4365,9 +4365,9 @@
                                                 "code": {
                                                     "type": "integer",
                                                     "example": 0,
-                                                    "description": "Response code indicating success or failure.\n\n- 0 — Success\n- 10 — Configuration already exist\n- 23 — Invalid enum value\n- 25 — Max 3 publish topics exceeded\n- 26 — Max 1 subscribe topic exceeded\n- 27 — Invalid tenant ID length",
+                                                    "description": "Response code indicating success or failure.\n\n- 0 — Success\n- 10 — Configuration already exist\n- 23 — Invalid enum value\n- 25 — Max 3 publish topics exceeded\n- 26 — Max 1 subscribe topic exceeded\n- 27 — Invalid tenant ID length\n- 33 — Endpoint already configured",
                                                     "minimum": 0,
-                                                    "maximum": 27
+                                                    "maximum": 33
                                                 },
                                                 "description": {
                                                     "type": "string",
@@ -4447,6 +4447,13 @@
                         "iot_status_code": "IOT_ERROR_INVALID_TENANTID_LENGTH",
                         "cause": "The tenant ID exceeds the maximum allowed character length",
                         "recommended_action": "Shorten the tenant ID to within the allowed limit"
+                    },
+                    {
+                        "code": 33,
+                        "description": "Endpoint already configured",
+                        "iot_status_code": "IOT_ERROR_ENDPOINT_ALREADY_CONFIGURED",
+                        "cause": "An endpoint with the same configuration already exists on the device",
+                        "recommended_action": "Delete the existing endpoint configuration first or modify it instead of creating a new one"
                     }
                 ]
             }
@@ -5089,9 +5096,9 @@
                                                 "code": {
                                                     "type": "integer",
                                                     "example": 0,
-                                                    "description": "Response code indicating success or failure.\n\n- 0 — Success\n- 1 — Command payload is accepted\n- 9 — File not found\n- 21 — Certificate not found\n- 23 — Invalid enum value",
+                                                    "description": "Response code indicating success or failure.\n\n- 0 — Success\n- 1 — Command payload is accepted\n- 9 — File not found\n- 21 — Certificate not found\n- 23 — Invalid enum value\n- 29 — Url missing for HTTP source\n- 30 — Certificate content missing for direct source",
                                                     "minimum": 0,
-                                                    "maximum": 23
+                                                    "maximum": 30
                                                 },
                                                 "description": {
                                                     "type": "string",
@@ -5189,6 +5196,20 @@
                         "iot_status_code": "IOT_ERROR_INVALID_ENUM",
                         "cause": "A field value does not match any of the allowed enum options",
                         "recommended_action": "Check the schema for allowed values and correct the field"
+                    },
+                    {
+                        "code": 29,
+                        "description": "Url missing for HTTP source",
+                        "iot_status_code": "IOT_ERROR_URL_MISSING",
+                        "cause": "The URL for the HTTP source is missing",
+                        "recommended_action": "Provide a valid URL for the HTTP source"
+                    },
+                    {
+                        "code": 30,
+                        "description": "Certificate content missing for direct source",
+                        "iot_status_code": "IOT_ERROR_CERT_CONTENT_MISSING",
+                        "cause": "The certificate content is missing for the direct source",
+                        "recommended_action": "Provide the required certificate content for the direct source"
                     }
                 ]
             }
@@ -5896,6 +5917,7 @@
                                                             "properties": {
                                                                 "transmitPower": {
                                                                     "type": "number",
+                                                                    "description": "Specifies the transmit power level in centi-dBm.",
                                                                     "example": 270,
                                                                     "minimum": 0,
                                                                     "maximum": 300
@@ -6386,6 +6408,7 @@
                                                         "properties": {
                                                             "transmitPower": {
                                                                 "type": "number",
+                                                                "description": "Specifies the transmit power level in centi-dBm.",
                                                                 "example": 270,
                                                                 "minimum": 0,
                                                                 "maximum": 300
@@ -7045,9 +7068,9 @@
                                                 "code": {
                                                     "type": "integer",
                                                     "example": 0,
-                                                    "description": "Response code indicating success or failure.\n\n- 0 — Success\n- 11 — Inventory in progress\n- 22 — Advanced configuration not set\n- 23 — Invalid enum value\n- 24 — Max 32 prefilters limit exceeded\n- 28 — Tag match pattern length exceeded",
+                                                    "description": "Response code indicating success or failure.\n\n- 0 — Success\n- 11 — Inventory in progress\n- 22 — Advanced configuration not set\n- 23 — Invalid enum value\n- 24 — Max 32 prefilters limit exceeded\n- 28 — Tag match pattern length exceeded\n- 31 — Max write length exceeded\n- 32 — Write data length mismatch",
                                                     "minimum": 0,
-                                                    "maximum": 28
+                                                    "maximum": 32
                                                 },
                                                 "description": {
                                                     "type": "string",
@@ -7127,6 +7150,20 @@
                         "iot_status_code": "IOT_ERROR_TAG_MATCH_PATTERN_LENGTH_EXCEEDED",
                         "cause": "The tag match pattern string exceeds the maximum allowed length",
                         "recommended_action": "Shorten the tag match pattern to within the allowed limit"
+                    },
+                    {
+                        "code": 31,
+                        "description": "Max write length exceeded",
+                        "iot_status_code": "IOT_ERROR_MAX_WRITE_LENGTH_EXCEEDED",
+                        "cause": "The maximum write length for the certificate has been exceeded",
+                        "recommended_action": "Ensure the certificate size is within the allowed limit."
+                    },
+                    {
+                        "code": 32,
+                        "description": "Write data length mismatch",
+                        "iot_status_code": "IOT_ERROR_WRITE_DATA_LENGTH_MISMATCH",
+                        "cause": "The length of the data being written does not match the expected length",
+                        "recommended_action": "Ensure the data length matches the length value added on payload if field given."
                     }
                 ]
             }
@@ -7970,7 +8007,7 @@
                                                     "example": 0,
                                                     "description": "Command response status code. See x-error-codes for code meanings.",
                                                     "minimum": 0,
-                                                    "maximum": 33
+                                                    "maximum": 101
                                                 },
                                                 "description": {
                                                     "type": "string",
@@ -8863,7 +8900,7 @@
                                                             "channel": {
                                                                 "type": "number",
                                                                 "description": "\"CHANNEL” will report the channel (in MHz) the reader was using when the tag was inventoried. This value will only be reported if each individual tag read is reported (in other words, if reportFilter duration is set to 0). Otherwise, it will not be reported.",
-                                                                "example": 9216
+                                                                "example": 926750
                                                             },
                                                             "eventNum": {
                                                                 "type": "number",
