@@ -48,7 +48,7 @@ properties:
       | 33 | Endpoint already configured |
       | 101 | Default error |
     minimum: 0
-    maximum: 33
+    maximum: 101
   description:
     type: string
     description: response description in detail

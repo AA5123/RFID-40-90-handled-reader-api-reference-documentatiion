@@ -7,7 +7,7 @@ examples: []
 properties:
   firmwareVersion:
     type: string
-    example: SAAFKS00-006-R02
+    example: PAAFKS00-006-R02
     description: The firmware version of the reader.
   model:
     type: string

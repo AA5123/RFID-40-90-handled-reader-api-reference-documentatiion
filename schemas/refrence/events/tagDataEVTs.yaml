@@ -62,7 +62,7 @@ properties:
   channel:
     type: number
     description: '"CHANNEL” will report the channel (in MHz) the reader was using when the tag was inventoried. This value will only be reported if each individual tag read is reported (in other words, if reportFilter duration is set to 0). Otherwise, it will not be reported.'
-    example: 9216
+    example: 926750
   eventNum:
     type: number
     description: Event Number

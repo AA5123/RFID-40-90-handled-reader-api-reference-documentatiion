@@ -324,6 +324,69 @@
             ],
             "cause": "The tag match pattern string exceeds the maximum allowed length",
             "recommended_action": "Shorten the tag match pattern to within the allowed limit"
+        },
+        {
+            "code": 29,
+            "description": "Url missing for HTTP source",
+            "iot_status_code": "IOT_ERROR_URL_MISSING",
+            "commands": [
+                "install_certificate",
+                "set_config"
+            ],
+            "cause": "The URL for the HTTP source is missing",
+            "recommended_action": "Provide a valid URL for the HTTP source"
+        },
+        {
+            "code": 30,
+            "description": "Certificate content missing for direct source",
+            "iot_status_code": "IOT_ERROR_CERT_CONTENT_MISSING",
+            "commands": [
+                "install_certificate",
+                "set_config"
+            ],
+            "cause": "The certificate content is missing for the direct source",
+            "recommended_action": "Provide the required certificate content for the direct source"
+        },
+        {
+            "code": 31,
+            "description": "Max write length exceeded",
+            "iot_status_code": "IOT_ERROR_MAX_WRITE_LENGTH_EXCEEDED",
+            "commands": [
+                "set_operating_mode"
+            ],
+            "cause": "The maximum write length for the certificate has been exceeded",
+            "recommended_action": "Ensure the certificate size is within the allowed limit."
+        },
+        {
+            "code": 32,
+            "description": "Write data length mismatch",
+            "iot_status_code": "IOT_ERROR_WRITE_DATA_LENGTH_MISMATCH",
+            "commands": [
+                "set_operating_mode"
+            ],
+            "cause": "The length of the data being written does not match the expected length",
+            "recommended_action": "Ensure the data length matches the length value added on payload if field given."
+        },
+        {
+            "code": 33,
+            "description": "Endpoint already configured",
+            "iot_status_code": "IOT_ERROR_ENDPOINT_ALREADY_CONFIGURED",
+            "commands": [
+                "config_endpoint",
+                "set_config"
+            ],
+            "cause": "An endpoint with the same configuration already exists on the device",
+            "recommended_action": "Delete the existing endpoint configuration first or modify it instead of creating a new one"
+        },
+        {
+            "code": 101,
+            "description": "Default error",
+            "iot_status_code": "",
+            "commands": [
+                "*"
+            ],
+            "cause": "This is an error code for unknown or unhandled errors. It is a catch-all for any error that does not have a specific code assigned.",
+            "recommended_action": "Investigate the error and take appropriate action based on the context."
         }
     ]
 }
